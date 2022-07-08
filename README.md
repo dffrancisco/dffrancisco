@@ -40,4 +40,18 @@ Sou programador Fullstack e apaixonado por desenvolvimento e desafios.
 
   ![](https://komarev.com/ghpvc/?username=dffrancisco28&color=447ff7&label=Visitantes+count)
 
+  
+<p align="center">
+  <a href="https://github.com/dffrancisco">
+    <img src="https://github-readme-stats.vercel.app/api?username=dffrancisco&show_icons=true&theme=github_dark&hide_border=true" />
+    <img src="https://github-readme-streak-stats.herokuapp.com/?user=dffrancisco&theme=github-dark-blue&hide_border=true" />
+    <img src="https://activity-graph.herokuapp.com/graph?username=dffrancisco&theme=react-dark" />
+  </a>
+</p>
+  
+  
+
+  
+  
+  <img src="bottom_header.svg">   
 </div>
