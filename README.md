@@ -1,4 +1,5 @@
 # :man_technologist: Francisco Alves
+<p align="center"><img src="progamer.gif" width="25%"></p>
 
 [![Github Badge](https://img.shields.io/badge/-Github-000?style=flat-square&logo=Github&logoColor=white&link=https://github.com/dffrancisco)](https://github.com/dffrancisco)
 [![Whatsapp Badge](https://img.shields.io/badge/-Whatsapp-4CA143?style=flat-square&labelColor=4CA143&logo=whatsapp&logoColor=white&link=https://api.whatsapp.com/send?phone=5561992587808&text=!)](https://api.whatsapp.com/send?phone=5561992587808&text=!)
@@ -37,5 +38,6 @@ Sou programador Fullstack e apaixonado por desenvolvimento e desafios.
   
 <a href="http://www.github.com/dffrancisco"><img src="https://github-readme-streak-stats.herokuapp.com/?user=dffrancisco&stroke=ffffff&background=171717&ring=3382ed&fire=3382ed&currStreakNum=ffffff&currStreakLabel=3382ed&sideNums=ffffff&sideLabels=ffffff&dates=ffffff&hide_border=true" /></a>
 
+  ![](https://komarev.com/ghpvc/?username=dffrancisco28&color=447ff7&label=Visitor+count)
 
 </div>
