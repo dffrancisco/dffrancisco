@@ -32,13 +32,16 @@ Sou programador Fullstack e apaixonado por desenvolvimento e desafios.
 
 <div align='center'>
 
-<a href="http://www.github.com/dffrancisco"><img src="https://github-readme-stats.vercel.app/api?username=dffrancisco&show_icons=true&hide=&count_private=true&title_color=3382ed&text_color=ffffff&icon_color=3382ed&bg_color=171717&hide_border=true&show_icons=true" alt="dffrancisco GitHub stats" /></a>
-
   [![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=dffrancisco&langs_count=10&layout=compact&title_color=3382ed&text_color=ffffff&icon_color=3382ed&bg_color=171717&hide_border=true)](https://github.com/dffrancisco)
   
-<a href="http://www.github.com/dffrancisco"><img src="https://github-readme-streak-stats.herokuapp.com/?user=dffrancisco&stroke=ffffff&background=171717&ring=3382ed&fire=3382ed&currStreakNum=ffffff&currStreakLabel=3382ed&sideNums=ffffff&sideLabels=ffffff&dates=ffffff&hide_border=true" /></a>
+  
+  <!--   Top Languages Using -->
+### 👨‍💻 Top Languages Used*:
+![](https://github-profile-summary-cards.vercel.app/api/cards/repos-per-language?username=dffrancisco&theme=github_dark)
+![](https://github-profile-summary-cards.vercel.app/api/cards/most-commit-language?username=dffrancisco&theme=github_dark)
+  ![](http://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=dffrancisco&theme=github_dark)
 
-  ![](https://komarev.com/ghpvc/?username=dffrancisco28&color=447ff7&label=Visitantes+count)
+![](https://komarev.com/ghpvc/?username=dffrancisco28&color=447ff7&label=Visitantes+count)
 
   
 <p align="center">
