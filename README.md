@@ -23,13 +23,17 @@ Sou programador Fullstack e apaixonado por desenvolvimento e desafios.
 
 ##### Sistemas Operacionais: ![Linux](https://img.shields.io/badge/-Linux-16C60C?style=flat-square&logo=linux&logoColor=white) ![Windows](https://img.shields.io/badge/-Windows-00ADEF?style=flat-square&logo=windows&logoColor=white) 
 
+##### Outros: ![NPM](https://img.shields.io/badge/NPM-%23000000.svg?style=flat-square&logo=npm&logoColor=white) ![Socket.io](https://img.shields.io/badge/Socket.io-black?style=for-the-badge&logo=socket.io&badgeColor=010101) ![Linux Mint](https://img.shields.io/badge/Linux%20Mint-87CF3E?style=flat-square&logo=Linux%20Mint&logoColor=white) ![Ubuntu](https://img.shields.io/badge/Ubuntu-E95420?style=flat-square&logo=ubuntu&logoColor=white) ![Apache](https://img.shields.io/badge/apache-%23D42029.svg?style=flat-square&logo=apache&logoColor=white) ![Play Store](https://img.shields.io/badge/Google_Play-414141?style=flat-square&logo=google-play&logoColor=white)
+
+##### Aprendendo: ![Python](https://img.shields.io/badge/python-3670A0?style=flat-square&logo=python&logoColor=ffdd54)
+
 ## Resumo Git
 
 <div align='center'>
 
 <a href="http://www.github.com/dffrancisco"><img src="https://github-readme-stats.vercel.app/api?username=dffrancisco&show_icons=true&hide=&count_private=true&title_color=3382ed&text_color=ffffff&icon_color=3382ed&bg_color=171717&hide_border=true&show_icons=true" alt="dffrancisco GitHub stats" /></a>
 
-  [![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=dffrancisco&langs_count=10&theme=dracula&layout=compact&)](https://github.com/dffrancisco)
+  [![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=dffrancisco&langs_count=10&layout=compact&title_color=3382ed&text_color=ffffff&icon_color=3382ed&bg_color=171717&hide_border=true)](https://github.com/dffrancisco)
   
 <a href="http://www.github.com/dffrancisco"><img src="https://github-readme-streak-stats.herokuapp.com/?user=dffrancisco&stroke=ffffff&background=171717&ring=3382ed&fire=3382ed&currStreakNum=ffffff&currStreakLabel=3382ed&sideNums=ffffff&sideLabels=ffffff&dates=ffffff&hide_border=true" /></a>
 
