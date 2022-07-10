@@ -6,7 +6,7 @@
 [![Gmail Badge](https://img.shields.io/badge/-Gmail-c14438?style=flat-square&logo=Gmail&logoColor=white&link=mailto:dffrancisco@gmail.com)](mailto:dffrancisco@gmail.com)
 [![Linkedin Badge](https://img.shields.io/badge/-LinkedIn-blue?style=flat-square&logo=Linkedin&logoColor=white&link=https://www.linkedin.com/in/francisco-alves/)](https://www.linkedin.com/in/francisco-alves-7991a214a/)
 
-## Bem Vindo ao meu perfil! 👋
+## Bem-Vindo ao meu perfil! 👋
 
 Sou programador Fullstack e apaixonado por desenvolvimento e desafios.
 
@@ -25,6 +25,9 @@ Sou programador Fullstack e apaixonado por desenvolvimento e desafios.
 ##### Sistemas Operacionais: ![Linux](https://img.shields.io/badge/-Linux-16C60C?style=flat-square&logo=linux&logoColor=white) ![Windows](https://img.shields.io/badge/-Windows-00ADEF?style=flat-square&logo=windows&logoColor=white) 
 
 ##### Outros: ![NPM](https://img.shields.io/badge/NPM-%23000000.svg?style=flat-square&logo=npm&logoColor=white) ![Linux Mint](https://img.shields.io/badge/Linux%20Mint-87CF3E?style=flat-square&logo=Linux%20Mint&logoColor=white) ![Ubuntu](https://img.shields.io/badge/Ubuntu-E95420?style=flat-square&logo=ubuntu&logoColor=white) ![Apache](https://img.shields.io/badge/apache-%23D42029.svg?style=flat-square&logo=apache&logoColor=white) ![Play Store](https://img.shields.io/badge/Google_Play-414141?style=flat-square&logo=google-play&logoColor=white) ![Raspberry Pi](https://img.shields.io/badge/-RaspberryPi-C51A4A?style=flat-square&logo=Raspberry-Pi)
+<a href="https://mediasoup.org/"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/FFmpeg_Logo_new.svg/1024px-FFmpeg_Logo_new.svg.png"  width="100"></a>
+<img src="https://canada1.discourse-cdn.com/free1/uploads/mediasoup/original/1X/ac66c104f5e5311274e9d4e07a5a48e7a22b8d8d.png"  height="50">
+
 
 ##### Aprendendo: ![Python](https://img.shields.io/badge/python-3670A0?style=flat-square&logo=python&logoColor=ffdd54)
 
