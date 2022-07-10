@@ -35,7 +35,7 @@ Sou programador Fullstack e apaixonado por desenvolvimento e desafios.
 
 <div align='center'>
 
-  [![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=dffrancisco&langs_count=10&layout=compact&title_color=3382ed&text_color=ffffff&icon_color=3382ed&bg_color=171717&hide_border=true)](https://github.com/dffrancisco)
+  [![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=dffrancisco&langs_count=10&layout=compact&theme=github_dark)](https://github.com/dffrancisco)
   
   
   <!--   Top Languages Using -->
@@ -44,7 +44,7 @@ Sou programador Fullstack e apaixonado por desenvolvimento e desafios.
 ![](https://github-profile-summary-cards.vercel.app/api/cards/most-commit-language?username=dffrancisco&theme=github_dark)
   ![](http://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=dffrancisco&theme=github_dark)
 
-![](https://komarev.com/ghpvc/?username=dffrancisco28&color=447ff7&label=Visitantes+count)
+![](https://komarev.com/ghpvc/?username=dffrancisco28&theme=github_dark&color=447ff7&label=Visitantes+count)
 
   
 <p align="center">
