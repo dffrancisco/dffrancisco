@@ -20,13 +20,24 @@ from urllib.parse import urlparse
 from scrapling.fetchers import Fetcher
 
 
-ANOS_RE = re.compile(r"\(?\s*DESDE\s+(\d{4})\s+AT[ÉE]\s+(\d{4})\s*\)?", re.I)
-ANO_FINAL_RE = re.compile(r"^(?P<veiculo>.+?)\s+(?P<ano>(19|20)\d{2})$")
-RODAPE_RE = re.compile(r"para mais informa|combine o envio|whatsapp", re.I)
+# "(DESDE 2006 ATÉ 2014)", "(DESDE 2012 EM DIANTE)", "(2014 - 2016)", "(2011...)", "(2012)"
+ANOS_RE = re.compile(r"\(?\s*(?:DESDE\s+)?(?P<de>(?:19|20)\d{2})\s*(?:(?:AT[ÉE]|À|A|-|–|/)\s*"
+                     r"(?P<ate>(?:19|20)\d{2})|(?P<diante>EM\s+DIANTE|\.{2,}|\+))?\s*\)", re.I)
+# "FORD KA 2005" (uma linha por ano) ou "KIA PICANTO 2011..." (de 2011 em diante)
+ANO_FINAL_RE = re.compile(r"^(?P<veiculo>.+?)\s+(?P<ano>(19|20)\d{2})(?P<mais>\s*(\.{2,}|…|\+|EM DIANTE))?$", re.I)
+# Cabeçalho que abre a lista de aplicações ("APLICAÇÃO:", "APLICAÇAÕ", "APLICAÇÕES")
+APLICACAO_RE = re.compile(r"^APLICA\w*\s*:?\s*$", re.I)
+RODAPE_RE = re.compile(r"para mais informa|combine o envio|whatsapp|^sobre a marca", re.I)
+# Títulos de seção que aparecem como "chave:" mas não são dados da ficha
+TITULOS = {"DESCRIÇÃO", "DESCRICAO", "ESPECIFICAÇÕES TÉCNICAS", "ESPECIFICACOES TECNICAS", "INFORMAÇÕES TÉCNICAS"}
 MONTADORAS = {"CHEVROLET", "GM", "VOLKSWAGEN", "VW", "FIAT", "FORD", "HYUNDAI", "RENAULT", "TOYOTA",
-              "HONDA", "NISSAN", "PEUGEOT", "CITROEN", "CITROËN", "KIA", "MITSUBISHI", "JEEP"}
+              "HONDA", "NISSAN", "PEUGEOT", "CITROEN", "CITROËN", "KIA", "MITSUBISHI", "JEEP",
+              "MERCEDES", "MERCEDES-BENZ", "MB", "BMW", "AUDI", "CHERY", "JAC", "SUZUKI", "DODGE",
+              "CHRYSLER", "IVECO", "SCANIA", "VOLVO", "AGRALE", "TROLLER", "SUBARU", "MAZDA", "SEAT",
+              "LIFAN", "EFFA", "CAOA", "BYD", "RAM", "YAMAHA"}
 # Cabeçalhos da ficha nos diferentes formatos usados pelo site -> chave padronizada
 CHAVES = {"CÓDIGO DO FABRICANTE": "codigo_fabricante", "CODIGO DO FABRICANTE": "codigo_fabricante",
+          "CÓDIGO DE FÁBRICA": "codigo_fabricante", "CODIGO DE FABRICA": "codigo_fabricante",
           "CÓDIGO DE BARRAS": "ean", "CODIGO DE BARRAS": "ean", "MARCA": "marca"}
 
 
@@ -61,7 +72,8 @@ def linhas_descricao(page):
     return [re.sub(r"\s+([,:])", r"\1", clean(l)).strip(" ,") for l in text.split("\n") if clean(l).strip(" ,")]
 
 
-ALIAS_MONTADORA = {"GM": "CHEVROLET", "VW": "VOLKSWAGEN", "CITROËN": "CITROEN"}
+ALIAS_MONTADORA = {"GM": "CHEVROLET", "VW": "VOLKSWAGEN", "CITROËN": "CITROEN",
+                   "MB": "MERCEDES-BENZ", "MERCEDES": "MERCEDES-BENZ"}
 
 
 def separar_montadora(texto, montadora):
@@ -88,7 +100,10 @@ def parse_aplicacoes(linhas):
             observacoes += buffer
             buffer = []
             mont, veiculo = separar_montadora(m["veiculo"], montadora)
-            por_ano.setdefault((mont, veiculo), []).append(int(m["ano"]))
+            anos = por_ano.setdefault((mont, veiculo), [])
+            anos.append(int(m["ano"]))
+            if m["mais"]:
+                anos.append(None)  # sem ano final: "em diante"
             continue
         buffer.append(linha)
         anos = ANOS_RE.search(linha)
@@ -100,31 +115,42 @@ def parse_aplicacoes(linhas):
         mont, veiculo = separar_montadora(partes[0] if partes else "", montadora)
         aplicacoes.append({"montadora": mont, "veiculo": veiculo,
                            "motor": ", ".join(partes[1:]) or None,
-                           "ano_inicio": int(anos[1]), "ano_fim": int(anos[2])})
+                           "ano_inicio": int(anos["de"]),
+                           "ano_fim": None if anos["diante"] else int(anos["ate"] or anos["de"])})
     for (mont, veiculo), anos in por_ano.items():
-        aplicacoes.append({"montadora": mont, "veiculo": veiculo, "motor": None,
-                           "ano_inicio": min(anos), "ano_fim": max(anos)})
-    observacoes += [b for b in buffer if b]
+        validos = [a for a in anos if a]
+        aplicacoes.append({"montadora": mont, "veiculo": veiculo, "motor": None, "ano_inicio": min(validos),
+                           "ano_fim": None if None in anos else max(validos)})
+    # Sobras curtas são notas ("FUMÊ", "MÁSCARA NEGRA"); parágrafos longos ficam só em descricao_texto
+    observacoes += [b for b in buffer if len(b) <= 80]
     return aplicacoes, observacoes
 
 
 def parse_descricao(page):
     """Separa a descrição em dados básicos, ficha técnica (chave: valor) e aplicações."""
     linhas = linhas_descricao(page)
-    idx = next((i for i, l in enumerate(linhas) if l.upper().startswith("APLICA")), len(linhas))
+    idx = next((i for i, l in enumerate(linhas) if APLICACAO_RE.match(l)), None)
+    if idx is None:  # "APLICAÇÃO: conteúdo" na mesma linha
+        idx = next((i for i, l in enumerate(linhas) if l.upper().startswith("APLICAÇÃO:")), len(linhas))
     basicos, ficha, i = {}, {}, 0
     ficha_linhas = linhas[:idx]
     while i < len(ficha_linhas):
         linha = ficha_linhas[i]
         if ":" in linha:
             chave, valor = (clean(x) for x in linha.split(":", 1))
+            chave_up = chave.upper()
+            if chave_up in TITULOS or "FICHA T" in chave_up:
+                i += 1
+                continue
             # valor na linha seguinte ("Marca:" / "Arteb")
             if not valor and i + 1 < len(ficha_linhas) and ":" not in ficha_linhas[i + 1]:
                 i += 1
                 valor = ficha_linhas[i]
-            if chave and valor and "FICHA T" not in chave.upper():
-                chave_up = chave.upper()
-                if chave_up in CHAVES:
+            if chave and valor:
+                if chave_up in ("CÓDIGO", "CODIGO", "CÓDIGO SIMILAR", "CÓDIGO EQUIVALENTE"):
+                    # códigos de outras marcas para a mesma peça (ex.: "23111 AMPRI")
+                    basicos.setdefault("codigos_equivalentes", []).append(valor)
+                elif chave_up in CHAVES:
                     basicos[CHAVES[chave_up]] = valor
                 else:
                     ficha[chave_up] = valor.upper()
@@ -133,7 +159,20 @@ def parse_descricao(page):
     if resto:  # a própria linha "APLICAÇÃO:" pode já trazer conteúdo depois dos dois pontos
         resto = ([resto[0].split(":", 1)[1].strip()] if ":" in resto[0] else []) + resto[1:]
     aplicacoes, observacoes = parse_aplicacoes([l for l in resto if l])
+    if not aplicacoes:
+        # Algumas peças listam as aplicações sob outro título (ex.: "DESCRIÇÃO:")
+        aplicacoes, _ = parse_aplicacoes(linhas)
     return basicos, ficha, aplicacoes, observacoes
+
+
+def texto_descricao(page):
+    """Descrição em texto puro, sem o rodapé de atendimento da loja."""
+    linhas = []
+    for linha in linhas_descricao(page):
+        if RODAPE_RE.search(linha):
+            break
+        linhas.append(linha)
+    return "\n".join(linhas)
 
 
 def fotos(page):
@@ -160,10 +199,22 @@ def urls_da_marca(marca):
         pg += 1
 
 
-def scrape(url, out_root):
+class NaoEProduto(Exception):
+    """A URL é uma categoria/página institucional, não um produto."""
+
+
+def slug(texto):
+    import unicodedata
+    texto = unicodedata.normalize("NFKD", texto or "sem-marca").encode("ascii", "ignore").decode()
+    return re.sub(r"[^a-z0-9]+", "-", texto.lower()).strip("-") or "sem-marca"
+
+
+def scrape(url, out_root, por_marca=False):
     page = Fetcher.get(url, stealthy_headers=True)
     if page.status != 200:
         raise RuntimeError(f"HTTP {page.status} em {url}")
+    if not page.css("#product-container"):
+        raise NaoEProduto(url)
 
     dl = data_layer(page)
     basicos, ficha, aplicacoes, observacoes = parse_descricao(page)
@@ -175,7 +226,7 @@ def scrape(url, out_root):
         modelo = None
     preco = dl.get("priceSell") or dl.get("price")
 
-    pasta = out_root / urlparse(url).path.strip("/").split("/")[-1]
+    pasta = out_root / (slug(marca) if por_marca else "") / urlparse(url).path.strip("/").split("/")[-1]
     pasta.mkdir(parents=True, exist_ok=True)
 
     imagens = []
@@ -202,9 +253,11 @@ def scrape(url, out_root):
         "preco": float(preco) if preco else None,
         "moeda": "BRL",
         "disponivel": dl.get("availability") == "YES",
+        "codigos_equivalentes": basicos.get("codigos_equivalentes", []),
         "ficha_tecnica": ficha,
         "aplicacoes": aplicacoes,
         "observacoes": observacoes,
+        "descricao_texto": texto_descricao(page),
         "descricao_html": page.css("#descricao").get() if page.css("#descricao") else None,
         "imagens": imagens,
         "url_origem": url,

@@ -20,7 +20,22 @@ A `foto_1` é a principal; as fotos são baixadas na maior resolução disponív
 
 A pasta `pecas/` já contém a marca **Arteb** completa: 84 peças, 193 fotos, 717 aplicações.
 
-Campos do JSON: `nome`, `descricao_curta`, `marca`, `codigo_fabricante`, `ean`, `sku`,
-`referencia`, `categoria`, `preco`, `moeda`, `disponivel`, `ficha_tecnica` (chave → valor),
-`aplicacoes` (montadora, veículo, motor, ano_inicio, ano_fim), `observacoes`
-(notas como "MÁSCARA NEGRA", "COM AVARIA"), `descricao_html`, `imagens`, `url_origem`.
+## Catálogo inteiro (todas as marcas)
+
+```bash
+# ~27 mil URLs do sitemap, ~2h com 6 processos; pode ser interrompido e retomado
+python auri_catalogo.py -o /caminho/auri-catalogo -j 6
+# envia para um link público do Nextcloud que permita upload
+python nextcloud_upload.py /caminho/auri-catalogo https://SEU-NEXTCLOUD/s/TOKEN --destino auri-catalogo
+```
+
+Saída: `<saida>/<marca>/<peça>/produto.json` + fotos, `<saida>/<marca>/produtos.json`,
+`<saida>/produtos.json` (tudo), `resumo.json` e `erros.json`.
+
+## Campos do JSON
+
+`nome`, `descricao_curta`, `marca`, `codigo_fabricante`, `ean`, `sku`, `referencia`,
+`categoria`, `preco`, `moeda`, `disponivel`, `codigos_equivalentes` (códigos de outras
+marcas, ex.: "23111 AMPRI"), `ficha_tecnica` (chave → valor), `aplicacoes` (montadora,
+veículo, motor, ano_inicio, ano_fim — `null` = "em diante"), `observacoes` (notas como
+"MÁSCARA NEGRA", "COM AVARIA"), `descricao_texto`, `descricao_html`, `imagens`, `url_origem`.

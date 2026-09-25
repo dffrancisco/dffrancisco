@@ -1,1 +1,2 @@
 scrapling[fetchers]>=0.4
+requests>=2.28
