@@ -1,0 +1,184 @@
+{
+  "nome": "FAROL PRINCIPAL LD 0160180 ARTEB - CHEVROLET CORSA",
+  "descricao_curta": "Farol direito Arteb 0160180 para Chevrolet Corsa, iluminação eficiente, alta durabilidade e perfeita reposição.",
+  "marca": "Arteb",
+  "codigo_fabricante": "0160180",
+  "ean": "7896482523891",
+  "sku": "20125",
+  "referencia": "9023",
+  "categoria": "ACESSORIOS",
+  "preco": 250.0,
+  "moeda": "BRL",
+  "disponivel": true,
+  "ficha_tecnica": {
+    "ACABAMENTO": "MÁSCARA METALIZADA",
+    "LADO": "DIREITO",
+    "MATERIAL DA LENTE": "VIDRO",
+    "MODELO": "FOCO SIMPLES",
+    "POSIÇÃO": "DIANTEIRO",
+    "TIPO DE LÂMPADA": "H4",
+    "TIPO DE LENTE": "RAIADA"
+  },
+  "aplicacoes": [
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "CORSA CHAMP",
+      "motor": "SOHC MPFI 1.6 L 8V SOHC L4",
+      "ano_inicio": 1996,
+      "ano_fim": 2000
+    },
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "CORSA GL",
+      "motor": "SOHC EFI 1.4 L 8V SOHC L4",
+      "ano_inicio": 1994,
+      "ano_fim": 1996
+    },
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "CORSA GL",
+      "motor": "SOHC MPFI 1.6 L 8V SOHC L4",
+      "ano_inicio": 1996,
+      "ano_fim": 2000
+    },
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "CORSA GL MPFI",
+      "motor": "SOHC MPFI 1.6 L 8V SOHC L4",
+      "ano_inicio": 1995,
+      "ano_fim": 2000
+    },
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "CORSA GL MPFI",
+      "motor": "SOHC MPFI 1.6 L 8V SOHC L4",
+      "ano_inicio": 1996,
+      "ano_fim": 2000
+    },
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "CORSA GSI 16V SFI",
+      "motor": "DOHC SFI 1.6 L 16V DOHC L4",
+      "ano_inicio": 1994,
+      "ano_fim": 1996
+    },
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "CORSA SEDAN GLS 16V",
+      "motor": "BE 1.6 L 16V DOHC L4",
+      "ano_inicio": 1997,
+      "ano_fim": 2000
+    },
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "CORSA SEDAN SUPER SFI 16V",
+      "motor": "GM FAMÍLIA I 1.0 L 16V DOHC L4",
+      "ano_inicio": 1999,
+      "ano_fim": 2000
+    },
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "CORSA SEDAN WIND MPFI",
+      "motor": "SOHC MPFI 1.0 L 8V SOHC L4",
+      "ano_inicio": 1996,
+      "ano_fim": 2000
+    },
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "CORSA STD EFI",
+      "motor": "SOHC EFI 1.6 L 8V SOHC L4",
+      "ano_inicio": 1995,
+      "ano_fim": 1996
+    },
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "CORSA STD MPFI",
+      "motor": "SOHC MPFI 1.6 L 8V SOHC L4",
+      "ano_inicio": 1996,
+      "ano_fim": 2000
+    },
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "CORSA SUPER MPFI",
+      "motor": "SOHC MPFI 1.0 L 8V SOHC L4",
+      "ano_inicio": 1996,
+      "ano_fim": 2000
+    },
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "CORSA SUPER SFI 16V",
+      "motor": "GM FAMÍLIA I 1.0 L 16V DOHC L4",
+      "ano_inicio": 1999,
+      "ano_fim": 2000
+    },
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "CORSA WAGON GL MPFI",
+      "motor": "SOHC MPFI 1.6 L 8V SOHC L4",
+      "ano_inicio": 1997,
+      "ano_fim": 2000
+    },
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "CORSA WAGON GLS 16V",
+      "motor": "DOHC SFI 1.6 L 16V DOHC L4",
+      "ano_inicio": 1997,
+      "ano_fim": 2000
+    },
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "CORSA WAGON GLS MPFI 16 V",
+      "motor": "DOHC SFI 1.6 L 16V DOHC L4",
+      "ano_inicio": 1997,
+      "ano_fim": 2000
+    },
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "CORSA WAGON SUPER MPFI",
+      "motor": "GM FAMÍLIA I 1.0 L 16V DOHC L4",
+      "ano_inicio": 1999,
+      "ano_fim": 2000
+    },
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "CORSA WIND EFI",
+      "motor": "SOHC EFI 1.0 L 8V SOHC L4",
+      "ano_inicio": 1994,
+      "ano_fim": 1996
+    },
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "CORSA WIND MPFI",
+      "motor": "SOHC MPFI 1.0 L 8V SOHC L4",
+      "ano_inicio": 1996,
+      "ano_fim": 2000
+    },
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "CORSA WIND SUPER EFI",
+      "motor": "SOHC EFI 1.0 L 8V SOHC L4",
+      "ano_inicio": 1994,
+      "ano_fim": 1996
+    }
+  ],
+  "observacoes": [],
+  "descricao_html": "<div id=\"descricao\" class=\"prodBox p-3 border rounded bg-light area-tec mb-3\"><div class=\"\"><div class=\"\"><p><span style=\"display: none;\"> </span> </p><p><span style=\"font-size:16px;\"><strong>MARCA</strong>: ARTEB</span></p><p><span style=\"font-size:16px;\"><strong>CÓDIGO DO FABRICANTE</strong>: 0160180 </span></p><p><span style=\"font-size:16px;\"><strong>CÓDIGO DE BARRAS: </strong>7896482523891</span></p><hr><p><span style=\"font-size:16px;\"><strong>FAROL PRINCIPAL 0160180 ARTEB </strong><strong data-end=\"221\" data-start=\"154\">&#8211;  FICHA TÉCNICA:</strong></span></p><p><span style=\"font-size:16px;\"><strong>ACABAMENTO</strong>: MÁSCARA METALIZADA</span></p><p><span style=\"font-size:16px;\"><strong>LADO</strong>: DIREITO</span></p><p><span style=\"font-size:16px;\"><strong>MATERIAL DA LENTE</strong>: VIDRO</span></p><p><span style=\"font-size:16px;\"><strong>MODELO</strong>: FOCO SIMPLES</span></p><p><span style=\"font-size:16px;\"><strong>POSIÇÃO</strong>: DIANTEIRO</span></p><p><span style=\"font-size:16px;\"><strong>TIPO DE LÂMPADA</strong>: H4</span></p><p><span style=\"font-size:16px;\"><strong>TIPO DE LENTE</strong>: RAIADA</span></p><hr><p><span style=\"font-size:16px;\"><strong>APLICAÇÃO:</strong></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">CHEVROLET</span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">CORSA CHAMP</span></span></span><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, SOHC MPFI 1.6 L 8V SOHC L4, </span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 1996 ATÉ 2000)</span></span></span><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">CORSA GL</span></span></span><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, SOHC EFI 1.4 L 8V SOHC L4, </span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 1994 ATÉ 1996)</span></span></span><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">CORSA GL</span></span></span><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, SOHC MPFI 1.6 L 8V SOHC L4, </span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 1996 ATÉ 2000)</span></span></span><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">CORSA GL MPFI</span></span></span><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, SOHC MPFI 1.6 L 8V SOHC L4, </span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 1995 ATÉ 2000)</span></span></span><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">CORSA GL MPFI</span></span></span><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, SOHC MPFI 1.6 L 8V SOHC L4, </span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 1996 ATÉ 2000)</span></span></span><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">CORSA GSI 16V SFI</span></span></span><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, DOHC SFI 1.6 L 16V DOHC L4, </span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 1994 ATÉ 1996)</span></span></span><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">CORSA SEDAN GLS 16V</span></span></span><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, BE 1.6 L 16V DOHC L4, </span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 1997 ATÉ 2000)</span></span></span><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">CORSA SEDAN SUPER SFI 16V</span></span></span><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, GM FAMÍLIA I 1.0 L 16V DOHC L4, </span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 1999 ATÉ 2000)</span></span></span><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">CORSA SEDAN WIND MPFI</span></span></span><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, SOHC MPFI 1.0 L 8V SOHC L4, </span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 1996 ATÉ 2000)</span></span></span><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">CORSA STD EFI</span></span></span><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, SOHC EFI 1.6 L 8V SOHC L4, </span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 1995 ATÉ 1996)</span></span></span><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">CORSA STD MPFI</span></span></span><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, SOHC MPFI 1.6 L 8V SOHC L4, </span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 1996 ATÉ 2000)</span></span></span><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">CORSA SUPER MPFI</span></span></span><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, SOHC MPFI 1.0 L 8V SOHC L4, </span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 1996 ATÉ 2000)</span></span></span><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">CORSA SUPER SFI 16V</span></span></span><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, GM FAMÍLIA I 1.0 L 16V DOHC L4, </span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 1999 ATÉ 2000)</span></span></span><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">CORSA WAGON GL MPFI</span></span></span><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, SOHC MPFI 1.6 L 8V SOHC L4, </span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 1997 ATÉ 2000)</span></span></span><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">CORSA WAGON GLS 16V</span></span></span><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, DOHC SFI 1.6 L 16V DOHC L4, </span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 1997 ATÉ 2000)</span></span></span><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">CORSA WAGON GLS MPFI 16 V</span></span></span><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, DOHC SFI 1.6 L 16V DOHC L4, </span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 1997 ATÉ 2000)</span></span></span><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">CORSA WAGON SUPER MPFI</span></span></span><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, GM FAMÍLIA I 1.0 L 16V DOHC L4, </span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 1999 ATÉ 2000)</span></span></span><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">CORSA WIND EFI</span></span></span><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, SOHC EFI 1.0 L 8V SOHC L4, </span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 1994 ATÉ 1996)</span></span></span><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">CORSA WIND MPFI</span></span></span><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, SOHC MPFI 1.0 L 8V SOHC L4, </span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 1996 ATÉ 2000)</span></span></span><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">CORSA WIND SUPER EFI</span></span></span><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, SOHC EFI 1.0 L 8V SOHC L4, </span></span></span><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 1994 ATÉ 1996)</span></span></span></span></span></span></span><span style=\"display: none;\"> </span></p></div></div></div>",
+  "imagens": [
+    {
+      "arquivo": "foto_1.jpg",
+      "url": "https://images.tcdn.com.br/img/img_prod/945233/farol_gm_corsa_1_20251206094633_63f7cfa87e02.jpg",
+      "principal": true
+    },
+    {
+      "arquivo": "foto_2.jpg",
+      "url": "https://images.tcdn.com.br/img/img_prod/945233/farol_gm_corsa_2_20251206094633_ff78b19eca16.jpg",
+      "principal": false
+    },
+    {
+      "arquivo": "foto_3.jpg",
+      "url": "https://images.tcdn.com.br/img/img_prod/945233/farol_gm_corsa_3_20251206094633_b559b2b5c08f.jpg",
+      "principal": false
+    }
+  ],
+  "url_origem": "https://www.auriautopecas.com.br/acessorios/farol-0160180"
+}

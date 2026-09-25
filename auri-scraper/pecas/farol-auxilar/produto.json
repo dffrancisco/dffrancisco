@@ -1,0 +1,287 @@
+{
+  "nome": "FAROL AUXILAR 0160587 ARTEB - VOLKSWAGEN GOL/PARATI/SAVEIRO",
+  "descricao_curta": "Farol auxiliar Arteb 0160587 para Volkswagen Gol, Parati e Saveiro, garantindo melhor iluminação e segurança na condução.",
+  "marca": "Arteb",
+  "codigo_fabricante": "0160587",
+  "ean": "7896482538314",
+  "sku": "14245",
+  "referencia": "24002",
+  "categoria": "ACESSORIOS",
+  "preco": 252.15,
+  "moeda": "BRL",
+  "disponivel": true,
+  "ficha_tecnica": {
+    "FORMATO": "QUADRADO",
+    "LADO": "ESQUERDO",
+    "MODELO": "H4",
+    "POSIÇÃO": "DIANTEIRO",
+    "TENSÃO ELÉTRICA": "24V"
+  },
+  "aplicacoes": [
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "GOL 16V",
+      "motor": "EA111 AT 1.0 L 16V DOHC L4",
+      "ano_inicio": 1999,
+      "ano_fim": 2005
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "GOL CITY",
+      "motor": "EA111 1.0 L 8V SOHC L4",
+      "ano_inicio": 2001,
+      "ano_fim": 2005
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "GOL CITY",
+      "motor": "EA111 AT 1.0 L 8V SOHC L4",
+      "ano_inicio": 1999,
+      "ano_fim": 2005
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "GOL MI",
+      "motor": "EA111 AT 1.0 L 8V SOHC L4",
+      "ano_inicio": 1999,
+      "ano_fim": 2005
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "GOL PLUS",
+      "motor": "EA111 AT 1.0 L 16V DOHC L4",
+      "ano_inicio": 1999,
+      "ano_fim": 2005
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "GOL PLUS TOTAL FLEX",
+      "motor": "AP 1600 1.6 L 8V SOHC L4",
+      "ano_inicio": 2003,
+      "ano_fim": 2005
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "GOL POWER",
+      "motor": "EA111 1.0 L 8V SOHC L4",
+      "ano_inicio": 1999,
+      "ano_fim": 2005
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "GOL POWER",
+      "motor": "AP 1600 1.6 L 8V SOHC L4",
+      "ano_inicio": 1999,
+      "ano_fim": 2005
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "GOL POWER",
+      "motor": "EA111 AT 1.0 L 16V DOHC L4",
+      "ano_inicio": 1999,
+      "ano_fim": 2005
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "GOL POWER TOTAL FLEX",
+      "motor": "AP 1800 1.8 L 8V SOHC L4",
+      "ano_inicio": 2005,
+      "ano_fim": 2005
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "GOL SPECIAL",
+      "motor": "EA111 1.0 L 8V SOHC L4",
+      "ano_inicio": 1999,
+      "ano_fim": 2005
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "GOL SPECIAL",
+      "motor": "EA111 1.0 L 16V DOHC L4",
+      "ano_inicio": 2000,
+      "ano_fim": 2003
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "GOL SPORT TURBO",
+      "motor": "EA111 AT 1.0 L 16V DOHC L4",
+      "ano_inicio": 2000,
+      "ano_fim": 2003
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "GOL TREND",
+      "motor": "EA111 1.0 L 8V SOHC L4",
+      "ano_inicio": 1999,
+      "ano_fim": 2005
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "GOL TURBO",
+      "motor": "EA111 AT 1.0 L 16V DOHC L4",
+      "ano_inicio": 2000,
+      "ano_fim": 2003
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "PARATI CITY TOTAL FLEX",
+      "motor": "AP 1600 1.6 L 8V SOHC L4",
+      "ano_inicio": 2003,
+      "ano_fim": 2005
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "PARATI CL MI G3",
+      "motor": "AP 1600 1.6 L 8V SOHC L4",
+      "ano_inicio": 1999,
+      "ano_fim": 2005
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "PARATI CL MI G3",
+      "motor": "AP 1800 1.8 L 8V SOHC L4",
+      "ano_inicio": 1999,
+      "ano_fim": 2005
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "PARATI CROSSOVER",
+      "motor": "AP 1800 1.8 L 8V SOHC L4",
+      "ano_inicio": 2005,
+      "ano_fim": 2005
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "PARATI CROSSOVER",
+      "motor": "AP 2000 2.0 L 8V SOHC L4",
+      "ano_inicio": 1999,
+      "ano_fim": 2005
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "PARATI GLS MI G3",
+      "motor": "AP 2000 2.0 L 8V SOHC L4",
+      "ano_inicio": 1999,
+      "ano_fim": 2005
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "PARATI GLSI G3",
+      "motor": "AP 2000 2.0 L 16V DOHC L4",
+      "ano_inicio": 1999,
+      "ano_fim": 2000
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "PARATI SUMMER G3",
+      "motor": "EA111 AT 1.0 L 16V DOHC L4",
+      "ano_inicio": 1999,
+      "ano_fim": 2003
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "PARATI TOTAL FLEX",
+      "motor": "AP 1800 1.8 L 8V SOHC L4",
+      "ano_inicio": 2005,
+      "ano_fim": 2005
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "PARATI TOTAL FLEX",
+      "motor": "AP 1600 1.6 L 8V SOHC L4",
+      "ano_inicio": 2003,
+      "ano_fim": 2005
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "PARATI TOUR",
+      "motor": "AP 2000 2.0 L 8V SOHC L4",
+      "ano_inicio": 1999,
+      "ano_fim": 2005
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "PARATI TRACK & FIELD",
+      "motor": "AP 2000 2.0 L 8V SOHC L4",
+      "ano_inicio": 1999,
+      "ano_fim": 2005
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "PARATI TRACK & FIELD FLEX",
+      "motor": "AP 1600 1.6 L 8V SOHC L4",
+      "ano_inicio": 2003,
+      "ano_fim": 2005
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "SAVEIRO 2.0 MI",
+      "motor": "AP 2000 2.0 L 8V SOHC L4",
+      "ano_inicio": 2000,
+      "ano_fim": 2005
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "SAVEIRO CITY",
+      "motor": "AP 1600 1.6 L 8V SOHC L4",
+      "ano_inicio": 2000,
+      "ano_fim": 2003
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "SAVEIRO CITY TOTAL FLEX",
+      "motor": "AP 1800 1.8 L 8V SOHC L4",
+      "ano_inicio": 2005,
+      "ano_fim": 2005
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "SAVEIRO SUPER SURF",
+      "motor": "AP 1600 1.6 L 8V SOHC L4",
+      "ano_inicio": 2000,
+      "ano_fim": 2003
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "SAVEIRO SUPER SURF",
+      "motor": "AP 1800 1.8 L 8V SOHC L4",
+      "ano_inicio": 2000,
+      "ano_fim": 2005
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "SAVEIRO SUPER SURF FLEX",
+      "motor": "AP 1800 1.8 L 8V SOHC L4",
+      "ano_inicio": 2005,
+      "ano_fim": 2005
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "SAVEIRO SUPER SURF FLEX",
+      "motor": "AP 1600 1.6 L 8V SOHC L4",
+      "ano_inicio": 2003,
+      "ano_fim": 2005
+    }
+  ],
+  "observacoes": [],
+  "descricao_html": "<div id=\"descricao\" class=\"prodBox p-3 border rounded bg-light area-tec mb-3\"><div class=\"\"><div class=\"\"><p> </p><p><span style=\"font-size:16px;\"><strong>MARCA</strong>: ARTEB</span></p><p><span style=\"font-size:16px;\"><strong>CÓDIGO DO FABRICANTE</strong>: 0160587 </span></p><p><span style=\"font-size:16px;\"><strong>CÓDIGO DE BARRAS: </strong>7896482538314</span></p><hr><p><span style=\"font-size:16px;\"><strong>FAROL AUXILIAR 0160587 ARTEB </strong><strong data-end=\"221\" data-start=\"154\">&#8211;  FICHA TÉCNICA:</strong></span></p><p><span style=\"font-size:16px;\"><b>FORMATO</b>: QUADRADO</span></p><p><span style=\"font-size:16px;\"><strong>LADO</strong>: ESQUERDO</span></p><p><span style=\"font-size:16px;\"><strong>MODELO</strong>: H4</span></p><p><span style=\"font-size:16px;\"><strong>POSIÇÃO</strong>: DIANTEIRO</span></p><p><span style=\"font-size:16px;\"><strong>TENSÃO ELÉTRICA</strong>: 24V</span></p><hr><p><span style=\"font-size:16px;\"><strong>APLICAÇÃO:</strong></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">VOLKSWAGEN</span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">GOL 16V</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, EA111 AT 1.0 L 16V DOHC L4, </span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 1999 ATÉ 2005)</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">GOL CITY</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, EA111 1.0 L 8V SOHC L4, </span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2001 ATÉ 2005)</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">GOL CITY</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, EA111 AT 1.0 L 8V SOHC L4, </span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 1999 ATÉ 2005)</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">GOL MI</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, EA111 AT 1.0 L 8V SOHC L4, </span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 1999 ATÉ 2005)</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">GOL PLUS</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, EA111 AT 1.0 L 16V DOHC L4, </span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 1999 ATÉ 2005)</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">GOL PLUS TOTAL FLEX</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, AP 1600 1.6 L 8V SOHC L4, </span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2003 ATÉ 2005)</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">GOL POWER</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, EA111 1.0 L 8V SOHC L4, </span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 1999 ATÉ 2005)</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">GOL POWER</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, AP 1600 1.6 L 8V SOHC L4, </span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 1999 ATÉ 2005)</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">GOL POWER</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, EA111 AT 1.0 L 16V DOHC L4, </span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 1999 ATÉ 2005)</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">GOL POWER TOTAL FLEX</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, AP 1800 1.8 L 8V SOHC L4, </span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2005 ATÉ 2005)</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">GOL SPECIAL</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, EA111 1.0 L 8V SOHC L4, </span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 1999 ATÉ 2005)</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">GOL SPECIAL</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, EA111 1.0 L 16V DOHC L4, </span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2000 ATÉ 2003)</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">GOL SPORT TURBO</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, EA111 AT 1.0 L 16V DOHC L4, </span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2000 ATÉ 2003)</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">GOL TREND</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, EA111 1.0 L 8V SOHC L4, </span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 1999 ATÉ 2005)</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">GOL TURBO</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, EA111 AT 1.0 L 16V DOHC L4, </span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2000 ATÉ 2003)</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">PARATI CITY TOTAL FLEX</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, AP 1600 1.6 L 8V SOHC L4, </span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2003 ATÉ 2005)</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">PARATI CL MI G3</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, AP 1600 1.6 L 8V SOHC L4, </span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 1999 ATÉ 2005)</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">PARATI CL MI G3</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, AP 1800 1.8 L 8V SOHC L4, </span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 1999 ATÉ 2005)</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">PARATI CROSSOVER</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, AP 1800 1.8 L 8V SOHC L4, </span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2005 ATÉ 2005)</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">PARATI CROSSOVER</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, AP 2000 2.0 L 8V SOHC L4, </span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 1999 ATÉ 2005)</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">PARATI GLS MI G3</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, AP 2000 2.0 L 8V SOHC L4, </span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 1999 ATÉ 2005)</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">PARATI GLSI G3</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, AP 2000 2.0 L 16V DOHC L4, </span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 1999 ATÉ 2000)</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">PARATI SUMMER G3</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, EA111 AT 1.0 L 16V DOHC L4, </span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 1999 ATÉ 2003)</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">PARATI TOTAL FLEX</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, AP 1800 1.8 L 8V SOHC L4, </span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2005 ATÉ 2005)</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">PARATI TOTAL FLEX</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, AP 1600 1.6 L 8V SOHC L4, </span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2003 ATÉ 2005)</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">PARATI TOUR</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, AP 2000 2.0 L 8V SOHC L4, </span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 1999 ATÉ 2005)</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">PARATI TRACK &amp; FIELD</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, AP 2000 2.0 L 8V SOHC L4, </span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 1999 ATÉ 2005)</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">PARATI TRACK &amp; FIELD FLEX</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, AP 1600 1.6 L 8V SOHC L4, </span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2003 ATÉ 2005)</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">SAVEIRO 2.0 MI</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, AP 2000 2.0 L 8V SOHC L4, </span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2000 ATÉ 2005)</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">SAVEIRO CITY</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, AP 1600 1.6 L 8V SOHC L4, </span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2000 ATÉ 2003)</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">SAVEIRO CITY TOTAL FLEX</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, AP 1800 1.8 L 8V SOHC L4, </span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2005 ATÉ 2005)</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">SAVEIRO SUPER SURF</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, AP 1600 1.6 L 8V SOHC L4, </span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2000 ATÉ 2003)</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">SAVEIRO SUPER SURF</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, AP 1800 1.8 L 8V SOHC L4, </span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2000 ATÉ 2005)</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">SAVEIRO SUPER SURF FLEX</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, AP 1800 1.8 L 8V SOHC L4, </span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2005 ATÉ 2005)</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">SAVEIRO SUPER SURF FLEX</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, AP 1600 1.6 L 8V SOHC L4, </span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2003 ATÉ 2005)</span></span></span></span></span></span></span></p></div></div></div>",
+  "imagens": [
+    {
+      "arquivo": "foto_1.png",
+      "url": "https://images.tcdn.com.br/img/img_prod/945233/farol_auxilar_volkswagen_gol_volkswagen_saveiro_1_20251208092422_5ccdb3a153e3.png",
+      "principal": true
+    },
+    {
+      "arquivo": "foto_2.png",
+      "url": "https://images.tcdn.com.br/img/img_prod/945233/farol_auxilar_volkswagen_gol_volkswagen_saveiro_2_20251208092422_da409983de98.png",
+      "principal": false
+    },
+    {
+      "arquivo": "foto_3.jpg",
+      "url": "https://images.tcdn.com.br/img/img_prod/945233/farol_auxilar_volkswagen_gol_volkswagen_saveiro_3_20251208092422_084dc1e3c1d7.jpg",
+      "principal": false
+    }
+  ],
+  "url_origem": "https://www.auriautopecas.com.br/acessorios/farol-auxilar"
+}

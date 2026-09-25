@@ -1,0 +1,47 @@
+{
+  "nome": "LANTERNA TRASEIRA LE 0460491 GOL",
+  "descricao_curta": "Substitua a lanterna traseira do seu Gol com o modelo LE 0460491, garantindo sinalização eficiente e segurança nas ruas. Produto resistente e com encaixe perfeito.",
+  "marca": "Arteb",
+  "codigo_fabricante": "0460491",
+  "ean": "7896482549488",
+  "sku": "7911",
+  "referencia": "126565",
+  "categoria": "ACESSORIOS",
+  "preco": 310.0,
+  "moeda": "BRL",
+  "disponivel": true,
+  "ficha_tecnica": {
+    "MODELO": "LATERNA TRASEIRA BICOLOR",
+    "POSIÇÃO": "TRASEIRO",
+    "LADO": "ESQUERDO"
+  },
+  "aplicacoes": [
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "GOL G4",
+      "motor": null,
+      "ano_inicio": 2006,
+      "ano_fim": 2014
+    }
+  ],
+  "observacoes": [],
+  "descricao_html": "<div id=\"descricao\" class=\"prodBox p-3 border rounded bg-light area-tec mb-3\"><div class=\"\"><div class=\"\"><p> </p><p><span style=\"font-size:16px;\"><strong>MARCA</strong>: ARTEB</span></p><p><span style=\"font-size:16px;\"><strong>CÓDIGO DO FABRICANTE</strong>: 0460491 </span></p><p><span style=\"font-size:16px;\"><strong>CÓDIGO DE BARRAS: </strong>7896482549488</span></p><hr><p><span style=\"font-size:16px;\"><strong>LANTERNA TRASEIRA LE 0460491 </strong><strong data-end=\"221\" data-start=\"154\">&#8211; FICHA TÉCNICA:</strong></span></p><p><span style=\"font-size:16px;\"><strong data-end=\"221\" data-start=\"154\">MODELO: </strong>LATERNA TRASEIRA BICOLOR</span></p><p><span style=\"font-size:16px;\"><strong>POSIÇÃO: </strong>TRASEIRO</span></p><p><span style=\"font-size:16px;\"><strong>LADO</strong>: ESQUERDO</span></p><hr><p><span style=\"font-size:16px;\"><strong>APLICAÇÃO:</strong></span></p><p><span style=\"font-size:16px;\"><strong>VOLKSWAGEN </strong></span></p><p><span style=\"font-size:16px;\"><strong>GOL G4 </strong>(DESDE 2006 ATÉ 2014)</span></p></div></div></div>",
+  "imagens": [
+    {
+      "arquivo": "foto_1.png",
+      "url": "https://images.tcdn.com.br/img/img_prod/945233/lanterna_traseira_volkswagen_gol_g4_1_20251213120553_4076729782ba.png",
+      "principal": true
+    },
+    {
+      "arquivo": "foto_2.png",
+      "url": "https://images.tcdn.com.br/img/img_prod/945233/lanterna_traseira_volkswagen_gol_g4_2_20251213120553_e784b28a7efa.png",
+      "principal": false
+    },
+    {
+      "arquivo": "foto_3.png",
+      "url": "https://images.tcdn.com.br/img/img_prod/945233/lanterna_traseira_volkswagen_gol_g4_3_20251213120553_07cdc4457225.png",
+      "principal": false
+    }
+  ],
+  "url_origem": "https://www.auriautopecas.com.br/acessorios/lanterna-traseira-le-0460491"
+}

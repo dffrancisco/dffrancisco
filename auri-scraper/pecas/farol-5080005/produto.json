@@ -1,0 +1,47 @@
+{
+  "nome": "FAROL LE 5080005 MONZA",
+  "descricao_curta": "Farol LE 5080005 compatível com Monza, garantindo iluminação eficiente e segurança. Produto resistente e fácil de instalar, ideal para reposição e restauração do seu veículo.",
+  "marca": "Arteb",
+  "codigo_fabricante": "5080005",
+  "ean": "7908165804842",
+  "sku": "16019",
+  "referencia": "46018",
+  "categoria": "ACESSORIOS",
+  "preco": 220.63,
+  "moeda": "BRL",
+  "disponivel": true,
+  "ficha_tecnica": {
+    "MODELO": "FAROL",
+    "POSIÇÃO": "DIANTEIRO",
+    "LADO": "ESQUERDO"
+  },
+  "aplicacoes": [
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "MONZA",
+      "motor": null,
+      "ano_inicio": 1988,
+      "ano_fim": 1990
+    }
+  ],
+  "observacoes": [],
+  "descricao_html": "<div id=\"descricao\" class=\"prodBox p-3 border rounded bg-light area-tec mb-3\"><div class=\"\"><div class=\"\"><p> </p><p><span style=\"font-size:16px;\"><strong>MARCA</strong>: ARTEB</span></p><p><span style=\"font-size:16px;\"><strong>CÓDIGO DO FABRICANTE</strong>: 5080005 </span></p><p><span style=\"font-size:16px;\"><strong>CÓDIGO DE BARRAS: </strong>2000000228426</span></p><hr><p><span style=\"font-size:16px;\"><strong>FAROL LE 5080005</strong> <strong data-end=\"221\" data-start=\"154\">&#8211; FICHA TÉCNICA:</strong></span></p><p><span style=\"font-size:16px;\"><strong data-end=\"221\" data-start=\"154\">MODELO: </strong>FAROL</span></p><p><span style=\"font-size:16px;\"><strong>POSIÇÃO: </strong>DIANTEIRO</span></p><p><span style=\"font-size:16px;\"><strong>LADO</strong>: ESQUERDO</span></p><hr><p><span style=\"font-size:16px;\"><strong>APLICAÇÃO:</strong></span></p><p><span style=\"font-size:16px;\"><strong>CHEVROLET </strong></span></p><p><span style=\"font-size:16px;\"><strong>MONZA </strong>(DESDE 1988 ATÉ 1990)</span></p></div></div></div>",
+  "imagens": [
+    {
+      "arquivo": "foto_1.png",
+      "url": "https://images.tcdn.com.br/img/img_prod/945233/farol_5080005_1_20251209104530_87588da89e45.png",
+      "principal": true
+    },
+    {
+      "arquivo": "foto_2.png",
+      "url": "https://images.tcdn.com.br/img/img_prod/945233/farol_5080005_2_20251209104530_f67d0a289d30.png",
+      "principal": false
+    },
+    {
+      "arquivo": "foto_3.png",
+      "url": "https://images.tcdn.com.br/img/img_prod/945233/farol_5080005_3_20251209104530_6a515df11bad.png",
+      "principal": false
+    }
+  ],
+  "url_origem": "https://www.auriautopecas.com.br/acessorios/farol-5080005"
+}

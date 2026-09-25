@@ -1,0 +1,47 @@
+{
+  "nome": "FAROL PRINCIPAL LD 0160754 AMAROK",
+  "descricao_curta": "Farol principal direito 0160754 para Amarok, garantindo iluminação eficiente e segurança. Peça com qualidade original, resistência e encaixe perfeito para seu veículo.",
+  "marca": "Arteb",
+  "codigo_fabricante": "0160754",
+  "ean": "7896482545220",
+  "sku": "17487",
+  "referencia": "61951",
+  "categoria": "ACESSORIOS",
+  "preco": 800.0,
+  "moeda": "BRL",
+  "disponivel": true,
+  "ficha_tecnica": {
+    "MODELO": "FAROL PRINCIPAL",
+    "POSIÇÃO": "DIANTEIRO",
+    "LADO": "DIREITO"
+  },
+  "aplicacoes": [
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "AMAROK",
+      "motor": null,
+      "ano_inicio": 2010,
+      "ano_fim": 2015
+    }
+  ],
+  "observacoes": [],
+  "descricao_html": "<div id=\"descricao\" class=\"prodBox p-3 border rounded bg-light area-tec mb-3\"><div class=\"\"><div class=\"\"><p> </p><p><span style=\"font-size:16px;\"><strong>MARCA</strong>: ARTEB</span></p><p><span style=\"font-size:16px;\"><strong>CÓDIGO DO FABRICANTE</strong>: 0160754</span></p><hr><p><span style=\"font-size:16px;\"><strong>FAROL PRINCIPAL LD 0160754 </strong><strong data-end=\"221\" data-start=\"154\">&#8211; FICHA TÉCNICA:</strong></span></p><p><span style=\"font-size:16px;\"><strong data-end=\"221\" data-start=\"154\">MODELO: </strong>FAROL PRINCIPAL</span></p><p><span style=\"font-size:16px;\"><strong>POSIÇÃO: </strong>DIANTEIRO</span></p><p><span style=\"font-size:16px;\"><strong>LADO</strong>: DIREITO </span></p><hr><p><span style=\"font-size:16px;\"><strong>APLICAÇÃO:</strong></span></p><p><span style=\"font-size:16px;\"><strong>VOLKSWAGEN </strong></span></p><p><span style=\"font-size:16px;\"><strong>AMAROK </strong>(DESDE 2010 ATÉ 2015)</span></p></div></div></div>",
+  "imagens": [
+    {
+      "arquivo": "foto_1.png",
+      "url": "https://images.tcdn.com.br/img/img_prod/945233/farol_volkswagen_amarok_17487_1_5fbb8902bf91a9cf4baecf434f924e6b.png",
+      "principal": true
+    },
+    {
+      "arquivo": "foto_2.png",
+      "url": "https://images.tcdn.com.br/img/img_prod/945233/farol_volkswagen_amarok_17487_2_c164d6b815f5bc240f3d8d9778154d10.png",
+      "principal": false
+    },
+    {
+      "arquivo": "foto_3.png",
+      "url": "https://images.tcdn.com.br/img/img_prod/945233/farol_volkswagen_amarok_3_20251209163333_5bb278caf416.png",
+      "principal": false
+    }
+  ],
+  "url_origem": "https://www.auriautopecas.com.br/acessorios/farol-0160754"
+}

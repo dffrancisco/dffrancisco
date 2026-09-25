@@ -1,0 +1,41 @@
+{
+  "nome": "LANTERNA TRASEIRA VOLKSWAGEN PARATI",
+  "descricao_curta": null,
+  "marca": "Arteb",
+  "codigo_fabricante": "0460297",
+  "ean": "7896482536600",
+  "sku": "14643",
+  "referencia": "29810",
+  "categoria": "ACESSORIOS",
+  "preco": 225.5,
+  "moeda": "BRL",
+  "disponivel": true,
+  "ficha_tecnica": {
+    "SEGMENTO": "LANTERNA",
+    "LADO": "ESQUERDA"
+  },
+  "aplicacoes": [
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "PARATI G3",
+      "motor": null,
+      "ano_inicio": 2002,
+      "ano_fim": 2005
+    }
+  ],
+  "observacoes": [],
+  "descricao_html": "<div id=\"descricao\" class=\"prodBox p-3 border rounded bg-light area-tec mb-3\"><div class=\"\"><div class=\"\"><p><strong><span style=\"color:#333333;\"><span style=\"font-size:18px;\"><span style=\"font-family:arial,helvetica,sans-serif;\">LANTERNA TRASEIRA </span></span><span style=\"font-family: arial, helvetica, sans-serif; font-size: 18px;\">VOLKSWAGEN PARATI </span></span></strong></p><p> </p><p><strong><span style=\"font-size:18px;\"><span style=\"font-family:arial,helvetica,sans-serif;\">Informações técnicas</span></span></strong></p><hr><p><span style=\"font-size:18px;\"><span style=\"font-family:arial,helvetica,sans-serif;\"><strong>Marca: </strong>Arteb<br><strong>Código do Fabricante: </strong><span style=\"color:#666666;\">0460297</span></span></span><br><span style=\"font-size:18px;\"><span style=\"font-family:arial,helvetica,sans-serif;\"><strong>Segmento: </strong>Lanterna<br><strong>Código de Barras: </strong><span style=\"color:#666666;\">7896482536600</span></span></span><br><span style=\"font-size:18px;\"><span style=\"font-family:arial,helvetica,sans-serif;\"><strong>Lado:</strong> Esquerda</span></span></p><hr><p><strong><span style=\"font-size:18px;\"><span style=\"font-family:arial,helvetica,sans-serif;\">APLICAÇÃO:</span></span></strong></p><hr><p><span style=\"color:#666666;\"><span style=\"font-size:18px;\"><span style=\"font-family:arial,helvetica,sans-serif;\">VOLKSWAGEN PARATI G3 2002<br>\nVOLKSWAGEN PARATI G3 2003<br>\nVOLKSWAGEN PARATI G3 2004<br>\nVOLKSWAGEN PARATI G3 2005</span></span></span></p></div></div></div>",
+  "imagens": [
+    {
+      "arquivo": "foto_1.png",
+      "url": "https://images.tcdn.com.br/img/img_prod/945233/lanterna_traseira_volkswagen_parati_14643_1_bf060c155573519a07b0c238a5cf53d9.png",
+      "principal": true
+    },
+    {
+      "arquivo": "foto_2.png",
+      "url": "https://images.tcdn.com.br/img/img_prod/945233/lanterna_traseira_volkswagen_parati_14643_2_0c756b13650cdeab05401188c44474ac.png",
+      "principal": false
+    }
+  ],
+  "url_origem": "https://www.auriautopecas.com.br/acessorios/lanterna-traseira-0460297"
+}

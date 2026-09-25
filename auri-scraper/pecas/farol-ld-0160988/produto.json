@@ -1,0 +1,50 @@
+{
+  "nome": "FAROL GM ONIX ACTIV GM ONIX LTZ GM PRISMA LTZ",
+  "descricao_curta": null,
+  "marca": "Arteb",
+  "codigo_fabricante": "0160988",
+  "ean": "7896482550040",
+  "sku": "12791",
+  "referencia": "165987",
+  "categoria": "ACESSORIOS",
+  "preco": 1178.75,
+  "moeda": "BRL",
+  "disponivel": true,
+  "ficha_tecnica": {
+    "SEGMENTO": "FAROL",
+    "LADO": "DIREITO"
+  },
+  "aplicacoes": [
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "ONIX ACTIV",
+      "motor": null,
+      "ano_inicio": 2017,
+      "ano_fim": 2019
+    },
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "ONIX LTZ",
+      "motor": null,
+      "ano_inicio": 2017,
+      "ano_fim": 2019
+    },
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "PRISMA LTZ",
+      "motor": null,
+      "ano_inicio": 2017,
+      "ano_fim": 2019
+    }
+  ],
+  "observacoes": [],
+  "descricao_html": "<div id=\"descricao\" class=\"prodBox p-3 border rounded bg-light area-tec mb-3\"><div class=\"\"><div class=\"\"><p><strong><span style=\"color:#333333;\"><span style=\"font-size:18px;\">FAROL GM ONIX ACTIV GM ONIX LTZ GM PRISMA LTZ</span></span></strong></p><p> </p><p><strong><span style=\"color:#333333;\"><span style=\"font-size:18px;\">Informações técnicas</span></span></strong></p><hr><p><span style=\"font-size:18px;\"><strong><span style=\"color:#333333;\">Marca:</span></strong><span style=\"color:#666666;\">Arteb</span><br><strong><span style=\"color:#333333;\">Código do Fabricante: </span></strong><span style=\"color:#666666;\"><span style=\"font-family:arial, helvetica, sans-serif;\">0160988</span></span></span><br><span style=\"font-size:18px;\"><strong><span style=\"color:#333333;\">Segmento:</span></strong><span style=\"color:#666666;\">Farol</span><br><strong><span style=\"color:#333333;\">Código de Barras: </span></strong><span style=\"color:#666666;\"><span style=\"font-family:arial, helvetica, sans-serif;\">7896482550040</span></span></span><br><span style=\"font-size:18px;\"><strong><span style=\"color:#333333;\">Lado:</span></strong><span style=\"color:#666666;\">Direito</span></span></p><hr><p><strong><span style=\"font-size:18px;\">APLICAÇÃO:</span></strong></p><hr><p><span style=\"color:#666666;\"><span style=\"font-size:18px;\">GM ONIX ACTIV 2017<br>\nGM ONIX ACTIV 2018<br>\nGM ONIX ACTIV 2019</span></span></p><p><span style=\"color:#666666;\"><span style=\"font-size:18px;\">GM ONIX LTZ 2017<br>\nGM ONIX LTZ 2018<br>\nGM ONIX LTZ 2019</span></span></p><p><span style=\"color:#666666;\"><span style=\"font-size:18px;\">GM PRISMA LTZ 2017<br>\nGM PRISMA LTZ 2018<br>\nGM PRISMA LTZ 2019</span></span></p><hr><p> </p></div></div></div>",
+  "imagens": [
+    {
+      "arquivo": "foto_1.png",
+      "url": "https://images.tcdn.com.br/img/img_prod/945233/farol_gm_onix_activ_gm_onix_ltz_gm_prisma_ltz_12791_1_c45c6b480c3017443eaeb9bc07f6803d.png",
+      "principal": true
+    }
+  ],
+  "url_origem": "https://www.auriautopecas.com.br/farol-ld-0160988"
+}

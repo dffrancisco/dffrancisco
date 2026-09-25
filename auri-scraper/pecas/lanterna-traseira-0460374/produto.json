@@ -1,0 +1,43 @@
+{
+  "nome": "LANTERNA TRASEIRA VOLKSWAGEN GOL POWER",
+  "descricao_curta": null,
+  "marca": "Arteb",
+  "codigo_fabricante": "0460374",
+  "ean": "7896482543844",
+  "sku": "8099",
+  "referencia": "12801",
+  "categoria": "ACESSORIOS",
+  "preco": 222.0,
+  "moeda": "BRL",
+  "disponivel": true,
+  "ficha_tecnica": {
+    "SEGMENTO": "LANTERNA",
+    "LADO": "DIREITO"
+  },
+  "aplicacoes": [
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "GOL POWER G4",
+      "motor": null,
+      "ano_inicio": 2006,
+      "ano_fim": 2009
+    }
+  ],
+  "observacoes": [
+    "FUMÊ, CARCAÇA PRETA"
+  ],
+  "descricao_html": "<div id=\"descricao\" class=\"prodBox p-3 border rounded bg-light area-tec mb-3\"><div class=\"\"><div class=\"\"><p><strong><span style=\"color:#333333;\"><span style=\"font-size:18px;\"><span style=\"font-family:arial,helvetica,sans-serif;\">LANTERNA TRASEIRA </span></span><span style=\"font-family: arial, helvetica, sans-serif; font-size: 18px;\">VOLKSWAGEN GOL POWER</span></span></strong></p><p> </p><p><strong><span style=\"font-size:18px;\"><span style=\"font-family:arial,helvetica,sans-serif;\">Informações técnicas</span></span></strong></p><hr><p><span style=\"font-size:18px;\"><span style=\"font-family:arial,helvetica,sans-serif;\"><strong>Marca:</strong> Arteb<br><strong>Código do Fabricante: </strong><span style=\"color:#666666;\">0460374</span></span></span><br><span style=\"font-size:18px;\"><span style=\"font-family:arial,helvetica,sans-serif;\"><strong>Segmento: </strong>Lanterna <br><strong>Código de Barras: </strong><span style=\"color:#666666;\">7896482543844</span></span></span><br><span style=\"font-size:18px;\"><span style=\"font-family:arial,helvetica,sans-serif;\"><strong>Lado:</strong> Direito </span></span></p><hr><p><strong><span style=\"font-size:18px;\"><span style=\"font-family:arial,helvetica,sans-serif;\">APLICAÇÃO:</span></span></strong></p><hr><p><span style=\"color:#666666;\"><span style=\"font-size:18px;\"><span style=\"font-family:arial,helvetica,sans-serif;\">(FUMÊ, CARCAÇA PRETA)</span></span></span></p><p><span style=\"color:#666666;\"><span style=\"font-size:18px;\"><span style=\"font-family:arial,helvetica,sans-serif;\">VOLKSWAGEN GOL POWER G4 2006<br>\nVOLKSWAGEN GOL POWER G4 2007<br>\nVOLKSWAGEN GOL POWER G4 2008<br>\nVOLKSWAGEN GOL POWER G4 2009</span></span></span></p><hr><p style=\"font-family: calibri, sans-serif; box-sizing: border-box; outline: 0px; border: 0px; padding: 0px; position: relative; z-index: 0; margin: 5px 0px 0px; width: auto; color: rgb(0, 0, 0); font-size: 14px;\"> </p></div></div></div>",
+  "imagens": [
+    {
+      "arquivo": "foto_1.png",
+      "url": "https://images.tcdn.com.br/img/img_prod/945233/lanterna_traseira_volkswagen_gol_power_8099_1_8df2e552e953bb060df5afd676381118.png",
+      "principal": true
+    },
+    {
+      "arquivo": "foto_2.png",
+      "url": "https://images.tcdn.com.br/img/img_prod/945233/lanterna_traseira_volkswagen_gol_power_8099_2_2e941c8a1d167814963a9354654a7cdf.png",
+      "principal": false
+    }
+  ],
+  "url_origem": "https://www.auriautopecas.com.br/acessorios/lanterna-traseira-0460374"
+}

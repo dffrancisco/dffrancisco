@@ -1,0 +1,206 @@
+{
+  "nome": "FAROL PRINCIPAL LD 0160110 - CHEVROLET KADETT / IPANEMA",
+  "descricao_curta": "Farol principal direito 0160110 compatível com Chevrolet Kadett e Ipanema. Produto com alta qualidade, fácil instalação e excelente resistência para garantir segurança e visibilidade ao dirigir.",
+  "marca": "Arteb",
+  "codigo_fabricante": "0160110",
+  "ean": "7896482523280",
+  "sku": "326009",
+  "referencia": "206638",
+  "categoria": "ACESSORIOS",
+  "preco": 280.0,
+  "moeda": "BRL",
+  "disponivel": true,
+  "ficha_tecnica": {
+    "LADO": "DIREITO"
+  },
+  "aplicacoes": [
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "IPANEMA AMBULANCIA",
+      "motor": "SOHC EFI 2.0 L 8V SOHC L4",
+      "ano_inicio": 1991,
+      "ano_fim": 1997
+    },
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "IPANEMA GL",
+      "motor": "SOHC EFI 1.8 L 8V SOHC L4",
+      "ano_inicio": 1991,
+      "ano_fim": 1997
+    },
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "IPANEMA GL",
+      "motor": "SOHC EFI 2.0 L 8V SOHC L4",
+      "ano_inicio": 1991,
+      "ano_fim": 1998
+    },
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "IPANEMA GL",
+      "motor": "SOHC EFI 2.0 L 8V SOHC L4",
+      "ano_inicio": 1991,
+      "ano_fim": 1997
+    },
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "IPANEMA GLS",
+      "motor": "SOHC EFI 2.0 L 8V SOHC L4",
+      "ano_inicio": 1991,
+      "ano_fim": 1997
+    },
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "IPANEMA SL",
+      "motor": "B18NZ 1.8 L 8V SOHC L4",
+      "ano_inicio": 1989,
+      "ano_fim": 1991
+    },
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "IPANEMA SL",
+      "motor": "SOHC EFI 1.8 L 8V SOHC L4",
+      "ano_inicio": 1991,
+      "ano_fim": 1997
+    },
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "IPANEMA SL",
+      "motor": "B18YZ 1.8 L 8V SOHC L4",
+      "ano_inicio": 1989,
+      "ano_fim": 1991
+    },
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "IPANEMA SLE",
+      "motor": "SOHC EFI 1.8 L 8V SOHC L4",
+      "ano_inicio": 1991,
+      "ano_fim": 1997
+    },
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "IPANEMA SLE",
+      "motor": "SOHC EFI 2.0 L 8V SOHC L4",
+      "ano_inicio": 1991,
+      "ano_fim": 1997
+    },
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "IPANEMA SLE",
+      "motor": "B18YZ 1.8 L 8V SOHC L4",
+      "ano_inicio": 1989,
+      "ano_fim": 1991
+    },
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "IPANEMA SLE",
+      "motor": "B18NZ 1.8 L 8V SOHC L4",
+      "ano_inicio": 1989,
+      "ano_fim": 1991
+    },
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "KADETT GL EFI",
+      "motor": "SOHC EFI 2.0 L 8V SOHC L4",
+      "ano_inicio": 1991,
+      "ano_fim": 1997
+    },
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "KADETT GL MPFI",
+      "motor": "SOHC MPFI 2.0 L 8V SOHC L4",
+      "ano_inicio": 1996,
+      "ano_fim": 1998
+    },
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "KADETT GS",
+      "motor": "20A 2.0 L 8V SOHC L4",
+      "ano_inicio": 1989,
+      "ano_fim": 1991
+    },
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "KADETT GS",
+      "motor": "20L 2.0 L 8V SOHC L4",
+      "ano_inicio": 1989,
+      "ano_fim": 1991
+    },
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "KADETT GSI MPFI",
+      "motor": "GM FAMILIA II 2.0 L 8V SOHC L4",
+      "ano_inicio": 1991,
+      "ano_fim": 1995
+    },
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "KADETT GSI MPFI CONVERSÍVEL",
+      "motor": "GM FAMILIA II 2.0 L 8V SOHC L4",
+      "ano_inicio": 1991,
+      "ano_fim": 1995
+    },
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "KADETT SL",
+      "motor": "18L 1.8 L 8V SOHC L4",
+      "ano_inicio": 1989,
+      "ano_fim": 1991
+    },
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "KADETT SL",
+      "motor": "18A 1.8 L 8V SOHC L4",
+      "ano_inicio": 1989,
+      "ano_fim": 1991
+    },
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "KADETT SL EFI",
+      "motor": "SOHC EFI 1.8 L 8V SOHC L4",
+      "ano_inicio": 1991,
+      "ano_fim": 1997
+    },
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "KADETT SLE",
+      "motor": "18A 1.8 L 8V SOHC L4",
+      "ano_inicio": 1989,
+      "ano_fim": 1991
+    },
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "KADETT SLE",
+      "motor": "18L 1.8 L 8V SOHC L4",
+      "ano_inicio": 1989,
+      "ano_fim": 1991
+    },
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "KADETT SLE EFI",
+      "motor": "SOHC EFI 1.8 L 8V SOHC L4",
+      "ano_inicio": 1991,
+      "ano_fim": 1997
+    }
+  ],
+  "observacoes": [],
+  "descricao_html": "<div id=\"descricao\" class=\"prodBox p-3 border rounded bg-light area-tec mb-3\"><div class=\"\"><div class=\"\"><p> </p><p><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><strong>MARCA</strong>: ARTEB</span></span></span></p><p><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><strong>CÓDIGO DO FABRICANTE</strong>: 0160110</span></span></span></p><p><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><strong>CÓDIGO DE BARRAS: </strong>7896482523280</span></span></span></p><hr><p><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><strong>FAROL 0160110</strong> <strong>ARTEB </strong><strong data-end=\"221\" data-start=\"154\">&#8211;  FICHA TÉCNICA:</strong></span></span></span></p><p><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><strong>LADO: </strong>DIREITO</span></span></span></p><hr><p><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><strong>APLICAÇÃO:</strong></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">CHEVROLET</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">IPANEMA AMBULANCIA</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, SOHC EFI 2.0 L 8V SOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 1991 ATÉ 1997)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">IPANEMA GL</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, SOHC EFI 1.8 L 8V SOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 1991 ATÉ 1997)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">IPANEMA GL</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, SOHC EFI 2.0 L 8V SOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 1991 ATÉ 1998)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">IPANEMA GL</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, SOHC EFI 2.0 L 8V SOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 1991 ATÉ 1997)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">IPANEMA GLS</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, SOHC EFI 2.0 L 8V SOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 1991 ATÉ 1997)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">IPANEMA SL</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, B18NZ 1.8 L 8V SOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 1989 ATÉ 1991)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">IPANEMA SL</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, SOHC EFI 1.8 L 8V SOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 1991 ATÉ 1997)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">IPANEMA SL</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, B18YZ 1.8 L 8V SOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 1989 ATÉ 1991)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">IPANEMA SLE</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, SOHC EFI 1.8 L 8V SOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 1991 ATÉ 1997)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">IPANEMA SLE</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, SOHC EFI 2.0 L 8V SOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 1991 ATÉ 1997)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">IPANEMA SLE</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, B18YZ 1.8 L 8V SOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 1989 ATÉ 1991)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">IPANEMA SLE</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, B18NZ 1.8 L 8V SOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 1989 ATÉ 1991)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">KADETT GL EFI</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, SOHC EFI 2.0 L 8V SOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 1991 ATÉ 1997)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">KADETT GL MPFI</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, SOHC MPFI 2.0 L 8V SOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 1996 ATÉ 1998)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">KADETT GS</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, 20A 2.0 L 8V SOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 1989 ATÉ 1991)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">KADETT GS</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, 20L 2.0 L 8V SOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 1989 ATÉ 1991)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">KADETT GSI MPFI</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, GM FAMILIA II 2.0 L 8V SOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 1991 ATÉ 1995)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">KADETT GSI MPFI CONVERSÍVEL</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, GM FAMILIA II 2.0 L 8V SOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 1991 ATÉ 1995)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">KADETT SL</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, 18L 1.8 L 8V SOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 1989 ATÉ 1991)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">KADETT SL</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, 18A 1.8 L 8V SOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 1989 ATÉ 1991)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">KADETT SL EFI</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, SOHC EFI 1.8 L 8V SOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 1991 ATÉ 1997)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">KADETT SLE</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, 18A 1.8 L 8V SOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 1989 ATÉ 1991)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">KADETT SLE</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, 18L 1.8 L 8V SOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 1989 ATÉ 1991)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">KADETT SLE EFI</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, SOHC EFI 1.8 L 8V SOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 1991 ATÉ 1997)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p></div></div></div>",
+  "imagens": [
+    {
+      "arquivo": "foto_1.jpg",
+      "url": "https://images.tcdn.com.br/img/img_prod/945233/farol_principal_0160110_1_20251209091339_46282c1c721b.jpg",
+      "principal": true
+    },
+    {
+      "arquivo": "foto_2.jpg",
+      "url": "https://images.tcdn.com.br/img/img_prod/945233/farol_principal_0160110_2_20251209091339_46e021b45f7b.jpg",
+      "principal": false
+    },
+    {
+      "arquivo": "foto_3.jpg",
+      "url": "https://images.tcdn.com.br/img/img_prod/945233/farol_principal_0160110_3_20251209091339_7c6d94e72316.jpg",
+      "principal": false
+    }
+  ],
+  "url_origem": "https://www.auriautopecas.com.br/acessorios/farol-principal-0160110"
+}
