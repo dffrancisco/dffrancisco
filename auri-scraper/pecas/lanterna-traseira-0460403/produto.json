@@ -1,0 +1,48 @@
+{
+  "nome": "LANTERNA TRASEIRA VOLKSWAGEN SAVEIRO",
+  "descricao_curta": null,
+  "marca": "Arteb",
+  "codigo_fabricante": "0460403",
+  "ean": "7896482545237",
+  "sku": "19187",
+  "referencia": "82284",
+  "categoria": "ACESSORIOS",
+  "preco": 200.0,
+  "moeda": "BRL",
+  "disponivel": true,
+  "ficha_tecnica": {
+    "SEGMENTO": "LANTERNA",
+    "LADO": "ESQUERDO"
+  },
+  "aplicacoes": [
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "SAVEIRO G5",
+      "motor": null,
+      "ano_inicio": 2008,
+      "ano_fim": 2013
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "SAVEIRO G6",
+      "motor": null,
+      "ano_inicio": 2013,
+      "ano_fim": 2016
+    }
+  ],
+  "observacoes": [],
+  "descricao_html": "<div id=\"descricao\" class=\"prodBox p-3 border rounded bg-light area-tec mb-3\"><div class=\"\"><div class=\"\"><p><strong><span style=\"color:#333333;\"><span style=\"font-size:18px;\">LANTERNA TRASEIRA VOLKSWAGEN SAVEIRO</span></span></strong></p><p> </p><p><strong><span style=\"font-size:18px;\">Informações técnicas</span></strong></p><hr><p><span style=\"font-size:18px;\"><strong>Marca:</strong><span style=\"color:#666666;\">Arteb</span><br><strong>Código do Fabricante: </strong><span style=\"color:#666666;\">0460403</span></span><br><span style=\"font-size:18px;\"><strong>Segmento:</strong><span style=\"color:#666666;\">Lanterna</span><br><strong>Código de Barras: </strong><span style=\"color:#666666;\"><span style=\"font-family:arial,helvetica,sans-serif;\">7896482545237</span></span></span><br><span style=\"font-size:18px;\"><strong>Lado:</strong><span style=\"color:#666666;\">Esquerdo</span></span></p><hr><p><strong><span style=\"font-size:18px;\">APLICAÇÃO:</span></strong></p><hr><p><span style=\"color:#666666;\"><span style=\"font-size:18px;\">VOLKSWAGEN SAVEIRO G5 2008<br>\nVOLKSWAGEN SAVEIRO G5 2009<br>\nVOLKSWAGEN SAVEIRO G5 2010<br>\nVOLKSWAGEN SAVEIRO G5 2011<br>\nVOLKSWAGEN SAVEIRO G5 2012<br>\nVOLKSWAGEN SAVEIRO G5 2013</span></span></p><hr><p><span style=\"color:#666666;\"><span style=\"font-size:18px;\">VOLKSWAGEN SAVEIRO G6 2013<br>\nVOLKSWAGEN SAVEIRO G6 2014<br>\nVOLKSWAGEN SAVEIRO G6 2015<br>\nVOLKSWAGEN SAVEIRO G6 2016</span></span></p><hr><p style=\"font-family: calibri, sans-serif; box-sizing: border-box; outline: 0px; border: 0px; padding: 0px; position: relative; z-index: 0; margin: 5px 0px 0px; width: auto; color: rgb(0, 0, 0); font-size: 14px;\"> </p></div></div></div>",
+  "imagens": [
+    {
+      "arquivo": "foto_1.png",
+      "url": "https://images.tcdn.com.br/img/img_prod/945233/lanterna_traseira_volkswagen_saveiro_19187_1_9a8ebac9ac72ae73de85d8dae7c70f9f.png",
+      "principal": true
+    },
+    {
+      "arquivo": "foto_2.png",
+      "url": "https://images.tcdn.com.br/img/img_prod/945233/lanterna_traseira_volkswagen_saveiro_19187_2_a1e988a8d1a6b3cbe83d6c385d181b6c.png",
+      "principal": false
+    }
+  ],
+  "url_origem": "https://www.auriautopecas.com.br/acessorios/lanterna-traseira-0460403"
+}

@@ -1,0 +1,50 @@
+{
+  "nome": "FAROL PRINCIPAL HYUNDAI HB20 HATCH HYUNDAI HB20 SEDAN",
+  "descricao_curta": "Farol principal para Hyundai HB20 Hatch e Sedan, peça 100% original com alta resistência e perfeito encaixe, garantindo segurança e visibilidade superior na direção.",
+  "marca": "Arteb",
+  "codigo_fabricante": "0160797",
+  "ean": "7896482548795",
+  "sku": "9833",
+  "referencia": "147991",
+  "categoria": "ACESSORIOS",
+  "preco": 650.0,
+  "moeda": "BRL",
+  "disponivel": true,
+  "ficha_tecnica": {
+    "SEGMENTO": "FAROL",
+    "LADO": "ESQUERDA"
+  },
+  "aplicacoes": [
+    {
+      "montadora": "HYUNDAI",
+      "veiculo": "HB20 HATCH",
+      "motor": null,
+      "ano_inicio": 2012,
+      "ano_fim": 2017
+    },
+    {
+      "montadora": "HYUNDAI",
+      "veiculo": "HB20 SEDAN",
+      "motor": null,
+      "ano_inicio": 2012,
+      "ano_fim": 2017
+    }
+  ],
+  "observacoes": [
+    "MOLD METAL"
+  ],
+  "descricao_html": "<div id=\"descricao\" class=\"prodBox p-3 border rounded bg-light area-tec mb-3\"><div class=\"\"><div class=\"\"><p> </p><p><span style=\"color:#333333;\"><strong><span style=\"font-family:arial,helvetica,sans-serif;\"><span style=\"font-size:18px;\">FAROL PRINCIPAL </span></span><span style=\"font-family: arial, helvetica, sans-serif; font-size: 18px;\">HYUNDAI HB20 HATCH  HYUNDAI HB20 SEDAN </span></strong></span></p><p> </p><p><strong><span style=\"font-family:arial,helvetica,sans-serif;\"><span style=\"font-size:18px;\">Informações técnicas</span></span></strong></p><hr><p><span style=\"font-family:arial,helvetica,sans-serif;\"><span style=\"font-size:18px;\"><strong>Marca:</strong><span style=\"color:#666666;\">Arteb</span><br><strong>Código do Fabricante: </strong><span style=\"color:#666666;\">0160797</span></span></span><br><span style=\"font-family:arial,helvetica,sans-serif;\"><span style=\"font-size:18px;\"><strong>Segmento:</strong> Farol<br><strong>Código de Barras: </strong><span style=\"color:#666666;\">7896482548795</span></span></span><br><span style=\"font-family:arial,helvetica,sans-serif;\"><span style=\"font-size:18px;\"><strong>Lado:</strong> Esquerda</span></span></p><hr><p><strong><span style=\"font-family:arial,helvetica,sans-serif;\"><span style=\"font-size:18px;\">APLICAÇÃO:</span></span></strong></p><hr><p><span style=\"color:#666666;\"><span style=\"font-family:arial,helvetica,sans-serif;\"><span style=\"font-size:18px;\">(MOLD METAL)</span></span></span></p><p><span style=\"color:#666666;\"><span style=\"font-family:arial,helvetica,sans-serif;\"><span style=\"font-size:18px;\">HYUNDAI HB20 HATCH 2012<br>\nHYUNDAI HB20 HATCH 2013<br>\nHYUNDAI HB20 HATCH 2014<br>\nHYUNDAI HB20 HATCH 2015<br>\nHYUNDAI HB20 HATCH 2016<br>\nHYUNDAI HB20 HATCH 2017</span></span></span></p><hr><p><span style=\"color:#666666;\"><span style=\"font-family:arial,helvetica,sans-serif;\"><span style=\"font-size:18px;\">HYUNDAI HB20 SEDAN 2012<br>\nHYUNDAI HB20 SEDAN 2013<br>\nHYUNDAI HB20 SEDAN 2014<br>\nHYUNDAI HB20 SEDAN 2015<br>\nHYUNDAI HB20 SEDAN 2016<br>\nHYUNDAI HB20 SEDAN 2017</span></span></span></p><p style=\"font-family: calibri, sans-serif; box-sizing: border-box; outline: 0px; border: 0px; padding: 0px; position: relative; z-index: 0; margin: 5px 0px 0px; width: auto; color: rgb(0, 0, 0); font-size: 14px;\"> </p></div></div></div>",
+  "imagens": [
+    {
+      "arquivo": "foto_1.png",
+      "url": "https://images.tcdn.com.br/img/img_prod/945233/farol_principal_hyundai_hb20_hatch_hyundai_hb20_sedan_9833_1_89ab22e882360dfb0e5291d4f97c5f8b.png",
+      "principal": true
+    },
+    {
+      "arquivo": "foto_2.png",
+      "url": "https://images.tcdn.com.br/img/img_prod/945233/farol_principal_hyundai_hb20_hatch_hyundai_hb20_sedan_9833_2_6f063eee12705ad0130386c1879ff2fc.png",
+      "principal": false
+    }
+  ],
+  "url_origem": "https://www.auriautopecas.com.br/acessorios/farol-principal-0160797"
+}

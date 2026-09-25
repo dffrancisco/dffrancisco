@@ -1,0 +1,269 @@
+{
+  "nome": "FAROL LE 0160633 - VW FOX / SPACEFOX / CROSSFOX",
+  "descricao_curta": "Farol LE 0160633 original para VW Fox, SpaceFox e CrossFox. Produto com alta resistência, encaixe perfeito e garantia de qualidade para máxima segurança e visibilidade nas suas viagens.",
+  "marca": "Arteb",
+  "codigo_fabricante": "0160633",
+  "ean": "7896482540324",
+  "sku": "15671",
+  "referencia": "4172",
+  "categoria": "ACESSORIOS",
+  "preco": 450.0,
+  "moeda": "BRL",
+  "disponivel": true,
+  "ficha_tecnica": {
+    "LADO": "ESQUERDO"
+  },
+  "aplicacoes": [
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "CROSSFOX CROSSFOX TOTAL FLEX",
+      "motor": "EA111 1.6 L 8V SOHC L4",
+      "ano_inicio": 2005,
+      "ano_fim": 2008
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "CROSSFOX CROSSFOX TOTAL FLEX",
+      "motor": "EA111 VHT 1.6 L 8V SOHC L4",
+      "ano_inicio": 2008,
+      "ano_fim": 2009
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "FOX CITY",
+      "motor": "EA111 1.0 L 8V SOHC L4",
+      "ano_inicio": 2004,
+      "ano_fim": 2005
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "FOX CITY TOTAL FLEX",
+      "motor": "EA111 1.0 L 8V SOHC L4",
+      "ano_inicio": 2004,
+      "ano_fim": 2005
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "FOX CITY TOTAL FLEX",
+      "motor": "EA111 VHT 1.0 L 8V SOHC L4",
+      "ano_inicio": 2008,
+      "ano_fim": 2009
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "FOX CITY TOTAL FLEX",
+      "motor": "EA111 1.0 L 8V SOHC L4",
+      "ano_inicio": 2005,
+      "ano_fim": 2008
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "FOX EXTREME",
+      "motor": "EA111 VHT 1.6 L 8V SOHC L4",
+      "ano_inicio": 2008,
+      "ano_fim": 2009
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "FOX MI",
+      "motor": "EA111 1.6 L 8V SOHC L4",
+      "ano_inicio": 2004,
+      "ano_fim": 2004
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "FOX MI TOTAL FLEX",
+      "motor": "EA111 1.0 L 8V SOHC L4",
+      "ano_inicio": 2004,
+      "ano_fim": 2005
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "FOX PLUS",
+      "motor": "EA111 1.0 L 8V SOHC L4",
+      "ano_inicio": 2004,
+      "ano_fim": 2005
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "FOX PLUS",
+      "motor": "EA111 1.6 L 8V SOHC L4",
+      "ano_inicio": 2004,
+      "ano_fim": 2004
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "FOX PLUS",
+      "motor": "EA111 VHT 1.6 L 8V SOHC L4",
+      "ano_inicio": 2008,
+      "ano_fim": 2009
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "FOX PLUS TOTAL FLEX",
+      "motor": "EA111 1.0 L 8V SOHC L4",
+      "ano_inicio": 2004,
+      "ano_fim": 2005
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "FOX PLUS TOTAL FLEX",
+      "motor": "EA111 1.6 L 8V SOHC L4",
+      "ano_inicio": 2005,
+      "ano_fim": 2008
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "FOX PLUS TOTAL FLEX",
+      "motor": "EA111 1.6 L 8V SOHC L4",
+      "ano_inicio": 2004,
+      "ano_fim": 2005
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "FOX PLUS TOTAL FLEX",
+      "motor": "EA111 1.0 L 8V SOHC L4",
+      "ano_inicio": 2005,
+      "ano_fim": 2008
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "FOX PLUS TOTAL FLEX",
+      "motor": "EA111 VHT 1.6 L 8V SOHC L4",
+      "ano_inicio": 2008,
+      "ano_fim": 2009
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "FOX ROUTE",
+      "motor": "EA111 VHT 1.6 L 8V SOHC L4",
+      "ano_inicio": 2008,
+      "ano_fim": 2009
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "FOX ROUTE TOTAL FLEX",
+      "motor": "EA111 VHT 1.0 L 8V SOHC L4",
+      "ano_inicio": 2008,
+      "ano_fim": 2009
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "FOX ROUTE TOTAL FLEX",
+      "motor": "EA111 VHT 1.6 L 8V SOHC L4",
+      "ano_inicio": 2008,
+      "ano_fim": 2009
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "FOX ROUTE TOTAL FLEX",
+      "motor": "EA111 1.6 L 8V SOHC L4",
+      "ano_inicio": 2005,
+      "ano_fim": 2008
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "FOX ROUTE TOTAL FLEX",
+      "motor": "EA111 1.0 L 8V SOHC L4",
+      "ano_inicio": 2005,
+      "ano_fim": 2008
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "FOX SPORTLINE",
+      "motor": "EA111 1.6 L 8V SOHC L4",
+      "ano_inicio": 2004,
+      "ano_fim": 2004
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "FOX SPORTLINE TOTAL FLEX",
+      "motor": "EA111 1.0 L 8V SOHC L4",
+      "ano_inicio": 2005,
+      "ano_fim": 2008
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "FOX SPORTLINE TOTAL FLEX",
+      "motor": "EA111 1.6 L 8V SOHC L4",
+      "ano_inicio": 2005,
+      "ano_fim": 2008
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "FOX SPORTLINE TOTAL FLEX",
+      "motor": "EA111 1.0 L 8V SOHC L4",
+      "ano_inicio": 2004,
+      "ano_fim": 2005
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "FOX SPORTLINE TOTAL FLEX",
+      "motor": "EA111 1.6 L 8V SOHC L4",
+      "ano_inicio": 2004,
+      "ano_fim": 2005
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "FOX SUNRISE",
+      "motor": "EA111 VHT 1.0 L 8V SOHC L4",
+      "ano_inicio": 2008,
+      "ano_fim": 2009
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "SPACEFOX COMFORTLINE",
+      "motor": "EA111 1.6 L 8V SOHC L4",
+      "ano_inicio": 2006,
+      "ano_fim": 2008
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "SPACEFOX COMFORTLINE",
+      "motor": "EA111 VHT 1.6 L 8V SOHC L4",
+      "ano_inicio": 2008,
+      "ano_fim": 2010
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "SPACEFOX PLUS TOTAL FLEX",
+      "motor": "EA111 VHT 1.6 L 8V SOHC L4",
+      "ano_inicio": 2008,
+      "ano_fim": 2010
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "SPACEFOX PLUS TOTAL FLEX",
+      "motor": "EA111 1.6 L 8V SOHC L4",
+      "ano_inicio": 2006,
+      "ano_fim": 2008
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "SPACEFOX ROUTE",
+      "motor": "EA111 VHT 1.6 L 8V SOHC L4",
+      "ano_inicio": 2008,
+      "ano_fim": 2010
+    }
+  ],
+  "observacoes": [],
+  "descricao_html": "<div id=\"descricao\" class=\"prodBox p-3 border rounded bg-light area-tec mb-3\"><div class=\"\"><div class=\"\"><p> </p><p><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><strong>MARCA</strong>: ARTEB</span></span></span></p><p><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><strong>CÓDIGO DO FABRICANTE</strong>: 0160633</span></span></span></p><p><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><strong>CÓDIGO DE BARRAS: </strong>7896482540324</span></span></span></p><hr><p><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><strong>FAROL 0160633</strong> <strong>ARTEB </strong><strong data-end=\"221\" data-start=\"154\">&#8211;  FICHA TÉCNICA:</strong></span></span></span></p><p><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><strong>LADO: </strong>ESQUERDO</span></span></span></p><hr><p><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><strong>APLICAÇÃO:</strong></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">VOLKSWAGEN</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">CROSSFOX CROSSFOX TOTAL FLEX</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, EA111 1.6 L 8V SOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2005 ATÉ 2008)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">CROSSFOX CROSSFOX TOTAL FLEX</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, EA111 VHT 1.6 L 8V SOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2008 ATÉ 2009)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">FOX CITY</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, EA111 1.0 L 8V SOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2004 ATÉ 2005)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">FOX CITY TOTAL FLEX</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, EA111 1.0 L 8V SOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2004 ATÉ 2005)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">FOX CITY TOTAL FLEX</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, EA111 VHT 1.0 L 8V SOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2008 ATÉ 2009)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">FOX CITY TOTAL FLEX</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, EA111 1.0 L 8V SOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2005 ATÉ 2008)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">FOX EXTREME</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, EA111 VHT 1.6 L 8V SOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2008 ATÉ 2009)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">FOX MI</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, EA111 1.6 L 8V SOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2004 ATÉ 2004)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">FOX MI TOTAL FLEX</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, EA111 1.0 L 8V SOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2004 ATÉ 2005)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">FOX PLUS</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, EA111 1.0 L 8V SOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2004 ATÉ 2005)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">FOX PLUS</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, EA111 1.6 L 8V SOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2004 ATÉ 2004)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">FOX PLUS</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, EA111 VHT 1.6 L 8V SOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2008 ATÉ 2009)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">FOX PLUS TOTAL FLEX</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, EA111 1.0 L 8V SOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2004 ATÉ 2005)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">FOX PLUS TOTAL FLEX</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, EA111 1.6 L 8V SOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2005 ATÉ 2008)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">FOX PLUS TOTAL FLEX</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, EA111 1.6 L 8V SOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2004 ATÉ 2005)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">FOX PLUS TOTAL FLEX</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, EA111 1.0 L 8V SOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2005 ATÉ 2008)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">FOX PLUS TOTAL FLEX</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, EA111 VHT 1.6 L 8V SOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2008 ATÉ 2009)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">FOX ROUTE</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, EA111 VHT 1.6 L 8V SOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2008 ATÉ 2009)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">FOX ROUTE TOTAL FLEX</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, EA111 VHT 1.0 L 8V SOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2008 ATÉ 2009)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">FOX ROUTE TOTAL FLEX</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, EA111 VHT 1.6 L 8V SOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2008 ATÉ 2009)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">FOX ROUTE TOTAL FLEX</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, EA111 1.6 L 8V SOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2005 ATÉ 2008)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">FOX ROUTE TOTAL FLEX</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, EA111 1.0 L 8V SOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2005 ATÉ 2008)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">FOX SPORTLINE</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, EA111 1.6 L 8V SOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2004 ATÉ 2004)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">FOX SPORTLINE TOTAL FLEX</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, EA111 1.0 L 8V SOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2005 ATÉ 2008)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">FOX SPORTLINE TOTAL FLEX</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, EA111 1.6 L 8V SOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2005 ATÉ 2008)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">FOX SPORTLINE TOTAL FLEX</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, EA111 1.0 L 8V SOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2004 ATÉ 2005)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">FOX SPORTLINE TOTAL FLEX</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, EA111 1.6 L 8V SOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2004 ATÉ 2005)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">FOX SUNRISE</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, EA111 VHT 1.0 L 8V SOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2008 ATÉ 2009)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">SPACEFOX COMFORTLINE</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, EA111 1.6 L 8V SOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2006 ATÉ 2008)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">SPACEFOX COMFORTLINE</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, EA111 VHT 1.6 L 8V SOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2008 ATÉ 2010)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">SPACEFOX PLUS TOTAL FLEX</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, EA111 VHT 1.6 L 8V SOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2008 ATÉ 2010)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">SPACEFOX PLUS TOTAL FLEX</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, EA111 1.6 L 8V SOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2006 ATÉ 2008)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">SPACEFOX ROUTE</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, EA111 VHT 1.6 L 8V SOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2008 ATÉ 2010)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p></div></div></div>",
+  "imagens": [
+    {
+      "arquivo": "foto_1.png",
+      "url": "https://images.tcdn.com.br/img/img_prod/945233/farol_volkswagen_fox_volkswagen_space_fox_15671_1_666947bca41e3fde061fecbaacc35dbd.png",
+      "principal": true
+    },
+    {
+      "arquivo": "foto_2.png",
+      "url": "https://images.tcdn.com.br/img/img_prod/945233/farol_volkswagen_fox_volkswagen_space_fox_15671_2_40f2adffe961477d952060617e853ee3.png",
+      "principal": false
+    },
+    {
+      "arquivo": "foto_3.jpg",
+      "url": "https://images.tcdn.com.br/img/img_prod/945233/farol_volkswagen_fox_volkswagen_space_fox_4_20251210102035_89b91933d340.jpg",
+      "principal": false
+    }
+  ],
+  "url_origem": "https://www.auriautopecas.com.br/acessorios/farol-0160633"
+}

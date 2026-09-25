@@ -1,0 +1,48 @@
+{
+  "nome": "LANTERNA CENTRAL HYUNDAI HB20 HATCH HYUNDAI HB20X HATCH",
+  "descricao_curta": null,
+  "marca": "Arteb",
+  "codigo_fabricante": "0460469",
+  "ean": "7896482548955",
+  "sku": "9221",
+  "referencia": "140999",
+  "categoria": "ACESSORIOS",
+  "preco": 250.0,
+  "moeda": "BRL",
+  "disponivel": true,
+  "ficha_tecnica": {
+    "SEGMENTO": "LANTERNA",
+    "LADO": "DIREITO"
+  },
+  "aplicacoes": [
+    {
+      "montadora": "HYUNDAI",
+      "veiculo": "HB20 HATCH",
+      "motor": null,
+      "ano_inicio": 2013,
+      "ano_fim": 2018
+    },
+    {
+      "montadora": "HYUNDAI",
+      "veiculo": "HB20X HATCH",
+      "motor": null,
+      "ano_inicio": 2013,
+      "ano_fim": 2018
+    }
+  ],
+  "observacoes": [],
+  "descricao_html": "<div id=\"descricao\" class=\"prodBox p-3 border rounded bg-light area-tec mb-3\"><div class=\"\"><div class=\"\"><p><strong><span style=\"color:#333333;\"><span style=\"font-family:arial,helvetica,sans-serif;\"><span style=\"font-size:18px;\">LANTERNA CENTRAL </span></span><span style=\"font-family: arial, helvetica, sans-serif; font-size: 18px;\">HYUNDAI HB20 HATCH HYUNDAI HB20X HATCH</span></span></strong></p><p> </p><p><strong><span style=\"font-family:arial,helvetica,sans-serif;\"><span style=\"font-size:18px;\">Informações técnicas</span></span></strong></p><hr><p><span style=\"font-family: arial, helvetica, sans-serif;\"><span style=\"font-size: 18px;\"><strong>Marca:</strong> Arteb<br><strong>Código do Fabricante: </strong><span style=\"color:#666666;\">0460469</span><br><strong>Segmento:</strong><span style=\"color:#666666;\">Lanterna</span><br><strong>Código de Barras: </strong></span></span><span style=\"color:#666666;\"><span style=\"font-size:18px;\">7896482548955</span></span><br><span style=\"font-family: arial, helvetica, sans-serif;\"><span style=\"font-size: 18px;\"><strong>Lado: </strong>Direito</span></span></p><hr><p><strong><span style=\"font-family:arial,helvetica,sans-serif;\"><span style=\"font-size:18px;\">APLICAÇÃO:</span></span></strong></p><hr><p><span style=\"color:#666666;\"><span style=\"font-family:arial,helvetica,sans-serif;\"><span style=\"font-size:18px;\">HYUNDAI HB20 HATCH 2013<br>\nHYUNDAI HB20 HATCH 2014<br>\nHYUNDAI HB20 HATCH 2015<br>\nHYUNDAI HB20 HATCH 2016<br>\nHYUNDAI HB20 HATCH 2017<br>\nHYUNDAI HB20 HATCH 2018</span></span></span></p><p><span style=\"color:#666666;\"><span style=\"font-family:arial,helvetica,sans-serif;\"><span style=\"font-size:18px;\">HYUNDAI HB20X HATCH 2013<br>\nHYUNDAI HB20X HATCH 2014<br>\nHYUNDAI HB20X HATCH 2015<br>\nHYUNDAI HB20X HATCH 2016<br>\nHYUNDAI HB20X HATCH 2017<br>\nHYUNDAI HB20X HATCH 2018</span></span></span></p><hr><p style=\"font-family: calibri, sans-serif; box-sizing: border-box; outline: 0px; border: 0px; padding: 0px; position: relative; z-index: 0; margin: 5px 0px 0px; width: auto; color: rgb(0, 0, 0); font-size: 14px;\"> </p><p> </p><p> </p></div></div></div>",
+  "imagens": [
+    {
+      "arquivo": "foto_1.png",
+      "url": "https://images.tcdn.com.br/img/img_prod/945233/lanterna_central_hyundai_hb20_hatch_hyundai_hb20x_hatch_9221_1_d1201a9dfd6c249e5467791af72af83c.png",
+      "principal": true
+    },
+    {
+      "arquivo": "foto_2.png",
+      "url": "https://images.tcdn.com.br/img/img_prod/945233/lanterna_central_hyundai_hb20_hatch_hyundai_hb20x_hatch_9221_2_2b5b103aa04220c06f94b1a75978509c.png",
+      "principal": false
+    }
+  ],
+  "url_origem": "https://www.auriautopecas.com.br/acessorios/lanterna-central-0460469"
+}

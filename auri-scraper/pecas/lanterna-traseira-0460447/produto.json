@@ -1,0 +1,241 @@
+{
+  "nome": "LANTERNA TRASEIRA LE 0460447 - CHEVROLET S-10",
+  "descricao_curta": "Lanterna traseira LE 0460447 compatível com Chevrolet S-10. Produto 100% original, garantindo durabilidade e segurança para seu veículo. Fácil instalação e acabamento impecável.",
+  "marca": "Arteb",
+  "codigo_fabricante": "0460447",
+  "ean": "7896482546753",
+  "sku": "8977",
+  "referencia": "139197",
+  "categoria": "ACESSORIOS",
+  "preco": 287.0,
+  "moeda": "BRL",
+  "disponivel": true,
+  "ficha_tecnica": {
+    "LADO": "ESQUERDO"
+  },
+  "aplicacoes": [
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "S10 ADVANTAGE",
+      "motor": "SOHC 2.4 L 8V SOHC L4",
+      "ano_inicio": 2015,
+      "ano_fim": 2016
+    },
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "S10 ADVANTAGE 2.5 CD",
+      "motor": "ECOTEC 2.5 L 16V DOHC L4",
+      "ano_inicio": 2017,
+      "ano_fim": 2018
+    },
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "S10 ADVANTAGE 2.5 FLEX 4X2 CD",
+      "motor": "ECOTEC 2.5 L 16V DOHC L4",
+      "ano_inicio": 2016,
+      "ano_fim": 2017
+    },
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "S10 FREERIDE",
+      "motor": "ECOTEC 2.5 L 16V DOHC L4",
+      "ano_inicio": 2015,
+      "ano_fim": 2016
+    },
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "S10 HIGH COUNTRY 4X4 CD",
+      "motor": "DURAMAX 2.8 L 16V DOHC L4",
+      "ano_inicio": 2015,
+      "ano_fim": 2016
+    },
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "S10 LS 4X2 CABINE DUPLA",
+      "motor": "SOHC 2.4 L 8V SOHC L4",
+      "ano_inicio": 2015,
+      "ano_fim": 2016
+    },
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "S10 LS 4X2 CABINE DUPLA",
+      "motor": "SOHC 2.4 L 8V SOHC L4",
+      "ano_inicio": 2012,
+      "ano_fim": 2016
+    },
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "S10 LS 4X2 CABINE SIMPLES",
+      "motor": "SOHC 2.4 L 8V SOHC L4",
+      "ano_inicio": 2015,
+      "ano_fim": 2016
+    },
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "S10 LS 4X2 CABINE SIMPLES",
+      "motor": "SOHC 2.4 L 8V SOHC L4",
+      "ano_inicio": 2012,
+      "ano_fim": 2015
+    },
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "S10 LS 4X2 CD",
+      "motor": "DURAMAX 2.8 L 16V DOHC L4",
+      "ano_inicio": 2012,
+      "ano_fim": 2013
+    },
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "S10 LS 4X2 CD AT",
+      "motor": "DURAMAX 2.8 L 16V DOHC L4",
+      "ano_inicio": 2012,
+      "ano_fim": 2013
+    },
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "S10 LS 4X2 CS",
+      "motor": "DURAMAX 2.8 L 16V DOHC L4",
+      "ano_inicio": 2016,
+      "ano_fim": 2018
+    },
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "S10 LS 4X2 CS",
+      "motor": "DURAMAX 2.8 L 16V DOHC L4",
+      "ano_inicio": 2012,
+      "ano_fim": 2013
+    },
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "S10 LS 4X2 CS MT",
+      "motor": "DURAMAX 2.8 L 16V DOHC L4",
+      "ano_inicio": 2012,
+      "ano_fim": 2013
+    },
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "S10 LS 4X4 CD",
+      "motor": "DURAMAX 2.8 L 16V DOHC L4",
+      "ano_inicio": 2016,
+      "ano_fim": 2017
+    },
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "S10 LS 4X4 CS",
+      "motor": "DURAMAX 2.8 L 16V DOHC L4",
+      "ano_inicio": 2015,
+      "ano_fim": 2016
+    },
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "S10 LS 4X4 CS",
+      "motor": "DURAMAX 2.8 L 16V DOHC L4",
+      "ano_inicio": 2012,
+      "ano_fim": 2013
+    },
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "S10 LT 2.5 FLEX 4X2 CD",
+      "motor": "ECOTEC 2.5 L 16V DOHC L4",
+      "ano_inicio": 2014,
+      "ano_fim": 2017
+    },
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "S10 LT 2.5 FLEX 4X4 CD",
+      "motor": "ECOTEC 2.5 L 16V DOHC L4",
+      "ano_inicio": 2014,
+      "ano_fim": 2017
+    },
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "S10 LT 4X2 CABINE DUPLA",
+      "motor": "SOHC 2.4 L 8V SOHC L4",
+      "ano_inicio": 2012,
+      "ano_fim": 2014
+    },
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "S10 LT 4X2 CD",
+      "motor": "DURAMAX 2.8 L 16V DOHC L4",
+      "ano_inicio": 2012,
+      "ano_fim": 2017
+    },
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "S10 LT 4X4 CD",
+      "motor": "DURAMAX 2.8 L 16V DOHC L4",
+      "ano_inicio": 2012,
+      "ano_fim": 2016
+    },
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "S10 LT 4X4 CD",
+      "motor": "DURAMAX 2.8 L 16V DOHC L4",
+      "ano_inicio": 2015,
+      "ano_fim": 2016
+    },
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "S10 LTZ 2.5 FLEX 4X2 CD",
+      "motor": "ECOTEC 2.5 L 16V DOHC L4",
+      "ano_inicio": 2014,
+      "ano_fim": 2017
+    },
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "S10 LTZ 2.5 FLEX 4X4 CD",
+      "motor": "ECOTEC 2.5 L 16V DOHC L4",
+      "ano_inicio": 2014,
+      "ano_fim": 2017
+    },
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "S10 LTZ 4X2 CABINE DUPLA AUTOMÁTICA",
+      "motor": "SOHC 2.4 L 8V SOHC L4",
+      "ano_inicio": 2012,
+      "ano_fim": 2014
+    },
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "S10 LTZ 4X2 CD",
+      "motor": "DURAMAX 2.8 L 16V DOHC L4",
+      "ano_inicio": 2013,
+      "ano_fim": 2015
+    },
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "S10 LTZ 4X2 CD AT",
+      "motor": "DURAMAX 2.8 L 16V DOHC L4",
+      "ano_inicio": 2012,
+      "ano_fim": 2017
+    },
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "S10 LTZ 4X4 CD",
+      "motor": "DURAMAX 2.8 L 16V DOHC L4",
+      "ano_inicio": 2012,
+      "ano_fim": 2016
+    }
+  ],
+  "observacoes": [],
+  "descricao_html": "<div id=\"descricao\" class=\"prodBox p-3 border rounded bg-light area-tec mb-3\"><div class=\"\"><div class=\"\"><p> </p><p><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><strong>MARCA</strong>: ARTEB</span></span></span></p><p><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><strong>CÓDIGO DO FABRICANTE</strong>: 0460447</span></span></span></p><p><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><strong>CÓDIGO DE BARRAS: </strong>7896482546753</span></span></span></p><hr><p><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><strong>LANTERNA TRASEIRA 0460447</strong> <strong>ARTEB </strong><strong data-end=\"221\" data-start=\"154\">&#8211;  FICHA TÉCNICA:</strong></span></span></span></p><p><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><strong>LADO: </strong>ESQUERDO</span></span></span></p><hr><p><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><strong>APLICAÇÃO:</strong></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">CHEVROLET</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">S10 ADVANTAGE</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, SOHC 2.4 L 8V SOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2015 ATÉ 2016)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">S10 ADVANTAGE 2.5 CD</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, ECOTEC 2.5 L 16V DOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2017 ATÉ 2018)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">S10 ADVANTAGE 2.5 FLEX 4X2 CD</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, ECOTEC 2.5 L 16V DOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2016 ATÉ 2017)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">S10 FREERIDE</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, ECOTEC 2.5 L 16V DOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2015 ATÉ 2016)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">S10 HIGH COUNTRY 4X4 CD</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, DURAMAX 2.8 L 16V DOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2015 ATÉ 2016)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">S10 LS 4X2 CABINE DUPLA</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, SOHC 2.4 L 8V SOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2015 ATÉ 2016)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">S10 LS 4X2 CABINE DUPLA</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, SOHC 2.4 L 8V SOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2012 ATÉ 2016)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">S10 LS 4X2 CABINE SIMPLES</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, SOHC 2.4 L 8V SOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2015 ATÉ 2016)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">S10 LS 4X2 CABINE SIMPLES</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, SOHC 2.4 L 8V SOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2012 ATÉ 2015)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">S10 LS 4X2 CD</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, DURAMAX 2.8 L 16V DOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2012 ATÉ 2013)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">S10 LS 4X2 CD AT</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, DURAMAX 2.8 L 16V DOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2012 ATÉ 2013)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">S10 LS 4X2 CS</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, DURAMAX 2.8 L 16V DOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2016 ATÉ 2018)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">S10 LS 4X2 CS</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, DURAMAX 2.8 L 16V DOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2012 ATÉ 2013)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">S10 LS 4X2 CS MT</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, DURAMAX 2.8 L 16V DOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2012 ATÉ 2013)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">S10 LS 4X4 CD</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, DURAMAX 2.8 L 16V DOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2016 ATÉ 2017)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">S10 LS 4X4 CS</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, DURAMAX 2.8 L 16V DOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2015 ATÉ 2016)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">S10 LS 4X4 CS</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, DURAMAX 2.8 L 16V DOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2012 ATÉ 2013)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">S10 LT 2.5 FLEX 4X2 CD</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, ECOTEC 2.5 L 16V DOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2014 ATÉ 2017)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">S10 LT 2.5 FLEX 4X4 CD</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, ECOTEC 2.5 L 16V DOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2014 ATÉ 2017)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">S10 LT 4X2 CABINE DUPLA</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, SOHC 2.4 L 8V SOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2012 ATÉ 2014)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">S10 LT 4X2 CD</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, DURAMAX 2.8 L 16V DOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2012 ATÉ 2017)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">S10 LT 4X4 CD</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, DURAMAX 2.8 L 16V DOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2012 ATÉ 2016)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">S10 LT 4X4 CD</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, DURAMAX 2.8 L 16V DOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2015 ATÉ 2016)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">S10 LTZ 2.5 FLEX 4X2 CD</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, ECOTEC 2.5 L 16V DOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2014 ATÉ 2017)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">S10 LTZ 2.5 FLEX 4X4 CD</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, ECOTEC 2.5 L 16V DOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2014 ATÉ 2017)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">S10 LTZ 4X2 CABINE DUPLA AUTOMÁTICA</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, SOHC 2.4 L 8V SOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2012 ATÉ 2014)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">S10 LTZ 4X2 CD</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, DURAMAX 2.8 L 16V DOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2013 ATÉ 2015)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">S10 LTZ 4X2 CD AT</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, DURAMAX 2.8 L 16V DOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2012 ATÉ 2017)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">S10 LTZ 4X4 CD</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, DURAMAX 2.8 L 16V DOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2012 ATÉ 2016)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p></div></div></div>",
+  "imagens": [
+    {
+      "arquivo": "foto_1.png",
+      "url": "https://images.tcdn.com.br/img/img_prod/945233/lanterna_traseira_gm_s_10_8977_1_88a400f81ac5df7824327ac52a10ce8e.png",
+      "principal": true
+    },
+    {
+      "arquivo": "foto_2.png",
+      "url": "https://images.tcdn.com.br/img/img_prod/945233/lanterna_traseira_gm_s_10_8977_2_ec1a546539490d7ebb0b452679de4f34.png",
+      "principal": false
+    },
+    {
+      "arquivo": "foto_3.jpg",
+      "url": "https://images.tcdn.com.br/img/img_prod/945233/lanterna_traseira_gm_s_10_3_20251215170021_ae88fc418bfe.jpg",
+      "principal": false
+    }
+  ],
+  "url_origem": "https://www.auriautopecas.com.br/acessorios/lanterna-traseira-0460447"
+}

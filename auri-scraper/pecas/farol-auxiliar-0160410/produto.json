@@ -1,0 +1,50 @@
+{
+  "nome": "FAROL AUXILIAR FIAT PALIO SIENA STRADA",
+  "descricao_curta": null,
+  "marca": "Arteb",
+  "codigo_fabricante": "0160410",
+  "ean": "7896482534736",
+  "sku": "10625",
+  "referencia": "15266",
+  "categoria": "ACESSORIOS",
+  "preco": 205.0,
+  "moeda": "BRL",
+  "disponivel": true,
+  "ficha_tecnica": {
+    "SEGMENTO": "FAROL",
+    "LADO": "DIREITO"
+  },
+  "aplicacoes": [
+    {
+      "montadora": "FIAT",
+      "veiculo": "PALIO",
+      "motor": null,
+      "ano_inicio": 1996,
+      "ano_fim": 2000
+    },
+    {
+      "montadora": "FIAT",
+      "veiculo": "SIENA",
+      "motor": null,
+      "ano_inicio": 1996,
+      "ano_fim": 2000
+    },
+    {
+      "montadora": "FIAT",
+      "veiculo": "STRADA",
+      "motor": null,
+      "ano_inicio": 1996,
+      "ano_fim": 2000
+    }
+  ],
+  "observacoes": [],
+  "descricao_html": "<div id=\"descricao\" class=\"prodBox p-3 border rounded bg-light area-tec mb-3\"><div class=\"\"><div class=\"\"><p><strong><span style=\"color:#333333;\"><span style=\"font-size:18px;\"><span style=\"font-family:arial,helvetica,sans-serif;\">FAROL AUXILIAR </span></span><span style=\"font-family: arial, helvetica, sans-serif; font-size: 18px;\">FIAT PALIO SIENA STRADA</span><span style=\"font-family: arial, helvetica, sans-serif; font-size: 18px;\"> </span></span></strong></p><p> </p><p><strong><span style=\"font-size:18px;\"><span style=\"font-family:arial,helvetica,sans-serif;\">Informações técnicas</span></span></strong></p><hr><p><span style=\"font-size:18px;\"><span style=\"font-family:arial,helvetica,sans-serif;\"><strong>Marca</strong>: <span style=\"color:#666666;\">Arteb</span><br><strong>Código do Fabricante: </strong></span></span><span style=\"color:#666666;\"><span style=\"font-size:18px;\"><span style=\"font-family:arial,helvetica,sans-serif;\">0160410</span></span></span><br><span style=\"font-size:18px;\"><span style=\"font-family:arial,helvetica,sans-serif;\"><strong>Segmento:</strong><span style=\"color:#666666;\">Farol</span><br><strong>Código de Barras: </strong><span style=\"color:#666666;\">7896482534736</span></span></span><br><span style=\"font-size:18px;\"><span style=\"font-family:arial,helvetica,sans-serif;\"><strong>Lado:</strong><span style=\"color:#666666;\">Direito</span></span></span></p><hr><p><strong><span style=\"font-size:18px;\"><span style=\"font-family:arial,helvetica,sans-serif;\">APLICAÇÃO:</span></span></strong></p><hr><p><span style=\"color:#666666;\"><span style=\"font-size:18px;\"><span style=\"font-family:arial,helvetica,sans-serif;\">FIAT PALIO 1996<br>\nFIAT PALIO 1997<br>\nFIAT PALIO 1998<br>\nFIAT PALIO 1999<br>\nFIAT PALIO 2000</span></span></span></p><hr><p><span style=\"color:#666666;\"><span style=\"font-size:18px;\"><span style=\"font-family:arial,helvetica,sans-serif;\">FIAT SIENA 1996<br>\nFIAT SIENA 1997<br>\nFIAT SIENA 1998<br>\nFIAT SIENA 1999<br>\nFIAT SIENA 2000</span></span></span></p><hr><p><span style=\"color:#666666;\"><span style=\"font-size:18px;\"><span style=\"font-family:arial,helvetica,sans-serif;\">FIAT STRADA 1996<br>\nFIAT STRADA 1997<br>\nFIAT STRADA 1998<br>\nFIAT STRADA 1999<br>\nFIAT STRADA 2000</span></span></span></p></div></div></div>",
+  "imagens": [
+    {
+      "arquivo": "foto_1.png",
+      "url": "https://images.tcdn.com.br/img/img_prod/945233/farol_auxiliar_0160410_10625_1_4e24f29ceb3432cd8909263b93978896.png",
+      "principal": true
+    }
+  ],
+  "url_origem": "https://www.auriautopecas.com.br/acessorios/farol-auxiliar-0160410"
+}

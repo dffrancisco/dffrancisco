@@ -1,0 +1,186 @@
+{
+  "nome": "FAROL PRINCIPAL 0160787 ARTEB - FIAT GRAND SIENA/PALIO/PALIO WEEKEND/SIENA/STRADA",
+  "descricao_curta": "Farol Principal 0160787 Arteb compatível com Fiat Grand Siena, Palio, Palio Weekend, Siena e Strada, garantindo iluminação forte, durabilidade e encaixe perfeito.",
+  "marca": "Arteb",
+  "codigo_fabricante": "0160787",
+  "ean": "7896482547026",
+  "sku": "265941",
+  "referencia": "178579",
+  "categoria": "ACESSORIOS",
+  "preco": 515.0,
+  "moeda": "BRL",
+  "disponivel": true,
+  "ficha_tecnica": {
+    "ACABAMENTO": "MÁSCARA NEGRA/ MOLDURA METALIZADA",
+    "LADO": "ESQUERDO",
+    "MATERIAL DA LENTE": "ACRÍLICO",
+    "MODELO": "FOCO DUPLO",
+    "POSIÇÃO": "DIANTEIRO",
+    "TIPO DE LÂMPADA": "H7/H7",
+    "TIPO DE LENTE": "LISA"
+  },
+  "aplicacoes": [
+    {
+      "montadora": "FIAT",
+      "veiculo": "GRAND SIENA ATTRACTIVE",
+      "motor": "FIRE EVO 1.0 L 8V SOHC L4",
+      "ano_inicio": 2016,
+      "ano_fim": 2018
+    },
+    {
+      "montadora": "FIAT",
+      "veiculo": "GRAND SIENA ATTRACTIVE",
+      "motor": "FIRE EVO 1.4 L 8V SOHC L4",
+      "ano_inicio": 2017,
+      "ano_fim": 2018
+    },
+    {
+      "montadora": "FIAT",
+      "veiculo": "PALIO ELX DUAL",
+      "motor": "POWERTRAIN 1.8 L 8V SOHC L4",
+      "ano_inicio": 2009,
+      "ano_fim": 2010
+    },
+    {
+      "montadora": "FIAT",
+      "veiculo": "PALIO ELX RST II",
+      "motor": "FIRE 1.0 L 8V SOHC L4",
+      "ano_inicio": 2005,
+      "ano_fim": 2007
+    },
+    {
+      "montadora": "FIAT",
+      "veiculo": "PALIO ELX RST II",
+      "motor": "FIRE 1.4 L 8V SOHC L4",
+      "ano_inicio": 2005,
+      "ano_fim": 2007
+    },
+    {
+      "montadora": "FIAT",
+      "veiculo": "PALIO ELX RST III",
+      "motor": "FIRE 1.0 L 8V SOHC L4",
+      "ano_inicio": 2009,
+      "ano_fim": 2011
+    },
+    {
+      "montadora": "FIAT",
+      "veiculo": "PALIO FIRE ECONOMY WAY",
+      "motor": "FIRE 1.0 L 8V SOHC L4",
+      "ano_inicio": 2014,
+      "ano_fim": 2016
+    },
+    {
+      "montadora": "FIAT",
+      "veiculo": "PALIO WEEKEND ADVENTURE LOCKER",
+      "motor": "E-TORQ 1.8 L 16V SOHC L4",
+      "ano_inicio": 2010,
+      "ano_fim": 2012
+    },
+    {
+      "montadora": "FIAT",
+      "veiculo": "PALIO WEEKEND ADVENTURE LOCKER DUALOGIC",
+      "motor": "E-TORQ 1.8 L 16V SOHC L4",
+      "ano_inicio": 2010,
+      "ano_fim": 2012
+    },
+    {
+      "montadora": "FIAT",
+      "veiculo": "PALIO WEEKEND ADVENTURE LOCKER DUALOGIC",
+      "motor": "POWERTRAIN 1.8 L 8V SOHC L4",
+      "ano_inicio": 2008,
+      "ano_fim": 2010
+    },
+    {
+      "montadora": "FIAT",
+      "veiculo": "PALIO WEEKEND ADVENTURE LOCKER DUALOGIC",
+      "motor": "E-TORQ 1.8 L 16V SOHC L4",
+      "ano_inicio": 2012,
+      "ano_fim": 2016
+    },
+    {
+      "montadora": "FIAT",
+      "veiculo": "PALIO WEEKEND ADVENTURE LOCKER RST II FLEX",
+      "motor": "HE 1.8 L 8V SOHC L4",
+      "ano_inicio": 2006,
+      "ano_fim": 2008
+    },
+    {
+      "montadora": "FIAT",
+      "veiculo": "PALIO WEEKEND ADVENTURE LOCKER RST III",
+      "motor": "POWERTRAIN 1.8 L 8V SOHC L4",
+      "ano_inicio": 2008,
+      "ano_fim": 2010
+    },
+    {
+      "montadora": "FIAT",
+      "veiculo": "SIENA ATTRACTIVE",
+      "motor": "FIRE 1.0 L 8V SOHC L4",
+      "ano_inicio": 2010,
+      "ano_fim": 2012
+    },
+    {
+      "montadora": "FIAT",
+      "veiculo": "SIENA ATTRACTIVE",
+      "motor": "FIRE 1.4 L 8V SOHC L4",
+      "ano_inicio": 2007,
+      "ano_fim": 2012
+    },
+    {
+      "montadora": "FIAT",
+      "veiculo": "SIENA ATTRACTIVE DUAL",
+      "motor": "E-TORQ 1.6 L 16V SOHC L4",
+      "ano_inicio": 2010,
+      "ano_fim": 2012
+    },
+    {
+      "montadora": "FIAT",
+      "veiculo": "SIENA SPORTING",
+      "motor": "E-TORQ 1.6 L 16V SOHC L4",
+      "ano_inicio": 2010,
+      "ano_fim": 2012
+    },
+    {
+      "montadora": "FIAT",
+      "veiculo": "SIENA SPORTING DUAL",
+      "motor": "E-TORQ 1.6 L 16V SOHC L4",
+      "ano_inicio": 2010,
+      "ano_fim": 2012
+    },
+    {
+      "montadora": "FIAT",
+      "veiculo": "STRADA CS HARD WORKING",
+      "motor": "FIRE 1.4 L 8V SOHC L4",
+      "ano_inicio": 2014,
+      "ano_fim": 2015
+    },
+    {
+      "montadora": "FIAT",
+      "veiculo": "STRADA CS HARD WORKING",
+      "motor": "FIRE 1.4 L 8V SOHC L4",
+      "ano_inicio": 2016,
+      "ano_fim": 2018
+    },
+    {
+      "montadora": "FIAT",
+      "veiculo": "STRADA CS RST FLEX",
+      "motor": "FIRE 1.4 L 8V SOHC L4",
+      "ano_inicio": 2005,
+      "ano_fim": 2006
+    }
+  ],
+  "observacoes": [],
+  "descricao_html": "<div id=\"descricao\" class=\"prodBox p-3 border rounded bg-light area-tec mb-3\"><div class=\"\"><div class=\"\"><p> </p><p><span style=\"font-size:16px;\"><strong>MARCA</strong>: ARTEB</span></p><p><span style=\"font-size:16px;\"><strong>CÓDIGO DO FABRICANTE</strong>: 0160787 </span></p><p><span style=\"font-size:16px;\"><strong>CÓDIGO DE BARRAS: </strong>7896482547026</span></p><hr><p><span style=\"font-size:16px;\"><strong>FAROL PRINCIPAL 0160787 ARTEB </strong><strong data-end=\"221\" data-start=\"154\">&#8211;  FICHA TÉCNICA:</strong></span></p><p><span style=\"font-size:16px;\"><strong>ACABAMENTO</strong>: MÁSCARA NEGRA/ MOLDURA METALIZADA</span></p><p><span style=\"font-size:16px;\"><strong>LADO</strong>: ESQUERDO</span></p><p><span style=\"font-size:16px;\"><strong>MATERIAL DA LENTE</strong>: ACRÍLICO</span></p><p><span style=\"font-size:16px;\"><strong>MODELO</strong>: FOCO DUPLO</span></p><p><span style=\"font-size:16px;\"><b>POSIÇÃO</b>: DIANTEIRO</span></p><p><span style=\"font-size:16px;\"><strong>TIPO DE LÂMPADA</strong>: H7/H7</span></p><p><span style=\"font-size:16px;\"><strong>TIPO DE LENTE</strong>: LISA</span></p><hr><p><span style=\"font-size:16px;\"><strong>APLICAÇÃO:</strong></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">FIAT</span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">GRAND SIENA ATTRACTIVE</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, FIRE EVO 1.0 L 8V SOHC L4, </span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2016 ATÉ 2018)</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">GRAND SIENA ATTRACTIVE</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, FIRE EVO 1.4 L 8V SOHC L4, </span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2017 ATÉ 2018)</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">PALIO ELX DUAL</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, POWERTRAIN 1.8 L 8V SOHC L4, </span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2009 ATÉ 2010)</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">PALIO ELX RST II</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, FIRE 1.0 L 8V SOHC L4, </span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2005 ATÉ 2007)</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">PALIO ELX RST II</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, FIRE 1.4 L 8V SOHC L4, </span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2005 ATÉ 2007)</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">PALIO ELX RST III</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, FIRE 1.0 L 8V SOHC L4, </span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2009 ATÉ 2011)</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">PALIO FIRE ECONOMY WAY</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, FIRE 1.0 L 8V SOHC L4, </span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2014 ATÉ 2016)</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">PALIO WEEKEND ADVENTURE LOCKER</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, E-TORQ 1.8 L 16V SOHC L4, </span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2010 ATÉ 2012)</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">PALIO WEEKEND ADVENTURE LOCKER DUALOGIC</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, E-TORQ 1.8 L 16V SOHC L4, </span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2010 ATÉ 2012)</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">PALIO WEEKEND ADVENTURE LOCKER DUALOGIC</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, POWERTRAIN 1.8 L 8V SOHC L4, </span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2008 ATÉ 2010)</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">PALIO WEEKEND ADVENTURE LOCKER DUALOGIC</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, E-TORQ 1.8 L 16V SOHC L4, </span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2012 ATÉ 2016)</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">PALIO WEEKEND ADVENTURE LOCKER RST II FLEX</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, HE 1.8 L 8V SOHC L4, </span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2006 ATÉ 2008)</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">PALIO WEEKEND ADVENTURE LOCKER RST III</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, POWERTRAIN 1.8 L 8V SOHC L4, </span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2008 ATÉ 2010)</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">SIENA ATTRACTIVE</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, FIRE 1.0 L 8V SOHC L4, </span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2010 ATÉ 2012)</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">SIENA ATTRACTIVE</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, FIRE 1.4 L 8V SOHC L4, </span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2007 ATÉ 2012)</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">SIENA ATTRACTIVE DUAL</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, E-TORQ 1.6 L 16V SOHC L4, </span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2010 ATÉ 2012)</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">SIENA SPORTING</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, E-TORQ 1.6 L 16V SOHC L4, </span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2010 ATÉ 2012)</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">SIENA SPORTING DUAL</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, E-TORQ 1.6 L 16V SOHC L4, </span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2010 ATÉ 2012)</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">STRADA CS HARD WORKING</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, FIRE 1.4 L 8V SOHC L4, </span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2014 ATÉ 2015)</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">STRADA CS HARD WORKING</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, FIRE 1.4 L 8V SOHC L4, </span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2016 ATÉ 2018)</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">STRADA CS RST FLEX</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, FIRE 1.4 L 8V SOHC L4, </span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2005 ATÉ 2006)</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></p></div></div></div>",
+  "imagens": [
+    {
+      "arquivo": "foto_1.png",
+      "url": "https://images.tcdn.com.br/img/img_prod/945233/farol_fiat_palio_fiat_siena_fiat_strada_1_20251208142700_5e54a00c178b.png",
+      "principal": true
+    },
+    {
+      "arquivo": "foto_2.png",
+      "url": "https://images.tcdn.com.br/img/img_prod/945233/farol_fiat_palio_fiat_siena_fiat_strada_2_20251208142700_f05c41aef4b9.png",
+      "principal": false
+    }
+  ],
+  "url_origem": "https://www.auriautopecas.com.br/acessorios/farol-0160787"
+}

@@ -1,0 +1,41 @@
+{
+  "nome": "LANTERNA TRASEIRA VOLKSWAGEN SAVEIRO",
+  "descricao_curta": null,
+  "marca": "Arteb",
+  "codigo_fabricante": "0460275",
+  "ean": "7896482535092",
+  "sku": "20453",
+  "referencia": "9365",
+  "categoria": "ACESSORIOS",
+  "preco": 399.75,
+  "moeda": "BRL",
+  "disponivel": true,
+  "ficha_tecnica": {
+    "SEGMENTO": "LANTERNA",
+    "LADO": "ESQUERDA"
+  },
+  "aplicacoes": [
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "SAVEIRO G3",
+      "motor": null,
+      "ano_inicio": 2002,
+      "ano_fim": 2003
+    }
+  ],
+  "observacoes": [],
+  "descricao_html": "<div id=\"descricao\" class=\"prodBox p-3 border rounded bg-light area-tec mb-3\"><div class=\"\"><div class=\"\"><p style=\"font-family: calibri, sans-serif; box-sizing: border-box; outline: 0px; border: 0px; padding: 0px; position: relative; z-index: 0; margin: 5px 0px 0px; width: auto; color: rgb(0, 0, 0); font-size: 14px;\"><strong font-size:=\"\" style=\"color: rgb(51, 51, 51); font-family: sans-serif, Arial, Verdana, \" trebuchet=\"\"><span style=\"font-family:arial,helvetica,sans-serif;\"><span style=\"font-size:18px;\">LANTERNA TRASEIRA </span></span><span style=\"font-family: arial, helvetica, sans-serif; font-size: 18px;\">VOLKSWAGEN SAVEIRO</span></strong></p><p> </p><p><strong><span style=\"font-family:arial,helvetica,sans-serif;\"><span style=\"font-size:18px;\">Informações técnicas</span></span></strong></p><hr><p><span style=\"font-family:arial,helvetica,sans-serif;\"><span style=\"font-size:18px;\"><strong>Marca:</strong><span style=\"color:#666666;\">Arteb</span><br><strong>Código do Fabricante: </strong><span style=\"color:#666666;\">0460275</span></span></span><br><span style=\"font-family:arial,helvetica,sans-serif;\"><span style=\"font-size:18px;\"><strong>Segmento:</strong><span style=\"color:#666666;\">Lanterna</span><br><strong>Código de Barras: </strong><span style=\"color:#666666;\">7896482535092</span></span></span><br><span style=\"font-family:arial,helvetica,sans-serif;\"><span style=\"font-size:18px;\"><strong>Lado:</strong><span style=\"color:#666666;\">Esquerda</span></span></span></p><hr><p><strong><span style=\"font-family:arial,helvetica,sans-serif;\"><span style=\"font-size:18px;\">APLICAÇÃO:</span></span></strong></p><hr><p><span style=\"color:#666666;\"><span style=\"font-family:arial,helvetica,sans-serif;\"><span style=\"font-size:18px;\">VOLKSWAGEN SAVEIRO G3 2002<br>\nVOLKSWAGEN SAVEIRO G3 2003</span></span></span></p><hr><p style=\"font-family: calibri, sans-serif; box-sizing: border-box; outline: 0px; border: 0px; padding: 0px; position: relative; z-index: 0; margin: 5px 0px 0px; width: auto; color: rgb(0, 0, 0); font-size: 14px;\"> </p></div></div></div>",
+  "imagens": [
+    {
+      "arquivo": "foto_1.png",
+      "url": "https://images.tcdn.com.br/img/img_prod/945233/lanterna_traseira_volkswagen_saveiro_20453_2_83472d56bd4f42264e954374be22d8e2.png",
+      "principal": true
+    },
+    {
+      "arquivo": "foto_2.png",
+      "url": "https://images.tcdn.com.br/img/img_prod/945233/lanterna_traseira_volkswagen_saveiro_20453_1_5d14c544bf6ee7f6922e7a50db7de058.png",
+      "principal": false
+    }
+  ],
+  "url_origem": "https://www.auriautopecas.com.br/acessorios/lanterna-traseira-0460275"
+}

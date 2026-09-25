@@ -1,0 +1,61 @@
+{
+  "nome": "FAROL PRINCIPAL 0160200 GOL/SAVEIRO/PARATI",
+  "descricao_curta": null,
+  "marca": "Arteb",
+  "codigo_fabricante": "0160200",
+  "ean": "7896482512802",
+  "sku": "20151",
+  "referencia": "9027",
+  "categoria": "ACESSORIOS",
+  "preco": 230.0,
+  "moeda": "BRL",
+  "disponivel": true,
+  "ficha_tecnica": {
+    "MODELO": "FAROL PRINCIPAL",
+    "POSIÇÃO": "DIANTEIRO",
+    "LADO": "DIREITO"
+  },
+  "aplicacoes": [
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "GOL",
+      "motor": null,
+      "ano_inicio": 1995,
+      "ano_fim": 1999
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "SAVEIRO",
+      "motor": null,
+      "ano_inicio": 1995,
+      "ano_fim": 1999
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "PARATI ​​​​​​​",
+      "motor": null,
+      "ano_inicio": 1995,
+      "ano_fim": 1999
+    }
+  ],
+  "observacoes": [],
+  "descricao_html": "<div id=\"descricao\" class=\"prodBox p-3 border rounded bg-light area-tec mb-3\"><div class=\"\"><div class=\"\"><p> </p><p><span style=\"font-size:16px;\"><strong>MARCA</strong>: ARTEB</span></p><p><span style=\"font-size:16px;\"><strong>CÓDIGO DO FABRICANTE</strong>: 0160200 </span></p><p><span style=\"font-size:16px;\"><strong>CÓDIGO DE BARRAS: </strong>7896482512802</span></p><hr><p><span style=\"font-size:16px;\"><strong>FAROL PRINCIPAL 0160200 </strong><strong data-end=\"221\" data-start=\"154\">&#8211; FICHA TÉCNICA:</strong></span></p><p><span style=\"font-size:16px;\"><strong data-end=\"221\" data-start=\"154\">MODELO: </strong>FAROL PRINCIPAL</span></p><p><span style=\"font-size:16px;\"><strong>POSIÇÃO: </strong>DIANTEIRO</span></p><p><span style=\"font-size:16px;\"><strong>LADO</strong>: DIREITO</span></p><hr><p><span style=\"font-size:16px;\"><strong>APLICAÇÃO:</strong></span></p><p><span style=\"font-size:16px;\"><strong>VOLKSWAGEN </strong></span></p><p><span style=\"font-size:16px;\"><strong>GOL </strong>(DESDE 1995 ATÉ 1999)</span></p><p><span style=\"font-size:16px;\"><strong>SAVEIRO </strong>(DESDE 1995 ATÉ 1999)</span></p><p><span style=\"font-size:16px;\"><strong>PARATI </strong>&#8203;&#8203;&#8203;&#8203;&#8203;&#8203;&#8203;(DESDE 1995 ATÉ 1999)</span></p></div></div></div>",
+  "imagens": [
+    {
+      "arquivo": "foto_1.png",
+      "url": "https://images.tcdn.com.br/img/img_prod/945233/farol_volkswagen_gol_20151_1_f60a82718e7082d45fab584c94ef9e50.png",
+      "principal": true
+    },
+    {
+      "arquivo": "foto_2.png",
+      "url": "https://images.tcdn.com.br/img/img_prod/945233/farol_volkswagen_gol_20151_2_cfee4e56e4ffc0e42e70a2b41e764f13.png",
+      "principal": false
+    },
+    {
+      "arquivo": "foto_3.png",
+      "url": "https://images.tcdn.com.br/img/img_prod/945233/farol_volkswagen_gol_3_20251209105825_b6d73f6a97fb.png",
+      "principal": false
+    }
+  ],
+  "url_origem": "https://www.auriautopecas.com.br/acessorios/farol-0160200"
+}

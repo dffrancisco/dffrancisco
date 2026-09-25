@@ -1,0 +1,72 @@
+{
+  "nome": "FAROL PRINCIPAL 0160699 ARTEB - CHEVROLET VECTRA",
+  "descricao_curta": "Farol Arteb 0160699 para Chevrolet Vectra, com excelente iluminação, durabilidade e encaixe perfeito.",
+  "marca": "Arteb",
+  "codigo_fabricante": "0160699",
+  "ean": "7896482543813",
+  "sku": "14395",
+  "referencia": "26226",
+  "categoria": "ACESSORIOS",
+  "preco": 580.0,
+  "moeda": "BRL",
+  "disponivel": true,
+  "ficha_tecnica": {
+    "ACABAMENTO": "MÁSCARA NEGRA",
+    "LADO": "ESQUERDO",
+    "MATERIAL DA LENTE": "ACRÍLICO",
+    "MODELO": "FOCO DUPLO",
+    "POSIÇÃO": "DIANTEIRO",
+    "TIPO DE LÂMPADA": "H1/ HB4",
+    "TIPO DE LENTE": "RAIADA"
+  },
+  "aplicacoes": [
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "VECTRA ELEGANCE NLEV",
+      "motor": "X20XE 2.0 L 8V SOHC L4",
+      "ano_inicio": 2006,
+      "ano_fim": 2008
+    },
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "VECTRA ELITE",
+      "motor": "FLEXPOWER 2.4 L 16V DOHC L4",
+      "ano_inicio": 2006,
+      "ano_fim": 2008
+    },
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "VECTRA ELITE",
+      "motor": "X20XE 2.0 L 8V SOHC L4",
+      "ano_inicio": 2006,
+      "ano_fim": 2008
+    },
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "VECTRA EXPRESSION",
+      "motor": "X20XE 2.0 L 8V SOHC L4",
+      "ano_inicio": 2006,
+      "ano_fim": 2008
+    }
+  ],
+  "observacoes": [],
+  "descricao_html": "<div id=\"descricao\" class=\"prodBox p-3 border rounded bg-light area-tec mb-3\"><div class=\"\"><div class=\"\"><p> </p><p><span style=\"font-size:16px;\"><strong>MARCA</strong>: ARTEB</span></p><p><span style=\"font-size:16px;\"><strong>CÓDIGO DO FABRICANTE</strong>: 0160699 </span></p><p><span style=\"font-size:16px;\"><strong>CÓDIGO DE BARRAS: </strong>7896482543813</span></p><hr><p><span style=\"font-size:16px;\"><strong>FAROL PRINCIPAL 0160699 ARTEB </strong><strong data-end=\"221\" data-start=\"154\">&#8211;  FICHA TÉCNICA:</strong></span></p><p><span style=\"font-size:16px;\"><strong>ACABAMENTO</strong>: MÁSCARA NEGRA</span></p><p><span style=\"font-size:16px;\"><strong>LADO</strong>: ESQUERDO</span></p><p><span style=\"font-size:16px;\"><strong>MATERIAL DA LENTE</strong>: ACRÍLICO</span></p><p><span style=\"font-size:16px;\"><strong>MODELO</strong>: FOCO DUPLO</span></p><p><span style=\"font-size:16px;\"><strong>POSIÇÃO</strong>: DIANTEIRO</span></p><p><span style=\"font-size:16px;\"><strong>TIPO DE LÂMPADA</strong>: H1/ HB4</span></p><p><span style=\"font-size:16px;\"><strong>TIPO DE LENTE</strong>: RAIADA</span></p><hr><p><span style=\"font-size:16px;\"><strong>APLICAÇÃO:</strong></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">CHEVROLET</span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">VECTRA ELEGANCE NLEV</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, X20XE 2.0 L 8V SOHC L4, </span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2006 ATÉ 2008)</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">VECTRA ELITE</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, FLEXPOWER 2.4 L 16V DOHC L4, </span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2006 ATÉ 2008)</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">VECTRA ELITE</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, X20XE 2.0 L 8V SOHC L4, </span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2006 ATÉ 2008)</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"font-size:16px;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">VECTRA EXPRESSION</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, X20XE 2.0 L 8V SOHC L4, </span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2006 ATÉ 2008)</span></span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"font-family:Arial,sans-serif\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></p></div></div></div>",
+  "imagens": [
+    {
+      "arquivo": "foto_1.png",
+      "url": "https://images.tcdn.com.br/img/img_prod/945233/farol_gm_vectra_14395_1_ca76f0b5e127e09eae46bc3b626408a6.png",
+      "principal": true
+    },
+    {
+      "arquivo": "foto_2.jpg",
+      "url": "https://images.tcdn.com.br/img/img_prod/945233/farol_gm_vectra_2_20251206114819_9ce8465bc84b.jpg",
+      "principal": false
+    },
+    {
+      "arquivo": "foto_3.jpg",
+      "url": "https://images.tcdn.com.br/img/img_prod/945233/farol_gm_vectra_3_20251206114819_8592a86945c2.jpg",
+      "principal": false
+    }
+  ],
+  "url_origem": "https://www.auriautopecas.com.br/acessorios/farol-0160699"
+}

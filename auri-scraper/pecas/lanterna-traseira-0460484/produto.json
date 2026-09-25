@@ -1,0 +1,47 @@
+{
+  "nome": "LANTERNA TRASEIRA LD FUME DARK 0460484 - VOLKSWAGEN GOL G6",
+  "descricao_curta": "Lanterna traseira direita com acabamento fume dark para Volkswagen Gol G6, garantindo segurança e estilo. Peça resistente e compatível, ideal para reposição e manutenção do seu veículo.",
+  "marca": "Arteb",
+  "codigo_fabricante": "0460484",
+  "ean": "7896482549396",
+  "sku": "20109",
+  "referencia": "90078",
+  "categoria": "ACESSORIOS",
+  "preco": 420.25,
+  "moeda": "BRL",
+  "disponivel": true,
+  "ficha_tecnica": {
+    "LADO": "DIREITO",
+    "POSIÇÃO": "TRASEIRA",
+    "MODELO": "FUMÊ DARK"
+  },
+  "aplicacoes": [
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "GOL G6",
+      "motor": null,
+      "ano_inicio": 2013,
+      "ano_fim": 2016
+    }
+  ],
+  "observacoes": [],
+  "descricao_html": "<div id=\"descricao\" class=\"prodBox p-3 border rounded bg-light area-tec mb-3\"><div class=\"\"><div class=\"\"><p> </p><p><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><strong>MARCA: </strong>ARTEB<br><strong>CÓDIGO DO FABRICANTE: </strong>0460484<br><strong>CÓDIGO DE BARRAS: </strong>7896482549396</span></span></span></p><hr><p><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><strong>LANTERNA ARTEB 0460484 - FICHA TÉCNICA:</strong></span></span></span></p><p><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><strong>LADO:</strong> DIREITO</span></span></span></p><p><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><strong>POSIÇÃO: </strong>TRASEIRA</span></span></span></p><p><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><strong>MODELO</strong>: FUMÊ DARK</span></span></span></p><hr><p><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><strong>APLICAÇÃO:</strong></span></span></span></p><p><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><strong>VOLKSWAGEN</strong></span></span></span></p><p><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><strong>GOL </strong>G6 <strong>2013<br>\nGOL </strong>G6 <strong>2014<br>\nGOL </strong>G6 <strong>2015<br>\nGOL </strong>G6 <strong>2016</strong></span></span></span></p></div></div></div>",
+  "imagens": [
+    {
+      "arquivo": "foto_1.jpg",
+      "url": "https://images.tcdn.com.br/img/img_prod/945233/lanterna_traseira_volkswagen_gol_g6_1_20260525163914_f159d0235cb2.jpg",
+      "principal": true
+    },
+    {
+      "arquivo": "foto_2.jpg",
+      "url": "https://images.tcdn.com.br/img/img_prod/945233/lanterna_traseira_volkswagen_gol_g6_2_20260525163914_0e5637019294.jpg",
+      "principal": false
+    },
+    {
+      "arquivo": "foto_3.jpg",
+      "url": "https://images.tcdn.com.br/img/img_prod/945233/lanterna_traseira_volkswagen_gol_g6_3_20260525163914_41613c9ce555.jpg",
+      "principal": false
+    }
+  ],
+  "url_origem": "https://www.auriautopecas.com.br/acessorios/lanterna-traseira-0460484"
+}

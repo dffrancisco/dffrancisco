@@ -1,0 +1,43 @@
+{
+  "nome": "LANTERNA TRASEIRA GM MONTANA",
+  "descricao_curta": null,
+  "marca": "Arteb",
+  "codigo_fabricante": "0460450",
+  "ean": "7896482547231",
+  "sku": "18255",
+  "referencia": "70518",
+  "categoria": "ACESSORIOS",
+  "preco": 348.0,
+  "moeda": "BRL",
+  "disponivel": true,
+  "ficha_tecnica": {
+    "SEGMENTO": "LANTERNA",
+    "LADO": "DIREITO"
+  },
+  "aplicacoes": [
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "MONTANA",
+      "motor": null,
+      "ano_inicio": 2011,
+      "ano_fim": 2017
+    }
+  ],
+  "observacoes": [
+    "FUMÊ"
+  ],
+  "descricao_html": "<div id=\"descricao\" class=\"prodBox p-3 border rounded bg-light area-tec mb-3\"><div class=\"\"><div class=\"\"><p><strong><span style=\"color:#333333;\"><span style=\"font-size:18px;\">LANTERNA TRASEIRA GM MONTANA</span></span></strong></p><p> </p><p><strong><span style=\"font-size:18px;\">Informações técnicas</span></strong></p><hr><p><span style=\"font-size:18px;\"><strong>Marca:</strong><span style=\"color:#666666;\">Arteb</span><br><strong>Código do Fabricante: </strong><span style=\"color:#666666;\"><span style=\"font-family:arial,helvetica,sans-serif;\">0460450</span></span></span><br><span style=\"font-size:18px;\"><strong>Segmento: </strong><span style=\"color:#666666;\">Lanterna</span><br><strong>Código de Barras: </strong><span style=\"color:#666666;\">7896482547231</span></span><br><span style=\"font-size:18px;\"><strong>Lado:</strong><span style=\"color:#666666;\">Direito</span></span></p><hr><p><strong><span style=\"font-size:18px;\">APLICAÇÃO:</span></strong></p><hr><p><span style=\"color:#666666;\"><span style=\"font-size:18px;\">(FUMÊ)<br>\nGM MONTANA 2011<br>\nGM MONTANA 2012<br>\nGM MONTANA 2013<br>\nGM MONTANA 2014<br>\nGM MONTANA 2015<br>\nGM MONTANA 2016<br>\nGM MONTANA 2017</span></span></p><hr><p style=\"font-family: calibri, sans-serif; box-sizing: border-box; outline: 0px; border: 0px; padding: 0px; position: relative; z-index: 0; margin: 5px 0px 0px; width: auto; color: rgb(0, 0, 0); font-size: 14px;\"> </p></div></div></div>",
+  "imagens": [
+    {
+      "arquivo": "foto_1.png",
+      "url": "https://images.tcdn.com.br/img/img_prod/945233/lanterna_traseira_gm_montana_18255_1_6c3054f9e6f80f8409594bceb2f09bfd.png",
+      "principal": true
+    },
+    {
+      "arquivo": "foto_2.png",
+      "url": "https://images.tcdn.com.br/img/img_prod/945233/lanterna_traseira_gm_montana_18255_2_10c59295e81269a8682c1f31de9333b0.png",
+      "principal": false
+    }
+  ],
+  "url_origem": "https://www.auriautopecas.com.br/acessorios/lanterna-traseira-0460450"
+}

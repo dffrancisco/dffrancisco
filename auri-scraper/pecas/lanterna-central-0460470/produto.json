@@ -1,0 +1,325 @@
+{
+  "nome": "LANTERNA TRASEIRA LD 0460470 - HYUNDAI HB20",
+  "descricao_curta": "Compre lanterna traseira LD 0460470 original para Hyundai HB20, garantindo segurança e estilo. Produto resistente, com encaixe preciso e qualidade certificada para reposição eficiente.",
+  "marca": "Arteb",
+  "codigo_fabricante": "0460470",
+  "ean": "7896482548962",
+  "sku": "8979",
+  "referencia": "139198",
+  "categoria": "ACESSORIOS",
+  "preco": 225.0,
+  "moeda": "BRL",
+  "disponivel": true,
+  "ficha_tecnica": {
+    "LADO": "DIREITO"
+  },
+  "aplicacoes": [
+    {
+      "montadora": "HYUNDAI",
+      "veiculo": "HB20 COMFORT",
+      "motor": "GAMMA 1.6 L 16V DOHC L4",
+      "ano_inicio": 2012,
+      "ano_fim": 2015
+    },
+    {
+      "montadora": "HYUNDAI",
+      "veiculo": "HB20 COMFORT",
+      "motor": "KAPPA 1.0 L 12V DOHC L3",
+      "ano_inicio": 2012,
+      "ano_fim": 2015
+    },
+    {
+      "montadora": "HYUNDAI",
+      "veiculo": "HB20 COMFORT",
+      "motor": "KAPPA 1.0 L 12V DOHC L3",
+      "ano_inicio": 2016,
+      "ano_fim": 2018
+    },
+    {
+      "montadora": "HYUNDAI",
+      "veiculo": "HB20 COMFORT PLUS",
+      "motor": "KAPPA 1.0 L 12V DOHC L3",
+      "ano_inicio": 2012,
+      "ano_fim": 2015
+    },
+    {
+      "montadora": "HYUNDAI",
+      "veiculo": "HB20 COMFORT PLUS",
+      "motor": "KAPPA 1.0 L 12V DOHC L3",
+      "ano_inicio": 2016,
+      "ano_fim": 2018
+    },
+    {
+      "montadora": "HYUNDAI",
+      "veiculo": "HB20 COMFORT PLUS",
+      "motor": "GAMMA 1.6 L 16V DOHC L4",
+      "ano_inicio": 2012,
+      "ano_fim": 2015
+    },
+    {
+      "montadora": "HYUNDAI",
+      "veiculo": "HB20 COMFORT PLUS",
+      "motor": "GAMMA 1.6 L 16V DOHC L4",
+      "ano_inicio": 2016,
+      "ano_fim": 2018
+    },
+    {
+      "montadora": "HYUNDAI",
+      "veiculo": "HB20 COMFORT PLUS AT",
+      "motor": "GAMMA 1.6 L 16V DOHC L4",
+      "ano_inicio": 2016,
+      "ano_fim": 2018
+    },
+    {
+      "montadora": "HYUNDAI",
+      "veiculo": "HB20 COMFORT STYLE",
+      "motor": "KAPPA 1.0 L 12V DOHC L3",
+      "ano_inicio": 2012,
+      "ano_fim": 2015
+    },
+    {
+      "montadora": "HYUNDAI",
+      "veiculo": "HB20 COMFORT STYLE",
+      "motor": "KAPPA 1.0 L 12V DOHC L3",
+      "ano_inicio": 2016,
+      "ano_fim": 2018
+    },
+    {
+      "montadora": "HYUNDAI",
+      "veiculo": "HB20 COMFORT STYLE",
+      "motor": "GAMMA 1.6 L 16V DOHC L4",
+      "ano_inicio": 2016,
+      "ano_fim": 2018
+    },
+    {
+      "montadora": "HYUNDAI",
+      "veiculo": "HB20 COMFORT STYLE AT",
+      "motor": "GAMMA 1.6 L 16V DOHC L4",
+      "ano_inicio": 2012,
+      "ano_fim": 2015
+    },
+    {
+      "montadora": "HYUNDAI",
+      "veiculo": "HB20 COMFORT STYLE AT",
+      "motor": "GAMMA 1.6 L 16V DOHC L4",
+      "ano_inicio": 2016,
+      "ano_fim": 2018
+    },
+    {
+      "montadora": "HYUNDAI",
+      "veiculo": "HB20 COMFORT STYLE TURBO",
+      "motor": "KAPPA T-GDI 1.0 L 12V DOHC L3",
+      "ano_inicio": 2016,
+      "ano_fim": 2018
+    },
+    {
+      "montadora": "HYUNDAI",
+      "veiculo": "HB20 CONFORT STYLE",
+      "motor": "GAMMA 1.6 L 16V DOHC L4",
+      "ano_inicio": 2012,
+      "ano_fim": 2015
+    },
+    {
+      "montadora": "HYUNDAI",
+      "veiculo": "HB20 COPA DO MUNDO FIFA",
+      "motor": "GAMMA 1.6 L 16V DOHC L4",
+      "ano_inicio": 2014,
+      "ano_fim": 2015
+    },
+    {
+      "montadora": "HYUNDAI",
+      "veiculo": "HB20 COPA DO MUNDO FIFA",
+      "motor": "KAPPA 1.0 L 12V DOHC L3",
+      "ano_inicio": 2014,
+      "ano_fim": 2015
+    },
+    {
+      "montadora": "HYUNDAI",
+      "veiculo": "HB20 EDIÇÃO 5 ANOS",
+      "motor": "GAMMA 1.6 L 16V DOHC L4",
+      "ano_inicio": 2017,
+      "ano_fim": 2018
+    },
+    {
+      "montadora": "HYUNDAI",
+      "veiculo": "HB20 EDIÇÃO 5 ANOS",
+      "motor": "KAPPA 1.0 L 12V DOHC L3",
+      "ano_inicio": 2017,
+      "ano_fim": 2018
+    },
+    {
+      "montadora": "HYUNDAI",
+      "veiculo": "HB20 FOR YOU",
+      "motor": "KAPPA 1.0 L 12V DOHC L3",
+      "ano_inicio": 2014,
+      "ano_fim": 2015
+    },
+    {
+      "montadora": "HYUNDAI",
+      "veiculo": "HB20 OCEAN",
+      "motor": "KAPPA 1.0 L 12V DOHC L3",
+      "ano_inicio": 2016,
+      "ano_fim": 2018
+    },
+    {
+      "montadora": "HYUNDAI",
+      "veiculo": "HB20 OCEAN",
+      "motor": "GAMMA 1.6 L 16V DOHC L4",
+      "ano_inicio": 2016,
+      "ano_fim": 2018
+    },
+    {
+      "montadora": "HYUNDAI",
+      "veiculo": "HB20 PREMIUM",
+      "motor": "GAMMA 1.6 L 16V DOHC L4",
+      "ano_inicio": 2012,
+      "ano_fim": 2015
+    },
+    {
+      "montadora": "HYUNDAI",
+      "veiculo": "HB20 PREMIUM AT",
+      "motor": "GAMMA 1.6 L 16V DOHC L4",
+      "ano_inicio": 2016,
+      "ano_fim": 2018
+    },
+    {
+      "montadora": "HYUNDAI",
+      "veiculo": "HB20 R SPEC",
+      "motor": "GAMMA 1.6 L 16V DOHC L4",
+      "ano_inicio": 2016,
+      "ano_fim": 2018
+    },
+    {
+      "montadora": "HYUNDAI",
+      "veiculo": "HB20 R SPEC AT",
+      "motor": "GAMMA 1.6 L 16V DOHC L4",
+      "ano_inicio": 2016,
+      "ano_fim": 2018
+    },
+    {
+      "montadora": "HYUNDAI",
+      "veiculo": "HB20 R SPEC LIMITED",
+      "motor": "GAMMA 1.6 L 16V DOHC L4",
+      "ano_inicio": 2018,
+      "ano_fim": 2018
+    },
+    {
+      "montadora": "HYUNDAI",
+      "veiculo": "HB20 SPICY",
+      "motor": "GAMMA 1.6 L 16V DOHC L4",
+      "ano_inicio": 2015,
+      "ano_fim": 2015
+    },
+    {
+      "montadora": "HYUNDAI",
+      "veiculo": "HB20 SPICY",
+      "motor": "KAPPA 1.0 L 12V DOHC L3",
+      "ano_inicio": 2015,
+      "ano_fim": 2015
+    },
+    {
+      "montadora": "HYUNDAI",
+      "veiculo": "HB20 X PREMIUM",
+      "motor": "GAMMA 1.6 L 16V DOHC L4",
+      "ano_inicio": 2012,
+      "ano_fim": 2015
+    },
+    {
+      "montadora": "HYUNDAI",
+      "veiculo": "HB20 X PREMIUM",
+      "motor": "GAMMA 1.6 L 16V DOHC L4",
+      "ano_inicio": 2016,
+      "ano_fim": 2018
+    },
+    {
+      "montadora": "HYUNDAI",
+      "veiculo": "HB20 X PREMIUN",
+      "motor": "GAMMA 1.6 L 16V DOHC L4",
+      "ano_inicio": 2013,
+      "ano_fim": 2014
+    },
+    {
+      "montadora": "HYUNDAI",
+      "veiculo": "HB20 X PREMIUN AT.",
+      "motor": "GAMMA 1.6 L 16V DOHC L4",
+      "ano_inicio": 2013,
+      "ano_fim": 2015
+    },
+    {
+      "montadora": "HYUNDAI",
+      "veiculo": "HB20 X PREMIUN BLUENAV AT.",
+      "motor": "GAMMA 1.6 L 16V DOHC L4",
+      "ano_inicio": 2014,
+      "ano_fim": 2015
+    },
+    {
+      "montadora": "HYUNDAI",
+      "veiculo": "HB20 X STYLE",
+      "motor": "GAMMA 1.6 L 16V DOHC L4",
+      "ano_inicio": 2013,
+      "ano_fim": 2015
+    },
+    {
+      "montadora": "HYUNDAI",
+      "veiculo": "HB20 X STYLE",
+      "motor": "GAMMA 1.6 L 16V DOHC L4",
+      "ano_inicio": 2016,
+      "ano_fim": 2018
+    },
+    {
+      "montadora": "HYUNDAI",
+      "veiculo": "HB20 X STYLE AT",
+      "motor": "GAMMA 1.6 L 16V DOHC L4",
+      "ano_inicio": 2012,
+      "ano_fim": 2015
+    },
+    {
+      "montadora": "HYUNDAI",
+      "veiculo": "HB20 X STYLE AT.",
+      "motor": "GAMMA 1.6 L 16V DOHC L4",
+      "ano_inicio": 2012,
+      "ano_fim": 2015
+    },
+    {
+      "montadora": "HYUNDAI",
+      "veiculo": "HB20 X STYLE BLUENAV",
+      "motor": "GAMMA 1.6 L 16V DOHC L4",
+      "ano_inicio": 2014,
+      "ano_fim": 2015
+    },
+    {
+      "montadora": "HYUNDAI",
+      "veiculo": "HB20 X STYLE BLUENAV AT.",
+      "motor": "GAMMA 1.6 L 16V DOHC L4",
+      "ano_inicio": 2014,
+      "ano_fim": 2015
+    },
+    {
+      "montadora": "HYUNDAI",
+      "veiculo": "HB20 X TURBO",
+      "motor": "KAPPA T-GDI 1.0 L 12V DOHC L3",
+      "ano_inicio": 2016,
+      "ano_fim": 2016
+    }
+  ],
+  "observacoes": [],
+  "descricao_html": "<div id=\"descricao\" class=\"prodBox p-3 border rounded bg-light area-tec mb-3\"><div class=\"\"><div class=\"\"><p> </p><p><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><strong>MARCA</strong>: ARTEB</span></span></span></p><p><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><strong>CÓDIGO DO FABRICANTE</strong>: 0460470</span></span></span></p><p><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><strong>CÓDIGO DE BARRAS: </strong>7896482548962</span></span></span></p><hr><p><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><strong>LANTERNA TRASEIRA 0460470</strong> <strong>ARTEB </strong><strong data-end=\"221\" data-start=\"154\">&#8211;  FICHA TÉCNICA:</strong></span></span></span></p><p><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><strong>LADO: </strong>DIREITO</span></span></span></p><hr><p><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><strong>APLICAÇÃO:</strong></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">HYUNDAI</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">HB20 COMFORT</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, GAMMA 1.6 L 16V DOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2012 ATÉ 2015)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">HB20 COMFORT</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, KAPPA 1.0 L 12V DOHC L3, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2012 ATÉ 2015)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">HB20 COMFORT</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, KAPPA 1.0 L 12V DOHC L3, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2016 ATÉ 2018)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">HB20 COMFORT PLUS</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, KAPPA 1.0 L 12V DOHC L3, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2012 ATÉ 2015)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">HB20 COMFORT PLUS</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, KAPPA 1.0 L 12V DOHC L3, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2016 ATÉ 2018)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">HB20 COMFORT PLUS</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, GAMMA 1.6 L 16V DOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2012 ATÉ 2015)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">HB20 COMFORT PLUS</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, GAMMA 1.6 L 16V DOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2016 ATÉ 2018)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">HB20 COMFORT PLUS AT</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, GAMMA 1.6 L 16V DOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2016 ATÉ 2018)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">HB20 COMFORT STYLE</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, KAPPA 1.0 L 12V DOHC L3, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2012 ATÉ 2015)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">HB20 COMFORT STYLE</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, KAPPA 1.0 L 12V DOHC L3, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2016 ATÉ 2018)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">HB20 COMFORT STYLE</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, GAMMA 1.6 L 16V DOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2016 ATÉ 2018)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">HB20 COMFORT STYLE AT</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, GAMMA 1.6 L 16V DOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2012 ATÉ 2015)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">HB20 COMFORT STYLE AT</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, GAMMA 1.6 L 16V DOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2016 ATÉ 2018)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">HB20 COMFORT STYLE TURBO</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, KAPPA T-GDI 1.0 L 12V DOHC L3, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2016 ATÉ 2018)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">HB20 CONFORT STYLE</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, GAMMA 1.6 L 16V DOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2012 ATÉ 2015)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">HB20 COPA DO MUNDO FIFA</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, GAMMA 1.6 L 16V DOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2014 ATÉ 2015)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">HB20 COPA DO MUNDO FIFA</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, KAPPA 1.0 L 12V DOHC L3, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2014 ATÉ 2015)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">HB20 EDIÇÃO 5 ANOS</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, GAMMA 1.6 L 16V DOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2017 ATÉ 2018)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">HB20 EDIÇÃO 5 ANOS</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, KAPPA 1.0 L 12V DOHC L3, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2017 ATÉ 2018)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">HB20 FOR YOU</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, KAPPA 1.0 L 12V DOHC L3, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2014 ATÉ 2015)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">HB20 OCEAN</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, KAPPA 1.0 L 12V DOHC L3, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2016 ATÉ 2018)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">HB20 OCEAN</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, GAMMA 1.6 L 16V DOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2016 ATÉ 2018)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">HB20 PREMIUM</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, GAMMA 1.6 L 16V DOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2012 ATÉ 2015)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">HB20 PREMIUM AT</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, GAMMA 1.6 L 16V DOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2016 ATÉ 2018)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">HB20 R SPEC</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, GAMMA 1.6 L 16V DOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2016 ATÉ 2018)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">HB20 R SPEC AT</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, GAMMA 1.6 L 16V DOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2016 ATÉ 2018)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">HB20 R SPEC LIMITED</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, GAMMA 1.6 L 16V DOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2018 ATÉ 2018)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">HB20 SPICY</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, GAMMA 1.6 L 16V DOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2015 ATÉ 2015)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">HB20 SPICY</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, KAPPA 1.0 L 12V DOHC L3, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2015 ATÉ 2015)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">HB20 X PREMIUM</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, GAMMA 1.6 L 16V DOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2012 ATÉ 2015)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">HB20 X PREMIUM</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, GAMMA 1.6 L 16V DOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2016 ATÉ 2018)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">HB20 X PREMIUN</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, GAMMA 1.6 L 16V DOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2013 ATÉ 2014)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">HB20 X PREMIUN AT.</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, GAMMA 1.6 L 16V DOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2013 ATÉ 2015)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">HB20 X PREMIUN BLUENAV AT.</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, GAMMA 1.6 L 16V DOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2014 ATÉ 2015)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">HB20 X STYLE</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, GAMMA 1.6 L 16V DOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2013 ATÉ 2015)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">HB20 X STYLE</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, GAMMA 1.6 L 16V DOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2016 ATÉ 2018)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">HB20 X STYLE AT</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, GAMMA 1.6 L 16V DOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2012 ATÉ 2015)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">HB20 X STYLE AT.</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, GAMMA 1.6 L 16V DOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2012 ATÉ 2015)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">HB20 X STYLE BLUENAV</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, GAMMA 1.6 L 16V DOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2014 ATÉ 2015)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">HB20 X STYLE BLUENAV AT.</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, GAMMA 1.6 L 16V DOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2014 ATÉ 2015)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">HB20 X TURBO</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, KAPPA T-GDI 1.0 L 12V DOHC L3, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2016 ATÉ 2016)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p></div></div></div>",
+  "imagens": [
+    {
+      "arquivo": "foto_1.png",
+      "url": "https://images.tcdn.com.br/img/img_prod/945233/lanterna_central_hyundai_hb20_hatch_hyundai_hb20x_hatch_8979_1_33767376151b383ef453765343d8a403.png",
+      "principal": true
+    },
+    {
+      "arquivo": "foto_2.png",
+      "url": "https://images.tcdn.com.br/img/img_prod/945233/lanterna_central_hyundai_hb20_hatch_hyundai_hb20x_hatch_8979_2_a7deb5fe12d7f935de5a92cbe7df155b.png",
+      "principal": false
+    },
+    {
+      "arquivo": "foto_3.jpg",
+      "url": "https://images.tcdn.com.br/img/img_prod/945233/lanterna_central_hyundai_hb20_hatch_hyundai_hb20x_3_20251215164005_57f6762ef5d4.jpg",
+      "principal": false
+    }
+  ],
+  "url_origem": "https://www.auriautopecas.com.br/acessorios/lanterna-central-0460470"
+}

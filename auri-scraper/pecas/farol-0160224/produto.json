@@ -1,0 +1,55 @@
+{
+  "nome": "FAROL VOLKSWAGEN GOL VOLKSWAGEN PARATI VOLKSWAGEN SAVEIRO",
+  "descricao_curta": null,
+  "marca": "Arteb",
+  "codigo_fabricante": "0160224",
+  "ean": "7896482527110",
+  "sku": "20161",
+  "referencia": "9031",
+  "categoria": "ACESSORIOS",
+  "preco": 400.0,
+  "moeda": "BRL",
+  "disponivel": true,
+  "ficha_tecnica": {
+    "SEGMENTO": "FAROL",
+    "LADO": "DIREITO"
+  },
+  "aplicacoes": [
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "GOL GIII",
+      "motor": null,
+      "ano_inicio": 1999,
+      "ano_fim": 2005
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "PARATI GIII",
+      "motor": null,
+      "ano_inicio": 1999,
+      "ano_fim": 2005
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "SAVEIRO GIII",
+      "motor": null,
+      "ano_inicio": 2000,
+      "ano_fim": 2005
+    }
+  ],
+  "observacoes": [],
+  "descricao_html": "<div id=\"descricao\" class=\"prodBox p-3 border rounded bg-light area-tec mb-3\"><div class=\"\"><div class=\"\"><p><strong><span style=\"color:#333333;\"><span style=\"font-size:18px;\"><span style=\"font-family:arial,helvetica,sans-serif;\">FAROL </span></span><span style=\"font-family: arial, helvetica, sans-serif; font-size: 18px;\">VOLKSWAGEN GOL VOLKSWAGEN PARATI VOLKSWAGEN SAVEIRO</span></span></strong></p><p> </p><p><strong><span style=\"font-size:18px;\"><span style=\"font-family:arial,helvetica,sans-serif;\">Informações técnicas</span></span></strong></p><hr><p><span style=\"font-size:18px;\"><span style=\"font-family:arial,helvetica,sans-serif;\"><strong>Marca:</strong><span style=\"color:#666666;\">Arteb</span><br><strong>Código do Fabricante: </strong><span style=\"color:#666666;\">0160224</span></span></span><br><span style=\"font-size:18px;\"><span style=\"font-family:arial,helvetica,sans-serif;\"><strong>Segmento:</strong><span style=\"color:#666666;\">FAROL</span><br><strong>Código de Barras: </strong><span style=\"color:#666666;\">7896482527110</span></span></span><br><span style=\"font-size:18px;\"><span style=\"font-family:arial,helvetica,sans-serif;\"><strong>Lado:</strong><span style=\"color:#666666;\">Direito </span></span></span></p><hr><p><strong><span style=\"font-size:18px;\"><span style=\"font-family:arial,helvetica,sans-serif;\">APLICAÇÃO:</span></span></strong></p><hr><p><span style=\"color:#666666;\"><span style=\"font-size:18px;\"><span style=\"font-family:arial,helvetica,sans-serif;\">VOLKSWAGEN GOL GIII 1999<br>\nVOLKSWAGEN GOL GIII 2000<br>\nVOLKSWAGEN GOL GIII 2001<br>\nVOLKSWAGEN GOL GIII 2002<br>\nVOLKSWAGEN GOL GIII 2003<br>\nVOLKSWAGEN GOL GIII 2004<br>\nVOLKSWAGEN GOL GIII 2005</span></span></span></p><p><span style=\"color:#666666;\"><span style=\"font-size:18px;\"><span style=\"font-family:arial,helvetica,sans-serif;\">VOLKSWAGEN PARATI GIII 1999<br>\nVOLKSWAGEN PARATI GIII 2000<br>\nVOLKSWAGEN PARATI GIII 2001<br>\nVOLKSWAGEN PARATI GIII 2002<br>\nVOLKSWAGEN PARATI GIII 2003<br>\nVOLKSWAGEN PARATI GIII 2004<br>\nVOLKSWAGEN PARATI GIII 2005</span></span></span></p><p><span style=\"color:#666666;\"><span style=\"font-size:18px;\"><span style=\"font-family:arial,helvetica,sans-serif;\">VOLKSWAGEN SAVEIRO GIII 2000<br>\nVOLKSWAGEN SAVEIRO GIII 2001<br>\nVOLKSWAGEN SAVEIRO GIII 2002<br>\nVOLKSWAGEN SAVEIRO GIII 2003<br>\nVOLKSWAGEN SAVEIRO GIII 2004<br>\nVOLKSWAGEN SAVEIRO GIII 2005</span></span></span></p><hr><p style=\"font-family: calibri, sans-serif; box-sizing: border-box; outline: 0px; border: 0px; padding: 0px; position: relative; z-index: 0; margin: 5px 0px 0px; width: auto; color: rgb(0, 0, 0); font-size: 14px;\"> </p></div></div></div>",
+  "imagens": [
+    {
+      "arquivo": "foto_1.png",
+      "url": "https://images.tcdn.com.br/img/img_prod/945233/farol_volkswagen_gol_volkswagen_parati_volkswagen_saveiro_20161_1_ce75dbbac48c9dd0b95bc8497e98722d.png",
+      "principal": true
+    },
+    {
+      "arquivo": "foto_2.png",
+      "url": "https://images.tcdn.com.br/img/img_prod/945233/farol_volkswagen_gol_volkswagen_parati_volkswagen_saveiro_20161_2_78932158e1e2628de347f0d7b200e672.png",
+      "principal": false
+    }
+  ],
+  "url_origem": "https://www.auriautopecas.com.br/acessorios/farol-0160224"
+}

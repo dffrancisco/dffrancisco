@@ -1,0 +1,41 @@
+{
+  "nome": "LANTERNA TRASEIRA GM ASTRA HATCH",
+  "descricao_curta": null,
+  "marca": "Arteb",
+  "codigo_fabricante": "0460267",
+  "ean": "7896482534682",
+  "sku": "20273",
+  "referencia": "9192",
+  "categoria": "ACESSORIOS",
+  "preco": 232.0,
+  "moeda": "BRL",
+  "disponivel": true,
+  "ficha_tecnica": {
+    "SEGMENTO": "LANTERNA",
+    "LADO": "ESQUERDO"
+  },
+  "aplicacoes": [
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "ASTRA HATCH",
+      "motor": null,
+      "ano_inicio": 2003,
+      "ano_fim": 2011
+    }
+  ],
+  "observacoes": [],
+  "descricao_html": "<div id=\"descricao\" class=\"prodBox p-3 border rounded bg-light area-tec mb-3\"><div class=\"\"><div class=\"\"><p><strong><span style=\"color:#333333;\"><span style=\"font-size:18px;\"><span style=\"font-family:arial,helvetica,sans-serif;\">LANTERNA TRASEIRA </span></span><span style=\"font-family: arial, helvetica, sans-serif; font-size: 18px;\">GM ASTRA HATCH </span></span></strong></p><p> </p><p><strong><span style=\"font-size:18px;\"><span style=\"font-family:arial,helvetica,sans-serif;\">Informações técnicas</span></span></strong></p><hr><p><span style=\"font-size:18px;\"><span style=\"font-family:arial,helvetica,sans-serif;\"><strong>Marca:</strong> Arteb<br><strong>Código do Fabricante: </strong></span><span style=\"color:#666666;\">0460267</span></span><br><span style=\"font-size:18px;\"><span style=\"font-family:arial,helvetica,sans-serif;\"><strong>Segmento: </strong>Lanterna<br><strong>Código de Barras: </strong><span style=\"color:#666666;\">7896482534682</span></span></span><br><span style=\"font-size:18px;\"><span style=\"font-family:arial,helvetica,sans-serif;\"><strong>Lado: </strong>Esquerdo</span></span></p><hr><p><strong><span style=\"font-size:18px;\"><span style=\"font-family:arial,helvetica,sans-serif;\">APLICAÇÃO:</span></span></strong></p><hr><p><span style=\"color:#666666;\"><span style=\"font-size:18px;\"><span style=\"font-family:arial,helvetica,sans-serif;\">GM ASTRA HATCH 2003<br>\nGM ASTRA HATCH 2004<br>\nGM ASTRA HATCH 2005<br>\nGM ASTRA HATCH 2006<br>\nGM ASTRA HATCH 2007<br>\nGM ASTRA HATCH 2008<br>\nGM ASTRA HATCH 2009<br>\nGM ASTRA HATCH 2010<br>\nGM ASTRA HATCH 2011</span></span></span></p><hr><p style=\"font-family: calibri, sans-serif; box-sizing: border-box; outline: 0px; border: 0px; padding: 0px; position: relative; z-index: 0; margin: 5px 0px 0px; width: auto; color: rgb(0, 0, 0); font-size: 14px;\"> </p></div></div></div>",
+  "imagens": [
+    {
+      "arquivo": "foto_1.png",
+      "url": "https://images.tcdn.com.br/img/img_prod/945233/lanterna_traseira_gm_astra_hatch_20273_1_1d1d10d7c8b717a8cbb75c0602664cdc.png",
+      "principal": true
+    },
+    {
+      "arquivo": "foto_2.png",
+      "url": "https://images.tcdn.com.br/img/img_prod/945233/lanterna_traseira_gm_astra_hatch_20273_2_54876aec8133c24f64edcb52601d5a1d.png",
+      "principal": false
+    }
+  ],
+  "url_origem": "https://www.auriautopecas.com.br/acessorios/lanterna-traseira-0460267"
+}

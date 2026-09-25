@@ -1,0 +1,171 @@
+{
+  "nome": "LANTERNA TRASEIRA LD - VW CROSSFOX / FOX",
+  "descricao_curta": "Lanterna traseira direita para VW Crossfox e Fox com encaixe perfeito e alta durabilidade. Produto original que garante segurança e estilo para seu veículo.",
+  "marca": "Arteb",
+  "codigo_fabricante": "0460508",
+  "ean": "7896485248333",
+  "sku": "7893",
+  "referencia": "126109",
+  "categoria": "ACESSORIOS",
+  "preco": 389.5,
+  "moeda": "BRL",
+  "disponivel": true,
+  "ficha_tecnica": {
+    "LADO": "DIREITO"
+  },
+  "aplicacoes": [
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "CROSSFOX 1.6 16V",
+      "motor": "EA211 1.6 L 16V DOHC L4",
+      "ano_inicio": 2015,
+      "ano_fim": 2018
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "CROSSFOX I-MOTION",
+      "motor": "EA211 1.6 L 16V DOHC L4",
+      "ano_inicio": 2015,
+      "ano_fim": 2018
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "CROSSFOX URBAN WHITE",
+      "motor": "EA211 1.6 L 16V DOHC L4",
+      "ano_inicio": 2016,
+      "ano_fim": 2018
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "CROSSFOX URBAN WHITE I-MOTION",
+      "motor": "EA211 1.6 L 16V DOHC L4",
+      "ano_inicio": 2016,
+      "ano_fim": 2018
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "FOX BLUEMOTION",
+      "motor": "EA211 1.0 L 12V DOHC L3",
+      "ano_inicio": 2015,
+      "ano_fim": 2017
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "FOX COMFORTLINE",
+      "motor": "EA111 TEC 1.0 L 8V SOHC L4",
+      "ano_inicio": 2015,
+      "ano_fim": 2015
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "FOX COMFORTLINE",
+      "motor": "EA111 VHT 1.6 L 8V SOHC L4",
+      "ano_inicio": 2015,
+      "ano_fim": 2018
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "FOX COMFORTLINE I-MOTION",
+      "motor": "EA111 VHT 1.6 L 8V SOHC L4",
+      "ano_inicio": 2015,
+      "ano_fim": 2018
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "FOX CONNECT",
+      "motor": "EA111 VHT 1.6 L 8V SOHC L4",
+      "ano_inicio": 2017,
+      "ano_fim": 2018
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "FOX HIGHLINE",
+      "motor": "EA211 1.6 L 16V DOHC L4",
+      "ano_inicio": 2015,
+      "ano_fim": 2018
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "FOX HIGHLINE I-MOTION",
+      "motor": "EA211 1.6 L 16V DOHC L4",
+      "ano_inicio": 2015,
+      "ano_fim": 2018
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "FOX PEPPER",
+      "motor": "EA211 1.6 L 16V DOHC L4",
+      "ano_inicio": 2015,
+      "ano_fim": 2018
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "FOX PEPPER I-MOTION",
+      "motor": "EA211 1.6 L 16V DOHC L4",
+      "ano_inicio": 2015,
+      "ano_fim": 2018
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "FOX RUN",
+      "motor": "EA111 VHT 1.6 L 8V SOHC L4",
+      "ano_inicio": 2016,
+      "ano_fim": 2017
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "FOX TRACK",
+      "motor": "EA211 1.0 L 12V DOHC L3",
+      "ano_inicio": 2015,
+      "ano_fim": 2018
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "FOX TRENDLINE",
+      "motor": "EA111 TEC 1.0 L 8V SOHC L4",
+      "ano_inicio": 2015,
+      "ano_fim": 2015
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "FOX TRENDLINE",
+      "motor": "EA111 VHT 1.6 L 8V SOHC L4",
+      "ano_inicio": 2015,
+      "ano_fim": 2018
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "FOX XTREME",
+      "motor": "EA111 VHT 1.6 L 8V SOHC L4",
+      "ano_inicio": 2017,
+      "ano_fim": 2018
+    },
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "SPACEFOX",
+      "motor": null,
+      "ano_inicio": 2015,
+      "ano_fim": 2017
+    }
+  ],
+  "observacoes": [],
+  "descricao_html": "<div id=\"descricao\" class=\"prodBox p-3 border rounded bg-light area-tec mb-3\"><div class=\"\"><div class=\"\"><p> </p><p><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><strong>MARCA</strong>: ARTEB</span></span></span></p><p><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><strong>CÓDIGO DO FABRICANTE</strong>: 0460508 </span></span></span></p><p><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><strong>CÓDIGO DE BARRAS: </strong>7896485248333</span></span></span></p><hr><p><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><strong>LANTERNA TRASEIRA 0460508 </strong><strong>ARTEB </strong><strong data-end=\"221\" data-start=\"154\">&#8211;  FICHA TÉCNICA:</strong></span></span></span></p><p><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><strong>LADO: </strong>DIREITO</span></span></span></p><hr><p><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><strong>APLICAÇÃO:</strong></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">VOLKSWAGEN</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">CROSSFOX 1.6 16V</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, EA211 1.6 L 16V DOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2015 ATÉ 2018)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">CROSSFOX I-MOTION</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, EA211 1.6 L 16V DOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2015 ATÉ 2018)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">CROSSFOX URBAN WHITE</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, EA211 1.6 L 16V DOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2016 ATÉ 2018)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">CROSSFOX URBAN WHITE I-MOTION</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, EA211 1.6 L 16V DOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2016 ATÉ 2018)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">FOX BLUEMOTION</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, EA211 1.0 L 12V DOHC L3, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2015 ATÉ 2017)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">FOX COMFORTLINE</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, EA111 TEC 1.0 L 8V SOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2015 ATÉ 2015)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">FOX COMFORTLINE</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, EA111 VHT 1.6 L 8V SOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2015 ATÉ 2018)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">FOX COMFORTLINE I-MOTION</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, EA111 VHT 1.6 L 8V SOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2015 ATÉ 2018)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">FOX CONNECT</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, EA111 VHT 1.6 L 8V SOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2017 ATÉ 2018)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">FOX HIGHLINE</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, EA211 1.6 L 16V DOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2015 ATÉ 2018)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">FOX HIGHLINE I-MOTION</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, EA211 1.6 L 16V DOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2015 ATÉ 2018)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">FOX PEPPER</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, EA211 1.6 L 16V DOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2015 ATÉ 2018)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">FOX PEPPER I-MOTION</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, EA211 1.6 L 16V DOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2015 ATÉ 2018)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">FOX RUN</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, EA111 VHT 1.6 L 8V SOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2016 ATÉ 2017)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">FOX TRACK</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, EA211 1.0 L 12V DOHC L3, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2015 ATÉ 2018)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">FOX TRENDLINE</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, EA111 TEC 1.0 L 8V SOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2015 ATÉ 2015)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">FOX TRENDLINE</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, EA111 VHT 1.6 L 8V SOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2015 ATÉ 2018)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">FOX XTREME</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">, EA111 VHT 1.6 L 8V SOHC L4, </span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:700\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">(DESDE 2017 ATÉ 2018)</span></span></span></span></span><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">,</span></span></span></span></span></span></span></span></p><p style=\"line-height:1.38\"><span style=\"color:#000000;\"><span style=\"font-size:16px;\"><span style=\"font-family:Arial,Helvetica,sans-serif;\"><span style=\"font-variant: normal; white-space: pre-wrap;\"><span style=\"background-color:#ffffff\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\"><strong>SPACEFOX (DESDE 2015 ATÉ 2017)</strong></span></span></span></span></span></span></span></span></p></div></div></div>",
+  "imagens": [
+    {
+      "arquivo": "foto_1.png",
+      "url": "https://images.tcdn.com.br/img/img_prod/945233/lanterna_traseira_volkswagen_space_fox_7893_1_531ee2176ddd5f308924f11de6f7e81f.png",
+      "principal": true
+    },
+    {
+      "arquivo": "foto_2.png",
+      "url": "https://images.tcdn.com.br/img/img_prod/945233/lanterna_traseira_volkswagen_space_fox_7893_2_ae4042827e53c57ffa4c3b70d47f0272.png",
+      "principal": false
+    },
+    {
+      "arquivo": "foto_3.jpg",
+      "url": "https://images.tcdn.com.br/img/img_prod/945233/lanterna_traseira_volkswagen_space_fox_3_20251213112619_e2acf8124fa8.jpg",
+      "principal": false
+    }
+  ],
+  "url_origem": "https://www.auriautopecas.com.br/acessorios/lanterna-traseira-0460508"
+}

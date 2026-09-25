@@ -1,0 +1,50 @@
+{
+  "nome": "FAROL GM ONIX GM PRISMA",
+  "descricao_curta": null,
+  "marca": "Arteb",
+  "codigo_fabricante": "0160813",
+  "ean": "7896482549051",
+  "sku": "136153",
+  "referencia": "174744",
+  "categoria": "ACESSORIOS",
+  "preco": 513.0,
+  "moeda": "BRL",
+  "disponivel": true,
+  "ficha_tecnica": {
+    "SEGMENTO": "FAROL",
+    "LADO": "ESQUERDA"
+  },
+  "aplicacoes": [
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "ONIX",
+      "motor": null,
+      "ano_inicio": 2012,
+      "ano_fim": 2019
+    },
+    {
+      "montadora": "CHEVROLET",
+      "veiculo": "PRISMA",
+      "motor": null,
+      "ano_inicio": 2013,
+      "ano_fim": 2019
+    }
+  ],
+  "observacoes": [
+    "MOLD FUMÊ SMOKED"
+  ],
+  "descricao_html": "<div id=\"descricao\" class=\"prodBox p-3 border rounded bg-light area-tec mb-3\"><div class=\"\"><div class=\"\"><p><strong><span style=\"color:#333333;\"><span style=\"font-size:18px;\"><span style=\"font-family:arial,helvetica,sans-serif;\">FAROL </span></span><span style=\"font-family: arial, helvetica, sans-serif; font-size: 18px;\">GM ONIX GM PRISMA </span></span></strong></p><p> </p><p><strong><span style=\"font-size:18px;\"><span style=\"font-family:arial,helvetica,sans-serif;\">Informações técnicas</span></span></strong></p><hr><p><span style=\"font-size:18px;\"><span style=\"font-family:arial,helvetica,sans-serif;\"><strong>Marca: </strong><span style=\"color:#666666;\">Arteb</span><br><strong>Código do Fabricante:</strong></span><strong> </strong><span style=\"color:#666666;\">0160813</span></span><br><span style=\"font-size:18px;\"><span style=\"font-family:arial,helvetica,sans-serif;\"><strong>Segmento:</strong> Farol<br><strong><span style=\"color:#333333;\">Código de Barras: </span></strong><span style=\"color:#666666;\">7896482549051</span></span></span><br><span style=\"font-size:18px;\"><span style=\"font-family:arial,helvetica,sans-serif;\"><strong><span style=\"color:#333333;\">Lado:</span></strong> Esquerda</span></span></p><hr><p><strong><span style=\"font-size:18px;\"><span style=\"font-family:arial,helvetica,sans-serif;\">APLICAÇÃO:</span></span></strong></p><hr><p><span style=\"color:#666666;\"><span style=\"font-size:18px;\"><span style=\"font-family:arial,helvetica,sans-serif;\">(MOLD FUMÊ SMOKED)</span></span></span></p><hr><p><span style=\"color:#666666;\"><span style=\"font-size:18px;\"><span style=\"font-family:arial,helvetica,sans-serif;\">GM ONIX 2012<br>\nGM ONIX 2013<br>\nGM ONIX 2014<br>\nGM ONIX 2015<br>\nGM ONIX 2016<br>\nGM ONIX 2017<br>\nGM ONIX 2018<br>\nGM ONIX 2019</span></span></span></p><hr><p><span style=\"color:#666666;\"><span style=\"font-size:18px;\"><span style=\"font-family:arial,helvetica,sans-serif;\">GM PRISMA 2013<br>\nGM PRISMA 2014<br>\nGM PRISMA 2015<br>\nGM PRISMA 2016<br>\nGM PRISMA 2017<br>\nGM PRISMA 2018<br>\nGM PRISMA 2019</span></span></span></p><hr><p style=\"font-family: calibri, sans-serif; box-sizing: border-box; outline: 0px; border: 0px; padding: 0px; position: relative; z-index: 0; margin: 5px 0px 0px; width: auto; color: rgb(0, 0, 0); font-size: 14px;\"> </p></div></div></div>",
+  "imagens": [
+    {
+      "arquivo": "foto_1.png",
+      "url": "https://images.tcdn.com.br/img/img_prod/945233/farol_gm_onix_gm_prisma_136153_1_5b4e40b87cdb28641fc7bac776aa1d74.png",
+      "principal": true
+    },
+    {
+      "arquivo": "foto_2.png",
+      "url": "https://images.tcdn.com.br/img/img_prod/945233/farol_gm_onix_gm_prisma_136153_2_ab10294323f8577ac43ace7c3ac1bf67.png",
+      "principal": false
+    }
+  ],
+  "url_origem": "https://www.auriautopecas.com.br/farol-le-0160813"
+}

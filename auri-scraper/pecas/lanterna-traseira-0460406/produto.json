@@ -1,0 +1,47 @@
+{
+  "nome": "LANTERNA TRASEIRA LD 0460406 SAVEIRO",
+  "descricao_curta": "Lanterna traseira LD 0460406 compatível com Saveiro. Produto 100% original, resistente e fácil de instalar, garantindo segurança e visibilidade para seu veículo.",
+  "marca": "Arteb",
+  "codigo_fabricante": "0460406",
+  "ean": "7896482545350",
+  "sku": "19191",
+  "referencia": "82286",
+  "categoria": "ACESSORIOS",
+  "preco": 200.0,
+  "moeda": "BRL",
+  "disponivel": true,
+  "ficha_tecnica": {
+    "MODELO": "LATERNA TRASEIRA FUMÊ",
+    "POSIÇÃO": "TRASEIRO",
+    "LADO": "DIREITO"
+  },
+  "aplicacoes": [
+    {
+      "montadora": "VOLKSWAGEN",
+      "veiculo": "SAVEIRO G5/G6",
+      "motor": null,
+      "ano_inicio": 2010,
+      "ano_fim": 2016
+    }
+  ],
+  "observacoes": [],
+  "descricao_html": "<div id=\"descricao\" class=\"prodBox p-3 border rounded bg-light area-tec mb-3\"><div class=\"\"><div class=\"\"><p> </p><p><span style=\"font-size:16px;\"><strong>MARCA</strong>: ARTEB</span></p><p><span style=\"font-size:16px;\"><strong>CÓDIGO DO FABRICANTE</strong>: 0460406</span></p><hr><p><span style=\"font-size:16px;\"><strong>LANTERNA TRASEIRA LD 0460406 </strong><strong data-end=\"221\" data-start=\"154\">&#8211; FICHA TÉCNICA:</strong></span></p><p><span style=\"font-size:16px;\"><strong data-end=\"221\" data-start=\"154\">MODELO: </strong>LATERNA TRASEIRA FUMÊ</span></p><p><span style=\"font-size:16px;\"><strong>POSIÇÃO: </strong>TRASEIRO</span></p><p><span style=\"font-size:16px;\"><strong>LADO</strong>: DIREITO</span></p><hr><p><span style=\"font-size:16px;\"><strong>APLICAÇÃO:</strong></span></p><p><span style=\"font-size:16px;\"><strong>VOLKSWAGEN</strong></span></p><p><span style=\"font-size:16px;\"><strong>SAVEIRO G5/G6 </strong>(DESDE 2010 ATÉ 2016)</span></p></div></div></div>",
+  "imagens": [
+    {
+      "arquivo": "foto_1.png",
+      "url": "https://images.tcdn.com.br/img/img_prod/945233/lanterna_traseira_volkswagen_saveiro_19191_1_8d7d52e90b9557809a98cc3c5b946d00.png",
+      "principal": true
+    },
+    {
+      "arquivo": "foto_2.png",
+      "url": "https://images.tcdn.com.br/img/img_prod/945233/lanterna_traseira_volkswagen_saveiro_19191_2_c579e88df21aef1b7a3928e033fa6533.png",
+      "principal": false
+    },
+    {
+      "arquivo": "foto_3.png",
+      "url": "https://images.tcdn.com.br/img/img_prod/945233/lanterna_traseira_volkswagen_saveiro_3_20251215122111_a17bf72cbbbe.png",
+      "principal": false
+    }
+  ],
+  "url_origem": "https://www.auriautopecas.com.br/acessorios/lanterna-traseira-0460406"
+}

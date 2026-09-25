@@ -1,0 +1,48 @@
+{
+  "nome": "LANTERNA TRASEIRA FIAT NOVO UNO VIVACE FIAT NOVO UNO WAY",
+  "descricao_curta": null,
+  "marca": "Arteb",
+  "codigo_fabricante": "0460426",
+  "ean": "7896482546425",
+  "sku": "16521",
+  "referencia": "52464",
+  "categoria": "ACESSORIOS",
+  "preco": 205.0,
+  "moeda": "BRL",
+  "disponivel": true,
+  "ficha_tecnica": {
+    "SEGMENTO": "LANTERNA",
+    "LADO": "DIREITO"
+  },
+  "aplicacoes": [
+    {
+      "montadora": "FIAT",
+      "veiculo": "NOVO UNO VIVACE",
+      "motor": null,
+      "ano_inicio": 2010,
+      "ano_fim": 2014
+    },
+    {
+      "montadora": "FIAT",
+      "veiculo": "NOVO UNO WAY",
+      "motor": null,
+      "ano_inicio": 2010,
+      "ano_fim": 2014
+    }
+  ],
+  "observacoes": [],
+  "descricao_html": "<div id=\"descricao\" class=\"prodBox p-3 border rounded bg-light area-tec mb-3\"><div class=\"\"><div class=\"\"><p><strong><span style=\"color:#333333;\"><span style=\"font-size:18px;\"><span style=\"font-family:arial,helvetica,sans-serif;\">LANTERNA TRASEIRA </span></span><span style=\"font-family: arial, helvetica, sans-serif; font-size: 18px;\">FIAT NOVO UNO VIVACE FIAT NOVO UNO WAY</span></span></strong></p><p> </p><p><strong><span style=\"font-size:18px;\"><span style=\"font-family:arial,helvetica,sans-serif;\">Informações técnicas</span></span></strong></p><hr><p><span style=\"font-size:18px;\"><span style=\"font-family:arial,helvetica,sans-serif;\"><strong>Marca:</strong><span style=\"color:#666666;\">Arteb</span><br><strong>Código do Fabricante: </strong><span style=\"color:#666666;\">0460426</span><br><strong>Segmento:</strong><span style=\"color:#666666;\">Lanterna</span><br><strong>Código de Barras: </strong><span style=\"color:#666666;\">7896482546425</span></span></span><br><span style=\"font-size:18px;\"><span style=\"font-family:arial,helvetica,sans-serif;\"><strong>Lado:</strong><span style=\"color:#666666;\">Direito</span></span></span></p><hr><p><strong><span style=\"font-size:18px;\"><span style=\"font-family:arial,helvetica,sans-serif;\">APLICAÇÃO:</span></span></strong></p><hr><p><span style=\"color:#666666;\"><span style=\"font-size:18px;\"><span style=\"font-family:arial,helvetica,sans-serif;\">FIAT NOVO UNO VIVACE 2010<br>\nFIAT NOVO UNO VIVACE 2011<br>\nFIAT NOVO UNO VIVACE 2012<br>\nFIAT NOVO UNO VIVACE 2013<br>\nFIAT NOVO UNO VIVACE 2014</span></span></span></p><p><span style=\"color:#666666;\"><span style=\"font-size:18px;\"><span style=\"font-family:arial,helvetica,sans-serif;\">FIAT NOVO UNO WAY 2010<br>\nFIAT NOVO UNO WAY 2011<br>\nFIAT NOVO UNO WAY 2012<br>\nFIAT NOVO UNO WAY 2013<br>\nFIAT NOVO UNO WAY 2014</span></span></span></p><hr><p style=\"font-family: calibri, sans-serif; box-sizing: border-box; outline: 0px; border: 0px; padding: 0px; position: relative; z-index: 0; margin: 5px 0px 0px; width: auto; color: rgb(0, 0, 0); font-size: 14px;\"> </p></div></div></div>",
+  "imagens": [
+    {
+      "arquivo": "foto_1.png",
+      "url": "https://images.tcdn.com.br/img/img_prod/945233/lanterna_traseira_fiat_novo_uno_vivace_fiat_novo_uno_way_16521_1_81d9133fb1dfdae4eb46b3d583d09ebe.png",
+      "principal": true
+    },
+    {
+      "arquivo": "foto_2.png",
+      "url": "https://images.tcdn.com.br/img/img_prod/945233/lanterna_traseira_fiat_novo_uno_vivace_fiat_novo_uno_way_16521_2_828636691e36fbf297f12834069c5bee.png",
+      "principal": false
+    }
+  ],
+  "url_origem": "https://www.auriautopecas.com.br/acessorios/lanterna-traseira-0460426"
+}
