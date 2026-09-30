@@ -24,3 +24,64 @@ Campos do JSON: `nome`, `descricao_curta`, `marca`, `codigo_fabricante`, `ean`, 
 `referencia`, `categoria`, `preco`, `moeda`, `disponivel`, `ficha_tecnica` (chave → valor),
 `aplicacoes` (montadora, veículo, motor, ano_inicio, ano_fim), `observacoes`
 (notas como "MÁSCARA NEGRA", "COM AVARIA"), `descricao_html`, `imagens`, `url_origem`.
+
+## AutoNext
+
+`autonext_scraper.py` faz o mesmo para https://www.autonext.com.br (loja VTEX), lendo a
+API pública de catálogo da VTEX em vez do HTML. Gera o mesmo formato de `produto.json`.
+
+```bash
+python autonext_scraper.py --marca Arteb            # saída em pecas_autonext/
+python autonext_scraper.py https://www.autonext.com.br/<slug-do-produto>/p
+```
+
+Diferenças em relação ao Auri:
+- Cada anúncio da AutoNext tem variações (lado direito/esquerdo) com EAN, código e fotos
+  próprios, então é gerada **uma pasta por SKU**: `pecas_autonext/<slug>-<codigo>/`.
+- A mesma peça (mesmo EAN) anunciada em mais de uma página vira um único registro, com as
+  aplicações de todos os anúncios.
+- Anos não contínuos (ex.: 1991–1993 e 2002–2004) viram aplicações separadas.
+- `codigo_fabricante` vem como o site mostra (ex.: `160818`); no Auri a Arteb aparece com
+  zero à esquerda (`0160818`).
+
+## Hipervarejo
+
+`hipervarejo_scraper.py` faz o mesmo para https://hipervarejo.com.br (também VTEX; a parte
+comum às lojas VTEX fica em `vtex.py`).
+
+```bash
+python hipervarejo_scraper.py --marca Arteb         # saída em pecas_hipervarejo/
+python hipervarejo_scraper.py https://hipervarejo.com.br/<slug-do-produto>/p
+```
+
+O cadastro dessa loja é pouco padronizado, então o scraper aplica algumas regras:
+- `codigo_fabricante` vem do RefId do SKU (`0460447_ART` → `0460447`, mesmo formato do Auri).
+  Pares (`KT...`) viram `0460361 + 0460362` e ficam **sem EAN**: o EAN cadastrado neles é o de
+  uma das peças avulsas.
+- EAN: só EAN-13 com dígito verificador válido. Em produto de um SKU, quando o EAN do SKU e o da
+  ficha divergem, vale o da ficha (conferido contra a AutoNext); em produto com direito/esquerdo,
+  vale o do SKU. EAN repetido nos dois lados é descartado.
+- Aplicações: usa o campo "Aplicação" (faixa de anos por veículo) e, na falta dele, os campos
+  Nome/Modelo/Ano da ficha. Alguns produtos não têm aplicação nenhuma cadastrada.
+- O mesmo código anunciado em várias páginas vira um registro só (chave: código + lado).
+
+## Enviar fotos para o Wayap
+
+`wayap_fotos.py` cruza os produtos de um banco do Wayap com as três pastas acima e sobe as
+melhores fotos pela API do Wayap (mesmo endpoint da tela de fotos do produto). As credenciais
+vão só em variáveis de ambiente:
+
+```bash
+export WAYAP_URL=https://wayap.com.br/admin2 WAYAP_SOCIEDADE=topcar WAYAP_LOGIN=<cpf> WAYAP_SENHA=<senha>
+python wayap_fotos.py planejar            # só leitura: gera fotos_wayap_topcar/plano.csv e revisar.csv
+python wayap_fotos.py enviar --limite 3   # piloto
+python wayap_fotos.py enviar              # resto (retomável); --repetir-erros tenta de novo as falhas
+python wayap_fotos.py desfazer            # apaga do Wayap o que este script enviou
+```
+
+- Casamento por EAN (com marca ou número do código confirmando) ou por código + marca + palavra da
+  descrição em comum. O que não tem essa confirmação vai para `revisar.csv` e não é enviado.
+- Fotos: mínimo 250 px, sem logos/"sem foto", sem repetir as que o produto já tem; no máximo 5 por
+  produto, sem apagar nenhuma existente. PNG transparente ganha fundo branco.
+- Marcação do que subiu: coluna `status`/`nome_no_wayap` do `plano.csv` e um `wayap_<sociedade>.json`
+  em cada pasta de peça cuja foto foi usada.
