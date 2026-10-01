@@ -35,8 +35,8 @@ from pathlib import Path
 import requests
 from PIL import Image
 
-FONTES = [("autonext", "pecas_autonext/*/produto.json"), ("hipervarejo", "pecas_hipervarejo/*/produto.json"),
-          ("auri", "pecas_auri/*/*/produto.json")]
+FONTES = ["autonext=pecas_autonext/*/produto.json", "hipervarejo=pecas_hipervarejo/*/produto.json",
+          "auri=pecas_auri/*/*/produto.json"]
 MAX_FOTOS = 5
 MENOR_LADO = 250
 LADO_ENVIO = 1024  # o Wayap reduz para 1024 px de qualquer jeito; enviar menor economiza banda
@@ -133,6 +133,9 @@ class Wayap:
                     raise
                 time.sleep(esperas[tentativa])
 
+    def chamar(self, rota, call, **dados):
+        return self._post(rota, {"call": call, **dados})
+
     def produtos(self):
         todos, offset, lote = [], 0, 2000
         while True:
@@ -197,9 +200,9 @@ def info_foto(caminho):
 
 # ---------- planejar ----------
 
-def carregar_fontes(base):
+def carregar_fontes(base, fontes=FONTES):
     registros = []
-    for fonte, padrao in FONTES:
+    for fonte, padrao in (f.split("=", 1) for f in fontes):
         for arq in glob.glob(str(base / padrao)):
             r = json.loads(Path(arq).read_text(encoding="utf-8"))
             pasta = Path(arq).parent
@@ -207,7 +210,7 @@ def carregar_fontes(base):
             if imagens:
                 registros.append({"fonte": fonte, "pasta": str(pasta.relative_to(base)), "nome": r.get("nome") or "",
                                   "marca": n_marca(r.get("marca")), "codigo": n_codigo(r.get("codigo_fabricante")),
-                                  "ean": n_ean(r.get("ean")), "imagens": imagens})
+                                  "ean": n_ean(r.get("ean")), "imagens": imagens, "url": r.get("url_origem")})
     return registros
 
 
@@ -260,7 +263,9 @@ def planejar(args):
     print("lendo produtos do Wayap...")
     # a listagem do Wayap repete alguns produtos (um por linha de estoque/carro); um envio por produto
     produtos = list({p["cod_produto"]: p for p in wayap.produtos()}.values())
-    registros = carregar_fontes(base)
+    if args.so_sem_foto:
+        produtos = [p for p in produtos if not (p["foto"] or "").strip()]
+    registros = carregar_fontes(base, args.fontes)
     print(f"{len(produtos)} produtos no Wayap, {len(registros)} peças com foto nas pastas")
     casados, revisar = casar(produtos, registros)
     print(f"{len(casados)} produtos casados, {len(revisar)} casamentos para revisar")
@@ -298,7 +303,8 @@ def planejar(args):
             for ordem, img in enumerate(r["imagens"]):
                 d = info.get(img)
                 if d and min(d["w"], d["h"]) >= MENOR_LADO and d["hash"] not in genericas:
-                    fotos.append({"origem": img, "fonte": r["fonte"], "pasta": r["pasta"], "principal": ordem == 0,
+                    fotos.append({"origem": img, "fonte": r["fonte"], "pasta": r["pasta"], "url_origem": r["url"],
+                                  "principal": ordem == 0,
                                   "w": d["w"], "h": d["h"], "hash": d["hash"], "casamento": aceitos[i]})
         # capa: a foto principal de maior resolução; depois as demais por resolução
         fotos.sort(key=lambda f: (not (f["principal"] and not ja_tem), -min(f["w"], f["h"], 1200), not f["principal"]))
@@ -311,7 +317,7 @@ def planejar(args):
                 break
         if escolhidas:
             plano.append({"cod_produto": p["cod_produto"], "desc_produto": p["desc_produto"], "marca": p["marca"],
-                          "num_fabricante": p["num_fabricante"], "cod_barra": p["cod_barra"],
+                          "carro": p.get("carro"), "num_fabricante": p["num_fabricante"], "cod_barra": p["cod_barra"],
                           "fotos_existentes": len(ja_tem),
                           "casamento": sorted(set(aceitos.values())),
                           "fotos": [{k: v for k, v in f.items() if k != "hash"} | {"status": "pendente", "nome_wayap": None}
@@ -465,6 +471,9 @@ def main():
     ap.add_argument("acao", choices=["planejar", "enviar", "desfazer"])
     ap.add_argument("--base", default=".", help="pasta com pecas_auri, pecas_autonext e pecas_hipervarejo")
     ap.add_argument("--saida", default=None, help="pasta do plano (padrão: fotos_wayap_<sociedade>)")
+    ap.add_argument("--fontes", nargs="+", default=FONTES, metavar="NOME=GLOB",
+                    help="planejar: pastas de peças (padrão: auri, autonext e hipervarejo)")
+    ap.add_argument("--so-sem-foto", action="store_true", help="planejar: só produtos que não têm nenhuma foto")
     ap.add_argument("--limite", type=int, help="enviar: só os N primeiros produtos pendentes (teste)")
     ap.add_argument("--repetir-erros", action="store_true", help="enviar: tenta de novo as fotos que deram erro")
     ap.add_argument("--paralelo", type=int, default=PARALELO_WAYAP, help="enviar: envios simultâneos")

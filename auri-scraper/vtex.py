@@ -22,10 +22,13 @@ MOTOR_RE = re.compile(r"\s\d{1,2}\.\d[A-Za-z]?\b")  # cilindrada ("1.6", "1.8S")
 
 
 def api_get(base, path):
-    page = Fetcher.get(f"{base}/api/catalog_system/pub/{path}", stealthy_headers=True)
-    if page.status not in (200, 206):  # a busca paginada responde 206
-        raise RuntimeError(f"HTTP {page.status} em {path}")
-    return json.loads(page.body)
+    for espera in (5, 15, 30, None):
+        page = Fetcher.get(f"{base}/api/catalog_system/pub/{path}", stealthy_headers=True)
+        if page.status in (200, 206):  # a busca paginada responde 206
+            return json.loads(page.body)
+        if espera is None or page.status < 500:
+            raise RuntimeError(f"HTTP {page.status} em {path}")
+        time.sleep(espera)  # erro 5xx da loja costuma ser passageiro
 
 
 def produtos_da_marca(base, marca):

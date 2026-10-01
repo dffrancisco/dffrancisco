@@ -85,3 +85,40 @@ python wayap_fotos.py desfazer            # apaga do Wayap o que este script env
   produto, sem apagar nenhuma existente. PNG transparente ganha fundo branco.
 - Marcação do que subiu: coluna `status`/`nome_no_wayap` do `plano.csv` e um `wayap_<sociedade>.json`
   em cada pasta de peça cuja foto foi usada.
+
+## Catálogos de outras lojas (só metadados)
+
+Para achar fotos de produtos sem foto, cada loja tem um `catalogo_<loja>.py` que grava
+`catalogos/<loja>.jsonl` (nome, marca, código do fabricante, EAN, URLs das fotos, aplicação),
+sem baixar imagens:
+
+| Loja | Como | Serve para casar? |
+|---|---|---|
+| KarHub | API Storefront do Shopify (token público da página) | Sim: código + marca em 100%, EAN em 83% |
+| ShopPeças | API GraphQL da Wake (token público da página) | Sim: grupo Universal, EAN e código |
+| CarBlue | Wake | ver `catalogos/carblue.log` |
+| ClicPeças | API da WS Lojas | Não: a loja não publica EAN nem código do fabricante |
+| Fuscão Preto | API VTEX | Não: sem código do fabricante e EANs internos da loja |
+
+```bash
+python catalogo_para_pecas.py karhub shoppecas     # casa com os produtos SEM foto e baixa só essas fotos
+python wayap_fotos.py planejar --so-sem-foto --saida fotos_wayap_topcar_sites \
+    --fontes karhub=pecas_karhub/*/produto.json shoppecas=pecas_shoppecas/*/produto.json
+python wayap_fotos.py enviar --saida fotos_wayap_topcar_sites
+```
+
+## Painel (curadoria de fotos e cadastro pela KarHub)
+
+```bash
+python painel_wayap.py            # http://localhost:8765 (mesmas variáveis WAYAP_*)
+```
+
+- **Curadoria de fotos:** escolhe o lote (`fotos_wayap_<sociedade>*`), uma linha por foto enviada com
+  descrição, carro, marca, nº fabricante e cód. barras. "Foto certa" tira da lista; "Foto errada" tira
+  da lista e apaga a foto no Wayap (a foto é localizada pelo conteúdo, porque apagar renumera as outras).
+  Atalhos: C / E / ↑↓.
+- **Cadastrar da KarHub:** busca por código, EAN ou descrição no catálogo da KarHub (índice SQLite em
+  `catalogos/karhub.sqlite`, criado na primeira execução). O que já existe no cadastro aparece marcado.
+  "Cadastrar" abre o formulário com sugestões tiradas do próprio cadastro (marca, carro pela aplicação,
+  fornecedor e unidade mais usados pela marca, NCM pelo tipo de peça); custo e venda entram zerados.
+  As fotos escolhidas sobem junto e vão para a curadoria (lote `fotos_wayap_<sociedade>_karhub`).
