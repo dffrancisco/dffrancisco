@@ -10,5 +10,11 @@ pecas_karhub/
 pecas_shoppecas/
 fotos_wayap_topcar_sites/
 fotos_wayap_topcar_arteb_karhub/
-fotos_wayap_topcar_karhub
+fotos_wayap_topcar_karhub/
+fotos_wayap_topcar_universal/
+pecas_universal/
 
+.env
+fotos_wayap_topcar_azacessorios/
+pecas_azacessorios/
+fotos_wayap_topcar_cadastro/

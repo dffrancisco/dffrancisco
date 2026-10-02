@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Painel local do Wayap: curadoria das fotos enviadas e cadastro de produtos pelo catálogo KarHub.
+"""Painel local do Wayap: curadoria das fotos enviadas e cadastro de produtos pelos catálogos dos sites.
 
 Uso (mesmas variáveis WAYAP_* do wayap_fotos.py):
     python painel_wayap.py [--porta 8765]
@@ -7,9 +7,9 @@ e abra http://localhost:8765
 
 - Curadoria de fotos: cada foto enviada (lotes em fotos_wayap_<sociedade>*/plano.json). "Foto certa" só
   tira da lista; "Foto errada" tira da lista e apaga a foto no Wayap.
-- Cadastrar da KarHub: busca no catálogo (catalogos/karhub.jsonl) e cadastra no Wayap o produto escolhido,
-  com custo e venda zerados, marca/carro/fornecedor/NCM/unidade sugeridos pelo que o cadastro já usa, e
-  sobe as fotos (que entram na curadoria, lote fotos_wayap_<sociedade>_karhub).
+- Cadastrar dos sites: busca nos catálogos (catalogos/*.jsonl: KarHub, ShopPeças, CarBlue, Universal...) e
+  cadastra no Wayap o produto escolhido, com custo e venda zerados, marca/carro/fornecedor/NCM/unidade sugeridos
+  pelo que o cadastro já usa, e sobe as fotos (que entram na curadoria, lote fotos_wayap_<sociedade>_cadastro).
 """
 import argparse
 import hashlib
@@ -22,17 +22,19 @@ import sqlite3
 import threading
 import time
 from collections import Counter, defaultdict
+from io import BytesIO
 from pathlib import Path
+from urllib.parse import urlsplit
 
 import psycopg2
 import requests
 import urllib3.util.connection
-from flask import Flask, Response, abort, jsonify, request, send_file
+from flask import Flask, Response, abort, jsonify, redirect, request, send_file
 
 from scrapling.fetchers import Fetcher
 
-from wayap_fotos import (DISTANCIA_DUPLICADA, LADO_ENVIO, MAX_FOTOS, MENOR_LADO, Wayap, abrir_rgb, dhash, distancia,
-                         gravar_plano, marcas_compativeis, n_codigo, n_ean, n_marca, sem_acento)
+from wayap_fotos import (DISTANCIA_DUPLICADA, ENV_ADMIN, LADO_ENVIO, MAX_FOTOS, MENOR_LADO, Wayap, abrir_rgb, dhash,
+                         distancia, gravar_plano, marcas_compativeis, n_codigo, n_ean, n_marca, sem_acento)
 
 # esta rede não tem rota IPv6 e o cdn.shopify.com às vezes resolve primeiro para IPv6 ("Network is unreachable")
 urllib3.util.connection.allowed_gai_family = lambda: socket.AF_INET
@@ -41,15 +43,22 @@ app = Flask(__name__)
 trava = threading.Lock()
 estado = {}
 
-CATALOGO_KARHUB = Path("catalogos/karhub.jsonl")
-DB_KARHUB = Path("catalogos/karhub.sqlite")
-CACHE_IMAGENS = Path("catalogos/cache_imagens")
-# credenciais do Postgres do Wayap: só para gravar produto.complemento, que a API ainda não aceita
-ENV_ADMIN = Path(os.environ.get("WAYAP_ENV_ADMIN", "/home/alves/PROJETOS/WAYAP/.env_admin"))
+CATALOGOS = Path("catalogos")
+DB_CATALOGOS = CATALOGOS / "catalogos.sqlite"
+CACHE_IMAGENS = CATALOGOS / "cache_imagens"
+NOMES_SITES = {"karhub": "KarHub", "shoppecas": "ShopPeças", "carblue": "CarBlue", "clicpecas": "ClicPeças",
+               "fuscaopreto": "Fuscão Preto", "universal": "Universal", "azacessorios": "AZ Acessórios"}
 # modelos da KarHub que o cadastro agrupa em outro carro (o nome original vai para o complemento)
 ALIAS_MODELOS = {"CLASSIC": "CORSA", "CORSA CLASSIC": "CORSA"}
 MONTADORAS_TITULO = {"CHEVROLET", "GM", "VOLKSWAGEN", "VW", "FIAT", "FORD", "RENAULT", "PEUGEOT", "CITROEN", "HYUNDAI",
                      "TOYOTA", "HONDA", "NISSAN", "KIA", "MITSUBISHI", "JEEP", "MERCEDES", "BENZ", "AUDI", "BMW"}
+# montadoras que os sites escrevem antes do modelo na aplicação ('Mercedes-Benz Actros 2012', 'ALFA ROMEO: 145 94 a 01')
+MONTADORAS = MONTADORAS_TITULO | {
+    "GMC", "MERCEDES-BENZ", "MERCEDEZ-BENZ", "MERCEDES BENZ", "ALFA ROMEO", "LAND ROVER", "ASIA", "ASIA MOTORS",
+    "KIA MOTORS", "CHRYSLER", "DODGE", "JAC", "CHERY", "SUZUKI", "SUBARU", "VOLVO", "SEAT", "AGRALE", "IVECO", "SCANIA",
+    "TROLLER", "LIFAN", "SSANGYONG", "CAOA", "BYD", "GWM", "DAEWOO", "GURGEL", "WILLYS", "MAHINDRA", "EFFA", "JAGUAR",
+    "PORSCHE", "LEXUS"}
+PALAVRAS_ANO = {"APOS", "ATE", "TODOS", "TODAS", "EXCETO"}  # 'Topic Após 08', 'Apollo até 92', 'Blazer todos'
 UNIDADE_PELA_PALAVRA = {"JOGO": "JG", "KIT": "KT", "PAR": "PA"}
 PALAVRAS_GENERICAS = {"JOGO", "KIT", "PAR", "PARA", "COM", "SEM", "PECA", "PECAS"}
 CONECTIVOS = {"PARA", "DA", "DE", "DO", "DAS", "DOS", "E", "COM"}
@@ -58,7 +67,7 @@ LIMITES = {"desc_produto": 100, "desc_produto_completa": 400, "num_fabricante": 
            "unidade": 2}
 
 
-# ---------- catálogo KarHub (SQLite com busca textual) ----------
+# ---------- catálogos dos sites (um SQLite com busca textual) ----------
 
 def codigos_do_item(codigo):
     """Kits trazem vários códigos: 'GS2116 / GS2118' -> '|GS2116|GS2118|'."""
@@ -66,50 +75,94 @@ def codigos_do_item(codigo):
     return "|" + "|".join(p for p in partes if p) + "|"
 
 
-def indexar_karhub():
-    if DB_KARHUB.exists() and DB_KARHUB.stat().st_mtime >= CATALOGO_KARHUB.stat().st_mtime:
-        return
-    print("indexando catálogo KarHub (só na primeira vez ou quando o catálogo muda)...")
-    tmp = DB_KARHUB.with_suffix(".tmp")
-    tmp.unlink(missing_ok=True)
-    db = sqlite3.connect(tmp)
-    db.execute("CREATE TABLE item (id INTEGER PRIMARY KEY, url, nome, marca, codigo, codigos, ean, carro, imagens)")
-    db.execute("CREATE VIRTUAL TABLE busca USING fts5(nome, marca, codigo, carro, content='item', content_rowid='id', "
-               "tokenize='unicode61 remove_diacritics 2')")
-    with CATALOGO_KARHUB.open(encoding="utf-8") as f:
-        linhas = (json.loads(l) for l in f if l.strip())
-        db.executemany("INSERT INTO item (url, nome, marca, codigo, codigos, ean, carro, imagens) VALUES (?,?,?,?,?,?,?,?)",
-                       ((r["url"], r.get("nome"), r.get("marca"), r.get("codigo_fabricante"),
-                         codigos_do_item(r.get("codigo_fabricante")), n_ean(r.get("ean")), r.get("carro"),
-                         json.dumps(r.get("imagens") or [])) for r in linhas))
-    db.execute("INSERT INTO busca (rowid, nome, marca, codigo, carro) SELECT id, nome, marca, codigo, carro FROM item")
-    db.execute("CREATE INDEX item_ean ON item (ean)")
-    db.commit()
+def nome_site(site):
+    return NOMES_SITES.get(site, site.title())
+
+
+def linhas_do_catalogo(site, arquivo, hosts):
+    with arquivo.open(encoding="utf-8") as f:
+        for linha in f:
+            try:
+                r = json.loads(linha)
+            except json.JSONDecodeError:
+                continue  # linha vazia, ou cortada porque o catálogo ainda está sendo gravado
+            imagens = r.get("imagens") or []
+            hosts.update(urlsplit(u).hostname for u in imagens)
+            yield (site, r.get("url"), r.get("nome"), r.get("marca"), r.get("codigo_fabricante"),
+                   codigos_do_item(r.get("codigo_fabricante")), n_ean(r.get("ean")), r.get("carro"), json.dumps(imagens))
+
+
+def indexar_catalogos():
+    """Indexa catalogos/<site>.jsonl; só refaz o site cujo arquivo mudou (ou sumiu) desde a última vez."""
+    db = sqlite3.connect(DB_CATALOGOS)
+    db.executescript("""
+        CREATE TABLE IF NOT EXISTS item (id INTEGER PRIMARY KEY AUTOINCREMENT, site, url, nome, marca, codigo, codigos,
+                                         ean, carro, imagens);
+        CREATE VIRTUAL TABLE IF NOT EXISTS busca USING fts5(nome, marca, codigo, carro, content='item',
+                                                            content_rowid='id', tokenize='unicode61 remove_diacritics 2');
+        CREATE INDEX IF NOT EXISTS item_ean ON item (ean);
+        CREATE INDEX IF NOT EXISTS item_site ON item (site);
+        CREATE TABLE IF NOT EXISTS fonte (site PRIMARY KEY, mtime, itens, hosts);
+    """)
+    feitos = dict(db.execute("SELECT site, mtime FROM fonte"))
+    arquivos = {a.stem: a for a in CATALOGOS.glob("*.jsonl")}
+    for site in sorted(set(feitos) | set(arquivos)):
+        mtime = arquivos[site].stat().st_mtime if site in arquivos else None
+        if feitos.get(site) == mtime:
+            continue
+        print(f"indexando catálogo {site} (só na primeira vez ou quando o arquivo muda)...")
+        # o índice textual é externo (content='item'): as linhas saem dele antes de saírem de item
+        db.execute("INSERT INTO busca (busca, rowid, nome, marca, codigo, carro) "
+                   "SELECT 'delete', id, nome, marca, codigo, carro FROM item WHERE site = ?", (site,))
+        db.execute("DELETE FROM item WHERE site = ?", (site,))
+        db.execute("DELETE FROM fonte WHERE site = ?", (site,))
+        if mtime is not None:
+            hosts = set()
+            db.executemany("INSERT INTO item (site, url, nome, marca, codigo, codigos, ean, carro, imagens) "
+                           "VALUES (?,?,?,?,?,?,?,?,?)", linhas_do_catalogo(site, arquivos[site], hosts))
+            db.execute("INSERT INTO busca (rowid, nome, marca, codigo, carro) "
+                       "SELECT id, nome, marca, codigo, carro FROM item WHERE site = ?", (site,))
+            itens = db.execute("SELECT count(*) FROM item WHERE site = ?", (site,)).fetchone()[0]
+            db.execute("INSERT INTO fonte VALUES (?, ?, ?, ?)", (site, mtime, itens, json.dumps(sorted(filter(None, hosts)))))
+        db.commit()
     db.close()
-    tmp.replace(DB_KARHUB)
 
 
-def db_karhub():
-    db = sqlite3.connect(DB_KARHUB)
+def db_catalogos():
+    db = sqlite3.connect(DB_CATALOGOS)
     db.row_factory = sqlite3.Row
     return db
 
 
-def buscar_karhub(q, limite=40, offset=0):
+def sites_indexados():
+    with db_catalogos() as db:
+        return [dict(r) for r in db.execute("SELECT site, itens, hosts FROM fonte WHERE itens > 0 ORDER BY itens DESC")]
+
+
+def item_do_catalogo(id_item):
+    with db_catalogos() as db:
+        item = db.execute("SELECT * FROM item WHERE id = ?", (id_item,)).fetchone()
+    if not item:
+        abort(404)
+    return dict(item)
+
+
+def buscar_catalogos(q, site="", limite=40, offset=0):
     """Uma página de resultados: EAN e código exatos vêm na primeira; a busca textual é paginada."""
     q = q.strip()
+    filtro, args = ("AND item.site = ?", [site]) if site else ("", [])
     achados, textuais = [], []
-    with db_karhub() as db:
+    with db_catalogos() as db:
         if offset == 0 and n_ean(q):
-            achados += db.execute("SELECT * FROM item WHERE ean = ?", (n_ean(q),)).fetchall()
+            achados += db.execute(f"SELECT * FROM item WHERE ean = ? {filtro}", [n_ean(q)] + args).fetchall()
         if offset == 0 and " " not in q and len(n_codigo(q)) >= 3:
-            achados += db.execute("SELECT * FROM item WHERE codigos LIKE ? LIMIT 200",
-                                  (f"%|{n_codigo(q)}|%",)).fetchall()
+            achados += db.execute(f"SELECT * FROM item WHERE codigos LIKE ? {filtro} LIMIT 200",
+                                  [f"%|{n_codigo(q)}|%"] + args).fetchall()
         termos = re.findall(r"\w+", sem_acento(q))
         if termos:
             consulta = " ".join(f'"{t}"*' for t in termos)
-            textuais = db.execute("SELECT item.* FROM busca JOIN item ON item.id = busca.rowid WHERE busca MATCH ? "
-                                  "ORDER BY rank LIMIT ? OFFSET ?", (consulta, limite, offset)).fetchall()
+            textuais = db.execute(f"SELECT item.* FROM busca JOIN item ON item.id = busca.rowid WHERE busca MATCH ? "
+                                  f"{filtro} ORDER BY rank LIMIT ? OFFSET ?", [consulta] + args + [limite, offset]).fetchall()
     vistos, lista = set(), []
     for r in achados + textuais:
         if r["id"] not in vistos:
@@ -234,37 +287,111 @@ def carro_do_modelo(modelo):
     return carros.get(ALIAS_MODELOS.get(modelo, ""))
 
 
-def veiculos_sugeridos(item):
-    """Um carro do cadastro por modelo compatível, com o complemento no padrão da casa: '1.0 / 1.4 00/12 WAGON'."""
+def ocorrencias_karhub(item):
+    """Uma ocorrência por linha de 'Veículos Compatíveis' da página da KarHub (ver agrupar_veiculos)."""
     linhas, montadoras = compatibilidade_karhub(item["url"])
-    grupos = {}
+    ocorrencias = []
     for linha in linhas:
         texto = sem_acento(linha).upper()
         montadora = next((m for m in montadoras if texto.startswith(m + " ")), texto.split(" ")[0])
         m = re.match(r"(?P<modelo>.+?)\s+(?P<ano>(?:19|20)\d{2})\b(?P<versao>.*)", texto[len(montadora):].strip())
-        if not m:
-            continue
-        carro = carro_do_modelo(m["modelo"])
-        g = grupos.setdefault(carro["id_carro"] if carro else "?" + m["modelo"],
+        if m:
+            motor = re.search(r"\b\d\.\d\b", m["versao"])
+            ocorrencias.append([f"{montadora} {m['modelo']}", m["modelo"], (int(m["ano"]),) * 2,
+                                [motor[0]] if motor else []])
+    return ocorrencias, linhas
+
+
+def ler_anos(palavra):
+    """'1981-2003' -> [1981, 2003]; '96' -> [1996]; '07' -> [2007]; outra coisa -> []."""
+    if re.fullmatch(r"(?:19|20)\d{2}(?:-(?:19|20)\d{2})?", palavra):
+        return [int(a) for a in palavra.split("-")]
+    if re.fullmatch(r"\d{2}", palavra):
+        return [int(palavra) + (1900 if int(palavra) >= 30 else 2000)]
+    return []
+
+
+def juntar_anos(a, b):
+    """Une dois intervalos (início, fim); None no início ou no fim é 'em aberto' ('até 92', 'após 07')."""
+    if not a:
+        return b
+    return (None if None in (a[0], b[0]) else min(a[0], b[0]), None if None in (a[1], b[1]) else max(a[1], b[1]))
+
+
+def ocorrencias_do_texto(texto):
+    """Aplicação escrita no catálogo -> ocorrências (ver agrupar_veiculos). Formatos dos sites:
+    'Ford Escort 1981-2003 1.8 16V' (KarHub, Universal), 'GOL G2 96 97 98; GOL G3 2000 2001' (CarBlue),
+    'Fiat: Palio 01 a 12, Siena Após 08' e 'GM, Blazer todos' (ShopPeças), 'Gol, Parati - 1998 1999' (ClicPeças)."""
+    texto = sem_acento(re.sub(r"\([^)]*\)", " ", texto or "")).upper()  # '(PALHETA TRASEIRA)', '(GMC)'
+    ocorrencias, sem_ano, anterior_so_anos = [], [], False
+    for trecho in texto.split(";"):
+        for parte in re.split(r",|\s+-\s+", trecho.split(":", 1)[-1]):  # 'FIAT: PALIO ...' / 'GOL, PARATI - 1998'
+            palavras = parte.split()
+            inicio = len(palavras)
+            while palavras and (" ".join(palavras[:2]) in MONTADORAS or palavras[0] in MONTADORAS):
+                palavras = palavras[2:] if " ".join(palavras[:2]) in MONTADORAS else palavras[1:]
+            montadora = parte.split()[:inicio - len(palavras)]
+            # só anos ('2014', '2000 1.6 16V'); '80 AVANT 91 A 98' e 'AUDI 80 1991' começam pelo modelo (Audi 80)
+            so_anos = not montadora and all(ler_anos(p) or re.fullmatch(r"\d\.\d|\d+V", p) or p in PALAVRAS_ANO | {"A", "E"}
+                                            for p in palavras)
+            n = next((i for i, p in enumerate(palavras)
+                      if (i or so_anos) and (ler_anos(p) or re.match(r"\d\.\d", p) or p in PALAVRAS_ANO)), len(palavras))
+            modelo, anos, apos, ate = " ".join(palavras[:n]), [], False, False
+            for p in palavras[n:]:
+                apos, ate = apos or (p == "APOS" and not anos), ate or (p == "ATE" and not anos)
+                anos += ler_anos(p)
+            intervalo = (None if ate else min(anos), None if apos else max(anos)) if anos else None
+            motores = re.findall(r"\b\d\.\d\b", parte)
+            if modelo:
+                if intervalo or anterior_so_anos:
+                    sem_ano = []
+                ocorrencias.append([" ".join(montadora + palavras[:n]), modelo, intervalo, motores])
+                if not intervalo:
+                    sem_ano.append(ocorrencias[-1])
+                anterior_so_anos = False
+            elif intervalo:  # parte só com anos: vale para os modelos sem ano logo antes ('GOL, PARATI - 1998')
+                for o in sem_ano or ocorrencias[-1:]:
+                    o[2], o[3] = juntar_anos(o[2], intervalo), o[3] + motores
+                anterior_so_anos = True
+    return ocorrencias
+
+
+def agrupar_veiculos(ocorrencias):
+    """Um carro do cadastro por modelo compatível, com o complemento no padrão da casa: '1.0 / 1.4 00/12 WAGON'.
+    Cada ocorrência é [rótulo no site, modelo sem a montadora, (ano início, ano fim) ou None, motores]."""
+    grupos = {}
+    for rotulo, modelo, anos, motores in ocorrencias:
+        carro = carro_do_modelo(modelo)
+        g = grupos.setdefault(carro["id_carro"] if carro else "?" + modelo,
                               {"id_carro": carro["id_carro"] if carro else None, "carro": carro["descricao"] if carro else "",
-                               "modelo_karhub": f"{montadora} {m['modelo']}", "anos": set(), "motores": set(),
-                               "extras": [], "versoes": 0})
-        g["anos"].add(int(m["ano"]))
+                               "modelo_origem": rotulo, "anos": None, "motores": set(), "extras": [], "versoes": 0})
+        if anos:
+            g["anos"] = juntar_anos(g["anos"], anos)
         g["versoes"] += 1
-        if motor := re.search(r"\b\d\.\d\b", m["versao"]):
-            g["motores"].add(motor[0])
+        g["motores"].update(motores)
         nome_carro = sem_acento(carro["descricao"]).upper() if carro else ""
-        extra = m["modelo"][len(nome_carro):].strip() if m["modelo"].startswith(nome_carro) else m["modelo"]
+        extra = modelo[len(nome_carro):].strip() if modelo.startswith(nome_carro) else modelo
         if extra and extra not in g["extras"]:
             g["extras"].append(extra)
     veiculos = []
     for g in grupos.values():
-        anos = sorted(g["anos"])
-        complemento = " / ".join(sorted(g["motores"], key=float))
-        complemento = f"{complemento} {anos[0] % 100:02d}/{anos[-1] % 100:02d} {'/'.join(g['extras'])}".strip()
-        veiculos.append({"id_carro": g["id_carro"], "carro": g["carro"], "modelo_karhub": g["modelo_karhub"],
+        anos = ""
+        if g["anos"]:
+            inicio, fim = g["anos"]
+            anos = (f"{inicio % 100:02d}" if inicio else "") + "/" + (f"{fim % 100:02d}" if fim else "")
+        complemento = " ".join(filter(None, [" / ".join(sorted(g["motores"], key=float)), anos, "/".join(g["extras"])]))
+        veiculos.append({"id_carro": g["id_carro"], "carro": g["carro"], "modelo_origem": g["modelo_origem"],
                          "complemento": complemento[:1000], "versoes": g["versoes"]})
-    return veiculos, linhas
+    return veiculos
+
+
+def veiculos_sugeridos(item):
+    """Veículos da página da KarHub; nos outros sites (ou sem essa lista) os da aplicação escrita no catálogo."""
+    ocorrencias, linhas = ocorrencias_karhub(item) if item["site"] == "karhub" else ([], [])
+    if not ocorrencias:
+        ocorrencias = ocorrencias_do_texto(item["carro"])
+        linhas = linhas or [l.strip() for l in (item["carro"] or "").split(";") if l.strip()]
+    return agrupar_veiculos(ocorrencias), linhas
 
 
 def carro_do_titulo(nome):
@@ -298,6 +425,7 @@ def gravar_complemento_produto(cod_produto, texto):
 
 
 def sugestao(item):
+    site = nome_site(item["site"])
     nome = item["nome"] or ""
     base = nome.split(" - ")[0]  # "Jogo Cabo De Vela - Gauss - Gc5045": tira marca e código do fim
     desc = " ".join(p for p in sem_acento(base).upper().split() if p not in CONECTIVOS)
@@ -309,7 +437,7 @@ def sugestao(item):
     veiculos, linhas = veiculos_sugeridos(item)
     ids = [v["id_carro"] for v in veiculos if v["id_carro"]]
     titulo = carro_do_titulo(item["nome"] or "")
-    # carro principal: o citado no título; senão o primeiro da lista da KarHub; senão a aplicação das tags
+    # carro principal: o citado no título; senão o primeiro dos veículos compatíveis; senão o da aplicação
     if titulo and (titulo["id_carro"] in ids or not ids):
         carro = titulo
     elif ids:
@@ -318,18 +446,22 @@ def sugestao(item):
         carro = achar_carro(item["carro"])
     num = (item["codigo"] or "").replace(" / ", "/").strip()
     avisos = []
+    if not num:
+        avisos.append(f"{site} não informa o código do fabricante desta peça: preencha o Nº fabricante.")
     if len(num) > LIMITES["num_fabricante"]:
         avisos.append(f"O código '{num}' passa de 15 caracteres: ajuste antes de cadastrar.")
     existente = estado["por_num"].get(num.upper())
     if existente:
         avisos.append(f"O Nº fabricante '{num}' já existe no produto {existente['cod_produto']} "
                       f"({existente['desc_produto']} - {existente['marca']}); o Wayap não aceita repetido.")
-    if not marca:
+    if not item["marca"]:
+        avisos.append(f"{site} não informa a marca desta peça: escolha a marca.")
+    elif not marca:
         avisos.append(f"A marca '{item['marca']}' não existe no cadastro: será criada.")
     if not linhas:
-        avisos.append("A KarHub não informa veículos compatíveis para esta peça: confira o carro principal.")
+        avisos.append(f"{site} não informa veículos compatíveis para esta peça: confira o carro principal.")
     elif any(v["id_carro"] is None for v in veiculos):
-        avisos.append("Alguns modelos da KarHub não existem no cadastro de carros: escolha o carro ou desmarque.")
+        avisos.append(f"Alguns modelos citados em {site} não existem no cadastro de carros: escolha o carro ou desmarque.")
     return {
         "desc_produto": desc,
         "desc_produto_completa": nome[:400],
@@ -384,9 +516,10 @@ def localizar_no_wayap(cod_produto, foto):
     return None
 
 
-def enviar_fotos_karhub(item, cod_produto, campos, urls):
+def enviar_fotos_catalogo(item, cod_produto, campos, urls):
     """Baixa, filtra (tamanho mínimo e duplicadas) e sobe até 5 fotos; registra no lote da curadoria."""
-    saida = Path(f"fotos_wayap_{estado['wayap'].sociedade}_karhub")
+    saida = Path(f"fotos_wayap_{estado['wayap'].sociedade}_cadastro")
+    casamento = f"cadastro {item['site']}"
     escolhidas, hashes = [], []
     for url in urls:
         try:
@@ -405,8 +538,8 @@ def enviar_fotos_karhub(item, cod_produto, campos, urls):
         largura, altura = im.size
         im.thumbnail((LADO_ENVIO, LADO_ENVIO))
         im.save(destino, "JPEG", quality=92)
-        escolhidas.append({"origem": url, "fonte": "karhub", "pasta": "", "url_origem": item["url"],
-                           "principal": not escolhidas, "w": largura, "h": altura, "casamento": "cadastro karhub",
+        escolhidas.append({"origem": url, "fonte": item["site"], "pasta": "", "url_origem": item["url"],
+                           "principal": not escolhidas, "w": largura, "h": altura, "casamento": casamento,
                            "status": "pendente", "nome_wayap": None, "preparada": str(destino)})
         if len(escolhidas) == MAX_FOTOS:
             break
@@ -421,7 +554,7 @@ def enviar_fotos_karhub(item, cod_produto, campos, urls):
     carro = next((c["descricao"] for c in estado["carros"] if c["id_carro"] == campos["id_carro"]), "")
     plano.append({"cod_produto": cod_produto, "desc_produto": campos["desc_produto"], "marca": marca, "carro": carro,
                   "num_fabricante": campos["num_fabricante"], "cod_barra": campos["cod_barra"],
-                  "fotos_existentes": 0, "casamento": ["cadastro karhub"], "fotos": escolhidas})
+                  "fotos_existentes": 0, "casamento": [casamento], "fotos": escolhidas})
     gravar_plano(plano, saida)
     return sum(f["status"] == "enviado" for f in escolhidas)
 
@@ -434,10 +567,15 @@ def pagina_curadoria():
         .replace("__ABA2__", "")
 
 
-@app.get("/karhub")
-def pagina_karhub():
-    return (CABECALHO + KARHUB).replace("__SOCIEDADE__", estado["wayap"].sociedade).replace("__ABA1__", "") \
+@app.get("/cadastro")
+def pagina_cadastro():
+    return (CABECALHO + CADASTRO).replace("__SOCIEDADE__", estado["wayap"].sociedade).replace("__ABA1__", "") \
         .replace("__ABA2__", "ativa")
+
+
+@app.get("/karhub")
+def pagina_karhub():  # endereço antigo da aba, de quando só havia a KarHub
+    return redirect("/cadastro")
 
 
 @app.get("/api/lotes")
@@ -508,53 +646,66 @@ def api_decidir():
 
 
 @app.get("/img")
-def imagem_karhub():
-    """Miniaturas da KarHub servidas por aqui (cache em disco): o navegador não depende do CDN deles."""
+def imagem_catalogo():
+    """Miniaturas dos sites servidas por aqui (cache em disco): o navegador não depende do CDN deles."""
     url, largura = request.args.get("u", ""), request.args.get("w", "300")
-    if not url.startswith("https://cdn.shopify.com/") or not largura.isdigit():
+    host = urlsplit(url).hostname
+    if not url.startswith("https://") or host not in estado["hosts"] or not largura.isdigit() \
+            or not 0 < int(largura) <= 2000:
         abort(400)
     arq = CACHE_IMAGENS / (hashlib.md5(f"{url}|{largura}".encode()).hexdigest() + ".img")
     if not arq.exists():
-        r = requests.get(url + ("&" if "?" in url else "?") + f"width={largura}", timeout=30)
+        shopify = host == "cdn.shopify.com"  # a Shopify (KarHub) já entrega reduzida; os outros CDNs, o original
+        r = requests.get(url + ("&" if "?" in url else "?") + f"width={largura}" if shopify else url, timeout=30)
         if r.status_code != 200:
             abort(502)
+        conteudo = r.content
+        if not shopify:
+            try:
+                im = abrir_rgb(conteudo)
+            except Exception:
+                abort(502)
+            im.thumbnail((int(largura), int(largura)))
+            saida = BytesIO()
+            im.save(saida, "JPEG", quality=88)
+            conteudo = saida.getvalue()
         CACHE_IMAGENS.mkdir(parents=True, exist_ok=True)
-        arq.write_bytes(r.content)
+        arq.write_bytes(conteudo)
     return Response(arq.read_bytes(), mimetype="image/jpeg", headers={"Cache-Control": "max-age=86400"})
 
 
-@app.get("/api/karhub/busca")
+@app.get("/api/catalogo/sites")
+def api_sites():
+    return jsonify([{"site": s["site"], "nome": nome_site(s["site"]), "itens": s["itens"]} for s in sites_indexados()])
+
+
+@app.get("/api/catalogo/busca")
 def api_busca():
     lista = []
-    achados, tem_mais = buscar_karhub(request.args.get("q", ""), offset=int(request.args.get("offset", 0)))
+    achados, tem_mais = buscar_catalogos(request.args.get("q", ""), request.args.get("site", ""),
+                                         offset=int(request.args.get("offset", 0)))
     for r in achados:
         existente = ja_cadastrado(r)
         imagens = json.loads(r["imagens"])
-        lista.append({"id": r["id"], "nome": r["nome"], "marca": r["marca"], "codigo": r["codigo"], "ean": r["ean"],
-                      "carro": r["carro"], "url": r["url"], "imagens": imagens,
+        lista.append({"id": r["id"], "site": r["site"], "site_nome": nome_site(r["site"]), "nome": r["nome"],
+                      "marca": r["marca"], "codigo": r["codigo"], "ean": r["ean"], "carro": r["carro"], "url": r["url"],
+                      "imagens": imagens,
                       "existente": {"cod_produto": existente["cod_produto"], "desc_produto": existente["desc_produto"]}
                       if existente else None})
     return jsonify({"itens": lista, "tem_mais": tem_mais})
 
 
-@app.get("/api/karhub/sugestao/<int:id_item>")
+@app.get("/api/catalogo/sugestao/<int:id_item>")
 def api_sugestao(id_item):
-    with db_karhub() as db:
-        item = db.execute("SELECT * FROM item WHERE id = ?", (id_item,)).fetchone()
-    if not item:
-        abort(404)
-    return jsonify({"campos": sugestao(dict(item)), "marcas": estado["marcas"], "carros": estado["carros"],
+    item = item_do_catalogo(id_item)
+    return jsonify({"campos": sugestao(item), "marcas": estado["marcas"], "carros": estado["carros"],
                     "fornecedores": estado["fornecedores"], "imagens": json.loads(item["imagens"])})
 
 
-@app.post("/api/karhub/cadastrar")
+@app.post("/api/catalogo/cadastrar")
 def api_cadastrar():
     dados = request.json
-    with db_karhub() as db:
-        item = db.execute("SELECT * FROM item WHERE id = ?", (int(dados["id"]),)).fetchone()
-    if not item:
-        abort(404)
-    item = dict(item)
+    item = item_do_catalogo(int(dados["id"]))
     c = {k: (str(v).strip() if isinstance(v, str) else v) for k, v in dados["campos"].items()}
     c["desc_produto"] = c["desc_produto"].upper()
     for campo, limite in LIMITES.items():
@@ -578,7 +729,7 @@ def api_cadastrar():
                  "desc_produto_completa": c.get("desc_produto_completa") or None, "cod_barra": c.get("cod_barra") or None,
                  "unidade": c["unidade"].upper(), "ncm": c.get("ncm") or None, "id_marca": int(c["id_marca"]),
                  "id_carro": int(c["id_carro"]), "id_fornecedor": int(c["id_fornecedor"]), "custo": 0, "venda": 0,
-                 "cadastrante": "KARHUB"}
+                 "cadastrante": item["site"].upper()}
         r = w.chamar("/produto", "insertProduto", param=param)
         if not (isinstance(r, dict) and r.get("cod_produto")):
             return jsonify({"erro": (r or {}).get("msg") if isinstance(r, dict) else str(r)}), 400
@@ -608,7 +759,7 @@ def api_cadastrar():
             erro = f"complemento do produto não gravado: {e}"
         if erro:
             avisos.append(erro)
-        enviadas = enviar_fotos_karhub(item, cod, c, dados.get("fotos") or [])
+        enviadas = enviar_fotos_catalogo(item, cod, c, dados.get("fotos") or [])
         marca = next((m["descricao"] for m in estado["marcas"] if m["id_marca"] == c["id_marca"]), "")
         estado["produtos"].append({"cod_produto": cod, "desc_produto": c["desc_produto"], "marca": marca,
                                    "num_fabricante": c["num_fabricante"], "num_fabricante2": "",
@@ -668,6 +819,7 @@ button:disabled { opacity: .5; cursor: wait; }
 .secundario { color: var(--text); background: transparent; border-color: var(--line); }
 .selo { display: inline-block; font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: 99px; }
 .selo.existe { background: var(--ok-bg); color: var(--ok); }
+.selo.site { background: var(--accent-bg); color: var(--accent); vertical-align: 2px; }
 .vazio { text-align: center; color: var(--muted); padding: 60px 0; }
 #zoom { position: fixed; inset: 0; background: rgba(0,0,0,.8); display: none; align-items: center; justify-content: center; z-index: 20; cursor: zoom-out; }
 #zoom img { max-width: 92vw; max-height: 92vh; background: #fff; border-radius: 8px; }
@@ -701,7 +853,7 @@ button:disabled { opacity: .5; cursor: wait; }
 <body>
 <header>
   <h1>Wayap · __SOCIEDADE__</h1>
-  <nav><a href="/" class="__ABA1__">Curadoria de fotos</a><a href="/karhub" class="__ABA2__">Cadastrar da KarHub</a></nav>
+  <nav><a href="/" class="__ABA1__">Curadoria de fotos</a><a href="/cadastro" class="__ABA2__">Cadastrar dos sites</a></nav>
 """
 
 CURADORIA = r"""
@@ -881,13 +1033,14 @@ iniciar();
 </html>
 """
 
-KARHUB = r"""
-  <form id="formBusca" style="display:flex; gap:8px; flex:1; min-width:260px">
-    <input id="q" placeholder="Código do fabricante, EAN ou descrição (ex.: GC5045, bieleta captiva)" style="flex:1" autofocus>
+CADASTRO = r"""
+  <form id="formBusca" style="display:flex; gap:8px; flex:1; min-width:260px; flex-wrap:wrap">
+    <select id="site" title="Site do catálogo"><option value="">Todos os sites</option></select>
+    <input id="q" placeholder="Código do fabricante, EAN ou descrição (ex.: GC5045, bieleta captiva)" style="flex:1; min-width:180px" autofocus>
     <button class="primario" type="submit">Buscar</button>
   </form>
 </header>
-<main id="resultados"><div class="vazio">Busque uma peça no catálogo da KarHub para cadastrar no Wayap.</div></main>
+<main id="resultados"><div class="vazio">Busque uma peça nos catálogos dos sites para cadastrar no Wayap.</div></main>
 <div class="modal" id="modal">
   <form class="form" id="formCadastro">
     <h2 id="tituloForm"></h2>
@@ -906,7 +1059,7 @@ KARHUB = r"""
       <label>Custo<input value="0,00" disabled></label>
       <label>Venda<input value="0,00" disabled></label>
     </div>
-    <p style="margin:6px 0 6px;font-weight:600">Veículos compatíveis (KarHub) →
+    <p style="margin:6px 0 6px;font-weight:600">Veículos compatíveis (<span id="siteVeiculos"></span>) →
       carros de venda com complemento <span class="origem" id="resumoVeiculos"></span></p>
     <div id="veiculosForm"></div>
     <div class="grade" style="margin-top:8px">
@@ -928,18 +1081,32 @@ KARHUB = r"""
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"}[c]));
 const miniatura = (url, w = 300) => "/img?w=" + w + "&u=" + encodeURIComponent(url);
 const POR_PAGINA = 40;
-let resultados = [], itemAtual = null, consulta = "", offset = 0;
+let resultados = [], itemAtual = null, consulta = "", siteBusca = "", offset = 0;
 const main = document.getElementById("resultados");
+const seletorSite = document.getElementById("site");
 
 function avisar(texto, ok) {
   const a = document.getElementById("aviso"); a.style.background = ok ? "var(--ok)" : "var(--bad)"; a.textContent = texto;
   a.style.display = "block"; setTimeout(() => a.style.display = "none", 6000);
 }
 
+async function carregarSites() {
+  const sites = await (await fetch("/api/catalogo/sites")).json();
+  seletorSite.innerHTML = '<option value="">Todos os sites</option>' + sites.map(s =>
+    `<option value="${esc(s.site)}">${esc(s.nome)} (${s.itens.toLocaleString("pt-BR")})</option>`).join("");
+  let salvo = null;
+  try { salvo = localStorage.getItem("site"); } catch (e) {}
+  if (sites.some(s => s.site === salvo)) seletorSite.value = salvo;
+}
+seletorSite.onchange = () => {
+  try { localStorage.setItem("site", seletorSite.value); } catch (e) {}
+  if (document.getElementById("q").value.trim()) document.getElementById("formBusca").requestSubmit();
+};
+
 document.getElementById("formBusca").onsubmit = async e => {
   e.preventDefault();
   const q = document.getElementById("q").value.trim(); if (!q) return;
-  consulta = q; offset = 0; resultados = [];
+  consulta = q; siteBusca = seletorSite.value; offset = 0; resultados = [];
   main.innerHTML = '<div class="vazio">Buscando…</div>';
   await buscarMais();
 };
@@ -947,12 +1114,15 @@ document.getElementById("formBusca").onsubmit = async e => {
 async function buscarMais() {
   const botao = document.getElementById("maisProdutos");
   if (botao) { botao.disabled = true; botao.textContent = "Carregando…"; }
-  const d = await (await fetch(`/api/karhub/busca?q=${encodeURIComponent(consulta)}&offset=${offset}`)).json();
+  const d = await (await fetch(`/api/catalogo/busca?q=${encodeURIComponent(consulta)}&site=${encodeURIComponent(siteBusca)}&offset=${offset}`)).json();
   offset += POR_PAGINA;
   const ids = new Set(resultados.map(r => r.id));
   const novos = d.itens.filter(r => !ids.has(r.id));
   resultados.push(...novos);
-  if (!resultados.length) { main.innerHTML = '<div class="vazio">Nada encontrado no catálogo da KarHub.</div>'; return; }
+  if (!resultados.length) {
+    const onde = siteBusca ? "no catálogo " + (seletorSite.selectedOptions[0]?.text.replace(/ \(.*/, "") || siteBusca) : "nos catálogos";
+    main.innerHTML = `<div class="vazio">Nada encontrado ${esc(onde)}.</div>`; return;
+  }
   if (!document.getElementById("rodape"))
     main.innerHTML = '<div id="rodape" style="text-align:center;margin:18px 0 40px"></div>';
   document.getElementById("rodape").insertAdjacentHTML("beforebegin", novos.map(linhaHtml).join(""));
@@ -967,15 +1137,15 @@ function linhaHtml(r) {
     <div class="linha" data-id="${r.id}">
       ${r.imagens.length ? `<img class="foto" loading="lazy" src="${esc(miniatura(r.imagens[0]))}" data-grande="${esc(miniatura(r.imagens[0], 1000))}" alt="${esc(r.nome)}">` : '<div class="foto"></div>'}
       <div>
-        <div class="desc">${esc(r.nome)}</div>
+        <div class="desc"><span class="selo site">${esc(r.site_nome)}</span> ${esc(r.nome)}</div>
         <div class="campos">
-          <div><span>Marca:</span> ${esc(r.marca)}</div>
-          <div><span>Código:</span> ${esc(r.codigo)}</div>
+          <div><span>Marca:</span> ${esc(r.marca) || "—"}</div>
+          <div><span>Código:</span> ${esc(r.codigo) || "—"}</div>
           <div><span>EAN:</span> ${esc(r.ean) || "—"}</div>
           <div><span>Fotos:</span> ${r.imagens.length}</div>
         </div>
         <div class="origem">${esc((r.carro || "").slice(0, 220))}${(r.carro || "").length > 220 ? "…" : ""}
-          · <a href="${esc(r.url)}" target="_blank" rel="noopener">ver na KarHub</a></div>
+          · <a href="${esc(r.url)}" target="_blank" rel="noopener">ver no site</a></div>
       </div>
       <div class="botoes">
         ${r.existente ? `<span class="selo existe">Já cadastrado: ${r.existente.cod_produto}</span>
@@ -997,10 +1167,11 @@ function opcoes(lista, id, nome, valor) {
 
 async function abrir(id) {
   itemAtual = resultados.find(r => r.id === id);
-  const d = await (await fetch("/api/karhub/sugestao/" + id)).json();
+  const d = await (await fetch("/api/catalogo/sugestao/" + id)).json();
   const f = document.getElementById("formCadastro"), c = d.campos;
   document.getElementById("tituloForm").textContent = itemAtual.nome;
-  document.getElementById("origemForm").innerHTML = `KarHub · ${esc(itemAtual.marca)} ${esc(itemAtual.codigo)} · <a href="${esc(itemAtual.url)}" target="_blank" rel="noopener">ver na KarHub</a>`;
+  document.getElementById("origemForm").innerHTML = `${esc(itemAtual.site_nome)} · ${esc(itemAtual.marca)} ${esc(itemAtual.codigo)} · <a href="${esc(itemAtual.url)}" target="_blank" rel="noopener">ver no site</a>`;
+  document.getElementById("siteVeiculos").textContent = itemAtual.site_nome;
   for (const campo of ["desc_produto", "desc_produto_completa", "num_fabricante", "cod_barra", "ncm", "marca_nova"])
     f.elements[campo].value = c[campo] ?? "";
   f.elements.id_marca.innerHTML = '<option value="nova">— criar marca nova —</option>' + opcoes(d.marcas, "id_marca", "descricao", c.id_marca);
@@ -1021,8 +1192,8 @@ async function abrir(id) {
       <input type="checkbox" class="vIncluir"${v.id_carro ? " checked" : ""} title="Incluir este carro no produto">
       <select class="vCarro"><option value="">— escolher carro —</option>${opcoes(d.carros, "id_carro", "descricao", v.id_carro)}</select>
       <input type="text" class="vCompl" maxlength="1000" value="${esc(v.complemento)}" title="Complemento do carro">
-      <span class="origem">${esc(v.modelo_karhub)} · ${v.versoes} versões</span>
-    </div>`).join("") || '<span class="origem">A KarHub não informa veículos compatíveis para esta peça.</span>';
+      <span class="origem">${esc(v.modelo_origem)} · ${v.versoes} versões</span>
+    </div>`).join("") || `<span class="origem">${esc(itemAtual.site_nome)} não informa veículos compatíveis para esta peça.</span>`;
   document.getElementById("fotosForm").innerHTML = d.imagens.map((u, k) =>
     `<label><input type="checkbox" value="${esc(u)}"${k < 5 ? " checked" : ""}><img src="${esc(miniatura(u))}" alt="Foto ${k + 1}"></label>`).join("")
     || '<span class="origem">Este item não tem fotos.</span>';
@@ -1047,7 +1218,7 @@ document.getElementById("formCadastro").onsubmit = async e => {
     complemento: l.querySelector(".vCompl").value}));
   const btn = document.getElementById("btnCadastrar"); btn.disabled = true; btn.textContent = "Cadastrando…";
   try {
-    const r = await fetch("/api/karhub/cadastrar", {method: "POST", headers: {"Content-Type": "application/json"},
+    const r = await fetch("/api/catalogo/cadastrar", {method: "POST", headers: {"Content-Type": "application/json"},
                                                     body: JSON.stringify({id: itemAtual.id, campos, fotos, veiculos})});
     const d = await r.json();
     if (!r.ok) { avisar(d.erro || "Erro ao cadastrar"); return; }
@@ -1061,6 +1232,7 @@ document.getElementById("formCadastro").onsubmit = async e => {
 };
 document.getElementById("zoom").onclick = e => e.currentTarget.style.display = "none";
 document.addEventListener("keydown", e => { if (e.key === "Escape") { fechar(); document.getElementById("zoom").style.display = "none"; } });
+carregarSites();
 </script>
 </body>
 </html>
@@ -1072,8 +1244,8 @@ def main():
     ap.add_argument("--porta", type=int, default=8765)
     args = ap.parse_args()
     estado["wayap"] = Wayap()
-    if CATALOGO_KARHUB.exists():
-        indexar_karhub()
+    indexar_catalogos()
+    estado["hosts"] = {h for s in sites_indexados() for h in json.loads(s["hosts"])}
     print("lendo o cadastro do Wayap...")
     carregar_wayap()
     print(f"Painel em http://localhost:{args.porta}")

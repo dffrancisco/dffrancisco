@@ -198,7 +198,7 @@ def main():
                 frente.append(nome)
         ordem = frente + [nm for nm, _ in finais if nm not in frente]
         if ordem != [nm for nm, _ in finais]:
-            w.chamar("/produto", "alterarOrdemFoto", cod_produto=cod, fotos=ordem)
+            w.reordenar_fotos(cod, ordem)
         finais = fotos_no_wayap(w, cod)
         for f in registradas:
             h = dhash(abrir_rgb(f["preparada"]))

@@ -99,6 +99,8 @@ sem baixar imagens:
 | CarBlue | Wake | ver `catalogos/carblue.log` |
 | ClicPeças | API da WS Lojas | Não: a loja não publica EAN nem código do fabricante |
 | Fuscão Preto | API VTEX | Não: sem código do fabricante e EANs internos da loja |
+| Universal Automotive | API VTEX da loja do fabricante (busca dividida por faixa de preço) | Sim: grupo Universal (Universal/Univel, Micro, Uniflex, Amortex, Unick, Carto), EAN em todos e código no RefId. A "M CARTO" do cadastro é outra marca |
+| AZ Acessórios | Wake, por marca (`--marca`, padrão Loma Plast) | Pouco: só 75 das 299 variações Loma Plast trazem o código LHT; o resto é código interno |
 
 ```bash
 python catalogo_para_pecas.py karhub shoppecas     # casa com os produtos SEM foto e baixa só essas fotos
@@ -107,7 +109,17 @@ python wayap_fotos.py planejar --so-sem-foto --saida fotos_wayap_topcar_sites \
 python wayap_fotos.py enviar --saida fotos_wayap_topcar_sites
 ```
 
-## Painel (curadoria de fotos e cadastro pela KarHub)
+Universal (18 mil produtos, ~10 min):
+
+```bash
+python catalogo_universal.py
+python catalogo_para_pecas.py universal
+python wayap_fotos.py planejar --so-sem-foto --saida fotos_wayap_topcar_universal \
+    --fontes universal=pecas_universal/*/produto.json
+python wayap_fotos.py enviar --saida fotos_wayap_topcar_universal
+```
+
+## Painel (curadoria de fotos e cadastro pelos sites)
 
 ```bash
 python painel_wayap.py            # http://localhost:8765 (mesmas variáveis WAYAP_*)
@@ -117,8 +129,14 @@ python painel_wayap.py            # http://localhost:8765 (mesmas variáveis WAY
   descrição, carro, marca, nº fabricante e cód. barras. "Foto certa" tira da lista; "Foto errada" tira
   da lista e apaga a foto no Wayap (a foto é localizada pelo conteúdo, porque apagar renumera as outras).
   Atalhos: C / E / ↑↓.
-- **Cadastrar da KarHub:** busca por código, EAN ou descrição no catálogo da KarHub (índice SQLite em
-  `catalogos/karhub.sqlite`, criado na primeira execução). O que já existe no cadastro aparece marcado.
-  "Cadastrar" abre o formulário com sugestões tiradas do próprio cadastro (marca, carro pela aplicação,
-  fornecedor e unidade mais usados pela marca, NCM pelo tipo de peça); custo e venda entram zerados.
-  As fotos escolhidas sobem junto e vão para a curadoria (lote `fotos_wayap_<sociedade>_karhub`).
+- **Cadastrar dos sites:** busca por código, EAN ou descrição em todos os catálogos de `catalogos/*.jsonl`
+  (KarHub, CarBlue, ShopPeças, Universal, ClicPeças, Fuscão Preto, AZ Acessórios), ou só em um site pelo
+  seletor. O índice SQLite fica em `catalogos/catalogos.sqlite`; na abertura do painel só é refeito o site cujo
+  `.jsonl` mudou (todos juntos levam ~10 s). Um catálogo novo entra sozinho ao ser gravado nessa pasta.
+  O que já existe no cadastro aparece marcado. "Cadastrar" abre o formulário com sugestões tiradas do
+  próprio cadastro (marca, carro, fornecedor e unidade mais usados pela marca, NCM pelo tipo de peça); custo e
+  venda entram zerados. Os veículos compatíveis vêm da página da KarHub; nos outros sites, da aplicação escrita
+  no catálogo ("GOL G2 96 97 98", "Fiat: Palio 01 a 12", "Gol, Parati - 1998 1999"...). ClicPeças, Fuscão
+  Preto e quase toda a AZ Acessórios não trazem código do fabricante: o Nº fabricante tem de ser preenchido à
+  mão. As fotos escolhidas sobem junto e vão para a curadoria (lote `fotos_wayap_<sociedade>_cadastro`; os
+  cadastros antigos da KarHub continuam no lote `fotos_wayap_<sociedade>_karhub`).

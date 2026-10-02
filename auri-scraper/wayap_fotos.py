@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Escolhe as melhores fotos das pastas raspadas e sobe para os produtos de um banco do Wayap.
 
-Uso (credenciais só por variável de ambiente, nunca no código):
+Uso (credenciais por variável de ambiente ou num .env ao lado do script, nunca no código):
     export WAYAP_URL=https://wayap.com.br/admin2 WAYAP_SOCIEDADE=topcar WAYAP_LOGIN=... WAYAP_SENHA=...
     python wayap_fotos.py planejar      # cruza produtos x fotos e gera <saida>/plano.csv (nada é enviado)
     python wayap_fotos.py enviar        # sobe as fotos do plano (retomável: pula o que já foi enviado)
@@ -42,9 +42,23 @@ MENOR_LADO = 250
 LADO_ENVIO = 1024  # o Wayap reduz para 1024 px de qualquer jeito; enviar menor economiza banda
 DISTANCIA_DUPLICADA = 6  # bits diferentes no dHash de 64 bits
 PARALELO_WAYAP = 3  # mais que isso o servidor do Wayap passa a recusar conexões por um tempo
+# credenciais do Postgres do Wayap: leitura das fotos apagadas (a API não lista) e gravação do complemento no painel
+ENV_ADMIN = Path(os.environ.get("WAYAP_ENV_ADMIN", "/home/alves/PROJETOS/WAYAP/.env_admin"))
 MARCAS_GENERICAS = {"UNIVERSAL", "IMPORTADO", "FLINHA", "SEMMARCA", "ORIGINAL", "DIVERSOS", "GENERICO"}
 PALAVRAS_IGNORADAS = {"PARA", "COM", "SEM", "KIT", "JOGO", "PECA", "PECAS", "MODELO", "LADO", "ORIGINAL",
                       "UNIVERSAL", "TODOS", "LINHA", "APLICACAO"}
+
+
+def carregar_env(arquivo=Path(__file__).with_name(".env")):
+    """WAYAP_* do .env ao lado do script (fora do git); variável já exportada tem prioridade."""
+    if arquivo.exists():
+        for linha in arquivo.read_text(encoding="utf-8").splitlines():
+            chave, sep, valor = linha.strip().partition("=")
+            if sep and not chave.startswith("#"):
+                os.environ.setdefault(chave.strip(), valor.strip())
+
+
+carregar_env()
 
 
 def sem_acento(s):
@@ -98,10 +112,11 @@ class Wayap:
             raise SystemExit(f"defina as variáveis de ambiente: {', '.join(faltando)}")
         self.url = os.environ["WAYAP_URL"].rstrip("/")
         self.sociedade = os.environ["WAYAP_SOCIEDADE"]
-        # arquivos estáticos ficam em /files/<id_sociedade em base64>/store/foto_produto/
+        # arquivos estáticos ficam em /files/<id_sociedade em base64>/store/foto_produto/<cod>/<nome_imagem>
         self.url_fotos = (self.url.rsplit("/", 1)[0] + "/files/" + base64.b64encode(self.sociedade.encode()).decode()
                           + "/store/foto_produto/")
         self.token = None
+        self.ids = {}  # nome da foto ('<cod>/<nome_imagem>') -> id_produto_foto
         self.login()
 
     def login(self):
@@ -145,11 +160,34 @@ class Wayap:
                 return todos
             offset += lote
 
+    def checar_api_fotos(self):
+        """Fotos agora ficam na tabela produto_foto, uma pasta por produto. A API antiga lê a pasta plana (que a
+        migração esvaziou): lista tudo vazio e grava fora da tabela. Ela devolve [] para cod_produto inválido;
+        a nova recusa."""
+        if getattr(self, "_api_nova", False):
+            return
+        if isinstance(self._post("/produto", {"call": "getListaFotoJson", "cod_produto": 0}), list):
+            raise SystemExit(f"{self.url}: a API de fotos ainda é a antiga (pasta plana); publique o erp_server "
+                             "com produto_foto antes de mexer em fotos")
+        self._api_nova = True
+
     def fotos(self, cod_produto):
+        """Fotos ativas na ordem do produto, como caminho relativo a url_fotos ('<cod>/<nome_imagem>')."""
+        self.checar_api_fotos()
         r = self._post("/produto", {"call": "getListaFotoJson", "cod_produto": cod_produto})
         if not isinstance(r, list):
             raise RuntimeError(f"getListaFotoJson({cod_produto}): {r}")
-        return [f["foto"] for f in r]
+        nomes = []
+        for f in sorted(r, key=lambda f: f["ordem_imagem"]):
+            nome = f"{cod_produto}/{f['nome_imagem']}"
+            self.ids[nome] = f["id_produto_foto"]
+            nomes.append(nome)
+        return nomes
+
+    def id_foto(self, cod_produto, nome):
+        if nome not in self.ids:
+            self.fotos(cod_produto)
+        return self.ids.get(nome)
 
     def hash_foto(self, nome):
         """dHash de uma foto que já está no Wayap (None se não der para baixar/abrir)."""
@@ -160,12 +198,27 @@ class Wayap:
             return None
 
     def enviar_foto(self, cod_produto, caminho):
+        """Resposta do Wayap; em caso de sucesso, com 'img' = nome da foto no formato de fotos()."""
+        self.checar_api_fotos()
         with open(caminho, "rb") as f:
-            return self._post("/produto", data={"call": "uploadFoto", "codProduto": str(cod_produto)},
-                              files={"foto": (Path(caminho).name, f, "image/jpeg")})
+            r = self._post("/produto", data={"call": "uploadFoto", "codProduto": str(cod_produto)},
+                           files={"foto": (Path(caminho).name, f, "image/jpeg")})
+        if isinstance(r, dict) and r.get("id_produto_foto") and r.get("nome_imagem"):
+            r["img"] = f"{cod_produto}/{r['nome_imagem']}"
+            self.ids[r["img"]] = r["id_produto_foto"]
+        return r
 
     def apagar_foto(self, cod_produto, nome):
-        return self._post("/produto", {"call": "deleteFoto", "cod_produto": cod_produto, "nomeFoto": nome})
+        self.checar_api_fotos()
+        id_foto = self.id_foto(cod_produto, nome)
+        if not id_foto:
+            return {"msg": f"foto {nome} não está mais no produto {cod_produto}"}
+        return self._post("/produto", {"call": "deleteFoto", "cod_produto": cod_produto, "id_produto_foto": id_foto})
+
+    def reordenar_fotos(self, cod_produto, nomes):
+        self.checar_api_fotos()
+        ids = [self.id_foto(cod_produto, n) for n in nomes]
+        return self._post("/produto", {"call": "alterarOrdemFoto", "cod_produto": cod_produto, "ids": ids})
 
 
 # ---------- imagens ----------
@@ -256,6 +309,60 @@ def casar(produtos, registros):
     return casados, revisar
 
 
+def apagadas_no_banco(sociedade, cods):
+    """{cod: ['<cod>/<nome_imagem>']} das fotos que alguém apagou (a API só lista as ativas, então lê o banco)."""
+    if not ENV_ADMIN.exists():
+        print(f"aviso: {ENV_ADMIN} não encontrado; fotos apagadas no Wayap podem voltar", file=sys.stderr)
+        return {}
+    import psycopg2
+    env = dict(re.findall(r"^(POSTGRES_[A-Z]+)=(.*)$", ENV_ADMIN.read_text(), re.M))
+    con = psycopg2.connect(host=env["POSTGRES_HOST"], port=env["POSTGRES_PORT"], user=env["POSTGRES_USER"],
+                           password=env["POSTGRES_PASSWORD"], dbname=sociedade, connect_timeout=15)
+    try:
+        con.set_session(readonly=True)
+        with con.cursor() as cur:
+            cur.execute("SELECT cod_produto, nome_imagem FROM produto_foto WHERE deletado_em IS NOT NULL "
+                        "AND nome_imagem <> '' AND cod_produto = ANY(%s)", (list(cods),))
+            apagadas = defaultdict(list)
+            for cod, nome in cur.fetchall():
+                apagadas[cod].append(f"{cod}/{nome}")
+            return apagadas
+    finally:
+        con.close()
+
+
+def fotos_recusadas(wayap, existentes, hashes_existentes):
+    """Hashes, por produto, das fotos que alguém apagou no Wayap: não voltam.
+
+    Duas origens: as apagadas que o banco ainda guarda (deletado_em) e as que subimos em qualquer lote e não
+    estão mais no produto (apagadas antes da tabela produto_foto). Só olha os produtos em `existentes`; foto
+    atual que não dá para comparar (hash None) faz o produto ser pulado na segunda, para não recusar à toa."""
+    enviadas = defaultdict(set)
+    for arq in glob.glob(f"fotos_wayap_{wayap.sociedade}*/plano.json"):
+        for p in json.loads(Path(arq).read_text(encoding="utf-8")):
+            if p["cod_produto"] in existentes:
+                for f in p["fotos"]:
+                    if f["status"] in ("enviado", "apagado_curadoria") and Path(f.get("preparada") or "").is_file():
+                        enviadas[p["cod_produto"]].add(f["preparada"])
+    caminhos = sorted({c for cs in enviadas.values() for c in cs})
+    with ThreadPoolExecutor(max_workers=os.cpu_count()) as pool:
+        hashes = {c: d["hash"] for c, d in pool.map(info_foto, caminhos) if d}
+    recusadas = defaultdict(list)
+    for cod, cs in enviadas.items():
+        atuais = [hashes_existentes.get(n) for n in existentes[cod]]
+        if None in atuais:
+            continue
+        recusadas[cod] += [hashes[c] for c in cs if c in hashes
+                           and all(distancia(hashes[c], h) > DISTANCIA_DUPLICADA for h in atuais)]
+    apagadas = apagadas_no_banco(wayap.sociedade, existentes)
+    nomes = [n for ns in apagadas.values() for n in ns]
+    with ThreadPoolExecutor(max_workers=PARALELO_WAYAP) as pool:
+        hashes_apagadas = dict(zip(nomes, pool.map(wayap.hash_foto, nomes)))
+    for cod, ns in apagadas.items():
+        recusadas[cod] += [h for n in ns if (h := hashes_apagadas[n]) is not None]
+    return {cod: hs for cod, hs in recusadas.items() if hs}
+
+
 def planejar(args):
     base = Path(args.base)
     saida = Path(args.saida)
@@ -277,6 +384,9 @@ def planejar(args):
         nomes_existentes = [n for ns in existentes.values() for n in ns]
         print(f"baixando {len(nomes_existentes)} fotos que já estão no Wayap para não repetir...")
         hashes_existentes = dict(zip(nomes_existentes, pool.map(wayap.hash_foto, nomes_existentes)))
+    recusadas = fotos_recusadas(wayap, existentes, hashes_existentes)
+    print(f"{sum(map(len, recusadas.values()))} fotos apagadas no Wayap (não voltam) "
+          f"em {len(recusadas)} produtos")
 
     candidatas = sorted({img for _, aceitos in casados for i in aceitos for img in registros[i]["imagens"]})
     print(f"analisando {len(candidatas)} fotos candidatas...")
@@ -309,8 +419,9 @@ def planejar(args):
         # capa: a foto principal de maior resolução; depois as demais por resolução
         fotos.sort(key=lambda f: (not (f["principal"] and not ja_tem), -min(f["w"], f["h"], 1200), not f["principal"]))
         escolhidas, vistos = [], [h for n in ja_tem if (h := hashes_existentes.get(n)) is not None]
+        recusadas_aqui = recusadas.get(p["cod_produto"], [])
         for f in fotos:
-            if all(distancia(f["hash"], h) > DISTANCIA_DUPLICADA for h in vistos):
+            if all(distancia(f["hash"], h) > DISTANCIA_DUPLICADA for h in vistos + recusadas_aqui):
                 escolhidas.append(f)
                 vistos.append(f["hash"])
             if len(escolhidas) == vagas:
