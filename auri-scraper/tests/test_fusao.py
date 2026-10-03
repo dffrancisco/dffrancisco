@@ -152,3 +152,59 @@ def test_mesmo_anuncio_no_jsonl_e_no_produto_json_conta_uma_vez(tmp_path):
     assert pecas[0]["fotos"][0]["arquivo_local"] == "/x/foto_1.jpg"
     db = abrir(tmp_path / "h.sqlite")
     assert gravar(db, pecas)["novas"] == 1
+
+
+def test_desfusao_nao_sobrescreve_a_sobrevivente(tmp_path):
+    """C1 da revisão: separadas (ids 1 e 2) -> fundidas (2 inativa, fundida_em=1) -> separadas de novo.
+    O id 1 mantém o conteúdo de A; B ganha id novo (ids nunca são reaproveitados); nada é perdido."""
+    db = abrir(tmp_path / "h.sqlite")
+    a1 = _a("auri", "https://auri/1", "FAROL A", "ARTEB", "0160818")
+    a2 = _a("autonext", "https://an/1", "FAROL B", "ARTEB", "160818")
+    gravar(db, _fundir([a1, a2])[0])
+    a1["ean"] = a2["ean"] = "7898252655139"
+    gravar(db, _fundir([a1, a2])[0])
+    assert [tuple(r) for r in db.execute("SELECT id_peca, status, fundida_em FROM peca ORDER BY 1")] == [(1, "ativa", None), (2, "inativa", 1)]
+    a1["ean"] = a2["ean"] = None
+    r = gravar(db, _fundir([a1, a2])[0])
+    ativas = {row["id_peca"]: row["codigo"] for row in db.execute("SELECT id_peca, codigo FROM peca WHERE status='ativa'")}
+    assert ativas == {1: "0160818", 3: "160818"} and r["novas"] == 1
+    assert db.execute("SELECT status FROM peca WHERE id_peca=2").fetchone()[0] == "inativa"
+    assert {o["url"] for o in db.execute("SELECT url FROM origem WHERE id_peca=1")} == {"https://auri/1"}
+
+
+def test_gravar_nao_depende_do_limite_de_variaveis_do_sqlite(tmp_path):
+    """C2 da revisão: NOT IN (?,?,...) com uma variável por peça estoura em 250 mil."""
+    import sqlite3
+    db = abrir(tmp_path / "h.sqlite")
+    db.setlimit(sqlite3.SQLITE_LIMIT_VARIABLE_NUMBER, 20)  # o INSERT de peca usa 11 variáveis; 30 peças estourariam o NOT IN antigo
+    anuncios = [_a("auri", f"https://auri/{i}", "FAROL", "ARTEB", str(1000 + i)) for i in range(30)]
+    assert gravar(db, _fundir(anuncios)[0])["novas"] == 30
+    assert gravar(db, _fundir(anuncios[:25])[0])["inativadas_por_sumico"] == 5
+
+
+def test_fusao_por_ean_une_com_o_primeiro_compativel_e_nao_so_com_o_primeiro_da_lista():
+    """I6 da revisão: [KIT E CIA, KIT CIA, KIT CIA] com o mesmo EAN: os dois KIT CIA têm de se unir."""
+    pecas, _ = _fundir([_a("carblue", "https://c/1", "X", "KIT E CIA", "10386", ean="7898300981920", prioridade=4),
+                        _a("karhub", "https://k/1", "X", "KIT CIA", "10386", ean="7898300981920", prioridade=2),
+                        _a("shoppecas", "https://s/1", "X", "KIT CIA", "KC10386", ean="7898300981920", prioridade=3)])
+    assert sorted(p["marca"] for p in pecas) == ["KIT CIA", "KIT E CIA"]
+    assert next(p for p in pecas if p["marca"] == "KIT CIA")["qtd_fontes"] == 2
+
+
+def test_fusao_move_as_fotos_da_peca_inativada_para_a_sobrevivente(tmp_path):
+    """I2 da revisão: a linha de foto mudava de id, mas o arquivo ficava na pasta antiga e já constava publicada."""
+    db = abrir(tmp_path / "h.sqlite")
+    a1 = _a("auri", "https://auri/1", "FAROL A", "ARTEB", "0160818")
+    a2 = _a("autonext", "https://an/1", "FAROL B", "ARTEB", "160818")
+    gravar(db, _fundir([a1, a2])[0], pasta_fotos=tmp_path / "fotos")
+    for id_peca, arq in ((1, "aaaa.jpg"), (2, "bbbb.jpg")):
+        (tmp_path / "fotos" / str(id_peca)).mkdir(parents=True)
+        (tmp_path / "fotos" / str(id_peca) / arq).write_bytes(b"x")
+        (tmp_path / "fotos" / str(id_peca) / arq.replace(".jpg", "_p.jpg")).write_bytes(b"p")
+        db.execute("INSERT INTO foto (id_peca, ordem, arquivo, origem_tipo, publicada) VALUES (?, 1, ?, 'loja', 1)", (id_peca, arq))
+    db.commit()
+    a1["ean"] = a2["ean"] = "7898252655139"
+    gravar(db, _fundir([a1, a2])[0], pasta_fotos=tmp_path / "fotos")
+    fotos = db.execute("SELECT id_peca, ordem, arquivo, publicada FROM foto ORDER BY ordem").fetchall()
+    assert [tuple(f) for f in fotos] == [(1, 1, "aaaa.jpg", 1), (1, 2, "bbbb.jpg", 0)]
+    assert (tmp_path / "fotos/1/bbbb.jpg").exists() and (tmp_path / "fotos/1/bbbb_p.jpg").exists()

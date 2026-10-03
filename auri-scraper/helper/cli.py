@@ -56,7 +56,7 @@ def preparar(args):
     print(f"{len(anuncios)} anúncios lidos de {sum(f['arquivos'] for f in por_site.values())} arquivos em {time.time() - inicio:.0f}s")
     pecas, conflitos = fusao.fundir(anuncios, marcas, vocab, stats)
     print(f"{len(pecas)} peças após a fusão; {len(conflitos)} conflitos")
-    resultado = fusao.gravar(db, pecas)
+    resultado = fusao.gravar(db, pecas, pasta_fotos=args.base / "helper_fotos")
     print("gravação:", ", ".join(f"{k} {v}" for k, v in resultado.items()))
     args.relatorios.mkdir(parents=True, exist_ok=True)
     marcas.salvar_desconhecidas(args.relatorios / f"{time.strftime('%Y-%m-%d')}-marcas-desconhecidas.csv")

@@ -20,7 +20,8 @@ def test_diferencas():
 
 def test_comando_rsync():
     cmd = comando_rsync("/x/helper_fotos", "wayap@srv", "/home/wayap/helper/store/foto_produto")
-    assert cmd[0] == "rsync" and "--delete" not in cmd and "-a" in cmd and "--partial" in cmd
+    assert cmd[0] == "rsync" and "--delete" not in cmd and "-a" in cmd and "--partial-dir=.rsync-partial" in cmd
+    assert "--ignore-existing" not in cmd  # arquivo truncado de uma queda tem de ser completado na próxima rodada
     assert cmd[-2:] == ["/x/helper_fotos/", "wayap@srv:/home/wayap/helper/store/foto_produto/"]
 
 
@@ -33,12 +34,15 @@ def test_ddl_tem_tabelas_funcoes_e_nao_expoe_origem_nas_funcoes():
         assert f"FUNCTION {f}" in fs
     assert "FROM origem" not in fs and "CREATE OR REPLACE VIEW v_peca" in ddl
     assert "similarity" in fs and "similarity" not in "\n".join(funcoes_sql(False))
+    # I5 da revisão: o predicado trigram tem de ser sobre desc_curta pura (coluna indexada), não sobre concatenação com unaccent
+    bt = next(f for f in funcoes_sql(True) if "FUNCTION busca_texto" in f)
+    assert "v.desc_curta %" in bt and "|| ' ' ||" not in bt.split("WHERE", 1)[1].split("ORDER BY")[0]
 
 
 class ConFalsa:
     """Registra SQL executado; serve para garantir ordem (rsync antes do banco) e ensaio."""
     def __init__(self, remoto):
-        self.remoto, self.sql, self.commits = remoto, [], 0
+        self.remoto, self.sql, self.commits, self.eventos = remoto, [], 0, []
     def cursor(self):
         return self
     def __enter__(self):
@@ -62,8 +66,9 @@ class ConFalsa:
         return (1,)
     def commit(self):
         self.commits += 1
+        self.eventos.append("commit")
     def rollback(self):
-        pass
+        self.eventos.append("rollback")
 
 
 def _db_local(tmp_path):
@@ -130,3 +135,19 @@ def test_integracao_postgres(tmp_path):
     with con.cursor() as cur:
         cur.execute("SELECT id_peca FROM busca_codigo('1')")
         assert cur.fetchall() == [(1,)]
+
+
+def test_transacao_fechada_antes_do_rsync_e_lista_de_fotos_congelada(tmp_path):
+    """I4 da revisão: (b) rollback antes do rsync, para não ficar 'idle in transaction' por horas;
+    (c) foto que entra durante o rsync não é marcada como publicada."""
+    db = _db_local(tmp_path)
+    con = ConFalsa(remoto={})
+    def rsync(cmd):
+        con.eventos.append("rsync")
+        db.execute("INSERT INTO foto (id_peca, ordem, arquivo, origem_tipo) VALUES (1, 2, 'nova.jpg', 'loja')")
+        db.commit()
+    r = publicar(db, con, ensaio=False, executar_rsync=rsync, pasta_fotos=tmp_path / "helper_fotos",
+                 destino_ssh="wayap@srv", pasta_remota="/x", commit_repo="abc")
+    assert con.eventos.index("rollback") < con.eventos.index("rsync") < con.eventos.index("commit")
+    assert r["fotos_publicadas"] == 1
+    assert dict(db.execute("SELECT arquivo, publicada FROM foto")) == {"a.jpg": 1, "nova.jpg": 0}

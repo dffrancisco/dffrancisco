@@ -97,7 +97,9 @@ def abrir(caminho):
 
 
 def id_marca(db, nome, tipo):
-    linha = db.execute("SELECT id_marca FROM marca WHERE nome = ?", (nome,)).fetchone()
+    linha = db.execute("SELECT id_marca, tipo FROM marca WHERE nome = ?", (nome,)).fetchone()
     if linha:
+        if tipo != "desconhecida" and tipo != linha[1]:  # o dono classificou no helper_marcas.csv
+            db.execute("UPDATE marca SET tipo = ? WHERE id_marca = ?", (tipo, linha[0]))
         return linha[0]
     return db.execute("INSERT INTO marca (nome, tipo) VALUES (?, ?)", (nome, tipo)).lastrowid

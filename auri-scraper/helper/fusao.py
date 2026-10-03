@@ -1,8 +1,10 @@
 """Funde anúncios de várias fontes em uma linha por peça do mercado e grava no SQLite com ids estáveis."""
 import hashlib
 import json
+import shutil
 from collections import Counter, defaultdict
 from datetime import datetime
+from pathlib import Path
 
 from helper.aplicacoes import aplicacoes_do_anuncio, juntar_aplicacoes
 from helper.banco import id_marca
@@ -65,10 +67,13 @@ def _agrupar(preparados, marcas):
         if a["_ean"] and not a["_chave"].startswith("URL:"):
             por_ean[a["_ean"]].append(a)
     for ean, lista in por_ean.items():
-        base = lista[0]
-        for outro in lista[1:]:
-            if not base["_marca"] or not outro["_marca"] or marcas.compativeis(base["_marca"], outro["_marca"]):
-                uniao.unir(outro["_chave"], base["_chave"])
+        vistos = []  # une cada anúncio ao primeiro já visto com marca compatível (não só ao primeiro da lista)
+        for a in lista:
+            for base in vistos:
+                if not base["_marca"] or not a["_marca"] or marcas.compativeis(base["_marca"], a["_marca"]):
+                    uniao.unir(a["_chave"], base["_chave"])
+                    break
+            vistos.append(a)
     grupos = defaultdict(list)
     for a in preparados:
         grupos[uniao.achar(a["_chave"])].append(a)
@@ -202,17 +207,40 @@ def _apagar_filhos(db, id_peca, com_fotos=False):
         db.execute("DELETE FROM foto_pendente WHERE id_peca=?", (id_peca,))
 
 
-def gravar(db, pecas_fundidas):
+def _mover_fotos(db, de, para, pasta_fotos):
+    """Fotos da peça inativada passam para a sobrevivente: arquivo e miniatura mudam de pasta, a ordem continua
+    depois das que a sobrevivente já tem e a foto volta a 'não publicada' (o servidor ainda não tem a pasta nova)."""
+    ja_tem = {r[0] for r in db.execute("SELECT arquivo FROM foto WHERE id_peca=?", (para,))}
+    ordem = db.execute("SELECT coalesce(max(ordem), 0) FROM foto WHERE id_peca=?", (para,)).fetchone()[0]
+    for f in db.execute("SELECT arquivo FROM foto WHERE id_peca=? ORDER BY ordem", (de,)).fetchall():
+        if f["arquivo"] in ja_tem:
+            db.execute("DELETE FROM foto WHERE id_peca=? AND arquivo=?", (de, f["arquivo"]))
+            continue
+        if pasta_fotos:
+            origem, destino = Path(pasta_fotos) / str(de), Path(pasta_fotos) / str(para)
+            destino.mkdir(parents=True, exist_ok=True)
+            for nome in (f["arquivo"], f["arquivo"].replace(".jpg", "_p.jpg")):
+                if (origem / nome).exists():
+                    shutil.move(str(origem / nome), str(destino / nome))
+        ordem += 1
+        db.execute("UPDATE foto SET id_peca=?, ordem=?, publicada=0 WHERE id_peca=? AND arquivo=?", (para, ordem, de, f["arquivo"]))
+
+
+def gravar(db, pecas_fundidas, pasta_fotos=None):
     r = Counter(novas=0, alteradas=0, iguais=0, inativadas_por_fusao=0, inativadas_por_sumico=0)
     vistos = set()
+    db.execute("CREATE TEMP TABLE IF NOT EXISTS vistos_nesta_rodada (id_peca INTEGER PRIMARY KEY)")
+    db.execute("DELETE FROM vistos_nesta_rodada")
     proximo = (db.execute("SELECT coalesce(max(id_peca), 0) FROM peca").fetchone()[0]) + 1
     for p in pecas_fundidas:
-        ids = _ids_existentes(db, p)
+        # id já usado nesta rodada pertence a outra peça (duas peças antes fundidas voltaram a se separar):
+        # não pode ser sobrescrito; a que sobrou ganha id novo, nunca reaproveitado
+        ids = _ids_existentes(db, p) - vistos
         if ids:
             id_peca = min(ids)
             for outro in ids - {id_peca}:
                 db.execute("UPDATE peca SET status='inativa', fundida_em=? WHERE id_peca=?", (id_peca, outro))
-                db.execute("UPDATE foto SET id_peca=? WHERE id_peca=? AND arquivo NOT IN (SELECT arquivo FROM foto WHERE id_peca=?)", (id_peca, outro, id_peca))
+                _mover_fotos(db, outro, id_peca, pasta_fotos)
                 _apagar_filhos(db, outro, com_fotos=True)
                 atualizar_hash(db, outro)
                 r["inativadas_por_fusao"] += 1
@@ -220,6 +248,7 @@ def gravar(db, pecas_fundidas):
         else:
             id_peca, proximo, nova = proximo, proximo + 1, True
         vistos.add(id_peca)
+        db.execute("INSERT OR IGNORE INTO vistos_nesta_rodada (id_peca) VALUES (?)", (id_peca,))
         idm = id_marca(db, p["marca"] or "(SEM MARCA)", p["tipo_marca"] if p["marca"] else "desconhecida")
         # outra peça pode estar com esta chave (ex.: fusão trocou chaves); libera antes de gravar
         db.execute("UPDATE peca SET chave = 'ANTIGA:' || id_peca || ':' || chave WHERE chave=? AND id_peca<>?", (p["chave"], id_peca))
@@ -251,8 +280,7 @@ def gravar(db, pecas_fundidas):
             r["alteradas"] += 1
         else:
             r["iguais"] += 1
-    marcadores = ",".join("?" * len(vistos)) or "NULL"
-    sumidas = [l[0] for l in db.execute(f"SELECT id_peca FROM peca WHERE status='ativa' AND id_peca NOT IN ({marcadores})", tuple(vistos))]
+    sumidas = [l[0] for l in db.execute("SELECT id_peca FROM peca WHERE status='ativa' AND id_peca NOT IN (SELECT id_peca FROM vistos_nesta_rodada)")]
     for id_peca in sumidas:
         db.execute("UPDATE peca SET status='inativa' WHERE id_peca=?", (id_peca,))
         atualizar_hash(db, id_peca)

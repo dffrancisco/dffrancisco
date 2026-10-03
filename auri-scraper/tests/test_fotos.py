@@ -90,8 +90,9 @@ def test_processar_pendentes_grava_dedup_e_erros(tmp_path):
     assert len(arq) == 44 and arq.endswith(".jpg") and (pasta / "1" / arq).exists() and (pasta / "1" / arq.replace(".jpg", "_p.jpg")).exists()
     assert db.execute("SELECT tem_foto FROM peca WHERE id_peca=1").fetchone()[0] == 1
     assert db.execute("SELECT hash_conteudo FROM peca WHERE id_peca=1").fetchone()[0] is not None
-    pendentes = {r["url"]: (r["tentativas"], r["erro"]) for r in db.execute("SELECT url, tentativas, erro FROM foto_pendente")}
-    assert set(pendentes) == {"https://img/html"} and pendentes["https://img/html"] == (1, "nao e imagem")
+    pendentes = {r["url"]: r["erro"] for r in db.execute("SELECT url, erro FROM foto_pendente")}
+    assert pendentes == {"https://img/html": "nao e imagem", "https://img/igual.png": "duplicada", "https://img/pequena.png": "pequena"}
+    assert db.execute("SELECT tentativas FROM foto_pendente WHERE url='https://img/html'").fetchone()[0] == 1
 
 
 def test_processar_pendentes_prioridade_e_limite(tmp_path):
@@ -131,3 +132,40 @@ def test_dhash_com_bit_alto_cabe_no_sqlite_e_continua_detectando_duplicata(tmp_p
     conteudo = {"https://img/g1.png": _png_gradiente(600, 400), "https://img/g2.png": _png_gradiente(900, 600)}
     res = processar_pendentes(db, tmp_path / "f", carregar_config(TOML), baixar=lambda u, sessao=None: conteudo[u])
     assert res["gravadas"] == 1 and res["duplicadas"] == 1
+
+
+def test_logo_detectado_depois_atualiza_as_pecas_antigas(tmp_path):
+    """I1 da revisão: a 21ª peça com a mesma imagem torna as 20 anteriores não publicáveis; elas precisam
+    ganhar tem_foto=0 e hash novo para o publicar reenviar."""
+    from helper.fusao import atualizar_hash
+    db = abrir(tmp_path / "h.sqlite")
+    db.execute("INSERT INTO marca (id_marca, nome, tipo) VALUES (1, 'X', 'reposicao')")
+    img = preparar_imagem(_png(500, 500))
+    from helper.fotos import dhash_para_banco
+    for i in range(1, 21):
+        db.execute("INSERT INTO peca (id_peca, id_marca, chave, codigo, desc_curta, status, tem_foto) VALUES (?,1,?,?,'P','ativa',1)", (i, f"X|{i}", str(i)))
+        db.execute("INSERT INTO foto (id_peca, ordem, arquivo, dhash, origem_tipo) VALUES (?,1,'a.jpg',?,'loja')", (i, dhash_para_banco(img["dhash"])))
+        atualizar_hash(db, i)
+    hashes_antes = dict(db.execute("SELECT id_peca, hash_conteudo FROM peca"))
+    db.execute("INSERT INTO peca (id_peca, id_marca, chave, codigo, desc_curta, status) VALUES (21,1,'X|21','21','P','ativa')")
+    db.execute("INSERT INTO foto_pendente (id_peca, url, prioridade, site) VALUES (21, 'https://img/logo.png', 5, 'karhub')")
+    db.commit()
+    processar_pendentes(db, tmp_path / "f", carregar_config(TOML), baixar=lambda u, sessao=None: _png(500, 500))
+    assert db.execute("SELECT count(*) FROM peca WHERE tem_foto=1").fetchone()[0] == 0
+    hashes_depois = dict(db.execute("SELECT id_peca, hash_conteudo FROM peca"))
+    assert all(hashes_depois[i] != hashes_antes[i] for i in range(1, 21))
+
+
+def test_foto_descartada_nao_volta_para_a_fila(tmp_path):
+    """I7 da revisão: pequena e duplicada ficam registradas em foto_pendente (sem novas tentativas) para o
+    preparar seguinte não as re-enfileirar e o fotos não as baixar de novo."""
+    db = _banco_com_pendentes(tmp_path, [(1, "https://img/a.png", None, 2, "karhub"),
+                                         (1, "https://img/dup.png", None, 2, "karhub"),
+                                         (1, "https://img/pequena.png", None, 2, "karhub")])
+    conteudo = {"https://img/a.png": _png(500, 500), "https://img/dup.png": _png(500, 500), "https://img/pequena.png": _png(100, 100)}
+    cfg = carregar_config(TOML)
+    r = processar_pendentes(db, tmp_path / "f", cfg, baixar=lambda u, sessao=None: conteudo[u])
+    assert r["gravadas"] == 1 and r["duplicadas"] == 1 and r["descartadas"] == 1
+    restantes = {row["url"]: row["erro"] for row in db.execute("SELECT url, erro FROM foto_pendente")}
+    assert restantes == {"https://img/dup.png": "duplicada", "https://img/pequena.png": "pequena"}
+    assert processar_pendentes(db, tmp_path / "f", cfg, baixar=lambda u, sessao=None: conteudo[u]) == {"gravadas": 0, "duplicadas": 0, "descartadas": 0, "erros": 0}

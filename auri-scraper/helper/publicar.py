@@ -59,10 +59,11 @@ def funcoes_sql(com_trgm):
     normaliza = "upper(regexp_replace(translate($1, 'áàâãéêíóôõúçÁÀÂÃÉÊÍÓÔÕÚÇ', 'aaaaeeioooucAAAAEEIOOOUC'), '[^A-Za-z0-9/+;]', '', 'g'))"
     busca_texto = (
         """CREATE OR REPLACE FUNCTION busca_texto(texto TEXT, limite INTEGER DEFAULT 40) RETURNS SETOF v_peca AS $$
-             SELECT v.* FROM v_peca v
-             WHERE unaccent(v.desc_curta || ' ' || coalesce(v.desc_completa, '')) % unaccent($1)
-                OR unaccent(v.desc_curta || ' ' || coalesce(v.desc_completa, '')) ILIKE '%' || unaccent($1) || '%'
-             ORDER BY similarity(unaccent(v.desc_curta), unaccent($1)) DESC, v.qtd_fontes DESC LIMIT $2
+             -- desc_curta já é maiúscula e sem acento: o predicado fica sobre a coluna pura e usa o índice gin (trgm)
+             WITH t AS (SELECT upper(unaccent($1)) AS q)
+             SELECT v.* FROM v_peca v, t
+             WHERE v.desc_curta % t.q OR v.desc_curta ILIKE '%' || t.q || '%'
+             ORDER BY similarity(v.desc_curta, t.q) DESC, v.qtd_fontes DESC LIMIT $2
            $$ LANGUAGE sql STABLE"""
         if com_trgm else
         """CREATE OR REPLACE FUNCTION busca_texto(texto TEXT, limite INTEGER DEFAULT 40) RETURNS SETOF v_peca AS $$
@@ -161,7 +162,10 @@ def diferencas(local, remoto):
 
 
 def comando_rsync(origem, destino_ssh, pasta_remota):
-    return ["rsync", "-a", "--partial", "--ignore-existing", "--info=stats1", f"{str(origem).rstrip('/')}/", f"{destino_ssh}:{str(pasta_remota).rstrip('/')}/"]
+    # --partial-dir: transferência interrompida fica fora do nome final e é completada na próxima rodada.
+    # Sem --delete: nunca apaga no destino. -a já pula arquivo idêntico, então não precisa de --ignore-existing.
+    return ["rsync", "-a", "--partial", "--partial-dir=.rsync-partial", "--info=stats1",
+            f"{str(origem).rstrip('/')}/", f"{destino_ssh}:{str(pasta_remota).rstrip('/')}/"]
 
 
 def executar_rsync_real(cmd):
@@ -182,7 +186,9 @@ def publicar(db, con, ensaio, executar_rsync, pasta_fotos, destino_ssh, pasta_re
     with con.cursor() as cur:
         cur.execute("SELECT id_peca, hash_conteudo, status FROM peca")
         remoto = {i: (h, s) for i, h, s in cur.fetchall()}
+    con.rollback()  # fecha a transação de leitura: o rsync pode levar horas e a sessão não pode ficar "idle in transaction"
     d = diferencas(local, remoto)
+    # lista congelada: foto que o `fotos` gravar durante o rsync não sobe agora nem é marcada como publicada
     fotos_novas = [dict(r) for r in db.execute("SELECT id_peca, arquivo, bytes FROM foto WHERE publicada = 0")]
     resultado = {"novas": len(d["novas"]), "alteradas": len(d["alteradas"]), "iguais": len(d["iguais"]), "inativar": len(d["inativar"]),
                  "fotos_a_publicar": len(fotos_novas), "bytes_fotos": sum(f["bytes"] or 0 for f in fotos_novas), "fotos_publicadas": 0}
@@ -191,7 +197,8 @@ def publicar(db, con, ensaio, executar_rsync, pasta_fotos, destino_ssh, pasta_re
     # 1) fotos antes do banco: se falhar, nada é gravado
     if fotos_novas and destino_ssh:
         executar_rsync(comando_rsync(pasta_fotos, destino_ssh, pasta_remota))
-    # 2) banco, em uma transação
+    db.executemany("UPDATE foto SET publicada = 1 WHERE id_peca = ? AND arquivo = ?", [(f["id_peca"], f["arquivo"]) for f in fotos_novas])
+    # 2) banco, em uma transação; só fotos já sincronizadas (publicada = 1) entram
     ids = d["novas"] + d["alteradas"]
     try:
         with con.cursor() as cur:
@@ -213,7 +220,7 @@ def publicar(db, con, ensaio, executar_rsync, pasta_fotos, destino_ssh, pasta_re
                 psycopg2.extras.execute_batch(cur, "INSERT INTO aplicacao (id_peca, montadora, modelo, ano_inicio, ano_fim, motor, observacao, texto_original) VALUES (%(id_peca)s, %(montadora)s, %(modelo)s, %(ano_inicio)s, %(ano_fim)s, %(motor)s, %(observacao)s, %(texto_original)s)",
                                               _linhas(db, "SELECT id_peca, montadora, modelo, ano_inicio, ano_fim, motor, observacao, texto_original FROM aplicacao WHERE id_peca IN ({ids})", lote))
                 psycopg2.extras.execute_batch(cur, "INSERT INTO foto (id_peca, ordem, arquivo, largura, altura, bytes, dhash, origem_tipo, publicavel, url_fonte) VALUES (%(id_peca)s, %(ordem)s, %(arquivo)s, %(largura)s, %(altura)s, %(bytes)s, %(dhash)s, %(origem_tipo)s, %(publicavel)s::int::boolean, %(url_fonte)s)",
-                                              _linhas(db, "SELECT id_peca, ordem, arquivo, largura, altura, bytes, dhash, origem_tipo, publicavel, url_fonte FROM foto WHERE id_peca IN ({ids})", lote))
+                                              _linhas(db, "SELECT id_peca, ordem, arquivo, largura, altura, bytes, dhash, origem_tipo, publicavel, url_fonte FROM foto WHERE publicada = 1 AND id_peca IN ({ids})", lote))
                 psycopg2.extras.execute_batch(cur, "INSERT INTO origem (id_peca, site, url, nome_original, marca_original, codigo_original, ean_original, carro_original, coletado_em) VALUES (%(id_peca)s, %(site)s, %(url)s, %(nome_original)s, %(marca_original)s, %(codigo_original)s, %(ean_original)s, %(carro_original)s, %(coletado_em)s::date) ON CONFLICT (site, url) DO UPDATE SET id_peca = EXCLUDED.id_peca",
                                               _linhas(db, "SELECT id_peca, site, url, nome_original, marca_original, codigo_original, ean_original, carro_original, coletado_em FROM origem WHERE id_peca IN ({ids})", lote))
             if d["inativar"]:
@@ -225,8 +232,8 @@ def publicar(db, con, ensaio, executar_rsync, pasta_fotos, destino_ssh, pasta_re
         con.commit()
     except Exception:
         con.rollback()
+        db.rollback()
         raise
-    db.execute("UPDATE foto SET publicada = 1 WHERE publicada = 0")
     db.execute("INSERT INTO carga (iniciada_em, terminada_em, pecas_ativas, pecas_inativadas, fotos_publicadas, bytes_fotos, versao_esquema, commit_repo, ensaio) VALUES (?,?,?,?,?,?,?,?,0)",
                (inicio.isoformat(timespec="seconds"), datetime.now().isoformat(timespec="seconds"), len(local), len(d["inativar"]), len(fotos_novas), resultado["bytes_fotos"], VERSAO_ESQUEMA, commit_repo))
     db.commit()

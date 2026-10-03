@@ -45,3 +45,13 @@ def test_indices_para_busca_tolerante_a_zero_a_esquerda(tmp_path):
 def test_abrir_espera_quando_outro_processo_escreve(tmp_path):
     db = abrir(tmp_path / "h.sqlite")
     assert db.execute("PRAGMA busy_timeout").fetchone()[0] >= 60000
+
+
+def test_id_marca_atualiza_tipo_quando_o_dono_classifica(tmp_path):
+    """I3 da revisão: marca que entrou como desconhecida e depois foi para o CSV tem de virar reposicao."""
+    db = abrir(tmp_path / "h.sqlite")
+    a = id_marca(db, "MAHLE METAL LEVE", "desconhecida")
+    assert id_marca(db, "MAHLE METAL LEVE", "reposicao") == a
+    assert db.execute("SELECT tipo FROM marca WHERE id_marca=?", (a,)).fetchone()[0] == "reposicao"
+    assert id_marca(db, "MAHLE METAL LEVE", "desconhecida") == a  # desconhecida nunca rebaixa
+    assert db.execute("SELECT tipo FROM marca WHERE id_marca=?", (a,)).fetchone()[0] == "reposicao"

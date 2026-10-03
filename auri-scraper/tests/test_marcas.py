@@ -40,3 +40,7 @@ def test_salvar_desconhecidas(tmp_path):
     m.canonica("Marca Nova")
     m.salvar_desconhecidas(tmp_path / "desc.csv")
     assert (tmp_path / "desc.csv").read_text(encoding="utf-8").splitlines() == ["marca;ocorrencias", "MARCA NOVA;1"]
+
+
+def test_csv_de_marcas_usa_quebra_de_linha_lf():
+    assert b"\r" not in CSV.read_bytes()

@@ -98,6 +98,7 @@ def processar_pendentes(db, pasta, config, limite=None, marca=None, tipo=None, p
     r = {"gravadas": 0, "duplicadas": 0, "descartadas": 0, "erros": 0}
     sessao = requests.Session()
     tocadas = set()
+    max_tentativas = config.get("download", {}).get("tentativas_maximas", 3)
     for l in _pendentes(db, config, limite, marca, tipo, prioridade):
         id_peca, url = l["id_peca"], l["url"]
         dados = None
@@ -108,8 +109,8 @@ def processar_pendentes(db, pasta, config, limite=None, marca=None, tipo=None, p
         img = preparar_imagem(dados) if dados else None
         if img is None:
             motivo = preparar_imagem.motivo if dados else "download falhou"
-            if motivo == "pequena":
-                db.execute("DELETE FROM foto_pendente WHERE id_peca=? AND url=?", (id_peca, url))
+            if motivo == "pequena":  # recusa definitiva: fica registrada para o preparar não re-enfileirar
+                db.execute("UPDATE foto_pendente SET tentativas = ?, erro = 'pequena' WHERE id_peca=? AND url=?", (max_tentativas, id_peca, url))
                 r["descartadas"] += 1
             else:
                 db.execute("UPDATE foto_pendente SET tentativas = tentativas + 1, erro = ? WHERE id_peca=? AND url=?", (motivo, id_peca, url))
@@ -117,7 +118,7 @@ def processar_pendentes(db, pasta, config, limite=None, marca=None, tipo=None, p
             continue
         existentes = db.execute("SELECT dhash, largura, altura FROM foto WHERE id_peca=?", (id_peca,)).fetchall()
         if any(e["dhash"] is not None and distancia(dhash_do_banco(e["dhash"]), img["dhash"]) <= DISTANCIA_DUPLICADA for e in existentes):
-            db.execute("DELETE FROM foto_pendente WHERE id_peca=? AND url=?", (id_peca, url))
+            db.execute("UPDATE foto_pendente SET tentativas = ?, erro = 'duplicada' WHERE id_peca=? AND url=?", (max_tentativas, id_peca, url))
             r["duplicadas"] += 1
             continue
         arquivo = hashlib.sha1(img["jpeg"]).hexdigest() + ".jpg"
@@ -146,9 +147,11 @@ def processar_pendentes(db, pasta, config, limite=None, marca=None, tipo=None, p
 def marcar_logos(db, max_pecas):
     """A mesma imagem em mais de max_pecas peças diferentes é logo/'sem foto': não publicável."""
     logos = [l[0] for l in db.execute("SELECT dhash FROM foto WHERE dhash IS NOT NULL GROUP BY dhash HAVING count(DISTINCT id_peca) > ?", (max_pecas,))]
-    n = 0
+    n, afetadas = 0, set()
     for h in logos:
+        afetadas.update(l[0] for l in db.execute("SELECT DISTINCT id_peca FROM foto WHERE dhash=? AND publicavel=1", (h,)))
         n += db.execute("UPDATE foto SET publicavel=0, motivo_nao_publicavel='logo' WHERE dhash=? AND publicavel=1", (h,)).rowcount
-    if logos:
-        db.execute("UPDATE peca SET tem_foto = EXISTS (SELECT 1 FROM foto f WHERE f.id_peca=peca.id_peca AND publicavel=1)")
+    for id_peca in afetadas:  # peças antigas também: tem_foto e hash mudam para o publicar reenviá-las
+        db.execute("UPDATE peca SET tem_foto = EXISTS (SELECT 1 FROM foto WHERE id_peca=? AND publicavel=1) WHERE id_peca=?", (id_peca, id_peca))
+        atualizar_hash(db, id_peca)
     return n
