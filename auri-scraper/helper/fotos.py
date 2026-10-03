@@ -1,17 +1,25 @@
 """Fotos do helper: download, curadoria (tamanho, duplicata, logo), miniatura e origem."""
 import hashlib
+import socket
+import threading
 import tomllib
+from concurrent.futures import ThreadPoolExecutor
 from io import BytesIO
 from pathlib import Path
 from urllib.parse import urlsplit
 
 import requests
+import urllib3.util.connection
 from PIL import Image
 
 from helper.fusao import atualizar_hash
 from wayap_fotos import DISTANCIA_DUPLICADA, LADO_ENVIO, MENOR_LADO, abrir_rgb, dhash, distancia
 
+# esta rede não tem rota IPv6 e alguns CDNs (cdn.shopify.com) resolvem primeiro para IPv6: igual ao painel_wayap.py
+urllib3.util.connection.allowed_gai_family = lambda: socket.AF_INET
+
 LADO_MINIATURA = 300
+LOTE_DOWNLOAD = 200  # downloads em paralelo por lote; o processamento e o SQLite ficam na thread principal
 SUFIXO_MINIATURA = "_p.jpg"
 
 
@@ -72,7 +80,18 @@ def baixar(url, sessao=None):
     return r.content
 
 
-def _pendentes(db, config, limite, marca, tipo, prioridade):
+def e_prioritaria(tipo, config):
+    """Peça "com cara" (helper_fotos.toml, [prioridade]): palavra em qualquer posição do tipo, ou tipo que começa
+    com uma das expressões de comeca_com; nunca quando começa com uma das de `nunca`."""
+    p = config.get("prioridade", {})
+    t = " ".join((tipo or "").upper().split())
+    comeca = lambda x: t == x or t.startswith(x + " ")
+    if not t or any(comeca(x) for x in p.get("nunca", [])):
+        return False
+    return bool(set(t.split()) & set(p.get("palavras", []))) or any(comeca(x) for x in p.get("comeca_com", []))
+
+
+def _pendentes(db, config, limite, marca, tipo, prioridade, so_prioridade=False):
     sql = """SELECT fp.id_peca, fp.url, fp.arquivo_local, fp.prioridade, fp.site, p.tipo_peca
              FROM foto_pendente fp JOIN peca p USING (id_peca) JOIN marca m USING (id_marca)
              WHERE p.status = 'ativa' AND fp.tentativas < ?"""
@@ -84,57 +103,38 @@ def _pendentes(db, config, limite, marca, tipo, prioridade):
         sql += " AND p.tipo_peca LIKE ?"
         params.append(tipo.upper() + "%")
     linhas = db.execute(sql, params).fetchall()
-    tipos = config.get("prioridade", {}).get("tipos", [])
+    if so_prioridade:
+        linhas = [l for l in linhas if e_prioritaria(l["tipo_peca"], config)]
 
     def peso(l):
-        com_cara = any((l["tipo_peca"] or "").startswith(t) for t in tipos) if prioridade else False
+        com_cara = e_prioritaria(l["tipo_peca"], config) if prioridade else False
         return (0 if l["arquivo_local"] else 1, 0 if com_cara else 1, l["prioridade"], l["id_peca"], l["url"])
     linhas.sort(key=peso)
     return linhas[:limite] if limite else linhas
 
 
-def processar_pendentes(db, pasta, config, limite=None, marca=None, tipo=None, prioridade=False, baixar=baixar):
+def processar_pendentes(db, pasta, config, limite=None, marca=None, tipo=None, prioridade=False, so_prioridade=False,
+                        baixar=baixar):
     pasta = Path(pasta)
     r = {"gravadas": 0, "duplicadas": 0, "descartadas": 0, "erros": 0}
-    sessao = requests.Session()
     tocadas = set()
     max_tentativas = config.get("download", {}).get("tentativas_maximas", 3)
-    for l in _pendentes(db, config, limite, marca, tipo, prioridade):
-        id_peca, url = l["id_peca"], l["url"]
-        dados = None
+    paralelo = max(1, int(config.get("download", {}).get("paralelo", 1)))
+    local = threading.local()  # uma sessão HTTP por thread
+
+    def obter(l):
         if l["arquivo_local"] and Path(l["arquivo_local"]).exists():
-            dados = Path(l["arquivo_local"]).read_bytes()
-        if dados is None:
-            dados = baixar(url, sessao=sessao)
-        img = preparar_imagem(dados) if dados else None
-        if img is None:
-            motivo = preparar_imagem.motivo if dados else "download falhou"
-            if motivo == "pequena":  # recusa definitiva: fica registrada para o preparar não re-enfileirar
-                db.execute("UPDATE foto_pendente SET tentativas = ?, erro = 'pequena' WHERE id_peca=? AND url=?", (max_tentativas, id_peca, url))
-                r["descartadas"] += 1
-            else:
-                db.execute("UPDATE foto_pendente SET tentativas = tentativas + 1, erro = ? WHERE id_peca=? AND url=?", (motivo, id_peca, url))
-                r["erros"] += 1
-            continue
-        existentes = db.execute("SELECT dhash, largura, altura FROM foto WHERE id_peca=?", (id_peca,)).fetchall()
-        if any(e["dhash"] is not None and distancia(dhash_do_banco(e["dhash"]), img["dhash"]) <= DISTANCIA_DUPLICADA for e in existentes):
-            db.execute("UPDATE foto_pendente SET tentativas = ?, erro = 'duplicada' WHERE id_peca=? AND url=?", (max_tentativas, id_peca, url))
-            r["duplicadas"] += 1
-            continue
-        arquivo = hashlib.sha1(img["jpeg"]).hexdigest() + ".jpg"
-        destino = pasta / str(id_peca)
-        destino.mkdir(parents=True, exist_ok=True)
-        (destino / arquivo).write_bytes(img["jpeg"])
-        (destino / arquivo.replace(".jpg", SUFIXO_MINIATURA)).write_bytes(miniatura(img["jpeg"]))
-        ordem = db.execute("SELECT coalesce(max(ordem), 0) + 1 FROM foto WHERE id_peca=?", (id_peca,)).fetchone()[0]
-        db.execute("""INSERT OR IGNORE INTO foto (id_peca, ordem, arquivo, largura, altura, bytes, dhash, origem_tipo, url_fonte)
-                      VALUES (?,?,?,?,?,?,?,?,?)""",
-                   (id_peca, ordem, arquivo, img["largura"], img["altura"], len(img["jpeg"]), dhash_para_banco(img["dhash"]),
-                    origem_tipo(l["site"], url, config), url))
-        db.execute("DELETE FROM foto_pendente WHERE id_peca=? AND url=?", (id_peca, url))
-        tocadas.add(id_peca)
-        r["gravadas"] += 1
-        if r["gravadas"] % 200 == 0:
+            return Path(l["arquivo_local"]).read_bytes()
+        if not hasattr(local, "sessao"):
+            local.sessao = requests.Session()
+        return baixar(l["url"], sessao=local.sessao)
+
+    linhas = _pendentes(db, config, limite, marca, tipo, prioridade, so_prioridade)
+    with ThreadPoolExecutor(paralelo) as executor:
+        for inicio in range(0, len(linhas), LOTE_DOWNLOAD):
+            lote = linhas[inicio:inicio + LOTE_DOWNLOAD]
+            for l, dados in zip(lote, executor.map(obter, lote)):
+                _processar_uma(db, pasta, config, l, dados, r, tocadas, max_tentativas)
             db.commit()
     marcar_logos(db, config.get("logo", {}).get("max_pecas", 20))
     for id_peca in tocadas:
@@ -142,6 +142,39 @@ def processar_pendentes(db, pasta, config, limite=None, marca=None, tipo=None, p
         atualizar_hash(db, id_peca)
     db.commit()
     return r
+
+
+def _processar_uma(db, pasta, config, l, dados, r, tocadas, max_tentativas):
+    """Cura uma foto já baixada (thread principal): descarta, marca duplicada ou grava arquivo, miniatura e linha."""
+    id_peca, url = l["id_peca"], l["url"]
+    img = preparar_imagem(dados) if dados else None
+    if img is None:
+        motivo = preparar_imagem.motivo if dados else "download falhou"
+        if motivo == "pequena":  # recusa definitiva: fica registrada para o preparar não re-enfileirar
+            db.execute("UPDATE foto_pendente SET tentativas = ?, erro = 'pequena' WHERE id_peca=? AND url=?", (max_tentativas, id_peca, url))
+            r["descartadas"] += 1
+        else:
+            db.execute("UPDATE foto_pendente SET tentativas = tentativas + 1, erro = ? WHERE id_peca=? AND url=?", (motivo, id_peca, url))
+            r["erros"] += 1
+        return
+    existentes = db.execute("SELECT dhash, largura, altura FROM foto WHERE id_peca=?", (id_peca,)).fetchall()
+    if any(e["dhash"] is not None and distancia(dhash_do_banco(e["dhash"]), img["dhash"]) <= DISTANCIA_DUPLICADA for e in existentes):
+        db.execute("UPDATE foto_pendente SET tentativas = ?, erro = 'duplicada' WHERE id_peca=? AND url=?", (max_tentativas, id_peca, url))
+        r["duplicadas"] += 1
+        return
+    arquivo = hashlib.sha1(img["jpeg"]).hexdigest() + ".jpg"
+    destino = pasta / str(id_peca)
+    destino.mkdir(parents=True, exist_ok=True)
+    (destino / arquivo).write_bytes(img["jpeg"])
+    (destino / arquivo.replace(".jpg", SUFIXO_MINIATURA)).write_bytes(miniatura(img["jpeg"]))
+    ordem = db.execute("SELECT coalesce(max(ordem), 0) + 1 FROM foto WHERE id_peca=?", (id_peca,)).fetchone()[0]
+    db.execute("""INSERT OR IGNORE INTO foto (id_peca, ordem, arquivo, largura, altura, bytes, dhash, origem_tipo, url_fonte)
+                  VALUES (?,?,?,?,?,?,?,?,?)""",
+               (id_peca, ordem, arquivo, img["largura"], img["altura"], len(img["jpeg"]), dhash_para_banco(img["dhash"]),
+                origem_tipo(l["site"], url, config), url))
+    db.execute("DELETE FROM foto_pendente WHERE id_peca=? AND url=?", (id_peca, url))
+    tocadas.add(id_peca)
+    r["gravadas"] += 1
 
 
 def marcar_logos(db, max_pecas):

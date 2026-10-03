@@ -169,3 +169,52 @@ def test_foto_descartada_nao_volta_para_a_fila(tmp_path):
     restantes = {row["url"]: row["erro"] for row in db.execute("SELECT url, erro FROM foto_pendente")}
     assert restantes == {"https://img/dup.png": "duplicada", "https://img/pequena.png": "pequena"}
     assert processar_pendentes(db, tmp_path / "f", cfg, baixar=lambda u, sessao=None: conteudo[u]) == {"gravadas": 0, "duplicadas": 0, "descartadas": 0, "erros": 0}
+
+
+def test_tipo_prioritario_procura_a_palavra_em_qualquer_posicao():
+    from helper.fotos import e_prioritaria
+    cfg = carregar_config(TOML)
+    for tipo in ("LANTERNA TRASEIRA", "CHOQUE DIANTEIRO", "PARACHOQUE TRASEIRO", "LENTE RETROVISOR", "CAPA RETROVISOR",
+                 "MOLDURA FAROL", "LENTE LANTERNA", "GUIA PARACHOQUE", "MACANETA EXTERNA", "PORTA DIANTEIRA", "TAMPA TRASEIRA",
+                 "GRADE RADIADOR", "PARALAMA DIANTEIRO", "CAPO"):
+        assert e_prioritaria(tipo, cfg), tipo
+    for tipo in ("LAMPADA FAROL", "FECHADURA PORTA", "TAMPA OLEO", "TAMPA RESERVATORIO", "PASTILHA FREIO", "", None):
+        assert not e_prioritaria(tipo, cfg), tipo
+
+
+def test_so_prioridade_baixa_apenas_as_pecas_prioritarias(tmp_path):
+    db = _banco_com_pendentes(tmp_path, [(2, "https://img/parafuso.png", None, 5, "clicpecas"),
+                                         (1, "https://img/lanterna.png", None, 5, "clicpecas")])
+    conteudo = {"https://img/parafuso.png": _png(500, 500), "https://img/lanterna.png": _png(500, 500, cor=(0, 0, 0))}
+    r = processar_pendentes(db, tmp_path / "f", carregar_config(TOML), so_prioridade=True, baixar=lambda u, sessao=None: conteudo[u])
+    assert r["gravadas"] == 1 and [row[0] for row in db.execute("SELECT id_peca FROM foto")] == [1]
+    assert [row[0] for row in db.execute("SELECT url FROM foto_pendente")] == ["https://img/parafuso.png"]
+
+
+def test_downloads_em_paralelo(tmp_path):
+    import threading
+    import time
+    db = _banco_com_pendentes(tmp_path, [(1, f"https://img/{i}.png", None, 5, "karhub") for i in range(8)])
+    ativos, pico, trava = [0], [0], threading.Lock()
+    imagens = {f"https://img/{i}.png": _png(300 + 40 * i, 300 + 40 * i, cor=(i * 30, 0, 0)) for i in range(8)}
+
+    def baixar_lento(url, sessao=None):
+        with trava:
+            ativos[0] += 1
+            pico[0] = max(pico[0], ativos[0])
+        time.sleep(0.1)
+        with trava:
+            ativos[0] -= 1
+        return imagens[url]
+    cfg = carregar_config(TOML)
+    assert cfg["download"]["paralelo"] >= 2
+    processar_pendentes(db, tmp_path / "f", cfg, baixar=baixar_lento)
+    assert pico[0] >= 2
+    assert db.execute("SELECT count(*) FROM foto_pendente WHERE erro IS NULL").fetchone()[0] == 0
+
+
+def test_download_forca_ipv4():
+    import socket
+    import urllib3.util.connection
+    import helper.fotos  # noqa: F401
+    assert urllib3.util.connection.allowed_gai_family() == socket.AF_INET

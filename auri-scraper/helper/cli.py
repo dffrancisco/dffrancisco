@@ -83,7 +83,7 @@ def cmd_fotos(args):
     db = banco.abrir(args.banco)
     config = fotos_mod.carregar_config(args.config_fotos)
     r = fotos_mod.processar_pendentes(db, args.base / "helper_fotos", config, limite=args.limite, marca=args.marca,
-                                      tipo=args.tipo, prioridade=args.prioridade)
+                                      tipo=args.tipo, prioridade=args.prioridade, so_prioridade=args.so_prioridade)
     print("fotos:", ", ".join(f"{k} {v}" for k, v in r.items()))
     print("pendentes restantes:", db.execute("SELECT count(*) FROM foto_pendente WHERE tentativas < 3").fetchone()[0])
     return 0
@@ -142,6 +142,7 @@ def main(argv=None):
     sp.add_argument("--marca", default=None)
     sp.add_argument("--tipo", default=None, help="começo do tipo de peça, ex.: LANTERNA")
     sp.add_argument("--prioridade", action="store_true", help="peças 'com cara' (helper_fotos.toml) primeiro")
+    sp.add_argument("--so-prioridade", action="store_true", help="só as peças 'com cara' (onda prioritária)")
     sp.add_argument("--config-fotos", type=Path, default=Path(__file__).resolve().parents[1] / "helper_fotos.toml")
     sp.set_defaults(fn=cmd_fotos)
     sp = sub.add_parser("cobertura")

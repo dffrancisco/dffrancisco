@@ -7,8 +7,14 @@ sites = ["universal"]
 hosts = ["universalautomotive.vteximg.com.br"]
 
 [prioridade]
-# tipos de peça (começo do tipo_peca) baixados primeiro: peça "com cara", que o Reconhecimento mais usa
-tipos = ["LANTERNA", "FAROL", "PARACHOQUE", "PARA CHOQUE", "RETROVISOR", "GRADE", "PORTA", "CAPO", "PARALAMA", "TAMPA TRASEIRA"]
+# peça "com cara", que o Reconhecimento mais usa, é baixada primeiro (fotos --prioridade / --so-prioridade).
+# palavra em qualquer posição do tipo de peça: CHOQUE DIANTEIRO (para-choque), LENTE RETROVISOR, MOLDURA FAROL...
+palavras = ["LANTERNA", "LANTERNINHA", "FAROL", "FAROLETE", "PARACHOQUE", "CHOQUE", "RETROVISOR", "GRADE",
+            "PARALAMA", "LAMA", "CAPO", "MACANETA"]
+# só quando o tipo começa assim: PORTA DIANTEIRA sim, FECHADURA PORTA não
+comeca_com = ["PORTA", "TAMPA TRASEIRA", "TAMPA PORTA MALAS"]
+# tipo que começa assim nunca é prioritário: LAMPADA FAROL é lâmpada, não farol
+nunca = ["LAMPADA"]
 
 [logo]
 # a mesma imagem (dHash) em mais peças do que isto é logo ou "sem foto": fica não publicável
