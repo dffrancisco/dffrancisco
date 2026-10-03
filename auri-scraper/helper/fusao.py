@@ -37,8 +37,19 @@ class _UniaoBusca:
         self.pai[self.achar(a)] = self.achar(b)
 
 
-def _preparar(anuncios, marcas):
+def _sem_repetidos(anuncios):
+    """A mesma URL pode vir do .jsonl e do produto.json do mesmo site (pecas_karhub nasce do karhub.jsonl):
+    fica o anúncio de maior prioridade (menor número), que é o mais rico."""
+    por_url = {}
     for a in anuncios:
+        chave = (a["site"], a["url"])
+        if chave not in por_url or a["prioridade"] < por_url[chave]["prioridade"]:
+            por_url[chave] = a
+    return list(por_url.values())
+
+
+def _preparar(anuncios, marcas):
+    for a in _sem_repetidos(anuncios):
         marca, tipo_marca = marcas.canonica(a.get("marca"))
         codigo = normalizar_codigo(a.get("codigo"))
         ean = normalizar_ean(a.get("ean"))
@@ -228,7 +239,7 @@ def gravar(db, pecas_fundidas):
                           VALUES (?,?,?,?,?,?,?,?,?)""",
                        [(id_peca, l["montadora"], l["modelo"], l["ano_inicio"], l["ano_fim"], l["motor"], l["observacao"],
                          l["texto_original"], int(l["modelo_reconhecido"])) for l in p["aplicacoes"]])
-        db.executemany("INSERT INTO origem (id_peca, site, url, nome_original, marca_original, codigo_original, ean_original, carro_original, coletado_em) VALUES (?,?,?,?,?,?,?,?,?)",
+        db.executemany("INSERT OR REPLACE INTO origem (id_peca, site, url, nome_original, marca_original, codigo_original, ean_original, carro_original, coletado_em) VALUES (?,?,?,?,?,?,?,?,?)",
                        [(id_peca, o["site"], o["url"], o["nome_original"], o["marca_original"], o["codigo_original"], o["ean_original"], o["carro_original"], o["coletado_em"]) for o in p["origens"]])
         ja_tem = {r0[0] for r0 in db.execute("SELECT url_fonte FROM foto WHERE id_peca=?", (id_peca,))}
         db.executemany("INSERT OR IGNORE INTO foto_pendente (id_peca, url, arquivo_local, prioridade, site) VALUES (?,?,?,?,?)",

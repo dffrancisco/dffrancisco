@@ -140,3 +140,15 @@ def test_hash_muda_quando_conteudo_muda(tmp_path):
     assert len(h) == 40 and atualizar_hash(db, id_peca) is False
     db.execute("UPDATE peca SET desc_curta='FAROL DIANTEIRO' WHERE id_peca=?", (id_peca,))
     assert atualizar_hash(db, id_peca) is True
+
+
+def test_mesmo_anuncio_no_jsonl_e_no_produto_json_conta_uma_vez(tmp_path):
+    """pecas_karhub/*/produto.json nasce do karhub.jsonl: mesma URL nas duas fontes. Fica a de maior prioridade."""
+    do_jsonl = _a("karhub", "https://k/p/1", "Jogo Cabo De Vela - Gauss - Gc5045", "Gauss", "GC5045", prioridade=2, imagens=["https://cdn/a.jpg"])
+    do_json = _a("karhub", "https://k/p/1", "Jogo Cabo De Vela - Gauss - Gc5045", "Gauss", "GC5045", prioridade=0, imagens=["https://cdn/a.jpg"])
+    do_json["imagens"][0]["arquivo_local"] = "/x/foto_1.jpg"
+    pecas, _ = _fundir([do_jsonl, do_json])
+    assert len(pecas) == 1 and pecas[0]["qtd_fontes"] == 1 and len(pecas[0]["origens"]) == 1
+    assert pecas[0]["fotos"][0]["arquivo_local"] == "/x/foto_1.jpg"
+    db = abrir(tmp_path / "h.sqlite")
+    assert gravar(db, pecas)["novas"] == 1
