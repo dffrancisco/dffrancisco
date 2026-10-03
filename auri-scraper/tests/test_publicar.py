@@ -22,6 +22,8 @@ def test_comando_rsync():
     cmd = comando_rsync("/x/helper_fotos", "wayap@srv", "/home/wayap/helper/store/foto_produto")
     assert cmd[0] == "rsync" and "--delete" not in cmd and "-a" in cmd and "--partial-dir=.rsync-partial" in cmd
     assert "--ignore-existing" not in cmd  # arquivo truncado de uma queda tem de ser completado na próxima rodada
+    # o dono local (uid 1000) não pode ir para o servidor: lá os arquivos são do usuário que recebe (root, como na topcar)
+    assert "--no-owner" in cmd and "--no-group" in cmd and "--chmod=D755,F644" in cmd
     assert cmd[-2:] == ["/x/helper_fotos/", "wayap@srv:/home/wayap/helper/store/foto_produto/"]
 
 

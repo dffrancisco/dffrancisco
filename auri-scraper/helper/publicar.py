@@ -164,7 +164,8 @@ def diferencas(local, remoto):
 def comando_rsync(origem, destino_ssh, pasta_remota):
     # --partial-dir: transferência interrompida fica fora do nome final e é completada na próxima rodada.
     # Sem --delete: nunca apaga no destino. -a já pula arquivo idêntico, então não precisa de --ignore-existing.
-    return ["rsync", "-a", "--partial", "--partial-dir=.rsync-partial", "--info=stats1",
+    # --no-owner/--no-group: no servidor os arquivos ficam do usuário que recebe (root, como os da topcar), não do uid local.
+    return ["rsync", "-a", "--no-owner", "--no-group", "--chmod=D755,F644", "--partial", "--partial-dir=.rsync-partial", "--info=stats1",
             f"{str(origem).rstrip('/')}/", f"{destino_ssh}:{str(pasta_remota).rstrip('/')}/"]
 
 
