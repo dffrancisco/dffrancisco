@@ -1,6 +1,8 @@
 """CLI do helper. Uso: python helper.py {preparar|fotos|relatorio|cobertura|publicar} [opções]."""
 import argparse
 import csv
+import os
+import subprocess
 import sys
 import time
 from collections import defaultdict
@@ -8,7 +10,9 @@ from pathlib import Path
 
 from helper import banco, consulta, fontes, fusao, relatorio, topcar
 from helper import fotos as fotos_mod
+from helper import publicar as pub
 from helper.marcas import Marcas
+from wayap_fotos import ENV_ADMIN, carregar_env
 
 
 def _args_comuns(p):
@@ -105,6 +109,26 @@ def cmd_cobertura(args):
     return 0
 
 
+def cmd_publicar(args):
+    carregar_env()
+    db = banco.abrir(args.banco)
+    destino_ssh, pasta_remota = os.environ.get("HELPER_SSH"), os.environ.get("HELPER_FOTOS_DIR", "/home/wayap/helper/store/foto_produto")
+    if not args.ensaio and not destino_ssh:
+        print("defina HELPER_SSH (ex.: wayap@servidor) no .env para publicar fotos", file=sys.stderr)
+        return 2
+    env = pub.ler_env_admin(ENV_ADMIN)
+    pub.criar_banco(env)
+    con = pub.conectar(env, pub.NOME_BANCO)
+    com_trgm = pub.instalar_esquema(con)
+    if not com_trgm:
+        print("aviso: unaccent/pg_trgm indisponíveis; busca_texto ficou sem tolerância a erro de digitação", file=sys.stderr)
+    commit = subprocess.run(["git", "rev-parse", "--short", "HEAD"], capture_output=True, text=True).stdout.strip() or None
+    r = pub.publicar(db, con, ensaio=args.ensaio, executar_rsync=pub.executar_rsync_real, pasta_fotos=args.base / "helper_fotos",
+                     destino_ssh=destino_ssh, pasta_remota=pasta_remota, commit_repo=commit)
+    print(("ENSAIO: " if args.ensaio else "publicado: ") + ", ".join(f"{k} {v}" for k, v in r.items()))
+    return 0
+
+
 def main(argv=None):
     p = argparse.ArgumentParser(description=__doc__)
     sub = p.add_subparsers(dest="comando", required=True)
@@ -123,5 +147,9 @@ def main(argv=None):
     sp = sub.add_parser("cobertura")
     _args_comuns(sp)
     sp.set_defaults(fn=cmd_cobertura)
+    sp = sub.add_parser("publicar")
+    _args_comuns(sp)
+    sp.add_argument("--ensaio", action="store_true")
+    sp.set_defaults(fn=cmd_publicar)
     args = _resolver(p.parse_args(argv))
     return args.fn(args)
