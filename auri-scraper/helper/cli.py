@@ -6,7 +6,7 @@ import time
 from collections import defaultdict
 from pathlib import Path
 
-from helper import banco, fontes, fusao, relatorio, topcar
+from helper import banco, consulta, fontes, fusao, relatorio, topcar
 from helper import fotos as fotos_mod
 from helper.marcas import Marcas
 
@@ -85,6 +85,26 @@ def cmd_fotos(args):
     return 0
 
 
+def cmd_cobertura(args):
+    db = banco.abrir(args.banco)
+    dados = _dados_topcar(args)
+    produtos = topcar.produtos_para_cobertura(dados)
+    r = consulta.cobertura(db, produtos)
+    linhas = ["| marca | produtos | por EAN | por código | não encontrados | cobertura |", "|---|---|---|---|---|---|"]
+    tot = {"total": 0, "por_ean": 0, "por_codigo": 0, "nao_encontrados": 0}
+    for marca, c in sorted(r.items(), key=lambda kv: -kv[1]["total"]):
+        for k in tot:
+            tot[k] += c[k]
+        linhas.append(f"| {marca} | {c['total']} | {c['por_ean']} | {c['por_codigo']} | {c['nao_encontrados']} | {100 * (c['por_ean'] + c['por_codigo']) / c['total']:.0f}% |")
+    if tot["total"]:
+        linhas.append(f"| **TOTAL** | {tot['total']} | {tot['por_ean']} | {tot['por_codigo']} | {tot['nao_encontrados']} | {100 * (tot['por_ean'] + tot['por_codigo']) / tot['total']:.0f}% |")
+    texto = "# Cobertura do helper sobre a topcar\n\n" + "\n".join(linhas) + "\n"
+    caminho = relatorio.salvar(texto, args.relatorios, "cobertura.md")
+    print(texto)
+    print("gravado em", caminho)
+    return 0
+
+
 def main(argv=None):
     p = argparse.ArgumentParser(description=__doc__)
     sub = p.add_subparsers(dest="comando", required=True)
@@ -100,5 +120,8 @@ def main(argv=None):
     sp.add_argument("--prioridade", action="store_true", help="peças 'com cara' (helper_fotos.toml) primeiro")
     sp.add_argument("--config-fotos", type=Path, default=Path(__file__).resolve().parents[1] / "helper_fotos.toml")
     sp.set_defaults(fn=cmd_fotos)
+    sp = sub.add_parser("cobertura")
+    _args_comuns(sp)
+    sp.set_defaults(fn=cmd_cobertura)
     args = _resolver(p.parse_args(argv))
     return args.fn(args)
