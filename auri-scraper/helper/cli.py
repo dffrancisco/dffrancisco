@@ -1,0 +1,85 @@
+"""CLI do helper. Uso: python helper.py {preparar|fotos|relatorio|cobertura|publicar} [opções]."""
+import argparse
+import csv
+import sys
+import time
+from collections import defaultdict
+from pathlib import Path
+
+from helper import banco, fontes, fusao, relatorio, topcar
+from helper.marcas import Marcas
+
+
+def _args_comuns(p):
+    p.add_argument("--base", type=Path, default=Path("."), help="pasta com catalogos/ e pecas_* (padrão: atual)")
+    p.add_argument("--banco", type=Path, default=None, help="helper.sqlite (padrão: <base>/helper.sqlite)")
+    p.add_argument("--topcar-cache", type=Path, default=None, help="padrão: <base>/helper_cache/topcar.json")
+    p.add_argument("--marcas", type=Path, default=Path(__file__).resolve().parents[1] / "helper_marcas.csv")
+
+
+def _resolver(args):
+    args.banco = args.banco or args.base / "helper.sqlite"
+    args.topcar_cache = args.topcar_cache or args.base / "helper_cache/topcar.json"
+    args.relatorios = args.base / "helper_relatorios"
+    return args
+
+
+def _dados_topcar(args):
+    try:
+        return topcar.carregar(cache=args.topcar_cache)
+    except SystemExit as e:  # sem WAYAP_* no ambiente e sem cache
+        print(f"aviso: sem dados da topcar ({e}); vocabulário de carros e NCM ficam vazios", file=sys.stderr)
+        return {"marcas": [], "carros": [], "produtos": []}
+
+
+def preparar(args):
+    inicio = time.time()
+    db = banco.abrir(args.banco)
+    marcas = Marcas.carregar(args.marcas)
+    dados = _dados_topcar(args)
+    vocab, stats = topcar.vocabulario_carros(dados), topcar.Estatisticas(dados["produtos"])
+    anuncios, por_site = [], defaultdict(lambda: {"arquivos": 0, "anuncios": 0, "invalidas": 0})
+    for fonte in fontes.fontes_disponiveis(args.base):
+        erros, n = [], 0
+        for a in fontes.ler_fonte(fonte, erros):
+            anuncios.append(a)
+            n += 1
+        por_site[fonte.site]["arquivos"] += 1
+        por_site[fonte.site]["anuncios"] += n
+        por_site[fonte.site]["invalidas"] += len(erros)
+        db.execute("INSERT OR REPLACE INTO fonte_lida (caminho, site, mtime, anuncios) VALUES (?,?,?,?)", (str(fonte.caminho), fonte.site, fonte.mtime, n))
+    print(f"{len(anuncios)} anúncios lidos de {sum(f['arquivos'] for f in por_site.values())} arquivos em {time.time() - inicio:.0f}s")
+    pecas, conflitos = fusao.fundir(anuncios, marcas, vocab, stats)
+    print(f"{len(pecas)} peças após a fusão; {len(conflitos)} conflitos")
+    resultado = fusao.gravar(db, pecas)
+    print("gravação:", ", ".join(f"{k} {v}" for k, v in resultado.items()))
+    args.relatorios.mkdir(parents=True, exist_ok=True)
+    marcas.salvar_desconhecidas(args.relatorios / f"{time.strftime('%Y-%m-%d')}-marcas-desconhecidas.csv")
+    with (args.relatorios / f"{time.strftime('%Y-%m-%d')}-conflitos.csv").open("w", encoding="utf-8", newline="") as f:
+        w = csv.writer(f, delimiter=";")
+        w.writerow(["tipo", "chave", "valores", "escolhido"])
+        w.writerows([c["tipo"], c["chave"], "|".join(c["valores"]), c["escolhido"]] for c in conflitos)
+    extras = {"fontes": dict(por_site), "gravacao": resultado,
+              "conflitos_ean": sum(c["tipo"] == "ean" for c in conflitos), "conflitos_codigo": sum(c["tipo"] == "codigo" for c in conflitos)}
+    caminho = relatorio.salvar(relatorio.gerar(db, extras), args.relatorios, "preparar.md")
+    ativas = db.execute("SELECT count(*) FROM peca WHERE status='ativa'").fetchone()[0]
+    print(f"peças ativas: {ativas}; relatório em {caminho}; {time.time() - inicio:.0f}s")
+    return 0
+
+
+def cmd_relatorio(args):
+    db = banco.abrir(args.banco)
+    caminho = relatorio.salvar(relatorio.gerar(db), args.relatorios, "relatorio.md")
+    print(caminho.read_text(encoding="utf-8"))
+    return 0
+
+
+def main(argv=None):
+    p = argparse.ArgumentParser(description=__doc__)
+    sub = p.add_subparsers(dest="comando", required=True)
+    for nome, fn in (("preparar", preparar), ("relatorio", cmd_relatorio)):
+        sp = sub.add_parser(nome)
+        _args_comuns(sp)
+        sp.set_defaults(fn=fn)
+    args = _resolver(p.parse_args(argv))
+    return args.fn(args)
