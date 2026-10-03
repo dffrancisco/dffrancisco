@@ -34,3 +34,14 @@ def test_peca_exige_chave_unica(tmp_path):
         assert False, "deveria violar a chave única"
     except sqlite3.IntegrityError:
         pass
+
+
+def test_indices_para_busca_tolerante_a_zero_a_esquerda(tmp_path):
+    db = abrir(tmp_path / "h.sqlite")
+    indices = {r[0] for r in db.execute("SELECT name FROM sqlite_master WHERE type='index'")}
+    assert {"peca_codigo_sem_zero", "alt_valor_sem_zero"} <= indices
+
+
+def test_abrir_espera_quando_outro_processo_escreve(tmp_path):
+    db = abrir(tmp_path / "h.sqlite")
+    assert db.execute("PRAGMA busy_timeout").fetchone()[0] >= 60000

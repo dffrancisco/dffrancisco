@@ -77,19 +77,23 @@ def funcoes_sql(com_trgm):
         """CREATE OR REPLACE FUNCTION busca_codigo(texto TEXT) RETURNS SETOF v_peca AS $$
              WITH t AS (SELECT normaliza_codigo($1) AS c),
              exato AS (
-               SELECT DISTINCT v.* FROM v_peca v LEFT JOIN codigo_alternativo a USING (id_peca), t
-               WHERE t.c <> '' AND (v.codigo = t.c OR a.valor = t.c)),
+               SELECT v.* FROM v_peca v, t WHERE t.c <> '' AND v.codigo = t.c
+               UNION
+               SELECT v.* FROM v_peca v JOIN codigo_alternativo a USING (id_peca), t WHERE t.c <> '' AND a.valor = t.c),
              sem_zero AS (
-               SELECT DISTINCT v.* FROM v_peca v LEFT JOIN codigo_alternativo a USING (id_peca), t
-               WHERE ltrim(t.c, '0') <> '' AND (ltrim(v.codigo, '0') = ltrim(t.c, '0') OR ltrim(a.valor, '0') = ltrim(t.c, '0')))
+               SELECT v.* FROM v_peca v, t WHERE ltrim(t.c, '0') <> '' AND ltrim(v.codigo, '0') = ltrim(t.c, '0')
+               UNION
+               SELECT v.* FROM v_peca v JOIN codigo_alternativo a USING (id_peca), t WHERE ltrim(t.c, '0') <> '' AND ltrim(a.valor, '0') = ltrim(t.c, '0'))
              SELECT * FROM exato
              UNION ALL
              SELECT * FROM sem_zero WHERE NOT EXISTS (SELECT 1 FROM exato)
            $$ LANGUAGE sql STABLE""",
         """CREATE OR REPLACE FUNCTION busca_ean(texto TEXT) RETURNS SETOF v_peca AS $$
              WITH t AS (SELECT right(regexp_replace($1, '\\D', '', 'g'), 13) AS e)
-             SELECT DISTINCT v.* FROM v_peca v LEFT JOIN codigo_alternativo a ON a.id_peca = v.id_peca AND a.tipo = 'ean', t
-             WHERE length(t.e) = 13 AND (v.ean = t.e OR a.valor = t.e)
+             SELECT v.* FROM v_peca v, t WHERE length(t.e) = 13 AND v.ean = t.e
+             UNION
+             SELECT v.* FROM v_peca v JOIN codigo_alternativo a ON a.id_peca = v.id_peca AND a.tipo = 'ean', t
+             WHERE length(t.e) = 13 AND a.valor = t.e
            $$ LANGUAGE sql STABLE""",
         busca_texto,
         """CREATE OR REPLACE FUNCTION busca_tipo(tipo TEXT, montadora TEXT DEFAULT NULL, modelo TEXT DEFAULT NULL,

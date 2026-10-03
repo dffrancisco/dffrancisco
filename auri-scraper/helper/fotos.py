@@ -15,6 +15,15 @@ LADO_MINIATURA = 300
 SUFIXO_MINIATURA = "_p.jpg"
 
 
+def dhash_para_banco(h):
+    """dHash é 64 bits sem sinal; SQLite e Postgres guardam inteiro de 64 bits com sinal."""
+    return h - (1 << 64) if h >= (1 << 63) else h
+
+
+def dhash_do_banco(v):
+    return v & 0xFFFFFFFFFFFFFFFF
+
+
 def carregar_config(caminho):
     with Path(caminho).open("rb") as f:
         return tomllib.load(f)
@@ -107,7 +116,7 @@ def processar_pendentes(db, pasta, config, limite=None, marca=None, tipo=None, p
                 r["erros"] += 1
             continue
         existentes = db.execute("SELECT dhash, largura, altura FROM foto WHERE id_peca=?", (id_peca,)).fetchall()
-        if any(e["dhash"] is not None and distancia(e["dhash"], img["dhash"]) <= DISTANCIA_DUPLICADA for e in existentes):
+        if any(e["dhash"] is not None and distancia(dhash_do_banco(e["dhash"]), img["dhash"]) <= DISTANCIA_DUPLICADA for e in existentes):
             db.execute("DELETE FROM foto_pendente WHERE id_peca=? AND url=?", (id_peca, url))
             r["duplicadas"] += 1
             continue
@@ -119,7 +128,7 @@ def processar_pendentes(db, pasta, config, limite=None, marca=None, tipo=None, p
         ordem = db.execute("SELECT coalesce(max(ordem), 0) + 1 FROM foto WHERE id_peca=?", (id_peca,)).fetchone()[0]
         db.execute("""INSERT OR IGNORE INTO foto (id_peca, ordem, arquivo, largura, altura, bytes, dhash, origem_tipo, url_fonte)
                       VALUES (?,?,?,?,?,?,?,?,?)""",
-                   (id_peca, ordem, arquivo, img["largura"], img["altura"], len(img["jpeg"]), img["dhash"],
+                   (id_peca, ordem, arquivo, img["largura"], img["altura"], len(img["jpeg"]), dhash_para_banco(img["dhash"]),
                     origem_tipo(l["site"], url, config), url))
         db.execute("DELETE FROM foto_pendente WHERE id_peca=? AND url=?", (id_peca, url))
         tocadas.add(id_peca)

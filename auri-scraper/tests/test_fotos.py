@@ -112,3 +112,22 @@ def test_marcar_logos(tmp_path):
     assert marcar_logos(db, max_pecas=20) == 24
     assert db.execute("SELECT count(*) FROM foto WHERE publicavel=0 AND motivo_nao_publicavel='logo'").fetchone()[0] == 24
     assert db.execute("SELECT publicavel FROM foto WHERE arquivo='b.jpg'").fetchone()[0] == 1
+
+
+def _png_gradiente(w, h):
+    """Escurece da esquerda para a direita: todos os 64 bits do dHash ficam ligados (valor >= 2**63)."""
+    im = Image.new("L", (w, h))
+    im.putdata([255 - (x * 255 // (w - 1)) for y in range(h) for x in range(w)])
+    buf = BytesIO()
+    im.convert("RGB").save(buf, format="PNG")
+    return buf.getvalue()
+
+
+def test_dhash_com_bit_alto_cabe_no_sqlite_e_continua_detectando_duplicata(tmp_path):
+    r = preparar_imagem(_png_gradiente(600, 400))
+    assert r["dhash"] >= 2 ** 63  # é o caso que estourava o INTEGER do SQLite
+    db = _banco_com_pendentes(tmp_path, [(1, "https://img/g1.png", None, 2, "karhub"),
+                                         (1, "https://img/g2.png", None, 2, "karhub")])
+    conteudo = {"https://img/g1.png": _png_gradiente(600, 400), "https://img/g2.png": _png_gradiente(900, 600)}
+    res = processar_pendentes(db, tmp_path / "f", carregar_config(TOML), baixar=lambda u, sessao=None: conteudo[u])
+    assert res["gravadas"] == 1 and res["duplicadas"] == 1

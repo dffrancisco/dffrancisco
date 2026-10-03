@@ -31,6 +31,7 @@ DDL = [
          hash_conteudo TEXT,
          atualizado_em TEXT)""",
     """CREATE INDEX IF NOT EXISTS peca_codigo ON peca (codigo)""",
+    """CREATE INDEX IF NOT EXISTS peca_codigo_sem_zero ON peca (ltrim(codigo, '0'))""",
     """CREATE INDEX IF NOT EXISTS peca_ean ON peca (ean)""",
     """CREATE INDEX IF NOT EXISTS peca_tipo ON peca (tipo_peca)""",
     """CREATE TABLE IF NOT EXISTS codigo_alternativo (
@@ -40,6 +41,7 @@ DDL = [
          qtd_fontes INTEGER NOT NULL DEFAULT 1,
          PRIMARY KEY (id_peca, tipo, valor))""",
     """CREATE INDEX IF NOT EXISTS alt_valor ON codigo_alternativo (valor)""",
+    """CREATE INDEX IF NOT EXISTS alt_valor_sem_zero ON codigo_alternativo (ltrim(valor, '0'))""",
     """CREATE TABLE IF NOT EXISTS aplicacao (
          id_peca INTEGER NOT NULL REFERENCES peca(id_peca),
          montadora TEXT, modelo TEXT NOT NULL, ano_inicio INTEGER, ano_fim INTEGER, motor TEXT,
@@ -81,6 +83,7 @@ DDL = [
 def abrir(caminho):
     db = sqlite3.connect(str(caminho))
     db.row_factory = sqlite3.Row
+    db.execute("PRAGMA busy_timeout = 60000")  # outro comando do helper pode estar gravando (fotos comita a cada 200)
     db.execute("PRAGMA foreign_keys = ON")
     db.execute("PRAGMA journal_mode = WAL")
     for comando in DDL:

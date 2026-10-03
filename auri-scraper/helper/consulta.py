@@ -7,19 +7,25 @@ def normalizar_busca(texto):
 
 
 def por_codigo(db, texto):
+    """Exatos primeiro; sem resultado, tolera zero à esquerda no texto e no banco (só na comparação).
+    Duas buscas unidas em vez de OR entre tabelas, para cada uma usar o próprio índice."""
     t = normalizar_busca(texto)
     if not t:
         return []
-    sql = """SELECT DISTINCT p.id_peca FROM peca p LEFT JOIN codigo_alternativo a USING (id_peca)
-             WHERE p.status='ativa' AND (p.codigo = ? OR a.valor = ?) ORDER BY p.id_peca"""
+    sql = """SELECT id_peca FROM peca WHERE status='ativa' AND codigo = ?
+             UNION
+             SELECT p.id_peca FROM codigo_alternativo a JOIN peca p USING (id_peca) WHERE a.valor = ? AND p.status='ativa'
+             ORDER BY 1"""
     ids = [l[0] for l in db.execute(sql, (t, t))]
     if ids:
         return ids
     sem_zero = t.lstrip("0")
     if not sem_zero:
         return []
-    sql = """SELECT DISTINCT p.id_peca FROM peca p LEFT JOIN codigo_alternativo a USING (id_peca)
-             WHERE p.status='ativa' AND (ltrim(p.codigo, '0') = ? OR ltrim(a.valor, '0') = ?) ORDER BY p.id_peca"""
+    sql = """SELECT id_peca FROM peca WHERE status='ativa' AND ltrim(codigo, '0') = ?
+             UNION
+             SELECT p.id_peca FROM codigo_alternativo a JOIN peca p USING (id_peca) WHERE ltrim(a.valor, '0') = ? AND p.status='ativa'
+             ORDER BY 1"""
     return [l[0] for l in db.execute(sql, (sem_zero, sem_zero))]
 
 
@@ -27,8 +33,10 @@ def por_ean(db, texto):
     e = normalizar_ean(texto)
     if not e:
         return []
-    sql = """SELECT DISTINCT p.id_peca FROM peca p LEFT JOIN codigo_alternativo a ON a.id_peca = p.id_peca AND a.tipo = 'ean'
-             WHERE p.status='ativa' AND (p.ean = ? OR a.valor = ?) ORDER BY p.id_peca"""
+    sql = """SELECT id_peca FROM peca WHERE status='ativa' AND ean = ?
+             UNION
+             SELECT p.id_peca FROM codigo_alternativo a JOIN peca p USING (id_peca) WHERE a.tipo = 'ean' AND a.valor = ? AND p.status='ativa'
+             ORDER BY 1"""
     return [l[0] for l in db.execute(sql, (e, e))]
 
 
