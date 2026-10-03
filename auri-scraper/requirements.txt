@@ -1,1 +1,5 @@
 scrapling[fetchers]>=0.4
+requests>=2.31
+pillow>=10
+psycopg2-binary>=2.9
+flask>=3

@@ -140,3 +140,32 @@ python painel_wayap.py            # http://localhost:8765 (mesmas variáveis WAY
   Preto e quase toda a AZ Acessórios não trazem código do fabricante: o Nº fabricante tem de ser preenchido à
   mão. As fotos escolhidas sobem junto e vão para a curadoria (lote `fotos_wayap_<sociedade>_cadastro`; os
   cadastros antigos da KarHub continuam no lote `fotos_wayap_<sociedade>_karhub`).
+
+## Helper (base de peças do mercado para os clientes do Wayap)
+
+Spec: `docs/superpowers/specs/2026-10-02-helper-design.md`. Junta os catálogos (`catalogos/*.jsonl`) e as peças
+raspadas (`pecas_*/**/produto.json`) em **uma linha por peça** (marca + código, com o zero à esquerda preservado),
+com EAN, códigos alternativos, aplicações e fotos, e publica no banco Postgres `helper` do Wayap e na pasta
+`/home/wayap/helper/store/foto_produto/<id_peca>/<hash>.jpg` (miniatura `<hash>_p.jpg`). O Wayap só lê.
+
+```bash
+python helper.py preparar                      # lê tudo, funde, grava helper.sqlite e helper_relatorios/<data>-preparar.md
+python helper.py fotos --limite 5000           # baixa/cura fotos pendentes (locais primeiro); --prioridade, --marca, --tipo
+python helper.py relatorio                     # situação do banco local
+python helper.py cobertura                     # quanto dos produtos da topcar o helper encontra (EAN/código)
+python helper.py publicar --ensaio             # o que mudaria no Postgres e nas fotos
+python helper.py publicar                      # rsync das fotos (HELPER_SSH), depois o banco, por diferença
+```
+
+- Marcas canônicas e apelidos: `helper_marcas.csv` (semeado com as marcas da topcar). Marcas que os sites usam e não
+  estão lá saem em `helper_relatorios/<data>-marcas-desconhecidas.csv`; classifique e rode `preparar` de novo (os ids
+  das peças não mudam).
+- Fotos: `helper_fotos.toml` (sites/hosts de fabricante, tipos prioritários, limite para detectar logo).
+- Conflitos de EAN/código entre fontes: `helper_relatorios/<data>-conflitos.csv`.
+- Contrato com o Wayap (funções no Postgres `helper`): `busca_codigo(texto)`, `busca_ean(texto)`,
+  `busca_texto(texto, limite)`, `busca_tipo(tipo, montadora, modelo, so_com_foto, limite)`; views `v_peca` e
+  `v_foto_publicavel` (com a URL pronta). Nenhuma delas expõe `origem`.
+- `preparar` relê todas as fontes a cada rodada (cerca de 80 s para 420 mil anúncios); a fusão é global e os ids
+  ficam estáveis entre rodadas.
+- Rotina: re-raspar catálogo → `preparar` → `fotos --prioridade --limite N` → `publicar --ensaio` → `publicar`.
+- Testes: `pip install -r requirements-dev.txt && pytest`.
