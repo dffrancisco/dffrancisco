@@ -18,3 +18,13 @@ pecas_universal/
 fotos_wayap_topcar_azacessorios/
 pecas_azacessorios/
 fotos_wayap_topcar_cadastro/
+
+# helper
+helper.sqlite
+helper.sqlite-journal
+helper.sqlite-wal
+helper.sqlite-shm
+helper_fotos/
+helper_cache/
+helper_relatorios/
+.pytest_cache/
