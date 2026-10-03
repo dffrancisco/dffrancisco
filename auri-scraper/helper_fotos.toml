@@ -1,0 +1,19 @@
+# Fotos do helper: origem, prioridade de download e detecção de logo. Editável.
+
+[fabricante]
+# sites que são a loja do próprio fabricante: foto é de catálogo de fabricante
+sites = ["universal"]
+# hosts de imagem de fabricante (mesmo quando o anúncio é de loja)
+hosts = ["universalautomotive.vteximg.com.br"]
+
+[prioridade]
+# tipos de peça (começo do tipo_peca) baixados primeiro: peça "com cara", que o Reconhecimento mais usa
+tipos = ["LANTERNA", "FAROL", "PARACHOQUE", "PARA CHOQUE", "RETROVISOR", "GRADE", "PORTA", "CAPO", "PARALAMA", "TAMPA TRASEIRA"]
+
+[logo]
+# a mesma imagem (dHash) em mais peças do que isto é logo ou "sem foto": fica não publicável
+max_pecas = 20
+
+[download]
+tentativas_maximas = 3
+paralelo = 4

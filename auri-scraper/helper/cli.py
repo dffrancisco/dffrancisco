@@ -7,6 +7,7 @@ from collections import defaultdict
 from pathlib import Path
 
 from helper import banco, fontes, fusao, relatorio, topcar
+from helper import fotos as fotos_mod
 from helper.marcas import Marcas
 
 
@@ -74,6 +75,16 @@ def cmd_relatorio(args):
     return 0
 
 
+def cmd_fotos(args):
+    db = banco.abrir(args.banco)
+    config = fotos_mod.carregar_config(args.config_fotos)
+    r = fotos_mod.processar_pendentes(db, args.base / "helper_fotos", config, limite=args.limite, marca=args.marca,
+                                      tipo=args.tipo, prioridade=args.prioridade)
+    print("fotos:", ", ".join(f"{k} {v}" for k, v in r.items()))
+    print("pendentes restantes:", db.execute("SELECT count(*) FROM foto_pendente WHERE tentativas < 3").fetchone()[0])
+    return 0
+
+
 def main(argv=None):
     p = argparse.ArgumentParser(description=__doc__)
     sub = p.add_subparsers(dest="comando", required=True)
@@ -81,5 +92,13 @@ def main(argv=None):
         sp = sub.add_parser(nome)
         _args_comuns(sp)
         sp.set_defaults(fn=fn)
+    sp = sub.add_parser("fotos")
+    _args_comuns(sp)
+    sp.add_argument("--limite", type=int, default=None)
+    sp.add_argument("--marca", default=None)
+    sp.add_argument("--tipo", default=None, help="começo do tipo de peça, ex.: LANTERNA")
+    sp.add_argument("--prioridade", action="store_true", help="peças 'com cara' (helper_fotos.toml) primeiro")
+    sp.add_argument("--config-fotos", type=Path, default=Path(__file__).resolve().parents[1] / "helper_fotos.toml")
+    sp.set_defaults(fn=cmd_fotos)
     args = _resolver(p.parse_args(argv))
     return args.fn(args)
