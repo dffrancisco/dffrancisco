@@ -179,3 +179,47 @@ def test_main_recusa_montadora_com_do_inicio(tmp_path):
 
 def test_main_arvore_sem_fipe_avisa(tmp_path):
     assert cv.main(["arvore", "--pasta", str(tmp_path)]) == 2
+
+
+def _catalogo(tmp_path, n):
+    arq = tmp_path / "karhub.jsonl"
+    linhas = [json.dumps({"url": f"https://www.karhub.com.br/p/peca-{i}"}) for i in range(n)]
+    linhas.append(json.dumps({"url": "https://www.karhub.com.br/p/peca-0?Lado=Direito"}))  # variante: mesmo handle
+    arq.write_text("\n".join(linhas) + "\n{cortada", encoding="utf-8")
+    return arq
+
+
+def _rota_compat(handles):
+    return f"{cv.SITE}/api/product-compatible-ids?handles={','.join(handles)}"
+
+
+def test_handles_do_catalogo(tmp_path):
+    assert cv.handles_do_catalogo(_catalogo(tmp_path, 3)) == ["peca-0", "peca-1", "peca-2"]
+
+
+def test_compat_em_lotes_de_50(tmp_path):
+    handles = [f"peca-{i}" for i in range(60)]
+    rotas = {_rota_compat(handles[:50]): _json({h: [1, 2] for h in handles[:50]}),
+             _rota_compat(handles[50:]): _json({"peca-55": ["7"]})}
+    r = cv.coletar_compat(_cliente(Web(rotas)), _catalogo(tmp_path, 60), tmp_path / "compat.jsonl", log=lambda m: None)
+    por_handle = {l["handle"]: l["ids"] for l in _ler(tmp_path / "compat.jsonl")}
+    assert len(por_handle) == 60 and por_handle["peca-0"] == ["1", "2"]
+    assert por_handle["peca-55"] == ["7"] and por_handle["peca-56"] == []
+    assert r["com_ids"] == 51 and r["sem_ids"] == 9
+
+
+def test_lote_inteiro_vazio_repete_em_lotes_de_10(tmp_path):
+    handles = [f"peca-{i}" for i in range(50)]
+    rotas = {_rota_compat(handles): _json({})}
+    for j in range(0, 50, 10):
+        rotas[_rota_compat(handles[j:j + 10])] = _json({h: ["3"] for h in handles[j:j + 10]})
+    cv.coletar_compat(_cliente(Web(rotas)), _catalogo(tmp_path, 50), tmp_path / "compat.jsonl", log=lambda m: None)
+    assert all(l["ids"] == ["3"] for l in _ler(tmp_path / "compat.jsonl"))
+
+
+def test_compat_retoma_pelos_handles_gravados(tmp_path):
+    (tmp_path / "compat.jsonl").write_text(json.dumps({"handle": "peca-0", "ids": ["1"], "coletado_em": "2026-10-01"}) + "\n", encoding="utf-8")
+    web = Web({_rota_compat(["peca-1", "peca-2"]): _json({"peca-1": ["9"]})})
+    cv.coletar_compat(_cliente(web), _catalogo(tmp_path, 3), tmp_path / "compat.jsonl", log=lambda m: None)
+    assert [l["handle"] for l in _ler(tmp_path / "compat.jsonl")] == ["peca-0", "peca-1", "peca-2"]
+    assert len(web.pedidos) == 1

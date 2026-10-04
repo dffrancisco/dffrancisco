@@ -209,6 +209,53 @@ def coletar_arvore(cliente, pasta, indice_fipe, ajustes, montadoras, so_montador
     return r
 
 
+# ---------- compatibilidade produto -> veículo ----------
+
+def handles_do_catalogo(caminho):
+    vistos = {}
+    with Path(caminho).open(encoding="utf-8") as f:
+        for linha in f:
+            try:
+                url = json.loads(linha)["url"]
+            except (json.JSONDecodeError, KeyError, TypeError):
+                continue
+            vistos.setdefault(urlsplit(url).path.rsplit("/", 1)[-1], None)
+    return list(vistos)
+
+
+def _compat(cliente, handles):
+    resposta = cliente.json(f"{SITE}/api/product-compatible-ids?handles={','.join(quote(h) for h in handles)}")
+    return resposta if isinstance(resposta, dict) else {}
+
+
+def coletar_compat(cliente, catalogo, saida, do_inicio=False, log=print):
+    saida = Path(saida)
+    alvo = Path(f"{saida}.novo") if do_inicio else saida
+    feitos = {l["handle"] for l in ler_jsonl(alvo)}
+    pendentes = [h for h in handles_do_catalogo(catalogo) if h not in feitos]
+    hoje, r = date.today().isoformat(), Counter()
+    log(f"compat: {len(feitos)} handles já gravados, {len(pendentes)} a consultar")
+    with alvo.open("a", encoding="utf-8") as f:
+        for i in range(0, len(pendentes), LOTE_COMPAT):
+            lote = pendentes[i:i + LOTE_COMPAT]
+            resposta = _compat(cliente, lote)
+            if not resposta and len(lote) > 10:
+                # lote inteiro vazio: recusado ou ninguém com compatibilidade? em lotes de 10 dá para saber
+                resposta = {}
+                for j in range(0, len(lote), 10):
+                    resposta.update(_compat(cliente, lote[j:j + 10]))
+            for h in lote:
+                ids = [str(x) for x in resposta.get(h) or []]
+                f.write(json.dumps({"handle": h, "ids": ids, "coletado_em": hoje}) + "\n")
+                r["com_ids" if ids else "sem_ids"] += 1
+            f.flush()
+            if (i // LOTE_COMPAT) % 20 == 0:
+                log(f"compat: {i + len(lote)} de {len(pendentes)}")
+    if do_inicio:
+        alvo.replace(saida)
+    return r
+
+
 # ---------- linha de comando ----------
 
 def main(argv=None):
