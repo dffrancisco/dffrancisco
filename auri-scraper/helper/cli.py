@@ -57,6 +57,8 @@ def preparar(args):
     pecas, conflitos = fusao.fundir(anuncios, marcas, vocab, stats)
     print(f"{len(pecas)} peças após a fusão; {len(conflitos)} conflitos")
     resultado = fusao.gravar(db, pecas, pasta_fotos=args.base / "helper_fotos")
+    banco.gravar_meta(db, "preparado_em", banco.agora())  # o publicar recusa veículos ligados antes desta fusão
+    db.commit()
     print("gravação:", ", ".join(f"{k} {v}" for k, v in resultado.items()))
     args.relatorios.mkdir(parents=True, exist_ok=True)
     marcas.salvar_desconhecidas(args.relatorios / f"{time.strftime('%Y-%m-%d')}-marcas-desconhecidas.csv")

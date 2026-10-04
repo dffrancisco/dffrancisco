@@ -1,7 +1,8 @@
 """Banco local de preparação do helper (SQLite). Mesmo modelo da spec, seção 4."""
 import sqlite3
+from datetime import datetime
 
-VERSAO_ESQUEMA = 1
+VERSAO_ESQUEMA = 2
 
 DDL = [
     """CREATE TABLE IF NOT EXISTS meta (chave TEXT PRIMARY KEY, valor TEXT)""",
@@ -77,6 +78,42 @@ DDL = [
          id_carga INTEGER PRIMARY KEY AUTOINCREMENT, iniciada_em TEXT, terminada_em TEXT,
          pecas_ativas INTEGER, pecas_inativadas INTEGER, fotos_publicadas INTEGER, bytes_fotos INTEGER,
          versao_esquema INTEGER, commit_repo TEXT, ensaio INTEGER NOT NULL DEFAULT 0)""",
+    # ---- veículos (spec de veículos, seção 6); prefixo veiculo_ porque o banco helper do Postgres é dividido com o Wayap
+    """CREATE TABLE IF NOT EXISTS veiculo_montadora (
+         id_veiculo_montadora INTEGER PRIMARY KEY AUTOINCREMENT,
+         nome TEXT NOT NULL UNIQUE, nome_exibicao TEXT NOT NULL,
+         logo TEXT, logo_fonte TEXT, id_montadora INTEGER,
+         qtd_pecas INTEGER NOT NULL DEFAULT 0, ativo INTEGER NOT NULL DEFAULT 1)""",
+    """CREATE TABLE IF NOT EXISTS veiculo_modelo (
+         id_modelo INTEGER PRIMARY KEY AUTOINCREMENT,
+         id_veiculo_montadora INTEGER NOT NULL REFERENCES veiculo_montadora(id_veiculo_montadora),
+         nome TEXT NOT NULL, nome_exibicao TEXT NOT NULL,
+         foto TEXT, foto_herdada INTEGER NOT NULL DEFAULT 0, foto_fonte TEXT,
+         ano_inicio INTEGER, ano_fim INTEGER, qtd_pecas INTEGER NOT NULL DEFAULT 0,
+         ativo INTEGER NOT NULL DEFAULT 1, hash_conteudo TEXT, atualizado_em TEXT,
+         UNIQUE (id_veiculo_montadora, nome))""",
+    """CREATE TABLE IF NOT EXISTS veiculo_versao (
+         id_versao INTEGER PRIMARY KEY AUTOINCREMENT,
+         id_modelo INTEGER NOT NULL REFERENCES veiculo_modelo(id_modelo),
+         nome TEXT NOT NULL, nome_exibicao TEXT NOT NULL, motor TEXT, ativo INTEGER NOT NULL DEFAULT 1,
+         UNIQUE (id_modelo, nome))""",
+    """CREATE TABLE IF NOT EXISTS veiculo_versao_ano (
+         id_versao INTEGER NOT NULL REFERENCES veiculo_versao(id_versao), ano INTEGER NOT NULL,
+         PRIMARY KEY (id_versao, ano))""",
+    """CREATE TABLE IF NOT EXISTS veiculo_fonte (
+         site TEXT NOT NULL, id_fonte TEXT NOT NULL, id_versao INTEGER NOT NULL, ano INTEGER NOT NULL,
+         PRIMARY KEY (site, id_fonte))""",
+    """CREATE TABLE IF NOT EXISTS peca_veiculo (
+         id_peca INTEGER NOT NULL, id_modelo INTEGER NOT NULL, id_versao INTEGER,
+         ano_inicio INTEGER, ano_fim INTEGER, nivel TEXT NOT NULL CHECK (nivel IN ('versao','modelo')))""",
+    """CREATE TABLE IF NOT EXISTS peca_veiculo_estado (id_peca INTEGER PRIMARY KEY, hash TEXT NOT NULL)""",
+    """CREATE TABLE IF NOT EXISTS veiculo_arquivo (caminho TEXT PRIMARY KEY, publicado INTEGER NOT NULL DEFAULT 0)""",
+]
+
+# a carga de peca_veiculo (milhões de linhas) apaga os índices e recria no fim: veiculos_ligar.py usa esta lista
+INDICES_PECA_VEICULO = [
+    "CREATE INDEX IF NOT EXISTS peca_veiculo_peca ON peca_veiculo (id_peca)",
+    "CREATE INDEX IF NOT EXISTS peca_veiculo_modelo ON peca_veiculo (id_modelo, ano_inicio, ano_fim)",
 ]
 
 
@@ -86,9 +123,9 @@ def abrir(caminho):
     db.execute("PRAGMA busy_timeout = 60000")  # outro comando do helper pode estar gravando (fotos comita a cada 200)
     db.execute("PRAGMA foreign_keys = ON")
     db.execute("PRAGMA journal_mode = WAL")
-    for comando in DDL:
+    for comando in DDL + INDICES_PECA_VEICULO:
         db.execute(comando)
-    db.execute("INSERT OR IGNORE INTO meta (chave, valor) VALUES ('versao_esquema', ?)", (str(VERSAO_ESQUEMA),))
+    db.execute("INSERT OR REPLACE INTO meta (chave, valor) VALUES ('versao_esquema', ?)", (str(VERSAO_ESQUEMA),))
     colunas = {r[1] for r in db.execute("PRAGMA table_info(foto)")}
     if "publicada" not in colunas:  # bancos criados antes da coluna
         db.execute("ALTER TABLE foto ADD COLUMN publicada INTEGER NOT NULL DEFAULT 0")
@@ -103,3 +140,16 @@ def id_marca(db, nome, tipo):
             db.execute("UPDATE marca SET tipo = ? WHERE id_marca = ?", (tipo, linha[0]))
         return linha[0]
     return db.execute("INSERT INTO marca (nome, tipo) VALUES (?, ?)", (nome, tipo)).lastrowid
+
+
+def gravar_meta(db, chave, valor):
+    db.execute("INSERT OR REPLACE INTO meta (chave, valor) VALUES (?, ?)", (chave, valor))
+
+
+def ler_meta(db, chave):
+    linha = db.execute("SELECT valor FROM meta WHERE chave = ?", (chave,)).fetchone()
+    return linha[0] if linha else None
+
+
+def agora():
+    return datetime.now().isoformat(timespec="seconds")

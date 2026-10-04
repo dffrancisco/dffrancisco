@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 
-from helper.banco import abrir
+from helper.banco import abrir, ler_meta
 from helper.cli import main
 
 
@@ -54,3 +54,9 @@ def test_relatorio_sozinho_depois_de_preparar(tmp_path):
     main(["preparar", "--base", str(tmp_path)])
     assert main(["relatorio", "--base", str(tmp_path)]) == 0
     assert len(list((tmp_path / "helper_relatorios").glob("*-relatorio.md"))) == 1
+
+
+def test_preparar_grava_a_hora_em_meta(tmp_path):
+    _montar_base(tmp_path)
+    main(["preparar", "--base", str(tmp_path)])
+    assert ler_meta(abrir(tmp_path / "helper.sqlite"), "preparado_em")

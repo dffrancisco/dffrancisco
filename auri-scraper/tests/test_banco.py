@@ -1,6 +1,6 @@
 import sqlite3
 
-from helper.banco import VERSAO_ESQUEMA, abrir, id_marca
+from helper.banco import VERSAO_ESQUEMA, abrir, agora, gravar_meta, id_marca, ler_meta
 
 
 def test_abrir_cria_tabelas(tmp_path):
@@ -55,3 +55,23 @@ def test_id_marca_atualiza_tipo_quando_o_dono_classifica(tmp_path):
     assert db.execute("SELECT tipo FROM marca WHERE id_marca=?", (a,)).fetchone()[0] == "reposicao"
     assert id_marca(db, "MAHLE METAL LEVE", "desconhecida") == a  # desconhecida nunca rebaixa
     assert db.execute("SELECT tipo FROM marca WHERE id_marca=?", (a,)).fetchone()[0] == "reposicao"
+
+
+def test_tabelas_de_veiculos_e_meta(tmp_path):
+    db = abrir(tmp_path / "h.sqlite")
+    nomes = {r[0] for r in db.execute("SELECT name FROM sqlite_master WHERE type='table'")}
+    assert {"veiculo_montadora", "veiculo_modelo", "veiculo_versao", "veiculo_versao_ano", "veiculo_fonte",
+            "peca_veiculo", "peca_veiculo_estado", "veiculo_arquivo"} <= nomes
+    gravar_meta(db, "x", "1")
+    gravar_meta(db, "x", "2")
+    assert ler_meta(db, "x") == "2" and ler_meta(db, "nada") is None
+    assert VERSAO_ESQUEMA == 2 and ler_meta(db, "versao_esquema") == "2"
+    assert len(agora()) == 19
+
+
+def test_versao_do_esquema_sobe_em_banco_antigo(tmp_path):
+    db = abrir(tmp_path / "h.sqlite")
+    gravar_meta(db, "versao_esquema", "1")
+    db.commit()
+    db.close()
+    assert ler_meta(abrir(tmp_path / "h.sqlite"), "versao_esquema") == "2"
