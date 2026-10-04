@@ -1,9 +1,9 @@
 import json
 
-from helper.banco import abrir
+from helper.banco import abrir, ler_meta
 from helper.montadoras import Montadoras
 from helper.veiculos import carregar_arvore
-from helper.veiculos_ligar import Arvore, agrupar, faixas, ligar_versao
+from helper.veiculos_ligar import Arvore, agrupar, faixas, juntar_faixas, ligar, ligar_versao
 from tests.test_veiculos import _linha
 
 
@@ -67,3 +67,55 @@ def test_sem_arquivo_de_compatibilidade(tmp_path):
     db, _ = _base(tmp_path)
     r = ligar_versao(db, Arvore(db), tmp_path / "nao_existe.jsonl")
     assert r["pecas_nivel_versao"] == 0 and r["handles_sem_compat"] == 3  # p3 é de peça inativa: nem entra
+
+
+def test_juntar_faixas():
+    assert juntar_faixas([(1996, 1998), (1999, 2001), (2005, 2006)]) == [(1996, 2001), (2005, 2006)]
+    assert juntar_faixas([(1996, 1998), (None, None)]) == [(None, None)]
+    assert juntar_faixas([(2005, None), (2000, 2004)]) == [(2000, None)]
+    assert juntar_faixas([(None, 1999), (1998, 2003)]) == [(None, 2003)]
+
+
+def test_ligar_completo_nivel_modelo_e_fechamento(tmp_path):
+    db = abrir(tmp_path / "h.sqlite")
+    m = Montadoras({"VW": "VOLKSWAGEN"})
+    carregar_arvore(db, [_linha(), _linha(montadora="Volkswagen", mh="volkswagen", modelo="Gol"),
+                         _linha(montadora="Ford", mh="ford", modelo="Ka"), _linha(montadora="Kia", mh="kia", modelo="Ka")], m)
+    db.execute("INSERT INTO marca (id_marca, nome, tipo) VALUES (1, 'X', 'reposicao')")
+    for i in range(1, 7):
+        db.execute("INSERT INTO peca (id_peca, id_marca, chave, codigo, desc_curta, status) VALUES (?, 1, ?, ?, 'PECA', 'ativa')",
+                   (i, f"X|{i}", str(i)))
+    db.execute("UPDATE peca SET status = 'inativa' WHERE id_peca = 6")
+    db.executemany("INSERT INTO aplicacao (id_peca, montadora, modelo, ano_inicio, ano_fim) VALUES (?, ?, ?, ?, ?)", [
+        (1, "VW", "GOL G4", 2006, 2008), (1, "VOLKSWAGEN", "GOL", 2009, 2010),  # junta em 2006-2010
+        (2, None, "GOL", 2001, 2000),                                           # sem montadora, nome único; anos invertidos
+        (3, None, "KA", 2010, 2012),                                            # sem montadora, KA em Ford e Kia: ambíguo
+        (4, "CHEVROLET", "TRACKER", 2021, 2021),                                # já confirmado pelo KarHub
+        (5, "FORD", "FIESTA", 2010, 2012),                                      # montadora na árvore, modelo não
+        (6, "VW", "GOL", 2000, 2001)])                                          # peça inativa
+    db.execute("INSERT INTO origem (id_peca, site, url) VALUES (4, 'karhub', 'https://www.karhub.com.br/p/p4')")
+    db.commit()
+    compat = tmp_path / "compat.jsonl"
+    compat.write_text(json.dumps({"handle": "p4", "ids": ["5"]}) + "\n", encoding="utf-8")
+    r, sem_modelo = ligar(db, compat, m)
+    gol = db.execute("SELECT id_modelo FROM veiculo_modelo WHERE nome = 'GOL'").fetchone()[0]
+
+    def linhas_de(p):
+        return [tuple(l) for l in db.execute("SELECT id_modelo, id_versao, ano_inicio, ano_fim, nivel FROM peca_veiculo WHERE id_peca = ?", (p,))]
+    assert linhas_de(1) == [(gol, None, 2006, 2010, "modelo")]
+    assert linhas_de(2) == [(gol, None, 2000, 2001, "modelo")]
+    assert linhas_de(3) == [] and linhas_de(5) == [] and linhas_de(6) == []
+    assert [l[4] for l in linhas_de(4)] == ["versao"]  # o texto não repete o que o KarHub confirmou
+    assert sem_modelo["KA"] == 1 and sem_modelo["FORD FIESTA"] == 1
+    assert r["pecas_nivel_versao"] == 1 and r["pecas_nivel_modelo"] == 2 and r["pecas_ligadas"] == 3
+    assert db.execute("SELECT qtd_pecas FROM veiculo_modelo WHERE id_modelo = ?", (gol,)).fetchone()[0] == 2
+    assert db.execute("SELECT qtd_pecas FROM veiculo_montadora WHERE nome = 'VOLKSWAGEN'").fetchone()[0] == 2
+    assert db.execute("SELECT count(*) FROM peca_veiculo_estado").fetchone()[0] == 3
+    assert ler_meta(db, "veiculos_em")
+    assert db.execute("SELECT count(*) FROM veiculo_modelo WHERE hash_conteudo IS NULL").fetchone()[0] == 0
+    hashes_pecas = dict(db.execute("SELECT id_peca, hash FROM peca_veiculo_estado"))
+    hashes_modelos = dict(db.execute("SELECT id_modelo, hash_conteudo FROM veiculo_modelo"))
+    r2, _ = ligar(db, compat, m)  # mesma entrada: mesmos hashes, nenhum modelo alterado
+    assert dict(db.execute("SELECT id_peca, hash FROM peca_veiculo_estado")) == hashes_pecas
+    assert dict(db.execute("SELECT id_modelo, hash_conteudo FROM veiculo_modelo")) == hashes_modelos
+    assert r2["modelos_alterados"] == 0

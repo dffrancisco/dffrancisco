@@ -1,11 +1,12 @@
 """Ligação peça -> veículo (spec de veículos, seções 5.3 e 5.4): nível 'versao' pela compatibilidade do KarHub,
 nível 'modelo' pelas aplicações em texto. karhub_compat.jsonl tem centenas de MB: é lido em fluxo."""
+import hashlib
 import json
 from collections import Counter, defaultdict
 from pathlib import Path
 from urllib.parse import urlsplit
 
-from helper.banco import INDICES_PECA_VEICULO
+from helper.banco import INDICES_PECA_VEICULO, agora, gravar_meta
 from helper.veiculo_tipo import normalizar
 
 LOTE = 20000
@@ -155,3 +156,100 @@ def ligar_versao(db, arvore, caminho_compat):
     r["pecas_nivel_versao"] = len(ligadas)
     r["handles_sem_compat"] = len(set(peca_do_handle) - vistos)
     return r
+
+
+def juntar_faixas(faixas_):
+    """[(ini, fim)], None = sem limite. Sem ano nenhum absorve tudo; sobrepostas ou adjacentes se juntam."""
+    if any(i is None and f is None for i, f in faixas_):
+        return [(None, None)]
+    itens = sorted((i if i is not None else 0, f if f is not None else 9999) for i, f in faixas_)
+    saida = []
+    for i, f in itens:
+        if saida and i <= saida[-1][1] + 1:
+            saida[-1][1] = max(saida[-1][1], f)
+        else:
+            saida.append([i, f])
+    return [(None if i == 0 else i, None if f == 9999 else f) for i, f in saida]
+
+
+def ligar_modelo(db, arvore, montadoras):
+    r, sem_modelo, pares = Counter(), Counter(), defaultdict(list)
+    for id_peca, montadora, modelo, ini, fim in db.execute(
+            "SELECT a.id_peca, a.montadora, a.modelo, a.ano_inicio, a.ano_fim FROM aplicacao a "
+            "JOIN peca p USING (id_peca) WHERE p.status = 'ativa'"):
+        id_modelo = arvore.modelo_da_aplicacao(montadoras.canonica(montadora), modelo)
+        if id_modelo is None:
+            sem_modelo[f"{montadora or ''} {modelo}".strip()] += 1
+            continue
+        if ini is not None and fim is not None and ini > fim:
+            ini, fim = fim, ini
+        pares[(id_peca, id_modelo)].append((ini, fim))
+    db.execute("CREATE TEMP TABLE IF NOT EXISTS candidato_modelo (id_peca INTEGER, id_modelo INTEGER, ano_inicio INTEGER, ano_fim INTEGER)")
+    db.execute("DELETE FROM candidato_modelo")
+    db.executemany("INSERT INTO candidato_modelo VALUES (?, ?, ?, ?)",
+                   ((p, m, i, f) for (p, m), fx in pares.items() for i, f in juntar_faixas(fx)))
+    # par (peça, modelo) já confirmado pelo KarHub não ganha linha de texto
+    r["linhas_nivel_modelo"] = db.execute(
+        """INSERT INTO peca_veiculo (id_peca, id_modelo, id_versao, ano_inicio, ano_fim, nivel)
+           SELECT c.id_peca, c.id_modelo, NULL, c.ano_inicio, c.ano_fim, 'modelo' FROM candidato_modelo c
+           WHERE NOT EXISTS (SELECT 1 FROM peca_veiculo pv
+                             WHERE pv.id_peca = c.id_peca AND pv.id_modelo = c.id_modelo AND pv.nivel = 'versao')""").rowcount
+    db.commit()
+    r["pecas_nivel_modelo"] = db.execute("SELECT count(DISTINCT id_peca) FROM peca_veiculo WHERE nivel = 'modelo'").fetchone()[0]
+    r["aplicacoes_sem_modelo"] = sum(sem_modelo.values())
+    return r, sem_modelo
+
+
+def _hash(obj):
+    return hashlib.sha1(json.dumps(obj, ensure_ascii=False).encode()).hexdigest()
+
+
+def atualizar_hashes_modelos(db):
+    anos, versoes = defaultdict(list), defaultdict(list)
+    for id_versao, ano in db.execute("SELECT id_versao, ano FROM veiculo_versao_ano ORDER BY id_versao, ano"):
+        anos[id_versao].append(ano)
+    for v in db.execute("SELECT id_versao, id_modelo, nome, nome_exibicao, motor, ativo FROM veiculo_versao ORDER BY id_versao"):
+        versoes[v["id_modelo"]].append([v["id_versao"], v["nome"], v["nome_exibicao"], v["motor"], v["ativo"], anos[v["id_versao"]]])
+    mudados = []
+    for m in db.execute("""SELECT mo.*, vm.nome AS montadora FROM veiculo_modelo mo
+                           JOIN veiculo_montadora vm USING (id_veiculo_montadora)""").fetchall():
+        h = _hash([m["montadora"], m["id_veiculo_montadora"], m["nome"], m["nome_exibicao"], m["foto"], m["foto_herdada"],
+                   m["ano_inicio"], m["ano_fim"], m["qtd_pecas"], m["ativo"], versoes[m["id_modelo"]]])
+        if h != m["hash_conteudo"]:
+            mudados.append((h, agora(), m["id_modelo"]))
+    db.executemany("UPDATE veiculo_modelo SET hash_conteudo = ?, atualizado_em = ? WHERE id_modelo = ?", mudados)
+    return len(mudados)
+
+
+def fechar(db):
+    db.execute("UPDATE veiculo_modelo SET qtd_pecas = (SELECT count(DISTINCT pv.id_peca) FROM peca_veiculo pv "
+               "WHERE pv.id_modelo = veiculo_modelo.id_modelo)")
+    db.execute("""UPDATE veiculo_montadora SET qtd_pecas = (
+                    SELECT count(DISTINCT pv.id_peca) FROM peca_veiculo pv JOIN veiculo_modelo mo ON mo.id_modelo = pv.id_modelo
+                    WHERE mo.id_veiculo_montadora = veiculo_montadora.id_veiculo_montadora)""")
+    estados, atual, linhas, total = [], None, [], 0
+    for l in db.execute("SELECT id_peca, id_modelo, id_versao, ano_inicio, ano_fim, nivel FROM peca_veiculo "
+                        "ORDER BY id_peca, id_modelo, nivel, id_versao, ano_inicio"):
+        total += 1
+        if l[0] != atual:
+            if atual is not None:
+                estados.append((atual, _hash(linhas)))
+            atual, linhas = l[0], []
+        linhas.append(list(l[1:]))
+    if atual is not None:
+        estados.append((atual, _hash(linhas)))
+    db.execute("DELETE FROM peca_veiculo_estado")
+    db.executemany("INSERT INTO peca_veiculo_estado (id_peca, hash) VALUES (?, ?)", estados)
+    alterados = atualizar_hashes_modelos(db)
+    gravar_meta(db, "veiculos_em", agora())
+    db.commit()
+    return {"pecas_ligadas": len(estados), "linhas_peca_veiculo": total, "modelos_alterados": alterados}
+
+
+def ligar(db, caminho_compat, montadoras):
+    arvore = Arvore(db)
+    r = dict(ligar_versao(db, arvore, caminho_compat))
+    r_modelo, sem_modelo = ligar_modelo(db, arvore, montadoras)
+    r.update(r_modelo)
+    r.update(fechar(db))
+    return r, sem_modelo
