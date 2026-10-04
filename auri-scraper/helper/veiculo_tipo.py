@@ -1,5 +1,5 @@
 """Tipo do modelo de veículo (carro, moto, pesado) — spec de veículos, seção 5.1.
-Ordem: ajuste do dono, FIPE, versões, nome, padrão (carro). Só 'carro' entra na árvore."""
+Ordem: ajuste do dono, FIPE, versões, nome, padrão (carro). Todos os tipos entram na árvore; o tipo vai para o modelo."""
 import csv
 import re
 from pathlib import Path

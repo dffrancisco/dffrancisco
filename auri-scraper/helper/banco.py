@@ -88,6 +88,7 @@ DDL = [
          id_modelo INTEGER PRIMARY KEY AUTOINCREMENT,
          id_veiculo_montadora INTEGER NOT NULL REFERENCES veiculo_montadora(id_veiculo_montadora),
          nome TEXT NOT NULL, nome_exibicao TEXT NOT NULL,
+         tipo TEXT NOT NULL DEFAULT 'carro' CHECK (tipo IN ('carro','moto','pesado')),
          foto TEXT, foto_herdada INTEGER NOT NULL DEFAULT 0, foto_fonte TEXT,
          ano_inicio INTEGER, ano_fim INTEGER, qtd_pecas INTEGER NOT NULL DEFAULT 0,
          ativo INTEGER NOT NULL DEFAULT 1, hash_conteudo TEXT, atualizado_em TEXT,

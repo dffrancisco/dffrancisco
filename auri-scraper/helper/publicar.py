@@ -121,7 +121,8 @@ def ddl_veiculos(tem_montadoras):
              id_montadora INTEGER, qtd_pecas INTEGER NOT NULL DEFAULT 0, ativo BOOLEAN NOT NULL DEFAULT TRUE)""",
         """CREATE TABLE IF NOT EXISTS veiculo_modelo (
              id_modelo INTEGER PRIMARY KEY, id_veiculo_montadora INTEGER NOT NULL REFERENCES veiculo_montadora(id_veiculo_montadora),
-             nome TEXT NOT NULL, nome_exibicao TEXT NOT NULL, foto TEXT, foto_herdada BOOLEAN NOT NULL DEFAULT FALSE,
+             nome TEXT NOT NULL, nome_exibicao TEXT NOT NULL, tipo TEXT NOT NULL DEFAULT 'carro',
+             foto TEXT, foto_herdada BOOLEAN NOT NULL DEFAULT FALSE,
              ano_inicio INTEGER, ano_fim INTEGER, qtd_pecas INTEGER NOT NULL DEFAULT 0, ativo BOOLEAN NOT NULL DEFAULT TRUE,
              hash_conteudo TEXT, atualizado_em TIMESTAMP, UNIQUE (id_veiculo_montadora, nome))""",
         """CREATE TABLE IF NOT EXISTS veiculo_versao (
@@ -143,12 +144,14 @@ def ddl_veiculos(tem_montadoras):
              SELECT vm.id_veiculo_montadora, vm.id_montadora, vm.nome, vm.nome_exibicao,
                     '/files/aGVscGVy/' || {logo} AS logo_url,
                     (SELECT count(*) FROM veiculo_modelo mo WHERE mo.id_veiculo_montadora = vm.id_veiculo_montadora AND mo.ativo) AS qtd_modelos,
-                    vm.qtd_pecas
+                    vm.qtd_pecas,
+                    ARRAY(SELECT DISTINCT mo.tipo FROM veiculo_modelo mo
+                          WHERE mo.id_veiculo_montadora = vm.id_veiculo_montadora AND mo.ativo ORDER BY mo.tipo) AS tipos
              FROM veiculo_montadora vm {junta}
              WHERE vm.ativo""",
         """CREATE OR REPLACE VIEW v_veiculo_modelo AS
              SELECT id_modelo, id_veiculo_montadora, nome, nome_exibicao, '/files/aGVscGVy/' || foto AS foto_url, foto_herdada,
-                    ano_inicio, ano_fim, qtd_pecas
+                    ano_inicio, ano_fim, qtd_pecas, tipo
              FROM veiculo_modelo WHERE ativo""",
     ]
 
@@ -415,15 +418,15 @@ def publicar_veiculos(db, con, ensaio, executar_rsync, pasta_fotos, destino_ssh,
                   nome_exibicao = EXCLUDED.nome_exibicao, logo = EXCLUDED.logo, id_montadora = EXCLUDED.id_montadora,
                   qtd_pecas = EXCLUDED.qtd_pecas, ativo = EXCLUDED.ativo""", montadoras)
             for lote in _lotes(modelos, 500):
-                psycopg2.extras.execute_batch(cur, """INSERT INTO veiculo_modelo (id_modelo, id_veiculo_montadora, nome, nome_exibicao, foto, foto_herdada,
+                psycopg2.extras.execute_batch(cur, """INSERT INTO veiculo_modelo (id_modelo, id_veiculo_montadora, nome, nome_exibicao, tipo, foto, foto_herdada,
                       ano_inicio, ano_fim, qtd_pecas, ativo, hash_conteudo, atualizado_em)
-                    VALUES (%(id_modelo)s, %(id_veiculo_montadora)s, %(nome)s, %(nome_exibicao)s, %(foto)s, %(foto_herdada)s::int::boolean,
+                    VALUES (%(id_modelo)s, %(id_veiculo_montadora)s, %(nome)s, %(nome_exibicao)s, %(tipo)s, %(foto)s, %(foto_herdada)s::int::boolean,
                       %(ano_inicio)s, %(ano_fim)s, %(qtd_pecas)s, %(ativo)s::int::boolean, %(hash_conteudo)s, %(atualizado_em)s::timestamp)
                     ON CONFLICT (id_modelo) DO UPDATE SET id_veiculo_montadora = EXCLUDED.id_veiculo_montadora, nome = EXCLUDED.nome,
-                      nome_exibicao = EXCLUDED.nome_exibicao, foto = EXCLUDED.foto, foto_herdada = EXCLUDED.foto_herdada,
+                      nome_exibicao = EXCLUDED.nome_exibicao, tipo = EXCLUDED.tipo, foto = EXCLUDED.foto, foto_herdada = EXCLUDED.foto_herdada,
                       ano_inicio = EXCLUDED.ano_inicio, ano_fim = EXCLUDED.ano_fim, qtd_pecas = EXCLUDED.qtd_pecas, ativo = EXCLUDED.ativo,
                       hash_conteudo = EXCLUDED.hash_conteudo, atualizado_em = EXCLUDED.atualizado_em""",
-                    _linhas(db, "SELECT id_modelo, id_veiculo_montadora, nome, nome_exibicao, foto, foto_herdada, ano_inicio, ano_fim, "
+                    _linhas(db, "SELECT id_modelo, id_veiculo_montadora, nome, nome_exibicao, tipo, foto, foto_herdada, ano_inicio, ano_fim, "
                                 "qtd_pecas, ativo, hash_conteudo, atualizado_em FROM veiculo_modelo WHERE id_modelo IN ({ids})", lote))
                 psycopg2.extras.execute_batch(cur, """INSERT INTO veiculo_versao (id_versao, id_modelo, nome, nome_exibicao, motor, ativo)
                     VALUES (%(id_versao)s, %(id_modelo)s, %(nome)s, %(nome_exibicao)s, %(motor)s, %(ativo)s::int::boolean)

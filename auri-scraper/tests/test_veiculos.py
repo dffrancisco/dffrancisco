@@ -40,7 +40,7 @@ def test_carrega_montadora_modelo_versoes_e_anos(tmp_path):
     assert carregar_arvore(db, [_linha()], M) == {"montadoras": 1, "modelos": 1, "versoes": 2, "anos_versao": 3}
     mo = db.execute("SELECT * FROM veiculo_modelo").fetchone()
     assert (mo["nome"], mo["nome_exibicao"], mo["ano_inicio"], mo["ano_fim"], mo["ativo"]) == ("TRACKER", "Tracker", 2020, 2021, 1)
-    assert mo["foto_fonte"] == FOTO_TRACKER
+    assert mo["foto_fonte"] == FOTO_TRACKER and mo["tipo"] == "carro"
     assert db.execute("SELECT logo_fonte FROM veiculo_montadora").fetchone()[0].endswith("chevrolet.avif")
     vs = {r["nome"]: r for r in db.execute("SELECT * FROM veiculo_versao")}
     assert set(vs) == {"4X2 AUT. 1.2 12V L3 TURBO", "LT 1.0"} and vs["LT 1.0"]["motor"] == "1.0"
@@ -69,20 +69,23 @@ def test_ids_estaveis_ao_recarregar_e_ausente_vira_inativo(tmp_path):
     assert r["modelos"] == 1
 
 
-def test_montadora_canonica_e_tipos_que_nao_sao_carro_ficam_fora(tmp_path):
+def test_montadora_canonica_e_moto_e_pesado_entram_com_o_tipo(tmp_path):
     db = abrir(tmp_path / "h.sqlite")
     carregar_arvore(db, [_linha(montadora="Mercedes Benz", mh="mercedes-benz", modelo="A 200"),
+                         _linha(montadora="Mercedes Benz", mh="mercedes-benz", modelo="1214 K", tipo="pesado"),
                          _linha(montadora="Honda", mh="honda", modelo="Biz", tipo="moto")], M)
-    assert [tuple(r) for r in db.execute("SELECT nome, nome_exibicao FROM veiculo_montadora")] == [("MERCEDES-BENZ", "Mercedes Benz")]
+    assert [tuple(r) for r in db.execute("SELECT nome, nome_exibicao FROM veiculo_montadora ORDER BY nome")] == [
+        ("HONDA", "Honda"), ("MERCEDES-BENZ", "Mercedes Benz")]
+    assert dict(db.execute("SELECT nome, tipo FROM veiculo_modelo")) == {"A 200": "carro", "1214 K": "pesado", "BIZ": "moto"}
 
 
-def test_ajuste_do_dono_tira_da_arvore_sem_recoletar(tmp_path):
+def test_ajuste_do_dono_muda_o_tipo_sem_recoletar(tmp_path):
     db = abrir(tmp_path / "h.sqlite")
     linhas = [_linha(), _linha(modelo="A 40")]
     carregar_arvore(db, linhas, M)
     r = carregar_arvore(db, linhas, M, ajustes={("CHEVROLET", "A 40"): "pesado"})
-    assert db.execute("SELECT ativo FROM veiculo_modelo WHERE nome = 'A 40'").fetchone()[0] == 0
-    assert r["modelos"] == 1
+    assert tuple(db.execute("SELECT tipo, ativo FROM veiculo_modelo WHERE nome = 'A 40'").fetchone()) == ("pesado", 1)
+    assert r["modelos"] == 2
 
 
 def test_ano_sem_versao_nao_conta(tmp_path):

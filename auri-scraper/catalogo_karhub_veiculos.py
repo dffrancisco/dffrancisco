@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Árvore de veículos da KarHub (montadora → modelo → ano → versão), fotos de modelo, logos e compatibilidade
-produto → veículo, para o helper. Só carros e utilitários descem até as versões; motos e pesados ficam registrados
-em karhub_excluidos.jsonl. Spec: docs/superpowers/specs/2026-10-03-helper-veiculos-design.md
+produto → veículo, para o helper. Todos os tipos (carro, moto, pesado) descem até as versões, com o tipo gravado em cada
+modelo; karhub_excluidos.jsonl guarda só os modelos sem anos. Spec: docs/superpowers/specs/2026-10-03-helper-veiculos-design.md
 
 Uso:
     python catalogo_karhub_veiculos.py fipe       # listas da FIPE para classificar o tipo (veiculos/fipe.json)
@@ -23,7 +23,7 @@ import requests
 from curl_cffi.requests.exceptions import RequestException as ErroCurl
 
 from helper.montadoras import Montadoras
-from helper.veiculo_tipo import ajuste_de, carregar_ajustes, classificar, indexar_fipe
+from helper.veiculo_tipo import carregar_ajustes, classificar, indexar_fipe
 
 SITE = "https://www.karhub.com.br"
 FIPE = "https://parallelum.com.br/fipe/api/v1"
@@ -143,14 +143,10 @@ def _versoes(itens):
             for v in itens if v.get("compatible_ids")]
 
 
-def _feitos(arq_arvore, arq_excl, ajustes, montadoras):
-    feitos = {(l["montadora"]["handle"], l["modelo"]["handle"]) for l in ler_jsonl(arq_arvore)}
-    for l in ler_jsonl(arq_excl):
-        # só um ajuste do dono (helper_veiculos_tipo.csv) traz um excluído de volta; reclassificar pelas 5 versões de
-        # exemplo traria de volta pesados decididos por uma versão posterior, a cada rodada
-        if ajuste_de(ajustes, montadoras.chaves(l["montadora"]["label"]), l["modelo"]["label"]) != "carro":
-            feitos.add((l["montadora"]["handle"], l["modelo"]["handle"]))
-    return feitos
+def _feitos(arq_arvore, arq_excl):
+    # moto e pesado excluídos por coletas de antes de 2026-10-04 (só carro descia às versões) não contam: voltam inteiros
+    return ({(l["montadora"]["handle"], l["modelo"]["handle"]) for l in ler_jsonl(arq_arvore)}
+            | {(l["montadora"]["handle"], l["modelo"]["handle"]) for l in ler_jsonl(arq_excl) if l.get("tipo") == "sem_anos"})
 
 
 def _coletar_modelo(cliente, pasta, marca, modelo, chaves, indice_fipe, ajustes, logos, hoje):
@@ -164,9 +160,6 @@ def _coletar_modelo(cliente, pasta, marca, modelo, chaves, indice_fipe, ajustes,
     recentes = api_veiculos(cliente, brand=marca["handle"], model=modelo["handle"], year=anos[0]["value"])["versions"]
     rotulos = [v["label"] for v in recentes]
     tipo, motivo = classificar(chaves, modelo["label"], rotulos, indice_fipe, ajustes)
-    if tipo != "carro":
-        return ("excluidos", {**base, "tipo": tipo, "motivo_tipo": motivo, "versoes_exemplo": rotulos[:5], "coletado_em": hoje},
-                f"excluido_{tipo}")
     lista_anos = [{"ano": int(anos[0]["value"]), "versoes": _versoes(recentes)}]
     for ano in anos[1:]:
         itens = api_veiculos(cliente, brand=marca["handle"], model=modelo["handle"], year=ano["value"])["versions"]
@@ -177,7 +170,7 @@ def _coletar_modelo(cliente, pasta, marca, modelo, chaves, indice_fipe, ajustes,
     url_foto = (conteudo(cliente, f"{marca['handle']}/{modelo['handle']}").get("model") or {}).get("image_url")
     return ("arvore", {"montadora": {**base["montadora"], "logo_url": logos[marca["handle"]]},
                        "modelo": {**base["modelo"], "foto_url": baixar_imagem(cliente, url_foto, pasta / "imagens")},
-                       "tipo": tipo, "motivo_tipo": motivo, "anos": lista_anos, "coletado_em": hoje}, "carros")
+                       "tipo": tipo, "motivo_tipo": motivo, "anos": lista_anos, "coletado_em": hoje}, tipo)
 
 
 def coletar_arvore(cliente, pasta, indice_fipe, ajustes, montadoras, so_montadora=None, do_inicio=False, log=print):
@@ -185,7 +178,7 @@ def coletar_arvore(cliente, pasta, indice_fipe, ajustes, montadoras, so_montador
     arq_arvore, arq_excl = pasta / "karhub_arvore.jsonl", pasta / "karhub_excluidos.jsonl"
     alvo_arvore = Path(f"{arq_arvore}.novo") if do_inicio else arq_arvore
     alvo_excl = Path(f"{arq_excl}.novo") if do_inicio else arq_excl
-    feitos = _feitos(alvo_arvore, alvo_excl, ajustes, montadoras)
+    feitos = _feitos(alvo_arvore, alvo_excl)
     hoje, r, logos = date.today().isoformat(), Counter(), {}
     with alvo_arvore.open("a", encoding="utf-8") as f_arv, alvo_excl.open("a", encoding="utf-8") as f_exc:
         for marca in api_veiculos(cliente)["brands"]:
@@ -209,7 +202,7 @@ def coletar_arvore(cliente, pasta, indice_fipe, ajustes, montadoras, so_montador
                 arquivo.flush()
                 r[chave] += 1
                 log(f"{marca['label']} {modelo['label']}: {registro['tipo']} ({registro['motivo_tipo']})"
-                    + (f", {len(registro['anos'])} anos" if destino == "arvore" else ", fora da árvore"))
+                    + (f", {len(registro['anos'])} anos" if destino == "arvore" else ", sem anos"))
     if do_inicio:
         alvo_arvore.replace(arq_arvore)
         alvo_excl.replace(arq_excl)

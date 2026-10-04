@@ -213,7 +213,7 @@ def atualizar_hashes_modelos(db):
     mudados = []
     for m in db.execute("""SELECT mo.*, vm.nome AS montadora FROM veiculo_modelo mo
                            JOIN veiculo_montadora vm USING (id_veiculo_montadora)""").fetchall():
-        h = _hash([m["montadora"], m["id_veiculo_montadora"], m["nome"], m["nome_exibicao"], m["foto"], m["foto_herdada"],
+        h = _hash([m["montadora"], m["id_veiculo_montadora"], m["nome"], m["nome_exibicao"], m["tipo"], m["foto"], m["foto_herdada"],
                    m["ano_inicio"], m["ano_fim"], m["qtd_pecas"], m["ativo"], versoes[m["id_modelo"]]])
         if h != m["hash_conteudo"]:
             mudados.append((h, agora(), m["id_modelo"]))

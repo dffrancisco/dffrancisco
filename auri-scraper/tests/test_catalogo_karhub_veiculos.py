@@ -48,6 +48,8 @@ def _rotas():
         f"{GV}?brand=honda&model=Biz+100&year=2015": _json({"versions": [_item("Ks 100cc (6,4 Cv)", ["9"])]}),
         f"{CT}chevrolet": _json({"data": {"data": {"brand": {"image_url": LOGO}}}}),
         f"{CT}chevrolet/Tracker": _json({"data": {"data": {"model": {"image_url": FOTO}}}}),
+        f"{CT}honda": _json({"data": None}),
+        f"{CT}honda/Biz%20100": _json({"data": None}),
         LOGO: (200, b"LOGO", "image/avif"),
         FOTO: (200, b"FOTO", "image/avif"),
     }
@@ -104,22 +106,23 @@ def test_fipe_grava_marcas_e_modelos_das_tres_listas(tmp_path):
     assert r == {"carros": 1, "motos": 1, "caminhoes": 1}
 
 
-def test_arvore_grava_carro_completo_e_separa_moto(tmp_path):
+def test_arvore_grava_carro_e_moto_completos_com_o_tipo(tmp_path):
     web = Web(_rotas())
     r = _coletar(tmp_path, web)
-    (t,) = _ler(tmp_path / "karhub_arvore.jsonl")
+    t, m = _ler(tmp_path / "karhub_arvore.jsonl")
     assert t["montadora"] == {"label": "Chevrolet", "handle": "chevrolet", "logo_url": LOGO}
     assert t["modelo"] == {"label": "Tracker", "handle": "Tracker", "foto_url": FOTO}
     assert (t["tipo"], t["motivo_tipo"]) == ("carro", "padrao")
     assert t["anos"] == [{"ano": 2021, "versoes": [{"label": "4x2 Aut. 1.2 12v L3 Turbo", "handle": "a", "ids_fonte": ["62329"]},
                                                   {"label": "Lt 1.0", "handle": "b", "ids_fonte": ["62330"]}]},
                          {"ano": 2020, "versoes": [{"label": "Lt 1.0", "handle": "b", "ids_fonte": ["5"]}]}]
-    (e,) = _ler(tmp_path / "karhub_excluidos.jsonl")
-    assert (e["modelo"]["label"], e["tipo"], e["motivo_tipo"], e["versoes_exemplo"]) == ("Biz 100", "moto", "versao", ["Ks 100cc (6,4 Cv)"])
+    assert (m["modelo"]["label"], m["tipo"], m["motivo_tipo"]) == ("Biz 100", "moto", "versao")
+    assert m["anos"] == [{"ano": 2015, "versoes": [{"label": "Ks 100cc (6,4 Cv)", "handle": "Ks 100cc (6,4 Cv)", "ids_fonte": ["9"]}]}]
+    assert _ler(tmp_path / "karhub_excluidos.jsonl") == []
     assert (tmp_path / "imagens/veiculos/chevrolet-tracker.avif").read_bytes() == b"FOTO"
     assert (tmp_path / "imagens/assets/montadoras/chevrolet.avif").read_bytes() == b"LOGO"
-    assert r["carros"] == 1 and r["excluido_moto"] == 1
-    assert not any(u.startswith(f"{CT}honda") for u in web.pedidos)  # moto não pede conteúdo nem logo
+    assert r["carro"] == 1 and r["moto"] == 1
+    assert f"{CT}honda/Biz%20100" in web.pedidos  # moto também pede foto e logo
 
 
 def test_foto_404_fica_ausente(tmp_path):
@@ -135,41 +138,37 @@ def test_retoma_pulando_modelos_gravados_e_corta_linha_incompleta(tmp_path):
         f.write('{"montadora": {"lab')  # queda no meio da gravação
     web2 = Web(_rotas())
     r = _coletar(tmp_path, web2)
-    assert r["ja_feitos"] == 2 and r.get("carros", 0) == 0
-    assert len(_ler(tmp_path / "karhub_arvore.jsonl")) == 1
+    assert r["ja_feitos"] == 2 and r.get("carro", 0) == 0
+    assert len(_ler(tmp_path / "karhub_arvore.jsonl")) == 2
     assert not any("year=" in u for u in web2.pedidos)
 
 
-def test_excluido_que_virou_carro_por_ajuste_e_coletado(tmp_path):
-    _coletar(tmp_path, Web(_rotas()))
-    rotas = _rotas()
-    rotas[f"{CT}honda"] = _json({"data": None})
-    rotas[f"{CT}honda/Biz%20100"] = _json({"data": None})
-    r = _coletar(tmp_path, Web(rotas), ajustes={("HONDA", "BIZ 100"): "carro"})
-    assert r["carros"] == 1
+def test_ajuste_do_dono_da_o_tipo(tmp_path):
+    r = _coletar(tmp_path, Web(_rotas()), ajustes={("HONDA", "BIZ 100"): "carro"})
+    assert r["carro"] == 2
     biz = [t for t in _ler(tmp_path / "karhub_arvore.jsonl") if t["modelo"]["label"] == "Biz 100"][0]
-    assert biz["motivo_tipo"] == "ajuste" and biz["montadora"]["logo_url"] is None
+    assert (biz["tipo"], biz["motivo_tipo"]) == ("carro", "ajuste") and biz["montadora"]["logo_url"] is None
 
 
 def test_modelo_sem_anos_e_registrado_e_nao_volta(tmp_path):
     rotas = _rotas()
     rotas[f"{GV}?brand=chevrolet&model=Tracker"] = _json({"years": []})
     _coletar(tmp_path, Web(rotas))
-    assert [e["tipo"] for e in _ler(tmp_path / "karhub_excluidos.jsonl")] == ["sem_anos", "moto"]
+    assert [e["tipo"] for e in _ler(tmp_path / "karhub_excluidos.jsonl")] == ["sem_anos"]
     assert _coletar(tmp_path, Web(rotas))["ja_feitos"] == 2
 
 
 def test_do_inicio_grava_em_arquivo_novo_e_troca_no_fim(tmp_path):
     _coletar(tmp_path, Web(_rotas()))
-    antigo = (tmp_path / "karhub_arvore.jsonl").read_text(encoding="utf-8")
+    antigo = _ler(tmp_path / "karhub_arvore.jsonl")
     r = _coletar(tmp_path, Web(_rotas()), do_inicio=True)
-    assert r["carros"] == 1 and not (tmp_path / "karhub_arvore.jsonl.novo").exists()
-    assert json.loads((tmp_path / "karhub_arvore.jsonl").read_text(encoding="utf-8"))["anos"] == json.loads(antigo)["anos"]
+    assert r["carro"] == 1 and not (tmp_path / "karhub_arvore.jsonl.novo").exists()
+    assert [t["anos"] for t in _ler(tmp_path / "karhub_arvore.jsonl")] == [t["anos"] for t in antigo]
 
 
 def test_so_uma_montadora(tmp_path):
     r = _coletar(tmp_path, Web(_rotas()), so_montadora="honda")
-    assert r.get("carros", 0) == 0 and r["excluido_moto"] == 1
+    assert r.get("carro", 0) == 0 and r["moto"] == 1
 
 
 def test_main_recusa_montadora_com_do_inicio(tmp_path):
@@ -181,25 +180,25 @@ def test_main_arvore_sem_fipe_avisa(tmp_path):
     assert cv.main(["arvore", "--pasta", str(tmp_path)]) == 2
 
 
-def test_excluido_nao_volta_so_porque_as_versoes_de_exemplo_parecem_de_carro(tmp_path):
-    # pesado decidido por uma versão além da 5ª: as de exemplo, sozinhas, cairiam no "padrão" (carro)
+def test_moto_ou_pesado_excluido_por_coleta_antiga_e_coletado_inteiro(tmp_path):
+    # até 2026-10-04 só carro descia às versões; moto e pesado ficavam em karhub_excluidos.jsonl só com 5 versões de exemplo
     (tmp_path / "karhub_excluidos.jsonl").write_text(json.dumps({
         "montadora": {"label": "Honda", "handle": "honda"}, "modelo": {"label": "Biz 100", "handle": "Biz 100"},
-        "tipo": "pesado", "motivo_tipo": "versao", "versoes_exemplo": ["Lt 1.0"], "coletado_em": "2026-10-04"}) + "\n",
+        "tipo": "moto", "motivo_tipo": "versao", "versoes_exemplo": ["Ks 100cc (6,4 Cv)"], "coletado_em": "2026-10-04"}) + "\n",
         encoding="utf-8")
-    web = Web(_rotas())
-    r = _coletar(tmp_path, web)
-    assert r["ja_feitos"] == 1 and not any("Biz" in u for u in web.pedidos)
-    assert len(_ler(tmp_path / "karhub_excluidos.jsonl")) == 1  # sem linha duplicada
+    r = _coletar(tmp_path, Web(_rotas()))
+    assert r["moto"] == 1 and r.get("ja_feitos", 0) == 0
+    biz = [t for t in _ler(tmp_path / "karhub_arvore.jsonl") if t["modelo"]["label"] == "Biz 100"][0]
+    assert biz["tipo"] == "moto" and biz["anos"][0]["ano"] == 2015
 
 
 def test_modelo_com_erro_permanente_nao_trava_a_coleta(tmp_path):
     rotas = _rotas()
     del rotas[f"{GV}?brand=chevrolet&model=Tracker&year=2020"]  # 404 em rota JSON: erro que não passa
     r = _coletar(tmp_path, Web(rotas))
-    assert r["erro"] == 1 and r["excluido_moto"] == 1  # a Honda, que vem depois, foi coletada
-    assert (tmp_path / "karhub_arvore.jsonl").read_text(encoding="utf-8") == ""  # nada gravado pela metade
-    assert _coletar(tmp_path, Web(_rotas()))["carros"] == 1  # na rodada seguinte o Tracker é tentado de novo
+    assert r["erro"] == 1 and r["moto"] == 1  # a Honda, que vem depois, foi coletada
+    assert [t["modelo"]["label"] for t in _ler(tmp_path / "karhub_arvore.jsonl")] == ["Biz 100"]  # nada gravado pela metade
+    assert _coletar(tmp_path, Web(_rotas()))["carro"] == 1  # na rodada seguinte o Tracker é tentado de novo
 
 
 def test_200_com_captcha_conta_como_bloqueio(monkeypatch):

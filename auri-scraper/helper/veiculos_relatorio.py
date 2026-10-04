@@ -61,7 +61,7 @@ def gerar(db, estat, tipos, sem_modelo):
          f"- Modelos ativos: {um('SELECT count(*) FROM veiculo_modelo WHERE ativo = 1')}",
          f"- Versões ativas: {um('SELECT count(*) FROM veiculo_versao WHERE ativo = 1')}",
          f"- Anos-versão: {um('SELECT count(*) FROM veiculo_versao_ano')}", "",
-         "## Tipos (incluídos e excluídos)", "", "| tipo | motivo | modelos |", "|---|---|---|"]
+         "## Tipos dos modelos", "", "| tipo | motivo | modelos |", "|---|---|---|"]
     L += [f"| {t} | {m} | {n} |" for (t, m), n in sorted(tipos.items())]
     L += ["", "Planilha completa em `<data>-veiculos-tipos.csv`; correções vão em `helper_veiculos_tipo.csv`.", "",
           "## Montadoras", "",

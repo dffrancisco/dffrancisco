@@ -37,14 +37,14 @@ def _montadora(db, nome, exibicao, logo_fonte):
                       (nome, exibicao, logo_fonte)).lastrowid
 
 
-def _modelo(db, id_vm, nome, exibicao, foto_fonte):
+def _modelo(db, id_vm, nome, exibicao, tipo, foto_fonte):
     l = db.execute("SELECT id_modelo FROM veiculo_modelo WHERE id_veiculo_montadora = ? AND nome = ?", (id_vm, nome)).fetchone()
     if l:
-        db.execute("UPDATE veiculo_modelo SET nome_exibicao = ?, foto_fonte = ?, ativo = 1 WHERE id_modelo = ?",
-                   (exibicao, foto_fonte, l[0]))
+        db.execute("UPDATE veiculo_modelo SET nome_exibicao = ?, tipo = ?, foto_fonte = ?, ativo = 1 WHERE id_modelo = ?",
+                   (exibicao, tipo, foto_fonte, l[0]))
         return l[0]
-    return db.execute("INSERT INTO veiculo_modelo (id_veiculo_montadora, nome, nome_exibicao, foto_fonte) VALUES (?, ?, ?, ?)",
-                      (id_vm, nome, exibicao, foto_fonte)).lastrowid
+    return db.execute("INSERT INTO veiculo_modelo (id_veiculo_montadora, nome, nome_exibicao, tipo, foto_fonte) VALUES (?, ?, ?, ?, ?)",
+                      (id_vm, nome, exibicao, tipo, foto_fonte)).lastrowid
 
 
 def _versao(db, id_modelo, nome, exibicao):
@@ -58,20 +58,17 @@ def _versao(db, id_modelo, nome, exibicao):
 
 
 def carregar_arvore(db, linhas, montadoras, ajustes=None):
-    """ajustes: helper_veiculos_tipo.csv. Um modelo que o dono marcou como moto ou pesado sai da árvore já aqui,
-    sem esperar uma nova coleta (a regra 1 da classificação vale sobre todas)."""
+    """Todos os tipos entram (carro, moto, pesado), com o tipo no modelo. ajustes: helper_veiculos_tipo.csv; o tipo que o
+    dono deu vale já aqui, sem esperar uma nova coleta (a regra 1 da classificação vale sobre todas)."""
     # anos e ids do KarHub saem inteiros do arquivo; montadora, modelo e versão nunca são apagados (ids publicados)
     db.execute("DELETE FROM veiculo_versao_ano")
     db.execute("DELETE FROM veiculo_fonte")
     for tabela in ("veiculo_montadora", "veiculo_modelo", "veiculo_versao"):
         db.execute(f"UPDATE {tabela} SET ativo = 0")
     for l in linhas:
-        if l.get("tipo", "carro") != "carro":
-            continue
-        if ajustes and ajuste_de(ajustes, montadoras.chaves(l["montadora"]["label"]), l["modelo"]["label"]) not in (None, "carro"):
-            continue
+        tipo = (ajustes and ajuste_de(ajustes, montadoras.chaves(l["montadora"]["label"]), l["modelo"]["label"])) or l.get("tipo", "carro")
         id_vm = _montadora(db, montadoras.canonica(l["montadora"]["label"]), l["montadora"]["label"], l["montadora"].get("logo_url"))
-        id_modelo = _modelo(db, id_vm, nome_canonico(l["modelo"]["label"]), l["modelo"]["label"], l["modelo"].get("foto_url"))
+        id_modelo = _modelo(db, id_vm, nome_canonico(l["modelo"]["label"]), l["modelo"]["label"], tipo, l["modelo"].get("foto_url"))
         for a in l["anos"]:
             for v in a["versoes"]:
                 id_versao = _versao(db, id_modelo, nome_canonico(v["label"]), v["label"])

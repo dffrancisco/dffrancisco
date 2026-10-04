@@ -3,7 +3,7 @@ import json
 from helper.banco import abrir, ler_meta
 from helper.montadoras import Montadoras
 from helper.veiculos import carregar_arvore
-from helper.veiculos_ligar import Arvore, agrupar, faixas, juntar_faixas, ligar, ligar_versao
+from helper.veiculos_ligar import Arvore, agrupar, atualizar_hashes_modelos, faixas, juntar_faixas, ligar, ligar_versao
 from tests.test_veiculos import _linha
 
 
@@ -67,6 +67,14 @@ def test_sem_arquivo_de_compatibilidade(tmp_path):
     db, _ = _base(tmp_path)
     r = ligar_versao(db, Arvore(db), tmp_path / "nao_existe.jsonl")
     assert r["pecas_nivel_versao"] == 0 and r["handles_sem_compat"] == 3  # p3 é de peça inativa: nem entra
+
+
+def test_tipo_entra_no_hash_do_modelo(tmp_path):
+    db = abrir(tmp_path / "h.sqlite")
+    carregar_arvore(db, [_linha()], Montadoras({}))
+    atualizar_hashes_modelos(db)
+    db.execute("UPDATE veiculo_modelo SET tipo = 'pesado'")
+    assert atualizar_hashes_modelos(db) == 1  # o ajuste de tipo chega ao Wayap na próxima publicação
 
 
 def test_juntar_faixas():

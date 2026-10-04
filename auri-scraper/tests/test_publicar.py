@@ -47,6 +47,11 @@ def test_ddl_de_veiculos_e_funcoes_do_contrato():
     for t in ("veiculo_montadora", "veiculo_modelo", "veiculo_versao", "veiculo_versao_ano", "peca_veiculo", "peca_veiculo_estado"):
         assert f"CREATE TABLE IF NOT EXISTS {t} (" in ddl
     assert "coalesce(w.logo, vm.logo)" in ddl and "LEFT JOIN montadoras w" in ddl
+    modelo = next(c for c in ddl_veiculos(True) if "TABLE IF NOT EXISTS veiculo_modelo" in c)
+    assert "tipo TEXT NOT NULL" in modelo
+    v_modelo = next(c for c in ddl_veiculos(True) if "VIEW v_veiculo_modelo" in c)
+    v_montadora = next(c for c in ddl_veiculos(True) if "VIEW v_veiculo_montadora" in c)
+    assert "tipo" in v_modelo.split("FROM")[0] and "AS tipos" in v_montadora  # o Wayap filtra carro, moto ou pesado
     assert "montadoras w" not in "\n".join(ddl_veiculos(tem_montadoras=False))
     fs = "\n".join(funcoes_veiculos(True))
     tudo = ddl + fs
@@ -242,6 +247,7 @@ def test_publicar_veiculos_arquivos_antes_copy_e_sem_escrever_na_montadoras(tmp_
     assert con.sql.index("RSYNC") < escritas[0]
     assert db.execute("SELECT id_montadora FROM veiculo_montadora").fetchone()[0] == 11
     assert any(s.startswith("INSERT INTO veiculo_modelo") for s in con.sql) and any(s.startswith("COPY peca_veiculo") for s in con.sql)
+    assert any("INSERT INTO veiculo_modelo" in s and "%(tipo)s" in s for s in con.completo)
     assert con.copias[0].startswith("1\t") and "\\N" in con.copias[0]
     assert not any(s.startswith(("INSERT INTO montadoras", "UPDATE montadoras", "DELETE FROM montadoras")) for s in con.sql)
     assert (r["modelos"], r["pecas_veiculo"], r["arquivos_veiculo"], r["ligacoes_gravadas"]) == (1, 1, 1, 1)
@@ -340,8 +346,10 @@ def test_integracao_postgres_veiculos(tmp_path):
         assert cur.fetchall() == [(1, "todas_versoes")]
         cur.execute("SELECT id_peca, confianca FROM pecas_por_veiculo(%s, 2021, NULL, 'farol')", (id_modelo,))
         assert cur.fetchall() == [(1, "todas_versoes")]
-        cur.execute("SELECT foto_url FROM v_veiculo_modelo WHERE id_modelo = %s", (id_modelo,))
-        assert cur.fetchone()[0] == "/files/aGVscGVy/veiculos/modelos/1_abc.webp"
+        cur.execute("SELECT foto_url, tipo FROM v_veiculo_modelo WHERE id_modelo = %s", (id_modelo,))
+        assert cur.fetchone() == ("/files/aGVscGVy/veiculos/modelos/1_abc.webp", "carro")
+        cur.execute("SELECT tipos FROM v_veiculo_montadora")
+        assert cur.fetchall() == [(["carro"],)]
 
 
 @pytest.mark.skipif(not os.environ.get("HELPER_TESTE_PG"), reason="defina HELPER_TESTE_PG=1 com um Postgres de teste em .env_admin")
