@@ -342,3 +342,30 @@ def test_integracao_postgres_veiculos(tmp_path):
         assert cur.fetchall() == [(1, "todas_versoes")]
         cur.execute("SELECT foto_url FROM v_veiculo_modelo WHERE id_modelo = %s", (id_modelo,))
         assert cur.fetchone()[0] == "/files/aGVscGVy/veiculos/modelos/1_abc.webp"
+
+
+@pytest.mark.skipif(not os.environ.get("HELPER_TESTE_PG"), reason="defina HELPER_TESTE_PG=1 com um Postgres de teste em .env_admin")
+def test_integracao_postgres_versao_fora_do_ano(tmp_path):
+    """Linha de versão vale só nos anos em que a versão existe: o 4x2 do Tracker só existe em 2021."""
+    from helper.publicar import conectar, criar_banco, instalar_esquema
+    from helper.veiculos_ligar import fechar
+    from wayap_fotos import ENV_ADMIN
+    env = ler_env_admin(ENV_ADMIN)
+    criar_banco(env, "helper_teste_lacuna")
+    con = conectar(env, "helper_teste_lacuna")
+    instalar_esquema(con)
+    db = _db_veiculos(tmp_path)
+    id_modelo = db.execute("SELECT id_modelo FROM veiculo_modelo").fetchone()[0]
+    v4x2 = db.execute("SELECT id_versao FROM veiculo_versao WHERE nome LIKE '4X2%'").fetchone()[0]
+    db.execute("INSERT INTO peca (id_peca, id_marca, chave, codigo, desc_curta, status) VALUES (2, 1, 'ARTEB|2', '2', 'TAMBOR', 'ativa')")
+    db.execute("INSERT INTO peca_veiculo VALUES (2, ?, ?, 2020, 2021, 'versao')", (id_modelo, v4x2))
+    fechar(db)
+    publicar(db, con, ensaio=False, executar_rsync=lambda cmd: None, pasta_fotos=tmp_path / "helper_fotos",
+             destino_ssh=None, pasta_remota=None, commit_repo="teste")
+    publicar_veiculos(db, con, ensaio=False, executar_rsync=lambda cmd: None, pasta_fotos=tmp_path / "helper_fotos_veiculos",
+                      destino_ssh=None, pasta_remota=None)
+    with con.cursor() as cur:
+        cur.execute("SELECT id_peca, confianca FROM ids_por_veiculo(%s, 2020) ORDER BY 1", (id_modelo,))
+        assert cur.fetchall() == [(1, "todas_versoes")]  # a peça 2 não serve em 2020: o 4x2 não existe nesse ano
+        cur.execute("SELECT id_peca, confianca FROM ids_por_veiculo(%s, 2021) ORDER BY 1", (id_modelo,))
+        assert cur.fetchall() == [(1, "todas_versoes"), (2, "algumas_versoes")]

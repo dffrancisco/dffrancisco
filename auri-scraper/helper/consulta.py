@@ -80,10 +80,13 @@ ORDEM_CONFIANCA = {"versao": 1, "todas_versoes": 1, "algumas_versoes": 2, "model
 
 def ids_por_veiculo(db, id_modelo, ano, id_versao=None):
     versao = defaultdict(lambda: {"todas": False, "esta": False})
+    # linha de uma versão vale só nos anos da faixa em que a versão existe (spec 5.3): uma lacuna não conta
     for id_peca, v in db.execute(
             """SELECT pv.id_peca, pv.id_versao FROM peca_veiculo pv JOIN peca p USING (id_peca)
-               WHERE pv.id_modelo = ? AND pv.nivel = 'versao' AND ? BETWEEN pv.ano_inicio AND pv.ano_fim AND p.status = 'ativa'""",
-            (id_modelo, ano)):
+               WHERE pv.id_modelo = ? AND pv.nivel = 'versao' AND ? BETWEEN pv.ano_inicio AND pv.ano_fim AND p.status = 'ativa'
+                 AND (pv.id_versao IS NULL OR EXISTS (SELECT 1 FROM veiculo_versao_ano va
+                                                       WHERE va.id_versao = pv.id_versao AND va.ano = ?))""",
+            (id_modelo, ano, ano)):
         e = versao[id_peca]
         e["todas"] = e["todas"] or v is None
         e["esta"] = e["esta"] or (id_versao is not None and v == id_versao)

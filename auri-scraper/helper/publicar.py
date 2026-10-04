@@ -177,6 +177,9 @@ def funcoes_veiculos(com_trgm):
                SELECT pv.id_peca, bool_or(pv.id_versao IS NULL) AS todas, coalesce(bool_or(pv.id_versao = p_versao), FALSE) AS esta
                FROM peca_veiculo pv JOIN peca pe ON pe.id_peca = pv.id_peca AND pe.status = 'ativa'
                WHERE pv.id_modelo = p_modelo AND pv.nivel = 'versao' AND p_ano BETWEEN pv.ano_inicio AND pv.ano_fim
+                 -- linha de uma versão vale só nos anos da faixa em que a versão existe (spec 5.3): lacuna não conta
+                 AND (pv.id_versao IS NULL OR EXISTS (SELECT 1 FROM veiculo_versao_ano va
+                                                       WHERE va.id_versao = pv.id_versao AND va.ano = p_ano))
                GROUP BY pv.id_peca),
              m AS (
                SELECT DISTINCT pv.id_peca FROM peca_veiculo pv JOIN peca pe ON pe.id_peca = pv.id_peca AND pe.status = 'ativa'
