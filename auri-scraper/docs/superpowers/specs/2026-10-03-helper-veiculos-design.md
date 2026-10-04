@@ -1,16 +1,18 @@
-# Helper: veículos (montadora → modelo → ano → versão), fotos de modelo e peças por veículo
+# Helper: veículos (montadora → modelo → ano → versão), fotos e peças por veículo
 
-Data: 2026-10-03. Status: direção aprovada em conversa, aguardando revisão do texto.
+Data: 2026-10-03. Status: aprovado em conversa (escopo carros e utilitários; helper não grava
+em tabela do Wayap), aguardando revisão do texto.
 
-Complementa a spec do helper (`2026-10-02-helper-design.md`). Acrescenta tabelas, um coletor e
+Complementa a spec do helper (`2026-10-02-helper-design.md`). Acrescenta um coletor, tabelas e
 consultas ao contrato da seção 7 daquela spec, e sobe `versao_esquema` para 2. Nada do que já
 existe muda de significado.
 
 ## 1. Objetivo
 
-Levar para o Wayap o filtro "Confira se serve no seu veículo" do KarHub: montadora → modelo
-(com foto do carro) → ano → versão. Com ele, o Wayap vai ter a tela **"Peças para o veículo"**
-no balcão: o vendedor escolhe o veículo, digita o que procura ("pastilha") e vê duas listas:
+Levar para o Wayap o filtro "Confira se serve no seu veículo" do KarHub: montadora (com logo) →
+modelo (com foto do carro) → ano → versão. Com ele, o Wayap vai ter a tela **"Peças para o
+veículo"** no balcão: o vendedor escolhe o veículo, digita o que procura ("pastilha") e vê duas
+listas:
 
 - **No seu estoque:** produtos do cliente que servem, com quantidade e preço.
 - **No mercado:** peças do helper que servem e que o cliente não tem, para encomendar ou
@@ -21,40 +23,56 @@ pelo código do fabricante, e a peça do helper sabe em quais veículos serve. E
 ligação já alcançava 41% dos produtos da topcar (28 mil de 68 mil; Universal e Perfect acima
 de 95%), e cresce a cada site raspado.
 
-Esta spec cobre só a **fase 1, no helper**: coletar a árvore de veículos, as fotos e a
+Esta spec cobre só a **fase 1, no helper**: coletar a árvore de veículos, logos, fotos e
 compatibilidade, ligar às peças, publicar e garantir as consultas. As telas do Wayap são specs
-próprias (seção 12).
+próprias (seção 13).
 
 ## 2. O que já existe e orienta o desenho
 
-**Fonte: API do próprio site do KarHub** (Shopify Hydrogen, rotas `/api/...` do servidor do
-site; testadas em 2026-10-03):
+**Fonte: API do próprio site do KarHub** (rotas `/api/...` do site, testadas em 2026-10-03):
 
 | Rota | Devolve |
 |---|---|
 | `/api/get-vehicles` | 159 montadoras (`label`, `handle`) |
-| `/api/get-vehicles?brand=chevrolet` | modelos da montadora (3.495 no total; inclui caminhões, ônibus e motos) |
+| `/api/get-vehicles?brand=chevrolet` | modelos da montadora (3.495 no total, misturando carros, utilitários, caminhões, ônibus e motos) |
 | `...&model=Tracker` | anos do modelo, cada um com os ids de veículo daquele ano |
 | `...&year=2021` | versões do ano (`label`, `handle`) com **um id de veículo cada** (ex.: "4x2 Aut. 1.2 12v L3 Turbo" = 62329) |
-| `/api/get-automaker-content?handle=chevrolet/tracker` | foto do modelo (`images.karhub.com.br/veiculos/chevrolet-tracker.avif`, 600×450 com fundo transparente) e logo da montadora (200×200 com fundo transparente; 156 das 159 montadoras têm, faltam Iros, MG e Mottu) |
-| `/api/product-compatible-ids?handles=h1,h2,...` | para cada produto, os ids de veículo que ele atende; aceita até 50 por chamada (com 100, volta vazio sem erro) |
+| `/api/get-automaker-content?handle=chevrolet/tracker` | foto do modelo (`images.karhub.com.br/veiculos/chevrolet-tracker.avif`, 600×450, fundo transparente) e logo da montadora (`.../assets/montadoras/chevrolet.avif`, 200×200, fundo transparente) |
+| `/api/product-compatible-ids?handles=h1,h2,...` | para cada produto, os ids de veículo que ele atende; até 50 por chamada (com 100, volta vazio sem erro) |
 
-O id de veículo do KarHub é um par (versão, ano): os ids de um ano são exatamente a união dos
-ids das versões daquele ano, e não há rótulo de versão repetido no mesmo ano. O site e as
-imagens ficam atrás do Cloudflare: `requests` puro recebe 403, o `Fetcher` do Scrapling com
-`stealthy_headers` passa, como já acontece em `catalogo_karhub.py`. Nem todo modelo tem foto
-(o Camaro, por exemplo, dá 404, e o site mostra um carro genérico).
+- **Id de veículo:** é um par (versão, ano). Os ids de um ano são exatamente a união dos ids das
+  versões daquele ano, e não há rótulo de versão repetido no mesmo ano.
+- **Logos:** 156 das 159 montadoras têm (faltam Iros, MG e Mottu).
+- **Fotos de modelo:** só os modelos mais vendidos têm, cerca de 1 em 4 (Chevrolet 16 de 75:
+  Onix, Tracker, S10, Celta...; Fiat 15 de 49: Uno, Palio, Strada, Toro...). Variações costumam
+  ficar sem foto (Astra Hatch sem, Astra com).
+- **Acesso:** o site e as imagens ficam atrás do Cloudflare. `requests` puro recebe 403; o
+  `Fetcher` do Scrapling com `stealthy_headers` passa, como em `catalogo_karhub.py`. Durante os
+  testes houve alguns minutos de conexão recusada no meio de uma sequência de chamadas.
 
-**O banco `helper` no Postgres já tem tabelas do Wayap**, além das do helper: `montadoras`
-(71 linhas, global, mantida pelo Wayap; `carro.id_montadora` de cada sociedade aponta para
-ela; `logo` guarda caminho relativo como `montadoras/11.png`), `placas_detalhes` (pesquisa por
-placa do Wayap), `schema_migrations` e outras. Em `/home/wayap/helper/montadoras/` estão 5
-logos feitos pelo Francisco (`11.png`, `13.png`, `18.png`, `63.png`, `70.png`). Por isso a árvore
-usa `montadoras.id_montadora` e não cria uma tabela de montadora própria no Postgres.
+**A API não diz o tipo do veículo**, e as montadoras misturam tipos (Mercedes-Benz tem 565
+modelos, a maioria caminhão e ônibus; Honda tem carros e motos). Duas fontes resolvem:
 
-**A tabela `carro` de cada sociedade continua como está.** Ela é por cliente, no nível de
-modelo, e é usada em `produto`, `produto_venda`, `similar`, filtros e relatórios. A árvore
-entra ao lado; o Wayap casa `modelo` com `carro` por (`id_montadora`, nome) quando precisar.
+- **FIPE** (`parallelum.com.br/fipe/api/v1`, pública, sem token): três listas, "carros"
+  (a categoria oficial é "Carros e utilitários pequenos"), "motos" e "caminhoes" ("Caminhões e
+  micro-ônibus"), com os modelos de cada marca. Testada nas marcas mistas, ela classifica uns
+  50% dos modelos do KarHub pelo nome; o resto tem grafia diferente ou é antigo demais.
+- **Nome das versões no KarHub:** moto traz cilindrada em cc ("Ks 100cc"); caminhão e ônibus
+  trazem tração 6x2/6x4/8x2/8x4 ou motor grande com fase de emissão P ("4x2 6.0 12v L6 E 1 P 3");
+  carro traz portas e câmbio ("4p Mec."). Utilitário diesel leve também tem fase P, mas motor
+  pequeno ("Daily: Furgão 4x2 2.3 16v Turbo E 5 P 6").
+
+**O banco `helper` no Postgres já tem tabelas do próprio Wayap**, além das do helper:
+`montadoras` (71 linhas, global, mantida pelo Wayap e pela pesquisa por placa; `carro.id_montadora`
+de cada sociedade aponta para ela; `logo` guarda caminho relativo como `montadoras/11.png`),
+`placas_detalhes`, `schema_migrations`, `menu` e outras. Em `/home/wayap/helper/montadoras/`
+estão 5 logos feitos pelo Francisco (Chevrolet, Citroën, Fiat, Toyota e BYD). O helper **não
+grava em nenhuma tabela nem pasta do Wayap**: tem as suas, com prefixo `veiculo_` para não
+colidir com nomes que o Wayap use ou venha a usar no mesmo banco, e só lê a `montadoras` para
+ligar as duas.
+
+**A tabela `carro` de cada sociedade continua como está.** Ela é por cliente, no nível de modelo,
+e é usada em `produto`, `produto_venda`, `similar`, filtros e relatórios. A árvore entra ao lado.
 
 **As aplicações que o helper já tem** (667 mil linhas, texto de todos os sites): 78% casam com
 um nome de modelo da árvore pelo prefixo. Elas dão a ligação de nível "modelo" para as peças que
@@ -65,17 +83,20 @@ o KarHub não cobre.
 | Decisão | Escolha | Motivo |
 |---|---|---|
 | Fonte da árvore e da compatibilidade | API do site do KarHub, coletada aqui | Única fonte com versão por ano, foto do modelo e ligação produto → versão |
-| Montadora | `montadoras` do Wayap, no banco `helper`; o helper insere só as que faltam e preenche `logo` só onde está vazio | Uma montadora só para o Wayap inteiro; não pisar no que o Wayap e o Francisco já cadastraram |
-| Escopo de veículos | Tudo que o KarHub lista: carros, utilitários, caminhões, ônibus e motos | Custo de coleta baixo; o Wayap pode esconder o que não usar |
-| Granularidade | `modelo`, `versao` e os anos de cada versão (`versao_ano`) | É o que o filtro precisa: ano mostra as versões daquele ano |
+| Escopo de veículos | **Só carros e utilitários**: o que a FIPE põe em "Carros e utilitários pequenos" ou, quando a FIPE não conhece o modelo, o que as versões não mostram como moto ou pesado | Pedido do dono; motos, caminhões e ônibus ficam fora |
+| Na dúvida | Entra como carro, e aparece no relatório para conferir | Perder um carro custa mais que mostrar um caminhão a mais; `helper_veiculos_tipo.csv` corrige |
+| Montadora | Tabela própria `veiculo_montadora` com `id_montadora` apontando para a `montadoras` do Wayap quando o nome casa (nulo quando não existe lá) | O helper não grava em tabela do Wayap; o Wayap decide se cria a montadora do lado dele |
+| Logo exibido | O da `montadoras` do Wayap quando existe (os 5 do Francisco), senão o do helper | O que o dono fez prevalece, sem o helper tocar nos arquivos dele |
+| Granularidade | `veiculo_modelo`, `veiculo_versao` e os anos de cada versão (`veiculo_versao_ano`) | É o que o filtro precisa: ano mostra as versões daquele ano |
 | Ids | Inteiros atribuídos aqui, estáveis por nome canônico; o id do KarHub fica só no banco local | Mesmo princípio das peças: id publicado nunca muda nem é reaproveitado |
-| Remoção | Modelo ou versão que some da coleta vira `ativo = false`, nunca é apagado | Telas podem guardar o id |
-| Ligação peça → veículo | Tabela `peca_veiculo` agrupada por versão e faixa de anos, com `id_versao` nulo quando a peça serve em todas as versões | Sem agrupar seriam ~70 milhões de linhas (cerca de 400 versões-ano por produto) |
-| Níveis de confiança | `versao` (confirmada pelo KarHub) e `modelo` (deduzida do texto de aplicação, versão não confirmada) | É o selo "serve nesta versão" ou "confira a versão" da tela |
-| Foto do modelo | WebP com transparência, qualidade 90, sem redimensionar | 34 KB contra 211 KB do PNG; todos os navegadores atuais abrem |
-| Logo da montadora | Todos os 156 que o KarHub tem, em PNG 200×200 com transparência; os 5 logos do Francisco continuam valendo no lugar dos do KarHub | Mesmo formato dos 5 logos atuais; o filtro mostra o logo ao lado do nome da montadora |
-| Foto própria | Arquivo em `helper_fotos_veiculos/proprias/` tem prioridade sobre o do KarHub | O dono pode trocar qualquer foto ou logo sem mexer em código |
-| Onde ficam os arquivos no servidor | `/home/wayap/helper/modelos/` e `/home/wayap/helper/montadoras/`, servidos por `/files/aGVscGVy/` | Mesma convenção do `montadoras.logo` (caminho relativo a `/home/wayap/helper/`) |
+| Remoção | Modelo, versão ou montadora que some vira `ativo = false`, nunca é apagado | Telas podem guardar o id |
+| Ligação peça → veículo | `peca_veiculo` agrupada por versão e faixa de anos, `id_versao` nulo quando serve em todas as versões | Sem agrupar seriam ~70 milhões de linhas (cerca de 400 versões-ano por produto) |
+| Níveis de confiança | `versao` (confirmada pelo KarHub) e `modelo` (deduzida do texto de aplicação) | É o selo "serve nesta versão" ou "confira a versão" da tela |
+| Foto do modelo | WebP com transparência, qualidade 90, 600×450 como vem | 34 KB contra 211 KB do PNG; todos os navegadores atuais abrem |
+| Modelo sem foto | Herda a do modelo da mesma montadora cujo nome é o prefixo mais longo do seu (Astra Hatch → Astra), marcada como herdada | Cobre as variações sem foto; o Wayap pode mostrar genérica se preferir |
+| Logo da montadora | PNG 200×200 com transparência, como os 5 que já existem | Mesmo formato |
+| Foto e logo próprios | Arquivo em `helper_fotos_veiculos/proprias/` tem prioridade sobre o do KarHub | O dono troca qualquer imagem sem mexer em código |
+| Arquivos no servidor | `/home/wayap/helper/veiculos/modelos/` e `/home/wayap/helper/veiculos/montadoras/`, servidos por `/files/aGVscGVy/` | Pasta só do helper; caminho relativo no banco, como `montadoras.logo` |
 
 ## 4. Coleta: `catalogo_karhub_veiculos.py`
 
@@ -83,72 +104,139 @@ Novo coletor na raiz, no padrão dos outros `catalogo_*.py`. Grava em `veiculos/
 `catalogos/`, porque o `preparar` lê todo `catalogos/*.jsonl` como anúncio.
 
 ```
+python catalogo_karhub_veiculos.py fipe
 python catalogo_karhub_veiculos.py arvore [--do-inicio] [--montadora chevrolet]
 python catalogo_karhub_veiculos.py compat [--do-inicio]
 ```
 
-**`arvore`** percorre montadora → modelos → anos → versões, mais o conteúdo de cada modelo
-(foto e logo), e baixa as imagens originais para `veiculos/imagens/` (nome = caminho da URL).
-Grava uma linha por modelo **completo** em `veiculos/karhub_arvore.jsonl`:
+**`fipe`** baixa as marcas e os modelos das três listas da FIPE para `veiculos/fipe.json`
+(cerca de 240 chamadas, uma por segundo). Roda uma vez e quando a FIPE ganhar modelos novos.
+
+**`arvore`** percorre as montadoras do KarHub e, para cada modelo, pede os anos e as versões do
+ano mais recente. Com isso classifica o modelo (seção 5.1). Se não for carro, grava uma linha em
+`veiculos/karhub_excluidos.jsonl` (montadora, modelo, tipo, motivo, versões de exemplo) e segue.
+Se for carro, pede as versões dos demais anos e o conteúdo do modelo, baixa a foto e o logo
+originais para `veiculos/imagens/` (nome = caminho da URL; uma imagem que dá 404 fica como
+ausente) e grava uma linha por modelo **completo** em `veiculos/karhub_arvore.jsonl`:
 
 ```json
 {"montadora": {"label": "Chevrolet", "handle": "chevrolet", "logo_url": "https://images.karhub.com.br/assets/montadoras/chevrolet.avif"},
  "modelo": {"label": "Tracker", "handle": "Tracker", "foto_url": "https://images.karhub.com.br/veiculos/chevrolet-tracker.avif"},
+ "tipo": "carro", "motivo_tipo": "fipe",
  "anos": [{"ano": 2021, "versoes": [{"label": "4x2 Aut. 1.2 12v L3 Turbo", "handle": "4x2-aut-12-12v-l3-turbo", "id_fonte": "62329"}]}],
  "coletado_em": "2026-10-03"}
 ```
 
-Retoma pulando os modelos que já estão no arquivo; `--do-inicio` coleta tudo de novo num
-arquivo novo e só o troca pelo antigo no fim. São cerca de 3.500 chamadas de anos, 35 a 40 mil
-de versões e 3.500 de conteúdo: de 6 a 10 horas.
+Retoma pulando os modelos que já estão em um dos dois arquivos; um excluído que um ajuste novo
+em `helper_veiculos_tipo.csv` passou a classificar como carro é coletado na rodada seguinte.
+`--do-inicio` coleta tudo de novo em arquivos novos e só os troca pelos antigos no fim. Custo:
+2 chamadas por modelo para classificar (cerca de 7 mil) e, só nos carros, as versões dos demais
+anos e o conteúdo; estimativa de 4 a 7 horas.
 
 **`compat`** lê os handles de `catalogos/karhub.jsonl` (caminho da URL, sem a query das
 variantes), consulta 50 por chamada e grava `{"handle", "ids", "coletado_em"}` em
 `veiculos/karhub_compat.jsonl`. Retoma pelos handles já gravados. Se um lote inteiro voltar
 vazio, repete em lotes de 10 para separar "produto sem compatibilidade" de "lote recusado".
-São cerca de 3.700 chamadas, de 1 a 2 horas.
+Cerca de 3.700 chamadas, de 1 a 2 horas.
 
-Ritmo e falhas iguais aos de `catalogo_karhub.py`: uma chamada por vez, pausa de 0,3 s, novas
-tentativas com espera crescente, HTTP 403/430 ou captcha contam como bloqueio, e o coletor para
-com código 2 e uma mensagem para rodar de novo mais tarde. Log em `veiculos/*.log`.
+Ritmo e falhas como em `catalogo_karhub.py`: uma chamada por vez, pausa de 0,3 s, novas
+tentativas com espera crescente (5, 15, 30, 60 s) para erro de conexão, 429 e 5xx; HTTP 403/430
+ou captcha contam como bloqueio, com espera quatro vezes maior; esgotadas as tentativas, o
+coletor para com código 2 e uma mensagem para rodar de novo mais tarde. Log em `veiculos/*.log`.
 
-## 5. Modelo de dados
+## 5. Regras
+
+### 5.1 Tipo do modelo (`helper/veiculo_tipo.py`)
+
+Em ordem; a primeira que decide vale:
+
+1. **Ajuste do dono:** `helper_veiculos_tipo.csv` (`montadora;modelo;tipo`, com tipo `carro`,
+   `moto` ou `pesado`).
+2. **FIPE:** procura o modelo nas listas da marca correspondente (nome da marca casado pelas
+   mesmas regras da seção 5.2, considerando também as partes de nomes como "GM - Chevrolet" e
+   "Caoa Chery/Chery"). Um modelo casa quando algum nome da FIPE, normalizado (maiúsculas, sem
+   acento, só letras, números e espaços), é igual ao nome do modelo ou começa com ele seguido de
+   espaço. Está em "carros" → `carro` (mesmo que também esteja em "caminhoes", como Marruá e
+   Delivery Express). Só em "motos" → `moto`. Só em "caminhoes" → `pesado`.
+3. **Versões:** alguma versão com cilindrada em cc → `moto`. Alguma com tração 6x2, 6x4, 8x2 ou
+   8x4, ou com fase de emissão P junto de motor de 4.0 ou mais → `pesado`.
+4. **Nome:** nome do modelo com `BUS`, `ONIBUS`, `MICRO`, `RODOVIARIO` ou `URBANO` → `pesado`.
+5. **Na dúvida:** `carro`.
+
+O motivo (`ajuste`, `fipe`, `versao`, `nome`, `padrao`) vai junto, para o relatório.
+
+### 5.2 Montadora (`helper/montadoras.py`)
+
+- **Nome canônico:** maiúsculas, sem acento, espaços simples; antes, o arquivo editável
+  `helper_montadoras.csv` (`apelido;nome`) troca grafias que diferem de verdade, já com a grafia
+  da `montadoras` do Wayap: `KIA` → `KIA MOTORS`, `JAC` → `JAC MOTORS`, `ASIA` → `ASIA MOTORS`,
+  `MERCEDES BENZ` → `MERCEDES-BENZ`, `GM` → `CHEVROLET`, `VW` → `VOLKSWAGEN`, `BMW BMW` → `BMW`.
+- **Comparação:** dois nomes são a mesma montadora quando ficam iguais só com letras e números
+  (`MERCEDES BENZ` = `MERCEDES-BENZ`).
+- A mesma regra serve para o campo `montadora` das aplicações e para ligar `veiculo_montadora`
+  à `montadoras` do Wayap.
+
+### 5.3 Agrupamento da ligação de nível `versao`
+
+Para uma peça e um modelo:
+
+1. Para cada ano do modelo, compara as versões que a peça atende naquele ano com todas as versões
+   que existem naquele ano. Se forem todas, o ano é **completo**.
+2. Anos completos seguidos viram linhas com `id_versao` nulo. "Seguidos" conta só os anos que o
+   modelo tem: um ano sem versão nenhuma não quebra a faixa.
+3. Nos anos que não são completos, cada versão atendida vira linhas com seu `id_versao`, com
+   faixas seguidas contadas só nos anos em que aquela versão existe.
+
+Uma linha (`modelo`, versão ou nulo, `i`, `f`) quer dizer: "serve na versão (ou em todas) em
+todos os anos entre `i` e `f` em que ela existe". Ids de veículo da compatibilidade que não estão
+na árvore (motos, caminhões, ônibus ou veículos novos) são ignorados e contados no relatório.
+
+### 5.4 Ligação de nível `modelo`
+
+Das aplicações de todos os sites, só de peças ativas. A montadora casa pela seção 5.2; o modelo é
+o prefixo mais longo de `aplicacao.modelo` (em palavras) que é nome de modelo da árvore naquela
+montadora. Sem montadora, ou com montadora fora da árvore, só casa se o nome existir em uma única
+montadora; caso contrário, vai para o relatório. Um par (peça, modelo) que já tem linha de nível
+`versao` não ganha linha de nível `modelo`. Faixas sobrepostas ou adjacentes do mesmo par se
+juntam; uma aplicação sem ano vale para qualquer ano e absorve as outras do mesmo par.
+
+## 6. Modelo de dados
 
 Tabelas no `helper.sqlite` e, quando indicado, no Postgres `helper`.
 
-### 5.1 `montadora` (só local)
+### 6.1 `veiculo_montadora` (local e Postgres)
 
 | Campo | Conteúdo |
 |---|---|
-| `nome` | chave; canônico: a `descricao` da `montadoras` do Wayap quando casa, senão maiúsculas sem acento do rótulo do KarHub |
+| `id_veiculo_montadora` | inteiro, chave, estável |
+| `nome` | canônico (seção 5.2), único |
 | `nome_exibicao` | como o KarHub escreve ("Mercedes Benz") |
-| `logo` | arquivo local já convertido, ou nulo |
-| `id_montadora` | id na `montadoras` do Wayap; preenchido pelo `publicar` |
+| `logo` | caminho relativo, `veiculos/montadoras/<id>_<8 primeiros do sha1>.png`, ou nulo |
+| `id_montadora` | id na `montadoras` do Wayap quando o nome casa; nulo quando não existe lá. Recalculado a cada publicação, só lendo |
+| `qtd_pecas` | peças ativas ligadas a algum modelo da montadora |
+| `ativo` | booleano; falso quando a montadora não tem modelo ativo |
 
-Casamento com a `montadoras` do Wayap: compara os nomes em maiúsculas, sem acento e só com
-letras e números (`MERCEDES BENZ` = `MERCEDES-BENZ`), e depois consulta o arquivo editável
-`helper_montadoras.csv` (`apelido;montadora`) para os casos que diferem de verdade: `KIA` →
-`KIA MOTORS`, `JAC` → `JAC MOTORS`, `ASIA` → `ASIA MOTORS`, `GM` → `CHEVROLET`, `VW` → `VOLKSWAGEN`, `BMW BMW` → `BMW`.
-O mesmo casamento serve para o campo `montadora` das aplicações.
+Só local: `logo_fonte` (URL de onde veio).
 
-### 5.2 `modelo` (local e Postgres)
+### 6.2 `veiculo_modelo` (local e Postgres)
 
 | Campo | Conteúdo |
 |---|---|
 | `id_modelo` | inteiro, chave, estável |
-| `id_montadora` | referência à `montadoras` do Wayap (no local, a montadora é guardada pelo `nome`) |
+| `id_veiculo_montadora` | referência |
 | `nome` | canônico, maiúsculas sem acento, espaços simples (`TRACKER`, `ONIX PLUS`) |
 | `nome_exibicao` | como o KarHub escreve (`Tracker`) |
-| `foto` | caminho relativo, `modelos/<id_modelo>_<8 primeiros do sha1>.webp`, ou nulo |
+| `foto` | caminho relativo, `veiculos/modelos/<id_modelo>_<8 do sha1>.webp`, ou nulo |
+| `foto_herdada` | booleano; verdadeiro quando a foto é de outro modelo (seção 3) |
 | `ano_inicio`, `ano_fim` | menor e maior ano com versão |
 | `qtd_pecas` | peças ativas ligadas ao modelo, em qualquer nível (para ordenar e esconder modelos vazios) |
 | `ativo` | booleano |
 | `hash_conteudo` | hash do modelo, das suas versões e dos anos delas, para publicar por diferença |
 | `atualizado_em` | data da última mudança |
 
-Chave única: (`id_montadora`, `nome`).
+Chave única: (`id_veiculo_montadora`, `nome`). Só local: `foto_fonte` (URL de onde veio).
 
-### 5.3 `versao` (local e Postgres)
+### 6.3 `veiculo_versao` (local e Postgres)
 
 | Campo | Conteúdo |
 |---|---|
@@ -161,68 +249,53 @@ Chave única: (`id_montadora`, `nome`).
 
 Chave única: (`id_modelo`, `nome`).
 
-### 5.4 `versao_ano` (local e Postgres)
+### 6.4 `veiculo_versao_ano` (local e Postgres)
 
-(`id_versao`, `ano`), chave composta: em quais anos cada versão existe. O filtro de ano mostra
-os anos com alguma versão; o filtro de versão mostra as versões do ano escolhido.
+(`id_versao`, `ano`), chave composta: em quais anos cada versão existe.
 
-### 5.5 `peca_veiculo` (local e Postgres)
+### 6.5 `peca_veiculo` (local e Postgres)
 
 | Campo | Conteúdo |
 |---|---|
-| `id_peca` | referência à `peca` |
-| `id_modelo` | referência |
-| `id_versao` | referência, ou **nulo = todas as versões do modelo** nos anos da faixa |
-| `ano_inicio`, `ano_fim` | faixa; nulos só no nível `modelo` quando a aplicação não informa ano (vale para qualquer ano) |
-| `nivel` | `versao` (veio da compatibilidade do KarHub) ou `modelo` (veio do texto de aplicação) |
+| `id_peca` | peça |
+| `id_modelo` | modelo |
+| `id_versao` | versão, ou **nulo = todas as versões do modelo** nos anos da faixa |
+| `ano_inicio`, `ano_fim` | faixa; nulos só no nível `modelo` quando a aplicação não informa ano |
+| `nivel` | `versao` (compatibilidade do KarHub) ou `modelo` (texto de aplicação) |
 
-Índices: (`id_modelo`, `ano_inicio`, `ano_fim`) e (`id_peca`).
+Índices: (`id_modelo`, `ano_inicio`, `ano_fim`) e (`id_peca`). Sem chave estrangeira no
+Postgres, para a carga de milhões de linhas ser rápida; a ordem da publicação (peças antes)
+garante a integridade.
 
-**Agrupamento do nível `versao`**, para uma peça e um modelo:
+### 6.6 Tabelas de controle
 
-1. Para cada ano do modelo, compara as versões que a peça atende naquele ano com todas as
-   versões que existem naquele ano. Se forem todas, o ano é **completo**.
-2. Anos completos seguidos viram linhas com `id_versao` nulo. "Seguidos" conta só os anos que o
-   modelo tem: um ano sem versão nenhuma não quebra a faixa.
-3. Nos anos que não são completos, cada versão atendida vira linhas com seu `id_versao`, com
-   faixas seguidas contadas só nos anos em que aquela versão existe.
+- `peca_veiculo_estado` (`id_peca`, `hash`), local e Postgres: hash das linhas de `peca_veiculo`
+  de cada peça, para publicar por diferença comparando com o que está no destino.
+- `veiculo_fonte` (`site`, `id_fonte`, `id_versao`, `ano`), só local: traduz o id do KarHub.
+- `veiculo_arquivo` (`caminho`, `publicado`), só local: fotos e logos gerados e se já foram
+  enviados.
 
-Uma linha (`modelo`, `versão` ou nulo, `i`, `f`) quer dizer: "serve na versão (ou em todas) em
-todos os anos entre `i` e `f` em que ela existe". Ids de veículo da compatibilidade que não
-estão na árvore são ignorados e contados no relatório.
-
-**Nível `modelo`**, das aplicações de todos os sites: a montadora casa pelo item 5.1, e o
-modelo é o prefixo mais longo de `aplicacao.modelo` que é nome de modelo da árvore naquela
-montadora. Sem montadora, só casa se o nome existir em uma única montadora; caso contrário, vai
-para o relatório. Um par (peça, modelo) que já tem linha de nível `versao` não ganha linha de
-nível `modelo`. Faixas sobrepostas ou adjacentes do mesmo par se juntam.
-
-### 5.6 Tabelas só locais
-
-- `veiculo_fonte` (`site`, `id_fonte`, `id_versao`, `ano`): traduz o id do KarHub para
-  versão e ano. Proveniência; não é publicada.
-- `peca_veiculo_estado` (`id_peca`, `hash`, `hash_publicado`): hash das linhas de
-  `peca_veiculo` de cada peça, para publicar por diferença.
-
-## 6. Preparação: `python helper.py veiculos`
+## 7. Preparação: `python helper.py veiculos`
 
 Roda depois do `preparar`, porque usa peças, origens e aplicações. Recalcula tudo a partir de
-`veiculos/*.jsonl` e do `helper.sqlite`; com as mesmas entradas, gera os mesmos ids e os mesmos
-hashes.
+`veiculos/*.jsonl` e do `helper.sqlite`; com as mesmas entradas, gera os mesmos ids e hashes.
 
-1. **Árvore:** lê `veiculos/karhub_arvore.jsonl` e grava montadora, modelo, versão, anos e
-   `veiculo_fonte`. Modelo ou versão ausente da coleta vira `ativo = 0`.
-2. **Imagens:** converte a foto de cada modelo para WebP e o logo de **todas** as montadoras
-   para PNG, a partir de `veiculos/imagens/`. Antes, procura foto própria em
+1. **Árvore:** lê `veiculos/karhub_arvore.jsonl` e grava montadoras, modelos, versões, anos e
+   `veiculo_fonte`. O que não está no arquivo vira `ativo = 0`.
+2. **Imagens:** converte a foto de cada modelo para WebP e o logo de cada montadora para PNG, a
+   partir de `veiculos/imagens/`. Antes, procura imagem própria em
    `helper_fotos_veiculos/proprias/modelos/<MONTADORA>-<MODELO>.(png|jpg|webp)` e
-   `helper_fotos_veiculos/proprias/montadoras/<MONTADORA>.png`, que têm prioridade. Saída em
-   `helper_fotos_veiculos/modelos/` e `helper_fotos_veiculos/logos/`. Modelo sem foto fica com
-   `foto` nulo, e o Wayap mostra uma imagem genérica.
-3. **Nível `versao`:** para cada peça ativa com origem `karhub`, pega o handle da URL, procura
-   os ids em `karhub_compat.jsonl`, traduz pelo `veiculo_fonte` e agrupa (item 5.5).
-4. **Nível `modelo`:** a partir das aplicações das peças ativas (item 5.5).
-5. **Fechamento:** calcula `qtd_pecas`, os hashes e o relatório
-   `helper_relatorios/<data>-veiculos.md`. Grava em `meta` a hora em que rodou.
+   `helper_fotos_veiculos/proprias/montadoras/<MONTADORA>.(png|jpg|webp)` (nome comparado só por
+   letras e números), que têm prioridade. Depois, modelos ainda sem foto herdam (seção 3). Saída
+   em `helper_fotos_veiculos/modelos/` e `helper_fotos_veiculos/montadoras/`.
+3. **Nível `versao`:** para cada peça ativa com origem `karhub`, pega o handle da URL, procura os
+   ids em `karhub_compat.jsonl`, traduz pelo `veiculo_fonte` e agrupa (seção 5.3). O arquivo de
+   compatibilidade tem centenas de MB e é lido em fluxo, sem carregar tudo na memória.
+4. **Nível `modelo`:** seção 5.4.
+5. **Fechamento:** `qtd_pecas`, hashes, `peca_veiculo_estado`, relatório
+   `helper_relatorios/<data>-veiculos.md` e a planilha `helper_relatorios/<data>-veiculos-tipos.csv`
+   com a classificação de todos os modelos (incluídos e excluídos, com o motivo), para o dono
+   revisar e copiar correções para `helper_veiculos_tipo.csv`. Grava em `meta` a hora em que rodou.
 
 Comando de conferência, para comparar com o site:
 
@@ -230,59 +303,52 @@ Comando de conferência, para comparar com o site:
 python helper.py pecas-do-veiculo CHEVROLET TRACKER 2021 [--versao "4x2 Aut. 1.2 12v L3 Turbo"] [--texto TAMBOR]
 ```
 
-Ele imprime as peças com a confiança, usando a mesma regra da consulta do contrato (item 8),
+Ele imprime as peças com a confiança, usando a mesma regra da consulta do contrato (seção 9),
 implementada também no SQLite em `helper/consulta.py`, como as consultas que já existem.
 
-Rotina completa: `preparar` → `veiculos` → `fotos` → `publicar`. O `preparar` passa a gravar
-em `meta` a hora em que rodou, e o `publicar` se recusa a gravar a parte de veículos se o
-`veiculos` for mais antigo que o último `preparar`, porque uma fusão de peças pode ter mudado
-ids, e pede para rodar `helper.py veiculos`.
+Rotina completa: `preparar` → `veiculos` → `fotos` → `publicar`. O `preparar` passa a gravar em
+`meta` a hora em que rodou, e o `publicar` se recusa a começar se o `veiculos` for mais antigo que
+o último `preparar` (uma fusão de peças pode ter mudado ids), pedindo para rodar `helper.py
+veiculos`. Sem nenhum `veiculos` rodado, o `publicar` publica só as peças, como hoje.
 
-## 7. Publicação (dentro do `publicar` que já existe)
+## 8. Publicação (dentro do `publicar` que já existe)
 
-Depois das peças, porque `peca_veiculo` aponta para `peca`. Fotos antes das linhas do banco,
-como já é regra.
+Depois das peças, porque `peca_veiculo` aponta para `peca`. Arquivos antes das linhas do banco.
 
-1. **Montadoras:** lê a `montadoras` do Wayap e casa pelo item 5.1. As que faltam são
-   inseridas com `descricao` = nome canônico e `sigla` nula, como a pesquisa por placa do
-   Wayap já faz. O `id_montadora` volta para o banco local. O helper **nunca altera**
-   `descricao` nem `sigla` de montadora existente.
-2. **Logos:** para cada montadora com `logo` nulo no Postgres e logo local, monta numa pasta
-   temporária `montadoras/<id_montadora>.png` e envia por `rsync --ignore-existing` para
-   `/home/wayap/helper/montadoras/`, o que nunca sobrescreve os arquivos do Francisco. Depois,
-   `UPDATE montadoras SET logo = 'montadoras/<id>.png' WHERE id_montadora = ? AND logo IS NULL`.
-3. **Fotos de modelo:** `rsync` de `helper_fotos_veiculos/modelos/` para
-   `/home/wayap/helper/modelos/`, com as mesmas opções de hoje (sem apagar no destino, dono
-   root, 755/644, retomável).
-4. **Árvore:** grava só os modelos cujo `hash_conteudo` mudou ou que não existem no destino:
-   upsert do modelo e das versões (ids estáveis, versão nunca é apagada) e troca dos anos de
-   cada versão daquele modelo.
-5. **`peca_veiculo`:** grava só as peças cujo `hash` difere do `hash_publicado`: apaga as
-   linhas da peça no destino e insere as novas, em lotes de 500 peças. Peça inativada perde as
-   linhas. A primeira carga, de milhões de linhas, usa `COPY`.
-6. Uma transação por etapa (montadoras, árvore, `peca_veiculo`). Uma falha no meio deixa as
-   etapas seguintes para a próxima rodada, que continua de onde parou, porque tudo é por
-   diferença.
-7. `--ensaio` mostra as montadoras que seriam inseridas (pelo nome), os logos e as fotos a
-   enviar e as contagens por tabela, sem gravar nada. Rodar duas vezes seguidas grava zero
-   linhas e envia zero arquivos.
-8. `carga` ganha as colunas `modelos_publicados` e `ligacoes_veiculo`. `versao_esquema` = 2.
+1. **Ligação com o Wayap:** se a tabela `montadoras` existir no banco, lê `id_montadora` e
+   `descricao` e casa pela seção 5.2. Só leitura.
+2. **Arquivos:** `rsync` de `helper_fotos_veiculos/` para `/home/wayap/helper/veiculos/`, sem a
+   pasta `proprias/`, com as mesmas opções de hoje (sem apagar no destino, dono root, 755/644,
+   retomável). Só roda se houver arquivo ainda não enviado (`veiculo_arquivo`).
+3. **Montadoras e árvore:** grava as montadoras cujo conteúdo difere do destino e os modelos cujo
+   `hash_conteudo` mudou ou que não existem lá: upsert do modelo e das versões (ids estáveis,
+   versão nunca é apagada) e troca dos anos das versões daquele modelo. Uma transação.
+4. **`peca_veiculo`:** compara `peca_veiculo_estado` local com o do destino; para as peças novas
+   ou alteradas, apaga as linhas no destino e insere as novas por `COPY`; peça que saiu do local
+   perde as linhas. Em lotes de 5 mil peças, com commit por lote: uma queda no meio continua de
+   onde parou na rodada seguinte.
+5. `--ensaio` mostra as contagens por tabela e os arquivos a enviar, sem gravar nada. Rodar duas
+   vezes seguidas grava zero linhas e envia zero arquivos.
+6. A linha da `carga` da rodada recebe `modelos_publicados` e `ligacoes_veiculo`.
+   `versao_esquema` = 2.
 
-## 8. Contrato com o Wayap: consultas novas
+## 9. Contrato com o Wayap: consultas novas
 
-Numeradas depois das quatro da spec do helper. Todas devolvem só modelos e versões ativos e
-peças ativas, e nunca expõem `origem`, `veiculo_fonte` nem ids do KarHub. URLs de arquivo:
+Numeradas depois das quatro da spec do helper. Todas devolvem só montadoras, modelos e versões
+ativos e peças ativas, e nunca expõem `origem`, `veiculo_fonte` nem ids do KarHub. URLs de arquivo:
 `'/files/aGVscGVy/' || caminho_relativo`.
 
-5. **`v_montadora_veiculo`:** `id_montadora`, `descricao`, `logo_url`, `qtd_modelos`,
-   `qtd_pecas`; só montadoras com modelo ativo.
-6. **`v_modelo`:** `id_modelo`, `id_montadora`, `nome`, `nome_exibicao`, `foto_url` (nula sem
-   foto), `ano_inicio`, `ano_fim`, `qtd_pecas`.
+5. **`v_veiculo_montadora`:** `id_veiculo_montadora`, `id_montadora`, `nome`, `nome_exibicao`,
+   `logo_url` (o logo da `montadoras` do Wayap quando existe, senão o do helper), `qtd_modelos`,
+   `qtd_pecas`.
+6. **`v_veiculo_modelo`:** `id_modelo`, `id_veiculo_montadora`, `nome`, `nome_exibicao`,
+   `foto_url` (nula sem foto), `foto_herdada`, `ano_inicio`, `ano_fim`, `qtd_pecas`.
 7. **`anos_do_modelo(id_modelo)`:** anos em ordem decrescente.
    **`versoes_do_ano(id_modelo, ano)`:** `id_versao`, `nome_exibicao`, `motor`.
 8. **`pecas_por_veiculo(id_modelo, ano, id_versao DEFAULT NULL, texto DEFAULT NULL,
-   limite DEFAULT 100)`:** colunas de `v_peca` mais `confianca`. Com `texto`, filtra
-   `desc_curta` como a `busca_texto`.
+   limite DEFAULT 100)`:** `id_peca`, `id_marca`, `marca`, `codigo`, `ean`, `desc_curta`,
+   `desc_completa`, `tipo_peca`, `ncm_sugerido`, `unidade_sugerida`, `tem_foto`, `qtd_fontes`,
+   `confianca`. Com `texto`, filtra `desc_curta` como a `busca_texto`.
 9. **`ids_por_veiculo(id_modelo, ano, id_versao DEFAULT NULL)`:** `id_peca`, `confianca`, sem
    limite. É para o Wayap cruzar com o estoque do cliente pelo id da peça guardado no produto,
    já que o Postgres não junta tabelas de dois bancos.
@@ -296,73 +362,75 @@ Regra da `confianca`, para o modelo M e o ano A escolhidos:
 | Só linhas `versao` de outras versões cobrindo A | **fica de fora** (o KarHub diz que não serve) | `algumas_versoes` |
 | Sem linha `versao` em (M, A), com linha `modelo` cobrindo A | `modelo_ano` | `modelo_ano` |
 
-Ordem: `versao` e `todas_versoes`, depois `algumas_versoes`, depois `modelo_ano`; dentro de
-cada grupo, semelhança com o texto (quando há), `tem_foto` e `qtd_fontes`, como nas outras
-consultas.
+Ordem: `versao` e `todas_versoes`, depois `algumas_versoes`, depois `modelo_ano`; dentro de cada
+grupo, semelhança com o texto (quando há), `tem_foto` e `qtd_fontes`, como nas outras consultas.
 
-## 9. Verificação
+## 10. Verificação
 
-- **Testes unitários** (pytest), com respostas reais da API do KarHub guardadas em
-  `tests/dados/karhub_veiculos/` (Chevrolet/Tracker, Volkswagen/Gol): leitura da árvore;
-  agrupamento do item 5.5 (ano completo vira `id_versao` nulo; ano incompleto lista versões;
-  ano sem versão não quebra a faixa; id desconhecido é contado); casamento de montadora
-  (`MERCEDES BENZ` com `MERCEDES-BENZ`, `KIA` com `KIA MOTORS`, nome novo); nível `modelo`
-  (com montadora, sem montadora e único, sem montadora e ambíguo); ids estáveis ao recarregar a
-  árvore; modelo ausente vira inativo; foto própria tem prioridade; regra de `confianca` da
-  tabela do item 8 na versão SQLite.
-- **Publicação:** com um Postgres falso, como nos testes atuais: montadora existente não é
-  alterada; `logo` preenchido não é tocado; o rsync de logos usa `--ignore-existing`; segunda
-  publicação grava zero linhas. Integração real com `HELPER_TESTE_PG=1`, como hoje, cobrindo
-  as funções do item 8.
-- **Relatório `veiculos.md`:** montadoras (casadas com as do Wayap, novas a inserir), modelos,
-  versões, anos-versão, modelos com e sem foto, montadoras com e sem logo (incluindo as da `montadoras` do Wayap que
-  o KarHub não tem, como Acura, Infiniti e Lotus, que ficam sem logo até ganharem um próprio),
-  peças ligadas por nível, linhas de
-  `peca_veiculo`, ids de veículo desconhecidos, as 50 aplicações mais comuns que não casaram.
+- **Testes unitários** (pytest), com respostas no formato real da API do KarHub e da FIPE
+  (Chevrolet/Tracker, Volkswagen/Gol, Honda/Biz, Mercedes-Benz/1214 K, Iveco/Daily): coletor
+  (carro descendo, excluído registrado, retomada, lote de compatibilidade vazio, bloqueio);
+  tipo (cada regra da seção 5.1 com casos reais); montadora (`MERCEDES BENZ` com
+  `MERCEDES-BENZ`, `KIA` com `KIA MOTORS`, nome novo); árvore (ids estáveis ao recarregar,
+  ausente vira inativo); imagens (conversão, imagem própria primeiro, herança por prefixo);
+  agrupamento (ano completo vira `id_versao` nulo, ano incompleto lista versões, ano sem versão
+  não quebra a faixa, id desconhecido contado); nível `modelo` (com montadora, sem montadora e
+  único, sem montadora e ambíguo, par já coberto por `versao`); `confianca` da tabela da seção 9
+  no SQLite.
+- **Publicação:** com conexão falsa, como nos testes atuais: arquivos antes do banco; ensaio não
+  grava; segunda publicação grava zero linhas; nenhum comando de escrita na `montadoras`;
+  `publicar` recusa `veiculos` mais antigo que `preparar`. Integração real com
+  `HELPER_TESTE_PG=1`, como hoje, cobrindo as funções e views da seção 9.
+- **Relatório `veiculos.md`:** modelos incluídos e excluídos por tipo e motivo; montadoras
+  (ligadas à `montadoras` do Wayap e sem par lá); modelos com foto própria, do KarHub, herdada e
+  sem foto, e os 100 modelos com mais peças sem foto (candidatos a foto própria); peças ligadas
+  por nível; linhas de `peca_veiculo`; ids de veículo desconhecidos; as 50 aplicações mais comuns
+  que não casaram.
 - **Conferência manual:** para três veículos (Tracker 2021 1.2 Turbo, Gol 2010, Palio 2005),
-  `pecas-do-veiculo` com `--texto TAMBOR` e `--texto PASTILHA` comparado com a página de
-  categoria do KarHub filtrada pelo mesmo veículo. As peças que o KarHub mostra precisam
-  aparecer com confiança `versao` ou `todas_versoes`.
-- **Antes da primeira carga:** `publicar --ensaio` revisado pelo Francisco, principalmente a
-  lista de montadoras novas.
+  `pecas-do-veiculo` com `--texto TAMBOR` e `--texto PASTILHA` comparado com a página de categoria
+  do KarHub filtrada pelo mesmo veículo. As peças que o KarHub mostra precisam aparecer com
+  confiança `versao` ou `todas_versoes`.
+- **Antes da primeira carga:** o Francisco revisa a planilha de tipos e o `publicar --ensaio`.
 
-## 10. Operação e volumes
+## 11. Operação e volumes
 
-- **Primeira carga:** `catalogo_karhub_veiculos.py arvore` (6 a 10 h), `compat` (1 a 2 h),
-  `helper.py veiculos`, `pecas-do-veiculo` nos três veículos, `publicar --ensaio`, `publicar`.
-- **Rotina:** `arvore --do-inicio` uma vez por mês (sem a opção, ele só completaria modelos
-  ainda ausentes e não pegaria anos novos dos que já estão no arquivo); `compat --do-inicio`
-  sempre que o `catalogo_karhub.py` for rodado de novo; depois `veiculos` e `publicar`.
-- **Volumes:** 159 montadoras (cerca de 90 a inserir na `montadoras` do Wayap), 3.495
-  modelos; versões e anos-versão medidos na primeira coleta. Fotos: cerca de 3.500 × 35 KB ≈
-  120 MB; logos: 156 × cerca de 20 KB ≈ 3 MB. `peca_veiculo`: estimativa de 5 a 15 milhões de linhas (cerca de 1 GB com índices),
-  medida pelo relatório da primeira preparação; o servidor tem cerca de 300 GB livres.
+- **Primeira carga:** `fipe`, `arvore` (4 a 7 h), `compat` (1 a 2 h), `helper.py veiculos`,
+  revisão da planilha de tipos, `pecas-do-veiculo` nos três veículos, `publicar --ensaio`,
+  `publicar`.
+- **Rotina:** `arvore --do-inicio` uma vez por mês (sem a opção, ele só completa modelos ainda
+  ausentes e não pega anos novos dos que já estão no arquivo); `compat --do-inicio` sempre que o
+  `catalogo_karhub.py` for rodado de novo; depois `veiculos` e `publicar`.
+- **Volumes:** das 159 montadoras e 3.495 modelos do KarHub, ficam as montadoras com carro e
+  algo entre 1.500 e 2.000 modelos (medido na primeira coleta). Fotos: cerca de 1 em 4 modelos,
+  mais as herdadas, 35 KB cada. Logos: cerca de 20 KB cada. `peca_veiculo`: estimativa de 5 a 15
+  milhões de linhas (cerca de 1 GB com índices), medida pelo relatório; o servidor tem cerca de
+  300 GB livres.
 
-## 11. Riscos
+## 12. Riscos
 
-- **Dados e fotos são do KarHub.** O nome do site nunca aparece no Wayap; foto e logo próprios
-  substituem os do KarHub sem mexer em código (seção 6, passo 2).
-- **O KarHub pode mudar ou fechar a API.** O coletor para com erro claro; os dados já
-  publicados continuam valendo; a ligação de nível `modelo` não depende do KarHub.
+- **Dados e imagens são do KarHub.** O nome do site nunca aparece no Wayap; imagens próprias
+  substituem as do KarHub sem mexer em código (seção 7, passo 2).
+- **O KarHub pode mudar ou fechar a API.** O coletor para com erro claro; os dados já publicados
+  continuam valendo; a ligação de nível `modelo` não depende do KarHub.
 - **Bloqueio.** Ritmo baixo, uma chamada por vez, tudo retomável.
-- **Montadora duplicada na tabela do Wayap** (inserir `KIA` com `KIA MOTORS` já existente):
-  normalização, `helper_montadoras.csv` e o ensaio, que lista as inserções antes da primeira
-  carga.
-- **Lista de montadoras do Wayap fica maior.** Entram cerca de 90, inclusive de motos,
-  caminhões e ônibus, e aparecem onde o Wayap lista montadoras hoje (cadastro de carro, por
-  exemplo). Se incomodar, o Wayap filtra pelas que têm `qtd_pecas` em `v_montadora_veiculo`.
+- **Classificação errada de tipo.** Na dúvida entra como carro; a planilha de tipos mostra tudo
+  com o motivo; `helper_veiculos_tipo.csv` corrige e a coleta seguinte acerta.
+- **Montadora do helper sem par na `montadoras` do Wayap.** Fica com `id_montadora` nulo; quem
+  decide criar do lado do Wayap é o Wayap (seção 13). Grafias diferentes da mesma montadora se
+  resolvem em `helper_montadoras.csv`.
 - **Ligação errada pelo texto de aplicação.** O nível `modelo` sempre aparece como "confira a
   versão", nunca como confirmado.
 
-## 12. Fases seguintes (Wayap, cada uma com spec própria)
+## 13. Fases seguintes (Wayap, cada uma com spec própria)
 
-1. **Produto guarda o `id_peca` do helper**, preenchido por uma rotina que casa EAN e código
-   (as consultas 1 e 2 do contrato). Sem isso, o estoque do cliente não cruza com a consulta 9.
-2. **Tela "Peças para o veículo"**, com o componente do filtro (montadora, modelo com foto,
-   ano, versão) feito uma vez e reaproveitado, e as duas listas (estoque e mercado).
-3. **Aba "Placa" do filtro:** a pesquisa por placa do Wayap já grava em `placas_detalhes`
-   marca, modelo, ano e versão. Casar esse texto com a árvore leva a placa direto à versão. O
-   Wayap já tem fonte própria de placa, então não depende da consulta de placa do KarHub.
+1. **Produto guarda o `id_peca` do helper**, preenchido por uma rotina que casa EAN e código (as
+   consultas 1 e 2 do contrato). Sem isso, o estoque do cliente não cruza com a consulta 9.
+2. **Tela "Peças para o veículo"**, com o componente do filtro (montadora com logo, modelo com
+   foto, ano, versão) feito uma vez e reaproveitado, e as duas listas (estoque e mercado). Quando
+   o vendedor escolher uma montadora com `id_montadora` nulo e o Wayap precisar dela (cadastro de
+   carro, por exemplo), o próprio Wayap a cria na `montadoras`, como a pesquisa por placa já faz.
+3. **Aba "Placa" do filtro:** a pesquisa por placa do Wayap já grava em `placas_detalhes` marca,
+   modelo, ano e versão. Casar esse texto com a árvore leva a placa direto à versão.
 4. **`carro_cliente` escolhido pela árvore** em vez de texto livre, para a venda ou a OS já
    abrirem o filtro no carro do cliente.
 5. **Cadastro de produto** mostrando os veículos da peça do helper.
