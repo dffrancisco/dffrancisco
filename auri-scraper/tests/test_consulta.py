@@ -65,14 +65,14 @@ def _db_veiculo(tmp_path):
         db.execute("INSERT INTO peca (id_peca, id_marca, chave, codigo, desc_curta, tem_foto, qtd_fontes, status) "
                    "VALUES (?, 1, ?, ?, ?, ?, ?, 'ativa')", (id_peca, f"F|{id_peca}", str(id_peca), desc, foto, fontes))
     db.execute("UPDATE peca SET status = 'inativa' WHERE id_peca = 6")
-    db.execute("INSERT INTO veiculo_montadora (id_veiculo_montadora, nome, nome_exibicao) VALUES (1, 'X', 'X')")
-    db.execute("INSERT INTO veiculo_modelo (id_modelo, id_veiculo_montadora, nome, nome_exibicao) VALUES (10, 1, 'M', 'M')")
+    db.execute("INSERT INTO vei_montadora (id_veiculo_montadora, nome, nome_exibicao) VALUES (1, 'X', 'X')")
+    db.execute("INSERT INTO vei_modelo (id_modelo, id_veiculo_montadora, nome, nome_exibicao) VALUES (10, 1, 'M', 'M')")
     for v in (100, 200, 300):
-        db.execute("INSERT INTO veiculo_versao (id_versao, id_modelo, nome, nome_exibicao) VALUES (?, 10, ?, ?)", (v, str(v), str(v)))
+        db.execute("INSERT INTO vei_versao (id_versao, id_modelo, nome, nome_exibicao) VALUES (?, 10, ?, ?)", (v, str(v), str(v)))
     # 100 e 200 existem em 2010-2022; a 300 tem lacuna: só 2020 e 2022
-    db.executemany("INSERT INTO veiculo_versao_ano VALUES (?, ?)",
+    db.executemany("INSERT INTO vei_versao_ano VALUES (?, ?)",
                    [(v, a) for v in (100, 200) for a in range(2010, 2023)] + [(300, 2020), (300, 2022)])
-    db.executemany("INSERT INTO peca_veiculo VALUES (?, ?, ?, ?, ?, ?)", [
+    db.executemany("INSERT INTO vei_peca VALUES (?, ?, ?, ?, ?, ?)", [
         (1, 10, None, 2020, 2022, "versao"),   # todas as versões
         (2, 10, 100, 2021, 2021, "versao"),    # só a versão 100
         (3, 10, None, None, None, "modelo"),   # texto, qualquer ano

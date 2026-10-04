@@ -55,20 +55,20 @@ class Arvore:
         self.versoes_por_ano = defaultdict(lambda: defaultdict(set))  # id_modelo -> ano -> {id_versao}
         self.anos_por_versao = defaultdict(list)
         for id_fonte, id_versao, ano, id_modelo in db.execute(
-                """SELECT f.id_fonte, f.id_versao, f.ano, v.id_modelo FROM veiculo_fonte f
-                   JOIN veiculo_versao v USING (id_versao) JOIN veiculo_modelo m USING (id_modelo)
+                """SELECT f.id_fonte, f.id_versao, f.ano, v.id_modelo FROM vei_fonte f
+                   JOIN vei_versao v USING (id_versao) JOIN vei_modelo m USING (id_modelo)
                    WHERE f.site = 'karhub' AND v.ativo = 1 AND m.ativo = 1"""):
             self.fonte[id_fonte] = (id_modelo, id_versao, ano)
         for id_versao, ano, id_modelo in db.execute(
-                """SELECT va.id_versao, va.ano, v.id_modelo FROM veiculo_versao_ano va JOIN veiculo_versao v USING (id_versao)
+                """SELECT va.id_versao, va.ano, v.id_modelo FROM vei_versao_ano va JOIN vei_versao v USING (id_versao)
                    WHERE v.ativo = 1 ORDER BY va.id_versao, va.ano"""):
             self.versoes_por_ano[id_modelo][ano].add(id_versao)
             self.anos_por_versao[id_versao].append(ano)
         self.modelos = defaultdict(dict)  # nome canônico da montadora -> {nome normalizado do modelo: id_modelo}
         self.modelos_do_nome = defaultdict(set)  # nome normalizado -> {id_modelo} (em qualquer montadora)
         for id_modelo, nome, montadora in db.execute(
-                """SELECT mo.id_modelo, mo.nome, vm.nome FROM veiculo_modelo mo
-                   JOIN veiculo_montadora vm USING (id_veiculo_montadora) WHERE mo.ativo = 1"""):
+                """SELECT mo.id_modelo, mo.nome, vm.nome FROM vei_modelo mo
+                   JOIN vei_montadora vm USING (id_veiculo_montadora) WHERE mo.ativo = 1"""):
             self.modelos[montadora][normalizar(nome)] = id_modelo
             self.modelos_do_nome[normalizar(nome)].add(id_modelo)
 
@@ -105,14 +105,14 @@ class Arvore:
 
 
 def _inserir(db, linhas):
-    db.executemany("INSERT INTO peca_veiculo (id_peca, id_modelo, id_versao, ano_inicio, ano_fim, nivel) VALUES (?, ?, ?, ?, ?, ?)",
+    db.executemany("INSERT INTO vei_peca (id_peca, id_modelo, id_versao, ano_inicio, ano_fim, nivel) VALUES (?, ?, ?, ?, ?, ?)",
                    linhas)
 
 
 def ligar_versao(db, arvore, caminho_compat):
     r = Counter()
-    db.execute("DELETE FROM peca_veiculo")
-    for nome in ("peca_veiculo_peca", "peca_veiculo_modelo"):
+    db.execute("DELETE FROM vei_peca")
+    for nome in ("vei_peca_id_peca", "vei_peca_modelo"):
         db.execute(f"DROP INDEX IF EXISTS {nome}")  # milhões de linhas: os índices voltam no fim
     peca_do_handle = defaultdict(set)
     for id_peca, url in db.execute("SELECT o.id_peca, o.url FROM origem o JOIN peca p USING (id_peca) "
@@ -190,12 +190,12 @@ def ligar_modelo(db, arvore, montadoras):
                    ((p, m, i, f) for (p, m), fx in pares.items() for i, f in juntar_faixas(fx)))
     # par (peça, modelo) já confirmado pelo KarHub não ganha linha de texto
     r["linhas_nivel_modelo"] = db.execute(
-        """INSERT INTO peca_veiculo (id_peca, id_modelo, id_versao, ano_inicio, ano_fim, nivel)
+        """INSERT INTO vei_peca (id_peca, id_modelo, id_versao, ano_inicio, ano_fim, nivel)
            SELECT c.id_peca, c.id_modelo, NULL, c.ano_inicio, c.ano_fim, 'modelo' FROM candidato_modelo c
-           WHERE NOT EXISTS (SELECT 1 FROM peca_veiculo pv
+           WHERE NOT EXISTS (SELECT 1 FROM vei_peca pv
                              WHERE pv.id_peca = c.id_peca AND pv.id_modelo = c.id_modelo AND pv.nivel = 'versao')""").rowcount
     db.commit()
-    r["pecas_nivel_modelo"] = db.execute("SELECT count(DISTINCT id_peca) FROM peca_veiculo WHERE nivel = 'modelo'").fetchone()[0]
+    r["pecas_nivel_modelo"] = db.execute("SELECT count(DISTINCT id_peca) FROM vei_peca WHERE nivel = 'modelo'").fetchone()[0]
     r["aplicacoes_sem_modelo"] = sum(sem_modelo.values())
     return r, sem_modelo
 
@@ -206,29 +206,29 @@ def _hash(obj):
 
 def atualizar_hashes_modelos(db):
     anos, versoes = defaultdict(list), defaultdict(list)
-    for id_versao, ano in db.execute("SELECT id_versao, ano FROM veiculo_versao_ano ORDER BY id_versao, ano"):
+    for id_versao, ano in db.execute("SELECT id_versao, ano FROM vei_versao_ano ORDER BY id_versao, ano"):
         anos[id_versao].append(ano)
-    for v in db.execute("SELECT id_versao, id_modelo, nome, nome_exibicao, motor, ativo FROM veiculo_versao ORDER BY id_versao"):
+    for v in db.execute("SELECT id_versao, id_modelo, nome, nome_exibicao, motor, ativo FROM vei_versao ORDER BY id_versao"):
         versoes[v["id_modelo"]].append([v["id_versao"], v["nome"], v["nome_exibicao"], v["motor"], v["ativo"], anos[v["id_versao"]]])
     mudados = []
-    for m in db.execute("""SELECT mo.*, vm.nome AS montadora FROM veiculo_modelo mo
-                           JOIN veiculo_montadora vm USING (id_veiculo_montadora)""").fetchall():
+    for m in db.execute("""SELECT mo.*, vm.nome AS montadora FROM vei_modelo mo
+                           JOIN vei_montadora vm USING (id_veiculo_montadora)""").fetchall():
         h = _hash([m["montadora"], m["id_veiculo_montadora"], m["nome"], m["nome_exibicao"], m["tipo"], m["foto"], m["foto_herdada"],
                    m["ano_inicio"], m["ano_fim"], m["qtd_pecas"], m["ativo"], versoes[m["id_modelo"]]])
         if h != m["hash_conteudo"]:
             mudados.append((h, agora(), m["id_modelo"]))
-    db.executemany("UPDATE veiculo_modelo SET hash_conteudo = ?, atualizado_em = ? WHERE id_modelo = ?", mudados)
+    db.executemany("UPDATE vei_modelo SET hash_conteudo = ?, atualizado_em = ? WHERE id_modelo = ?", mudados)
     return len(mudados)
 
 
 def fechar(db):
-    db.execute("UPDATE veiculo_modelo SET qtd_pecas = (SELECT count(DISTINCT pv.id_peca) FROM peca_veiculo pv "
-               "WHERE pv.id_modelo = veiculo_modelo.id_modelo)")
-    db.execute("""UPDATE veiculo_montadora SET qtd_pecas = (
-                    SELECT count(DISTINCT pv.id_peca) FROM peca_veiculo pv JOIN veiculo_modelo mo ON mo.id_modelo = pv.id_modelo
-                    WHERE mo.id_veiculo_montadora = veiculo_montadora.id_veiculo_montadora)""")
+    db.execute("UPDATE vei_modelo SET qtd_pecas = (SELECT count(DISTINCT pv.id_peca) FROM vei_peca pv "
+               "WHERE pv.id_modelo = vei_modelo.id_modelo)")
+    db.execute("""UPDATE vei_montadora SET qtd_pecas = (
+                    SELECT count(DISTINCT pv.id_peca) FROM vei_peca pv JOIN vei_modelo mo ON mo.id_modelo = pv.id_modelo
+                    WHERE mo.id_veiculo_montadora = vei_montadora.id_veiculo_montadora)""")
     estados, atual, linhas, total = [], None, [], 0
-    for l in db.execute("SELECT id_peca, id_modelo, id_versao, ano_inicio, ano_fim, nivel FROM peca_veiculo "
+    for l in db.execute("SELECT id_peca, id_modelo, id_versao, ano_inicio, ano_fim, nivel FROM vei_peca "
                         "ORDER BY id_peca, id_modelo, nivel, id_versao, ano_inicio"):
         total += 1
         if l[0] != atual:
@@ -238,8 +238,8 @@ def fechar(db):
         linhas.append(list(l[1:]))
     if atual is not None:
         estados.append((atual, _hash(linhas)))
-    db.execute("DELETE FROM peca_veiculo_estado")
-    db.executemany("INSERT INTO peca_veiculo_estado (id_peca, hash) VALUES (?, ?)", estados)
+    db.execute("DELETE FROM vei_peca_estado")
+    db.executemany("INSERT INTO vei_peca_estado (id_peca, hash) VALUES (?, ?)", estados)
     alterados = atualizar_hashes_modelos(db)
     gravar_meta(db, "veiculos_em", agora())
     db.commit()

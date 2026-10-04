@@ -60,8 +60,8 @@ def test_id_marca_atualiza_tipo_quando_o_dono_classifica(tmp_path):
 def test_tabelas_de_veiculos_e_meta(tmp_path):
     db = abrir(tmp_path / "h.sqlite")
     nomes = {r[0] for r in db.execute("SELECT name FROM sqlite_master WHERE type='table'")}
-    assert {"veiculo_montadora", "veiculo_modelo", "veiculo_versao", "veiculo_versao_ano", "veiculo_fonte",
-            "peca_veiculo", "peca_veiculo_estado", "veiculo_arquivo"} <= nomes
+    assert {"vei_montadora", "vei_modelo", "vei_versao", "vei_versao_ano", "vei_fonte",
+            "vei_peca", "vei_peca_estado", "vei_arquivo"} <= nomes
     gravar_meta(db, "x", "1")
     gravar_meta(db, "x", "2")
     assert ler_meta(db, "x") == "2" and ler_meta(db, "nada") is None

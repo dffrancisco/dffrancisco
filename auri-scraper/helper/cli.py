@@ -171,18 +171,18 @@ def cmd_veiculos(args):
 def cmd_pecas_do_veiculo(args):
     db = banco.abrir(args.banco)
     montadora = Montadoras.carregar(args.montadoras).canonica(args.montadora)
-    modelo = db.execute("""SELECT mo.id_modelo FROM veiculo_modelo mo JOIN veiculo_montadora vm USING (id_veiculo_montadora)
+    modelo = db.execute("""SELECT mo.id_modelo FROM vei_modelo mo JOIN vei_montadora vm USING (id_veiculo_montadora)
                            WHERE vm.nome = ? AND mo.nome = ? AND mo.ativo = 1""", (montadora, nome_canonico(args.modelo))).fetchone()
     if not modelo:
         print(f"modelo não encontrado: {montadora} {nome_canonico(args.modelo)}", file=sys.stderr)
         return 1
     id_versao = None
     if args.versao:
-        versao = db.execute("SELECT id_versao FROM veiculo_versao WHERE id_modelo = ? AND nome = ? AND ativo = 1",
+        versao = db.execute("SELECT id_versao FROM vei_versao WHERE id_modelo = ? AND nome = ? AND ativo = 1",
                             (modelo[0], nome_canonico(args.versao))).fetchone()
         if not versao:
             print(f"versão não encontrada: {args.versao}. Versões de {args.ano}:")
-            for (nome,) in db.execute("""SELECT v.nome_exibicao FROM veiculo_versao v JOIN veiculo_versao_ano va USING (id_versao)
+            for (nome,) in db.execute("""SELECT v.nome_exibicao FROM vei_versao v JOIN vei_versao_ano va USING (id_versao)
                                          WHERE v.id_modelo = ? AND va.ano = ? AND v.ativo = 1 ORDER BY 1""", (modelo[0], args.ano)):
                 print(f"  {nome}")
             return 1

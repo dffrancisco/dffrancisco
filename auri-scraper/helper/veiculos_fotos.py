@@ -54,7 +54,7 @@ def _gravar(db, conteudo, pasta_saida, subpasta, prefixo, extensao):
         destino.parent.mkdir(parents=True, exist_ok=True)
         destino.write_bytes(conteudo)
     caminho = f"veiculos/{subpasta}/{nome}"  # relativo a /home/wayap/helper/, como montadoras.logo do Wayap
-    db.execute("INSERT OR IGNORE INTO veiculo_arquivo (caminho, publicado) VALUES (?, 0)", (caminho,))
+    db.execute("INSERT OR IGNORE INTO vei_arquivo (caminho, publicado) VALUES (?, 0)", (caminho,))
     return caminho
 
 
@@ -86,14 +86,14 @@ def processar_imagens(db, pasta_imagens, pasta_saida):
     r = Counter()
     logos_proprios = _proprias(pasta_saida / "proprias" / "montadoras")
     fotos_proprias = _proprias(pasta_saida / "proprias" / "modelos")
-    for m in db.execute("SELECT id_veiculo_montadora, nome, logo_fonte FROM veiculo_montadora WHERE ativo = 1").fetchall():
+    for m in db.execute("SELECT id_veiculo_montadora, nome, logo_fonte FROM vei_montadora WHERE ativo = 1").fetchall():
         dados, origem = _origem(logos_proprios.get(n_marca(m["nome"])), m["logo_fonte"], pasta_imagens)
         logo = _converter(db, dados, origem, para_png, pasta_saida, "montadoras", m["id_veiculo_montadora"], ".png", r, "logo")
         if logo is None and not dados:
             r["logo_sem"] += 1
-        db.execute("UPDATE veiculo_montadora SET logo = ? WHERE id_veiculo_montadora = ?", (logo, m["id_veiculo_montadora"]))
+        db.execute("UPDATE vei_montadora SET logo = ? WHERE id_veiculo_montadora = ?", (logo, m["id_veiculo_montadora"]))
     modelos = db.execute("""SELECT mo.id_modelo, mo.id_veiculo_montadora, mo.nome, mo.foto_fonte, vm.nome AS montadora
-                            FROM veiculo_modelo mo JOIN veiculo_montadora vm USING (id_veiculo_montadora)
+                            FROM vei_modelo mo JOIN vei_montadora vm USING (id_veiculo_montadora)
                             WHERE mo.ativo = 1""").fetchall()
     fotos = {}
     for mo in modelos:
@@ -111,6 +111,6 @@ def processar_imagens(db, pasta_imagens, pasta_saida):
                 r["foto_herdada"] += 1
             else:
                 r["foto_sem"] += 1
-        db.execute("UPDATE veiculo_modelo SET foto = ?, foto_herdada = ? WHERE id_modelo = ?", (foto, herdada, mo["id_modelo"]))
+        db.execute("UPDATE vei_modelo SET foto = ?, foto_herdada = ? WHERE id_modelo = ?", (foto, herdada, mo["id_modelo"]))
     db.commit()
     return dict(r)

@@ -82,9 +82,9 @@ def ids_por_veiculo(db, id_modelo, ano, id_versao=None):
     versao = defaultdict(lambda: {"todas": False, "esta": False})
     # linha de uma versão vale só nos anos da faixa em que a versão existe (spec 5.3): uma lacuna não conta
     for id_peca, v in db.execute(
-            """SELECT pv.id_peca, pv.id_versao FROM peca_veiculo pv JOIN peca p USING (id_peca)
+            """SELECT pv.id_peca, pv.id_versao FROM vei_peca pv JOIN peca p USING (id_peca)
                WHERE pv.id_modelo = ? AND pv.nivel = 'versao' AND ? BETWEEN pv.ano_inicio AND pv.ano_fim AND p.status = 'ativa'
-                 AND (pv.id_versao IS NULL OR EXISTS (SELECT 1 FROM veiculo_versao_ano va
+                 AND (pv.id_versao IS NULL OR EXISTS (SELECT 1 FROM vei_versao_ano va
                                                        WHERE va.id_versao = pv.id_versao AND va.ano = ?))""",
             (id_modelo, ano, ano)):
         e = versao[id_peca]
@@ -98,7 +98,7 @@ def ids_por_veiculo(db, id_modelo, ano, id_versao=None):
             r[id_peca] = "versao"
         # versão escolhida e a peça só serve em outras: o KarHub diz que não serve, fica de fora
     for (id_peca,) in db.execute(
-            """SELECT DISTINCT pv.id_peca FROM peca_veiculo pv JOIN peca p USING (id_peca)
+            """SELECT DISTINCT pv.id_peca FROM vei_peca pv JOIN peca p USING (id_peca)
                WHERE pv.id_modelo = ? AND pv.nivel = 'modelo' AND p.status = 'ativa'
                  AND (pv.ano_inicio IS NULL OR pv.ano_inicio <= ?) AND (pv.ano_fim IS NULL OR pv.ano_fim >= ?)""",
             (id_modelo, ano, ano)):

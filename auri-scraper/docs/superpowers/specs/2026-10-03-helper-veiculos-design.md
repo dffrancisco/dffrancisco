@@ -3,6 +3,11 @@
 Data: 2026-10-03. Status: aprovado em conversa (helper não grava em tabela do Wayap), aguardando
 revisão do texto. Em 2026-10-04 o escopo passou de "só carros e utilitários" para **todos os
 veículos** (carros, utilitários, motos, caminhões e ônibus), com o tipo gravado em cada modelo.
+Também em 2026-10-04, a pedido do dono, todo objeto de veículos no banco (tabelas, índices, views
+e funções) passou a começar com `vei_`, para aparecerem juntos e se distinguirem das tabelas do
+Wayap: `veiculo_modelo` virou `vei_modelo`, `peca_veiculo` virou `vei_peca`, `v_veiculo_modelo`
+virou `vei_v_modelo`, `pecas_por_veiculo` virou `vei_pecas_por_veiculo` e assim por diante.
+Colunas não mudaram.
 
 Complementa a spec do helper (`2026-10-02-helper-design.md`). Acrescenta um coletor, tabelas e
 consultas ao contrato da seção 7 daquela spec, e sobe `versao_esquema` para 2. Nada do que já
@@ -68,7 +73,7 @@ modelos, a maioria caminhão e ônibus; Honda tem carros e motos). Duas fontes r
 de cada sociedade aponta para ela; `logo` guarda caminho relativo como `montadoras/11.png`),
 `placas_detalhes`, `schema_migrations`, `menu` e outras. Em `/home/wayap/helper/montadoras/`
 estão 5 logos feitos pelo Francisco (Chevrolet, Citroën, Fiat, Toyota e BYD). O helper **não
-grava em nenhuma tabela nem pasta do Wayap**: tem as suas, com prefixo `veiculo_` para não
+grava em nenhuma tabela nem pasta do Wayap**: tem as suas, com prefixo `vei_` para não
 colidir com nomes que o Wayap use ou venha a usar no mesmo banco, e só lê a `montadoras` para
 ligar as duas.
 
@@ -86,12 +91,12 @@ o KarHub não cobre.
 | Fonte da árvore e da compatibilidade | API do site do KarHub, coletada aqui | Única fonte com versão por ano, foto do modelo e ligação produto → versão |
 | Escopo de veículos | **Todas as montadoras e todos os modelos** do KarHub (carros, utilitários, motos, caminhões e ônibus), cada modelo com `tipo` `carro`, `moto` ou `pesado` (seção 5.1) | Pedido do dono em 2026-10-04 (antes eram só carros e utilitários); o Wayap filtra pelo tipo |
 | Na dúvida | Tipo `carro`, e aparece no relatório para conferir | Tipo errado só põe o modelo na aba errada do filtro; `helper_veiculos_tipo.csv` corrige |
-| Montadora | Tabela própria `veiculo_montadora` com `id_montadora` apontando para a `montadoras` do Wayap quando o nome casa (nulo quando não existe lá) | O helper não grava em tabela do Wayap; o Wayap decide se cria a montadora do lado dele |
+| Montadora | Tabela própria `vei_montadora` com `id_montadora` apontando para a `montadoras` do Wayap quando o nome casa (nulo quando não existe lá) | O helper não grava em tabela do Wayap; o Wayap decide se cria a montadora do lado dele |
 | Logo exibido | O da `montadoras` do Wayap quando existe (os 5 do Francisco), senão o do helper | O que o dono fez prevalece, sem o helper tocar nos arquivos dele |
-| Granularidade | `veiculo_modelo`, `veiculo_versao` e os anos de cada versão (`veiculo_versao_ano`) | É o que o filtro precisa: ano mostra as versões daquele ano |
+| Granularidade | `vei_modelo`, `vei_versao` e os anos de cada versão (`vei_versao_ano`) | É o que o filtro precisa: ano mostra as versões daquele ano |
 | Ids | Inteiros atribuídos aqui, estáveis por nome canônico; o id do KarHub fica só no banco local | Mesmo princípio das peças: id publicado nunca muda nem é reaproveitado |
 | Remoção | Modelo, versão ou montadora que some vira `ativo = false`, nunca é apagado | Telas podem guardar o id |
-| Ligação peça → veículo | `peca_veiculo` agrupada por versão e faixa de anos, `id_versao` nulo quando serve em todas as versões | Sem agrupar seriam ~70 milhões de linhas (cerca de 400 versões-ano por produto) |
+| Ligação peça → veículo | `vei_peca` agrupada por versão e faixa de anos, `id_versao` nulo quando serve em todas as versões | Sem agrupar seriam ~70 milhões de linhas (cerca de 400 versões-ano por produto) |
 | Níveis de confiança | `versao` (confirmada pelo KarHub) e `modelo` (deduzida do texto de aplicação) | É o selo "serve nesta versão" ou "confira a versão" da tela |
 | Foto do modelo | WebP com transparência, qualidade 90, 600×450 como vem | 34 KB contra 211 KB do PNG; todos os navegadores atuais abrem |
 | Modelo sem foto | Herda a do modelo da mesma montadora cujo nome é o prefixo mais longo do seu (Astra Hatch → Astra), marcada como herdada | Cobre as variações sem foto; o Wayap pode mostrar genérica se preferir |
@@ -165,7 +170,7 @@ Em ordem; a primeira que decide vale:
 5. **Na dúvida:** `carro`.
 
 O motivo (`ajuste`, `fipe`, `versao`, `nome`, `padrao`) vai junto, para o relatório. O tipo
-não tira modelo nenhum da árvore: vai para `veiculo_modelo.tipo`. Um ajuste em
+não tira modelo nenhum da árvore: vai para `vei_modelo.tipo`. Um ajuste em
 `helper_veiculos_tipo.csv` vale no `helper.py veiculos` seguinte, sem coletar de novo.
 
 ### 5.2 Montadora (`helper/montadoras.py`)
@@ -176,7 +181,7 @@ não tira modelo nenhum da árvore: vai para `veiculo_modelo.tipo`. Um ajuste em
   `MERCEDES BENZ` → `MERCEDES-BENZ`, `GM` → `CHEVROLET`, `VW` → `VOLKSWAGEN`, `BMW BMW` → `BMW`.
 - **Comparação:** dois nomes são a mesma montadora quando ficam iguais só com letras e números
   (`MERCEDES BENZ` = `MERCEDES-BENZ`).
-- A mesma regra serve para o campo `montadora` das aplicações e para ligar `veiculo_montadora`
+- A mesma regra serve para o campo `montadora` das aplicações e para ligar `vei_montadora`
   à `montadoras` do Wayap.
 
 ### 5.3 Agrupamento da ligação de nível `versao`
@@ -207,7 +212,7 @@ juntam; uma aplicação sem ano vale para qualquer ano e absorve as outras do me
 
 Tabelas no `helper.sqlite` e, quando indicado, no Postgres `helper`.
 
-### 6.1 `veiculo_montadora` (local e Postgres)
+### 6.1 `vei_montadora` (local e Postgres)
 
 | Campo | Conteúdo |
 |---|---|
@@ -221,7 +226,7 @@ Tabelas no `helper.sqlite` e, quando indicado, no Postgres `helper`.
 
 Só local: `logo_fonte` (URL de onde veio).
 
-### 6.2 `veiculo_modelo` (local e Postgres)
+### 6.2 `vei_modelo` (local e Postgres)
 
 | Campo | Conteúdo |
 |---|---|
@@ -240,7 +245,7 @@ Só local: `logo_fonte` (URL de onde veio).
 
 Chave única: (`id_veiculo_montadora`, `nome`). Só local: `foto_fonte` (URL de onde veio).
 
-### 6.3 `veiculo_versao` (local e Postgres)
+### 6.3 `vei_versao` (local e Postgres)
 
 | Campo | Conteúdo |
 |---|---|
@@ -253,11 +258,11 @@ Chave única: (`id_veiculo_montadora`, `nome`). Só local: `foto_fonte` (URL de 
 
 Chave única: (`id_modelo`, `nome`).
 
-### 6.4 `veiculo_versao_ano` (local e Postgres)
+### 6.4 `vei_versao_ano` (local e Postgres)
 
 (`id_versao`, `ano`), chave composta: em quais anos cada versão existe.
 
-### 6.5 `peca_veiculo` (local e Postgres)
+### 6.5 `vei_peca` (local e Postgres)
 
 | Campo | Conteúdo |
 |---|---|
@@ -273,10 +278,10 @@ garante a integridade.
 
 ### 6.6 Tabelas de controle
 
-- `peca_veiculo_estado` (`id_peca`, `hash`), local e Postgres: hash das linhas de `peca_veiculo`
+- `vei_peca_estado` (`id_peca`, `hash`), local e Postgres: hash das linhas de `vei_peca`
   de cada peça, para publicar por diferença comparando com o que está no destino.
-- `veiculo_fonte` (`site`, `id_fonte`, `id_versao`, `ano`), só local: traduz o id do KarHub.
-- `veiculo_arquivo` (`caminho`, `publicado`), só local: fotos e logos gerados e se já foram
+- `vei_fonte` (`site`, `id_fonte`, `id_versao`, `ano`), só local: traduz o id do KarHub.
+- `vei_arquivo` (`caminho`, `publicado`), só local: fotos e logos gerados e se já foram
   enviados.
 
 ## 7. Preparação: `python helper.py veiculos`
@@ -285,7 +290,7 @@ Roda depois do `preparar`, porque usa peças, origens e aplicações. Recalcula 
 `veiculos/*.jsonl` e do `helper.sqlite`; com as mesmas entradas, gera os mesmos ids e hashes.
 
 1. **Árvore:** lê `veiculos/karhub_arvore.jsonl` e grava montadoras, modelos, versões, anos e
-   `veiculo_fonte`. O que não está no arquivo vira `ativo = 0`.
+   `vei_fonte`. O que não está no arquivo vira `ativo = 0`.
 2. **Imagens:** converte a foto de cada modelo para WebP e o logo de cada montadora para PNG, a
    partir de `veiculos/imagens/`. Antes, procura imagem própria em
    `helper_fotos_veiculos/proprias/modelos/<MONTADORA>-<MODELO>.(png|jpg|webp)` e
@@ -293,10 +298,10 @@ Roda depois do `preparar`, porque usa peças, origens e aplicações. Recalcula 
    letras e números), que têm prioridade. Depois, modelos ainda sem foto herdam (seção 3). Saída
    em `helper_fotos_veiculos/modelos/` e `helper_fotos_veiculos/montadoras/`.
 3. **Nível `versao`:** para cada peça ativa com origem `karhub`, pega o handle da URL, procura os
-   ids em `karhub_compat.jsonl`, traduz pelo `veiculo_fonte` e agrupa (seção 5.3). O arquivo de
+   ids em `karhub_compat.jsonl`, traduz pelo `vei_fonte` e agrupa (seção 5.3). O arquivo de
    compatibilidade tem centenas de MB e é lido em fluxo, sem carregar tudo na memória.
 4. **Nível `modelo`:** seção 5.4.
-5. **Fechamento:** `qtd_pecas`, hashes, `peca_veiculo_estado`, relatório
+5. **Fechamento:** `qtd_pecas`, hashes, `vei_peca_estado`, relatório
    `helper_relatorios/<data>-veiculos.md` e a planilha `helper_relatorios/<data>-veiculos-tipos.csv`
    com o tipo de todos os modelos e o motivo, para o dono revisar e copiar correções para
    `helper_veiculos_tipo.csv`. Grava em `meta` a hora em que rodou.
@@ -317,17 +322,17 @@ veiculos`. Sem nenhum `veiculos` rodado, o `publicar` publica só as peças, com
 
 ## 8. Publicação (dentro do `publicar` que já existe)
 
-Depois das peças, porque `peca_veiculo` aponta para `peca`. Arquivos antes das linhas do banco.
+Depois das peças, porque `vei_peca` aponta para `peca`. Arquivos antes das linhas do banco.
 
 1. **Ligação com o Wayap:** se a tabela `montadoras` existir no banco, lê `id_montadora` e
    `descricao` e casa pela seção 5.2. Só leitura.
 2. **Arquivos:** `rsync` de `helper_fotos_veiculos/` para `/home/wayap/helper/veiculos/`, sem a
    pasta `proprias/`, com as mesmas opções de hoje (sem apagar no destino, dono root, 755/644,
-   retomável). Só roda se houver arquivo ainda não enviado (`veiculo_arquivo`).
+   retomável). Só roda se houver arquivo ainda não enviado (`vei_arquivo`).
 3. **Montadoras e árvore:** grava as montadoras cujo conteúdo difere do destino e os modelos cujo
    `hash_conteudo` mudou ou que não existem lá: upsert do modelo e das versões (ids estáveis,
    versão nunca é apagada) e troca dos anos das versões daquele modelo. Uma transação.
-4. **`peca_veiculo`:** compara `peca_veiculo_estado` local com o do destino; para as peças novas
+4. **`vei_peca`:** compara `vei_peca_estado` local com o do destino; para as peças novas
    ou alteradas, apaga as linhas no destino e insere as novas por `COPY`; peça que saiu do local
    perde as linhas. Em lotes de 5 mil peças, com commit por lote: uma queda no meio continua de
    onde parou na rodada seguinte.
@@ -339,22 +344,22 @@ Depois das peças, porque `peca_veiculo` aponta para `peca`. Arquivos antes das 
 ## 9. Contrato com o Wayap: consultas novas
 
 Numeradas depois das quatro da spec do helper. Todas devolvem só montadoras, modelos e versões
-ativos e peças ativas, e nunca expõem `origem`, `veiculo_fonte` nem ids do KarHub. URLs de arquivo:
+ativos e peças ativas, e nunca expõem `origem`, `vei_fonte` nem ids do KarHub. URLs de arquivo:
 `'/files/aGVscGVy/' || caminho_relativo`.
 
-5. **`v_veiculo_montadora`:** `id_veiculo_montadora`, `id_montadora`, `nome`, `nome_exibicao`,
+5. **`vei_v_montadora`:** `id_veiculo_montadora`, `id_montadora`, `nome`, `nome_exibicao`,
    `logo_url` (o logo da `montadoras` do Wayap quando existe, senão o do helper), `qtd_modelos`,
    `qtd_pecas`, `tipos` (array com os tipos dos modelos ativos, para listar só as montadoras de
    moto, por exemplo: `WHERE 'moto' = ANY(tipos)`).
-6. **`v_veiculo_modelo`:** `id_modelo`, `id_veiculo_montadora`, `nome`, `nome_exibicao`,
+6. **`vei_v_modelo`:** `id_modelo`, `id_veiculo_montadora`, `nome`, `nome_exibicao`,
    `foto_url` (nula sem foto), `foto_herdada`, `ano_inicio`, `ano_fim`, `qtd_pecas`, `tipo`.
-7. **`anos_do_modelo(id_modelo)`:** anos em ordem decrescente.
-   **`versoes_do_ano(id_modelo, ano)`:** `id_versao`, `nome_exibicao`, `motor`.
-8. **`pecas_por_veiculo(id_modelo, ano, id_versao DEFAULT NULL, texto DEFAULT NULL,
+7. **`vei_anos_do_modelo(id_modelo)`:** anos em ordem decrescente.
+   **`vei_versoes_do_ano(id_modelo, ano)`:** `id_versao`, `nome_exibicao`, `motor`.
+8. **`vei_pecas_por_veiculo(id_modelo, ano, id_versao DEFAULT NULL, texto DEFAULT NULL,
    limite DEFAULT 100)`:** `id_peca`, `id_marca`, `marca`, `codigo`, `ean`, `desc_curta`,
    `desc_completa`, `tipo_peca`, `ncm_sugerido`, `unidade_sugerida`, `tem_foto`, `qtd_fontes`,
    `confianca`. Com `texto`, filtra `desc_curta` como a `busca_texto`.
-9. **`ids_por_veiculo(id_modelo, ano, id_versao DEFAULT NULL)`:** `id_peca`, `confianca`, sem
+9. **`vei_ids_por_veiculo(id_modelo, ano, id_versao DEFAULT NULL)`:** `id_peca`, `confianca`, sem
    limite. É para o Wayap cruzar com o estoque do cliente pelo id da peça guardado no produto,
    já que o Postgres não junta tabelas de dois bancos.
 
@@ -390,7 +395,7 @@ grupo, semelhança com o texto (quando há), `tem_foto` e `qtd_fontes`, como nas
 - **Relatório `veiculos.md`:** modelos por tipo e motivo; montadoras
   (ligadas à `montadoras` do Wayap e sem par lá); modelos com foto própria, do KarHub, herdada e
   sem foto, e os 100 modelos com mais peças sem foto (candidatos a foto própria); peças ligadas
-  por nível; linhas de `peca_veiculo`; ids de veículo desconhecidos; as 50 aplicações mais comuns
+  por nível; linhas de `vei_peca`; ids de veículo desconhecidos; as 50 aplicações mais comuns
   que não casaram.
 - **Conferência manual:** para três veículos (Tracker 2021 1.2 Turbo, Gol 2010, Palio 2005),
   `pecas-do-veiculo` com `--texto TAMBOR` e `--texto PASTILHA` comparado com a página de categoria
@@ -408,7 +413,7 @@ grupo, semelhança com o texto (quando há), `tem_foto` e `qtd_fontes`, como nas
   `catalogo_karhub.py` for rodado de novo; depois `veiculos` e `publicar`.
 - **Volumes:** as 159 montadoras e os cerca de 3.500 modelos do KarHub (na primeira coleta,
   parcial: 47% dos modelos vistos eram carro ou utilitário, 26% moto e 27% pesado). Fotos: cerca de 1 em 4 modelos,
-  mais as herdadas, 35 KB cada. Logos: cerca de 20 KB cada. `peca_veiculo`: estimativa de 5 a 15
+  mais as herdadas, 35 KB cada. Logos: cerca de 20 KB cada. `vei_peca`: estimativa de 5 a 15
   milhões de linhas (cerca de 1 GB com índices), medida pelo relatório; o servidor tem cerca de
   300 GB livres.
 

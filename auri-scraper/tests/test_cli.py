@@ -82,10 +82,10 @@ def test_veiculos_ponta_a_ponta(tmp_path, capsys):
     assert main(["veiculos", "--base", str(tmp_path)]) == 0
     db = abrir(tmp_path / "helper.sqlite")
     gc = db.execute("SELECT id_peca FROM peca WHERE codigo = 'GC5045'").fetchone()[0]
-    assert [tuple(l) for l in db.execute("SELECT id_versao, ano_inicio, ano_fim, nivel FROM peca_veiculo WHERE id_peca = ?", (gc,))] == \
+    assert [tuple(l) for l in db.execute("SELECT id_versao, ano_inicio, ano_fim, nivel FROM vei_peca WHERE id_peca = ?", (gc,))] == \
         [(None, 1999, 2000, "versao")]
     farol = db.execute("SELECT id_peca FROM peca WHERE codigo = '0160818'").fetchone()[0]
-    assert [tuple(l) for l in db.execute("SELECT ano_inicio, ano_fim, nivel FROM peca_veiculo WHERE id_peca = ?", (farol,))] == \
+    assert [tuple(l) for l in db.execute("SELECT ano_inicio, ano_fim, nivel FROM vei_peca WHERE id_peca = ?", (farol,))] == \
         [(1995, 1999, "modelo")]
     rel = list((tmp_path / "helper_relatorios").glob("*-veiculos.md"))[0].read_text(encoding="utf-8")
     assert "Modelos ativos: 1" in rel and "| moto | versao | 1 |" in rel

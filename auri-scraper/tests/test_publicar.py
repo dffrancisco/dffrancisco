@@ -44,13 +44,13 @@ def test_ddl_tem_tabelas_funcoes_e_nao_expoe_origem_nas_funcoes():
 
 def test_ddl_de_veiculos_e_funcoes_do_contrato():
     ddl = "\n".join(ddl_veiculos(tem_montadoras=True))
-    for t in ("veiculo_montadora", "veiculo_modelo", "veiculo_versao", "veiculo_versao_ano", "peca_veiculo", "peca_veiculo_estado"):
+    for t in ("vei_montadora", "vei_modelo", "vei_versao", "vei_versao_ano", "vei_peca", "vei_peca_estado"):
         assert f"CREATE TABLE IF NOT EXISTS {t} (" in ddl
     assert "coalesce(w.logo, vm.logo)" in ddl and "LEFT JOIN montadoras w" in ddl
-    modelo = next(c for c in ddl_veiculos(True) if "TABLE IF NOT EXISTS veiculo_modelo" in c)
+    modelo = next(c for c in ddl_veiculos(True) if "TABLE IF NOT EXISTS vei_modelo" in c)
     assert "tipo TEXT NOT NULL" in modelo
-    v_modelo = next(c for c in ddl_veiculos(True) if "VIEW v_veiculo_modelo" in c)
-    v_montadora = next(c for c in ddl_veiculos(True) if "VIEW v_veiculo_montadora" in c)
+    v_modelo = next(c for c in ddl_veiculos(True) if "VIEW vei_v_modelo" in c)
+    v_montadora = next(c for c in ddl_veiculos(True) if "VIEW vei_v_montadora" in c)
     assert "tipo" in v_modelo.split("FROM")[0] and "AS tipos" in v_montadora  # o Wayap filtra carro, moto ou pesado
     assert "montadoras w" not in "\n".join(ddl_veiculos(tem_montadoras=False))
     fs = "\n".join(funcoes_veiculos(True))
@@ -58,9 +58,9 @@ def test_ddl_de_veiculos_e_funcoes_do_contrato():
     for comando in ("INSERT INTO montadoras", "UPDATE montadoras", "DELETE FROM montadoras", "ALTER TABLE montadoras",
                     "CREATE TABLE IF NOT EXISTS montadoras"):
         assert comando not in tudo  # o helper nunca escreve na tabela do Wayap
-    for f in ("anos_do_modelo", "versoes_do_ano", "ids_por_veiculo", "pecas_por_veiculo"):
+    for f in ("vei_anos_do_modelo", "vei_versoes_do_ano", "vei_ids_por_veiculo", "vei_pecas_por_veiculo"):
         assert f"FUNCTION {f}" in fs
-    assert "veiculo_fonte" not in tudo and "origem" not in fs
+    assert "vei_fonte" not in tudo and "origem" not in fs
     assert "similarity" in fs and "similarity" not in "\n".join(funcoes_veiculos(False))
 
 
@@ -182,8 +182,8 @@ class ConVeiculos(ConFalsa):
     """Responde às leituras da publicação de veículos com o estado 'remoto' dado e guarda o que vai por COPY."""
     def __init__(self, montadoras_wayap=(), remoto_montadoras=(), remoto_modelos=(), remoto_estado=(), sem_tabelas_veiculo=False):
         super().__init__(remoto={})
-        self.respostas = {"FROM montadoras": list(montadoras_wayap), "FROM veiculo_montadora": list(remoto_montadoras),
-                          "FROM veiculo_modelo": list(remoto_modelos), "FROM peca_veiculo_estado": list(remoto_estado)}
+        self.respostas = {"FROM montadoras": list(montadoras_wayap), "FROM vei_montadora": list(remoto_montadoras),
+                          "FROM vei_modelo": list(remoto_modelos), "FROM vei_peca_estado": list(remoto_estado)}
         self.copias, self.sem_tabelas_veiculo, self.completo = [], sem_tabelas_veiculo, []
 
     def execute(self, sql, params=None):
@@ -198,7 +198,7 @@ class ConVeiculos(ConFalsa):
 
     def fetchone(self):
         # to_regclass: a montadoras do Wayap existe; as tabelas veiculo_* só não existem antes da primeira publicação
-        return (not (self.sem_tabelas_veiculo and "veiculo_montadora" in self._ultimo),)
+        return (not (self.sem_tabelas_veiculo and "vei_montadora" in self._ultimo),)
 
     def copy_expert(self, sql, arquivo):
         self.sql.append("COPY " + sql.split()[1])
@@ -212,10 +212,10 @@ def _db_veiculos(tmp_path):
     from tests.test_veiculos import _linha
     db = _db_local(tmp_path)  # peça 1
     carregar_arvore(db, [_linha()], Montadoras({}))
-    id_modelo = db.execute("SELECT id_modelo FROM veiculo_modelo").fetchone()[0]
-    db.execute("INSERT INTO peca_veiculo VALUES (1, ?, NULL, 2020, 2021, 'versao')", (id_modelo,))
-    db.execute("UPDATE veiculo_modelo SET foto = 'veiculos/modelos/1_abc.webp'")
-    db.execute("INSERT INTO veiculo_arquivo (caminho) VALUES ('veiculos/modelos/1_abc.webp')")
+    id_modelo = db.execute("SELECT id_modelo FROM vei_modelo").fetchone()[0]
+    db.execute("INSERT INTO vei_peca VALUES (1, ?, NULL, 2020, 2021, 'versao')", (id_modelo,))
+    db.execute("UPDATE vei_modelo SET foto = 'veiculos/modelos/1_abc.webp'")
+    db.execute("INSERT INTO vei_arquivo (caminho) VALUES ('veiculos/modelos/1_abc.webp')")
     (tmp_path / "helper_fotos_veiculos/modelos").mkdir(parents=True)
     (tmp_path / "helper_fotos_veiculos/modelos/1_abc.webp").write_bytes(b"x")
     fechar(db)
@@ -245,22 +245,22 @@ def test_publicar_veiculos_arquivos_antes_copy_e_sem_escrever_na_montadoras(tmp_
     assert "--exclude=proprias/" in comandos[0] and comandos[0][-1] == "wayap@srv:/home/wayap/helper/veiculos/"
     escritas = [i for i, s in enumerate(con.sql) if s.startswith(("INSERT", "UPDATE", "DELETE", "COPY"))]
     assert con.sql.index("RSYNC") < escritas[0]
-    assert db.execute("SELECT id_montadora FROM veiculo_montadora").fetchone()[0] == 11
-    assert any(s.startswith("INSERT INTO veiculo_modelo") for s in con.sql) and any(s.startswith("COPY peca_veiculo") for s in con.sql)
-    assert any("INSERT INTO veiculo_modelo" in s and "%(tipo)s" in s for s in con.completo)
+    assert db.execute("SELECT id_montadora FROM vei_montadora").fetchone()[0] == 11
+    assert any(s.startswith("INSERT INTO vei_modelo") for s in con.sql) and any(s.startswith("COPY vei_peca") for s in con.sql)
+    assert any("INSERT INTO vei_modelo" in s and "%(tipo)s" in s for s in con.completo)
     assert con.copias[0].startswith("1\t") and "\\N" in con.copias[0]
     assert not any(s.startswith(("INSERT INTO montadoras", "UPDATE montadoras", "DELETE FROM montadoras")) for s in con.sql)
     assert (r["modelos"], r["pecas_veiculo"], r["arquivos_veiculo"], r["ligacoes_gravadas"]) == (1, 1, 1, 1)
-    assert db.execute("SELECT publicado FROM veiculo_arquivo").fetchone()[0] == 1
+    assert db.execute("SELECT publicado FROM vei_arquivo").fetchone()[0] == 1
 
 
 def test_segunda_publicacao_de_veiculos_nao_grava_nada(tmp_path):
     db = _db_veiculos(tmp_path)
     _pub_v(db, ConVeiculos(montadoras_wayap=[(11, "CHEVROLET")]), tmp_path)
-    m = db.execute("SELECT id_veiculo_montadora, nome, nome_exibicao, logo, id_montadora, qtd_pecas, ativo FROM veiculo_montadora").fetchone()
+    m = db.execute("SELECT id_veiculo_montadora, nome, nome_exibicao, logo, id_montadora, qtd_pecas, ativo FROM vei_montadora").fetchone()
     con2 = ConVeiculos(montadoras_wayap=[(11, "CHEVROLET")], remoto_montadoras=[(m[0], m[1], m[2], m[3], m[4], m[5], bool(m[6]))],
-                       remoto_modelos=[tuple(l) for l in db.execute("SELECT id_modelo, hash_conteudo FROM veiculo_modelo")],
-                       remoto_estado=[tuple(l) for l in db.execute("SELECT id_peca, hash FROM peca_veiculo_estado")])
+                       remoto_modelos=[tuple(l) for l in db.execute("SELECT id_modelo, hash_conteudo FROM vei_modelo")],
+                       remoto_estado=[tuple(l) for l in db.execute("SELECT id_peca, hash FROM vei_peca_estado")])
     rsyncs = []
     r = _pub_v(db, con2, tmp_path, rsync=rsyncs.append)
     assert rsyncs == [] and (r["montadoras"], r["modelos"], r["pecas_veiculo"], r["pecas_veiculo_apagar"], r["arquivos_veiculo"]) == (0, 0, 0, 0, 0)
@@ -273,7 +273,7 @@ def test_ensaio_de_veiculos_nao_grava(tmp_path):
     r = _pub_v(db, con, tmp_path, ensaio=True, rsync=lambda cmd: pytest.fail("rsync no ensaio"))
     assert r["modelos"] == 1 and r["arquivos_veiculo"] == 1 and "ligacoes_gravadas" not in r
     assert not any(s.startswith(("INSERT", "UPDATE", "DELETE", "COPY")) for s in con.sql)
-    assert db.execute("SELECT publicado FROM veiculo_arquivo").fetchone()[0] == 0
+    assert db.execute("SELECT publicado FROM vei_arquivo").fetchone()[0] == 0
 
 
 def test_ensaio_antes_da_primeira_publicacao_nao_precisa_das_tabelas_no_destino(tmp_path):
@@ -282,7 +282,7 @@ def test_ensaio_antes_da_primeira_publicacao_nao_precisa_das_tabelas_no_destino(
     r = _pub_v(db, con, tmp_path, ensaio=True)
     assert (r["montadoras"], r["modelos"], r["pecas_veiculo"]) == (1, 1, 1)
     assert any("FROM montadoras" in s for s in con.completo)  # a do Wayap continua sendo lida
-    assert not any("FROM veiculo_" in s or "FROM peca_veiculo" in s for s in con.completo)
+    assert not any("FROM veiculo_" in s or "FROM vei_peca" in s for s in con.completo)
 
 
 def test_peca_que_saiu_perde_as_linhas_no_destino(tmp_path):
@@ -290,15 +290,15 @@ def test_peca_que_saiu_perde_as_linhas_no_destino(tmp_path):
     con = ConVeiculos(remoto_estado=[(99, "h")])
     r = _pub_v(db, con, tmp_path)
     assert r["pecas_veiculo_apagar"] == 1
-    assert any(s.startswith("DELETE FROM peca_veiculo") for s in con.sql) and any(s.startswith("DELETE FROM peca_veiculo_estado") for s in con.sql)
+    assert any(s.startswith("DELETE FROM vei_peca") for s in con.sql) and any(s.startswith("DELETE FROM vei_peca_estado") for s in con.sql)
 
 
 def test_queda_no_meio_da_peca_veiculo_mantem_lotes_ja_gravados(tmp_path):
     from helper.veiculos_ligar import fechar
     db = _db_veiculos(tmp_path)
-    id_modelo = db.execute("SELECT id_modelo FROM veiculo_modelo").fetchone()[0]
+    id_modelo = db.execute("SELECT id_modelo FROM vei_modelo").fetchone()[0]
     db.execute("INSERT INTO peca (id_peca, id_marca, chave, codigo, desc_curta, status) VALUES (2, 1, 'ARTEB|2', '2', 'X', 'ativa')")
-    db.execute("INSERT INTO peca_veiculo VALUES (2, ?, NULL, 2020, 2020, 'versao')", (id_modelo,))
+    db.execute("INSERT INTO vei_peca VALUES (2, ?, NULL, 2020, 2020, 'versao')", (id_modelo,))
     fechar(db)
 
     class Quebra(ConVeiculos):
@@ -311,7 +311,7 @@ def test_queda_no_meio_da_peca_veiculo_mantem_lotes_ja_gravados(tmp_path):
         publicar_veiculos(db, con, ensaio=False, executar_rsync=lambda c: None, pasta_fotos=tmp_path / "helper_fotos_veiculos",
                           destino_ssh=None, pasta_remota="/x", lote_pecas=1)
     assert len(con.copias) == 1 and con.eventos[-1] == "rollback"
-    assert con.eventos.count("commit") >= 2  # árvore + primeiro lote de peca_veiculo ficaram
+    assert con.eventos.count("commit") >= 2  # árvore + primeiro lote de vei_peca ficaram
 
 
 def test_veiculos_preparados(tmp_path):
@@ -338,17 +338,17 @@ def test_integracao_postgres_veiculos(tmp_path):
              destino_ssh=None, pasta_remota=None, commit_repo="teste")
     publicar_veiculos(db, con, ensaio=False, executar_rsync=lambda cmd: None, pasta_fotos=tmp_path / "helper_fotos_veiculos",
                       destino_ssh=None, pasta_remota=None)
-    id_modelo = db.execute("SELECT id_modelo FROM veiculo_modelo").fetchone()[0]
+    id_modelo = db.execute("SELECT id_modelo FROM vei_modelo").fetchone()[0]
     with con.cursor() as cur:
-        cur.execute("SELECT ano FROM anos_do_modelo(%s)", (id_modelo,))
+        cur.execute("SELECT ano FROM vei_anos_do_modelo(%s)", (id_modelo,))
         assert [a for (a,) in cur.fetchall()] == [2021, 2020]
-        cur.execute("SELECT id_peca, confianca FROM ids_por_veiculo(%s, 2021)", (id_modelo,))
+        cur.execute("SELECT id_peca, confianca FROM vei_ids_por_veiculo(%s, 2021)", (id_modelo,))
         assert cur.fetchall() == [(1, "todas_versoes")]
-        cur.execute("SELECT id_peca, confianca FROM pecas_por_veiculo(%s, 2021, NULL, 'farol')", (id_modelo,))
+        cur.execute("SELECT id_peca, confianca FROM vei_pecas_por_veiculo(%s, 2021, NULL, 'farol')", (id_modelo,))
         assert cur.fetchall() == [(1, "todas_versoes")]
-        cur.execute("SELECT foto_url, tipo FROM v_veiculo_modelo WHERE id_modelo = %s", (id_modelo,))
+        cur.execute("SELECT foto_url, tipo FROM vei_v_modelo WHERE id_modelo = %s", (id_modelo,))
         assert cur.fetchone() == ("/files/aGVscGVy/veiculos/modelos/1_abc.webp", "carro")
-        cur.execute("SELECT tipos FROM v_veiculo_montadora")
+        cur.execute("SELECT tipos FROM vei_v_montadora")
         assert cur.fetchall() == [(["carro"],)]
 
 
@@ -363,17 +363,17 @@ def test_integracao_postgres_versao_fora_do_ano(tmp_path):
     con = conectar(env, "helper_teste_lacuna")
     instalar_esquema(con)
     db = _db_veiculos(tmp_path)
-    id_modelo = db.execute("SELECT id_modelo FROM veiculo_modelo").fetchone()[0]
-    v4x2 = db.execute("SELECT id_versao FROM veiculo_versao WHERE nome LIKE '4X2%'").fetchone()[0]
+    id_modelo = db.execute("SELECT id_modelo FROM vei_modelo").fetchone()[0]
+    v4x2 = db.execute("SELECT id_versao FROM vei_versao WHERE nome LIKE '4X2%'").fetchone()[0]
     db.execute("INSERT INTO peca (id_peca, id_marca, chave, codigo, desc_curta, status) VALUES (2, 1, 'ARTEB|2', '2', 'TAMBOR', 'ativa')")
-    db.execute("INSERT INTO peca_veiculo VALUES (2, ?, ?, 2020, 2021, 'versao')", (id_modelo, v4x2))
+    db.execute("INSERT INTO vei_peca VALUES (2, ?, ?, 2020, 2021, 'versao')", (id_modelo, v4x2))
     fechar(db)
     publicar(db, con, ensaio=False, executar_rsync=lambda cmd: None, pasta_fotos=tmp_path / "helper_fotos",
              destino_ssh=None, pasta_remota=None, commit_repo="teste")
     publicar_veiculos(db, con, ensaio=False, executar_rsync=lambda cmd: None, pasta_fotos=tmp_path / "helper_fotos_veiculos",
                       destino_ssh=None, pasta_remota=None)
     with con.cursor() as cur:
-        cur.execute("SELECT id_peca, confianca FROM ids_por_veiculo(%s, 2020) ORDER BY 1", (id_modelo,))
+        cur.execute("SELECT id_peca, confianca FROM vei_ids_por_veiculo(%s, 2020) ORDER BY 1", (id_modelo,))
         assert cur.fetchall() == [(1, "todas_versoes")]  # a peça 2 não serve em 2020: o 4x2 não existe nesse ano
-        cur.execute("SELECT id_peca, confianca FROM ids_por_veiculo(%s, 2021) ORDER BY 1", (id_modelo,))
+        cur.execute("SELECT id_peca, confianca FROM vei_ids_por_veiculo(%s, 2021) ORDER BY 1", (id_modelo,))
         assert cur.fetchall() == [(1, "todas_versoes"), (2, "algumas_versoes")]
