@@ -30,4 +30,6 @@ helper.sqlite-shm
 helper_fotos/
 helper_cache/
 helper_relatorios/
+helper_fotos_veiculos/modelos/
+helper_fotos_veiculos/montadoras/
 .pytest_cache/
