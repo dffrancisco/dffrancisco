@@ -60,3 +60,58 @@ def test_preparar_grava_a_hora_em_meta(tmp_path):
     _montar_base(tmp_path)
     main(["preparar", "--base", str(tmp_path)])
     assert ler_meta(abrir(tmp_path / "helper.sqlite"), "preparado_em")
+
+
+def _arvore_gol(tmp_path):
+    arvore = {"montadora": {"label": "Volkswagen", "handle": "volkswagen", "logo_url": None},
+              "modelo": {"label": "Gol", "handle": "Gol", "foto_url": None}, "tipo": "carro", "motivo_tipo": "fipe",
+              "anos": [{"ano": a, "versoes": [{"label": "1.0 8v", "handle": "x", "ids_fonte": [str(a)]}]} for a in (1999, 2000, 2001)],
+              "coletado_em": "2026-10-03"}
+    _escrever(tmp_path / "veiculos/karhub_arvore.jsonl", json.dumps(arvore) + "\n")
+    _escrever(tmp_path / "veiculos/karhub_excluidos.jsonl", json.dumps({
+        "montadora": {"label": "Honda", "handle": "honda"}, "modelo": {"label": "Biz", "handle": "Biz"},
+        "tipo": "moto", "motivo_tipo": "versao", "versoes_exemplo": ["Ks 100cc"], "coletado_em": "2026-10-03"}) + "\n")
+    # o anúncio da KarHub em _montar_base tem url https://k/p/1: handle "1"
+    _escrever(tmp_path / "veiculos/karhub_compat.jsonl", json.dumps({"handle": "1", "ids": ["1999", "2000"]}) + "\n")
+
+
+def test_veiculos_ponta_a_ponta(tmp_path, capsys):
+    _montar_base(tmp_path)
+    main(["preparar", "--base", str(tmp_path)])
+    _arvore_gol(tmp_path)
+    assert main(["veiculos", "--base", str(tmp_path)]) == 0
+    db = abrir(tmp_path / "helper.sqlite")
+    gc = db.execute("SELECT id_peca FROM peca WHERE codigo = 'GC5045'").fetchone()[0]
+    assert [tuple(l) for l in db.execute("SELECT id_versao, ano_inicio, ano_fim, nivel FROM peca_veiculo WHERE id_peca = ?", (gc,))] == \
+        [(None, 1999, 2000, "versao")]
+    farol = db.execute("SELECT id_peca FROM peca WHERE codigo = '0160818'").fetchone()[0]
+    assert [tuple(l) for l in db.execute("SELECT ano_inicio, ano_fim, nivel FROM peca_veiculo WHERE id_peca = ?", (farol,))] == \
+        [(1995, 1999, "modelo")]
+    rel = list((tmp_path / "helper_relatorios").glob("*-veiculos.md"))[0].read_text(encoding="utf-8")
+    assert "Modelos ativos: 1" in rel and "| moto | versao | 1 |" in rel
+    tipos = list((tmp_path / "helper_relatorios").glob("*-veiculos-tipos.csv"))[0].read_text(encoding="utf-8")
+    assert "Honda;Biz;moto;versao;Ks 100cc" in tipos and "Volkswagen;Gol;carro;fipe;1.0 8v" in tipos
+
+
+def test_veiculos_sem_arvore_avisa(tmp_path):
+    _montar_base(tmp_path)
+    assert main(["veiculos", "--base", str(tmp_path)]) == 2
+
+
+def test_pecas_do_veiculo_aceita_o_jeito_do_usuario(tmp_path, capsys):
+    _montar_base(tmp_path)
+    main(["preparar", "--base", str(tmp_path)])
+    _arvore_gol(tmp_path)
+    main(["veiculos", "--base", str(tmp_path)])
+    capsys.readouterr()
+    assert main(["pecas-do-veiculo", "volkswagen", "gol", "2000", "--base", str(tmp_path)]) == 0
+    saida = capsys.readouterr().out
+    assert "todas_versoes" in saida and "GC5045" in saida
+    assert main(["pecas-do-veiculo", "vw", "Gol", "1997", "--base", str(tmp_path)]) == 0  # 1997: só o texto da Arteb
+    assert "modelo_ano" in capsys.readouterr().out
+    assert main(["pecas-do-veiculo", "VW", "GOL", "2000", "--versao", "1.0 8V", "--texto", "cabo", "--base", str(tmp_path)]) == 0
+    saida = capsys.readouterr().out
+    assert "versao" in saida and "GC5045" in saida and "0160818" not in saida
+    assert main(["pecas-do-veiculo", "VW", "FUSCA", "2000", "--base", str(tmp_path)]) == 1
+    assert main(["pecas-do-veiculo", "VW", "GOL", "2000", "--versao", "2.0 turbo", "--base", str(tmp_path)]) == 1
+    assert "1.0 8v" in capsys.readouterr().out  # lista as versões do ano
