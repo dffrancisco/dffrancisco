@@ -93,6 +93,20 @@ def test_veiculos_ponta_a_ponta(tmp_path, capsys):
     assert "Honda;Biz;moto;versao;Ks 100cc" in tipos and "Volkswagen;Gol;carro;fipe;1.0 8v" in tipos
 
 
+def test_planilha_de_tipos_aplica_ajuste_e_nao_repete_modelo(tmp_path):
+    from helper.montadoras import Montadoras
+    from helper.veiculos_relatorio import salvar_tipos_csv
+    _arvore_gol(tmp_path)
+    excl = tmp_path / "veiculos/karhub_excluidos.jsonl"
+    excl.write_text(excl.read_text(encoding="utf-8") * 2, encoding="utf-8")  # a mesma linha duas vezes
+    tipos = salvar_tipos_csv(tmp_path / "veiculos", tmp_path / "t.csv", ajustes={("VOLKSWAGEN", "GOL"): "pesado"},
+                             montadoras=Montadoras({}))
+    texto = (tmp_path / "t.csv").read_text(encoding="utf-8")
+    assert texto.count("Honda;Biz;") == 1
+    assert "Volkswagen;Gol;pesado;ajuste;1.0 8v" in texto
+    assert tipos[("pesado", "ajuste")] == 1 and tipos[("moto", "versao")] == 1
+
+
 def test_veiculos_sem_arvore_avisa(tmp_path):
     _montar_base(tmp_path)
     assert main(["veiculos", "--base", str(tmp_path)]) == 2

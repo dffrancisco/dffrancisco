@@ -76,6 +76,15 @@ def test_montadora_canonica_e_tipos_que_nao_sao_carro_ficam_fora(tmp_path):
     assert [tuple(r) for r in db.execute("SELECT nome, nome_exibicao FROM veiculo_montadora")] == [("MERCEDES-BENZ", "Mercedes Benz")]
 
 
+def test_ajuste_do_dono_tira_da_arvore_sem_recoletar(tmp_path):
+    db = abrir(tmp_path / "h.sqlite")
+    linhas = [_linha(), _linha(modelo="A 40")]
+    carregar_arvore(db, linhas, M)
+    r = carregar_arvore(db, linhas, M, ajustes={("CHEVROLET", "A 40"): "pesado"})
+    assert db.execute("SELECT ativo FROM veiculo_modelo WHERE nome = 'A 40'").fetchone()[0] == 0
+    assert r["modelos"] == 1
+
+
 def test_ano_sem_versao_nao_conta(tmp_path):
     db = abrir(tmp_path / "h.sqlite")
     anos = [{"ano": 2022, "versoes": []}, {"ano": 2021, "versoes": [{"label": "Lt", "handle": "x", "ids_fonte": ["1"]}]}]

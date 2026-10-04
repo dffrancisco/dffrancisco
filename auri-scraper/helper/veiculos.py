@@ -5,6 +5,7 @@ import re
 from pathlib import Path
 
 from helper.montadoras import nome_canonico
+from helper.veiculo_tipo import ajuste_de
 
 MOTOR_RE = re.compile(r"\b\d\.\d\b")
 
@@ -56,7 +57,9 @@ def _versao(db, id_modelo, nome, exibicao):
                       (id_modelo, nome, exibicao, motor(exibicao))).lastrowid
 
 
-def carregar_arvore(db, linhas, montadoras):
+def carregar_arvore(db, linhas, montadoras, ajustes=None):
+    """ajustes: helper_veiculos_tipo.csv. Um modelo que o dono marcou como moto ou pesado sai da árvore já aqui,
+    sem esperar uma nova coleta (a regra 1 da classificação vale sobre todas)."""
     # anos e ids do KarHub saem inteiros do arquivo; montadora, modelo e versão nunca são apagados (ids publicados)
     db.execute("DELETE FROM veiculo_versao_ano")
     db.execute("DELETE FROM veiculo_fonte")
@@ -64,6 +67,8 @@ def carregar_arvore(db, linhas, montadoras):
         db.execute(f"UPDATE {tabela} SET ativo = 0")
     for l in linhas:
         if l.get("tipo", "carro") != "carro":
+            continue
+        if ajustes and ajuste_de(ajustes, montadoras.chaves(l["montadora"]["label"]), l["modelo"]["label"]) not in (None, "carro"):
             continue
         id_vm = _montadora(db, montadoras.canonica(l["montadora"]["label"]), l["montadora"]["label"], l["montadora"].get("logo_url"))
         id_modelo = _modelo(db, id_vm, nome_canonico(l["modelo"]["label"]), l["modelo"]["label"], l["modelo"].get("foto_url"))

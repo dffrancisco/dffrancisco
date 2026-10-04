@@ -5,6 +5,8 @@ from collections import Counter
 from datetime import date
 from pathlib import Path
 
+from helper.veiculo_tipo import ajuste_de
+
 
 def _jsonl(caminho):
     caminho = Path(caminho)
@@ -26,12 +28,22 @@ def _primeira_versao(linha):
     return ""
 
 
-def salvar_tipos_csv(pasta_veiculos, destino):
+def salvar_tipos_csv(pasta_veiculos, destino, ajustes=None, montadoras=None):
+    """Uma linha por (montadora, modelo): a da árvore vale sobre a de excluídos, e o ajuste do dono sobre as duas."""
     pasta = Path(pasta_veiculos)
-    linhas = [(l["montadora"]["label"], l["modelo"]["label"], l.get("tipo", "carro"), l.get("motivo_tipo", ""), _primeira_versao(l))
-              for l in _jsonl(pasta / "karhub_arvore.jsonl")]
-    linhas += [(l["montadora"]["label"], l["modelo"]["label"], l.get("tipo", ""), l.get("motivo_tipo", ""),
-                (l.get("versoes_exemplo") or [""])[0]) for l in _jsonl(pasta / "karhub_excluidos.jsonl")]
+    por_modelo = {}
+    for l in _jsonl(pasta / "karhub_excluidos.jsonl"):
+        por_modelo[(l["montadora"]["label"], l["modelo"]["label"])] = (l.get("tipo", ""), l.get("motivo_tipo", ""),
+                                                                       (l.get("versoes_exemplo") or [""])[0])
+    for l in _jsonl(pasta / "karhub_arvore.jsonl"):
+        por_modelo[(l["montadora"]["label"], l["modelo"]["label"])] = (l.get("tipo", "carro"), l.get("motivo_tipo", ""),
+                                                                       _primeira_versao(l))
+    linhas = []
+    for (montadora, modelo), (tipo, motivo, versao) in por_modelo.items():
+        ajuste = ajuste_de(ajustes, montadoras.chaves(montadora), modelo) if ajustes and montadoras else None
+        if ajuste:
+            tipo, motivo = ajuste, "ajuste"
+        linhas.append((montadora, modelo, tipo, motivo, versao))
     with Path(destino).open("w", encoding="utf-8", newline="") as f:
         w = csv.writer(f, delimiter=";", lineterminator="\n")
         w.writerow(["montadora", "modelo", "tipo", "motivo", "versao_exemplo"])

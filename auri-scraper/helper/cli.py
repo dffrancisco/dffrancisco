@@ -13,6 +13,7 @@ from helper import fotos as fotos_mod
 from helper import publicar as pub
 from helper.marcas import Marcas
 from helper.montadoras import ARQUIVO_PADRAO as MONTADORAS_PADRAO, Montadoras, nome_canonico
+from helper.veiculo_tipo import carregar_ajustes
 from wayap_fotos import ENV_ADMIN, carregar_env
 
 
@@ -152,14 +153,16 @@ def cmd_veiculos(args):
         return 2
     db = banco.abrir(args.banco)
     montadoras = Montadoras.carregar(args.montadoras)
-    estat = {"arvore": veiculos.carregar_arvore(db, veiculos.ler_arvore(arq_arvore), montadoras)}
+    ajustes = carregar_ajustes()  # helper_veiculos_tipo.csv: correção de tipo vale já, sem recoletar
+    estat = {"arvore": veiculos.carregar_arvore(db, veiculos.ler_arvore(arq_arvore), montadoras, ajustes)}
     print("árvore:", ", ".join(f"{k} {v}" for k, v in estat["arvore"].items()))
     estat["imagens"] = veiculos_fotos.processar_imagens(db, pasta / "imagens", args.base / "helper_fotos_veiculos")
     print("imagens:", ", ".join(f"{k} {v}" for k, v in sorted(estat["imagens"].items())))
     estat["ligacao"], sem_modelo = veiculos_ligar.ligar(db, pasta / "karhub_compat.jsonl", montadoras)
     print("ligação:", ", ".join(f"{k} {v}" for k, v in sorted(estat["ligacao"].items())))
     args.relatorios.mkdir(parents=True, exist_ok=True)
-    tipos = veiculos_relatorio.salvar_tipos_csv(pasta, args.relatorios / f"{time.strftime('%Y-%m-%d')}-veiculos-tipos.csv")
+    tipos = veiculos_relatorio.salvar_tipos_csv(pasta, args.relatorios / f"{time.strftime('%Y-%m-%d')}-veiculos-tipos.csv",
+                                                ajustes, montadoras)
     caminho = relatorio.salvar(veiculos_relatorio.gerar(db, estat, tipos, sem_modelo), args.relatorios, "veiculos.md")
     print(f"relatório em {caminho}; {time.time() - inicio:.0f}s")
     return 0
