@@ -1,5 +1,8 @@
 """Consultas do contrato (spec, seção 7) sobre o SQLite local. O Postgres implementa as mesmas regras em SQL (publicar.py)."""
+from collections import defaultdict
+
 from helper.normalizar import normalizar_codigo, normalizar_ean
+from wayap_fotos import sem_acento
 
 
 def normalizar_busca(texto):
@@ -68,3 +71,53 @@ def cobertura(db, produtos_topcar):
         else:
             r["nao_encontrados"] += 1
     return resultado
+
+
+# ---------- consultas 8 e 9 da spec de veículos (o Postgres implementa as mesmas regras em publicar.py) ----------
+
+ORDEM_CONFIANCA = {"versao": 1, "todas_versoes": 1, "algumas_versoes": 2, "modelo_ano": 3}
+
+
+def ids_por_veiculo(db, id_modelo, ano, id_versao=None):
+    versao = defaultdict(lambda: {"todas": False, "esta": False})
+    for id_peca, v in db.execute(
+            """SELECT pv.id_peca, pv.id_versao FROM peca_veiculo pv JOIN peca p USING (id_peca)
+               WHERE pv.id_modelo = ? AND pv.nivel = 'versao' AND ? BETWEEN pv.ano_inicio AND pv.ano_fim AND p.status = 'ativa'""",
+            (id_modelo, ano)):
+        e = versao[id_peca]
+        e["todas"] = e["todas"] or v is None
+        e["esta"] = e["esta"] or (id_versao is not None and v == id_versao)
+    r = {}
+    for id_peca, e in versao.items():
+        if id_versao is None:
+            r[id_peca] = "todas_versoes" if e["todas"] else "algumas_versoes"
+        elif e["todas"] or e["esta"]:
+            r[id_peca] = "versao"
+        # versão escolhida e a peça só serve em outras: o KarHub diz que não serve, fica de fora
+    for (id_peca,) in db.execute(
+            """SELECT DISTINCT pv.id_peca FROM peca_veiculo pv JOIN peca p USING (id_peca)
+               WHERE pv.id_modelo = ? AND pv.nivel = 'modelo' AND p.status = 'ativa'
+                 AND (pv.ano_inicio IS NULL OR pv.ano_inicio <= ?) AND (pv.ano_fim IS NULL OR pv.ano_fim >= ?)""",
+            (id_modelo, ano, ano)):
+        if id_peca not in versao:
+            r[id_peca] = "modelo_ano"
+    return r
+
+
+def pecas_por_veiculo(db, id_modelo, ano, id_versao=None, texto=None, limite=100):
+    ids = ids_por_veiculo(db, id_modelo, ano, id_versao)
+    if not ids:
+        return []
+    # um modelo popular tem dezenas de milhares de peças: tabela temporária em vez de IN (?, ?, ...)
+    db.execute("CREATE TEMP TABLE IF NOT EXISTS ids_veiculo (id_peca INTEGER PRIMARY KEY, confianca TEXT)")
+    db.execute("DELETE FROM ids_veiculo")
+    db.executemany("INSERT INTO ids_veiculo VALUES (?, ?)", ids.items())
+    filtro = " ".join(sem_acento(texto).upper().split()) if texto else None
+    linhas = db.execute(
+        """SELECT p.id_peca, p.id_marca, m.nome AS marca, p.codigo, p.ean, p.desc_curta, p.desc_completa, p.tipo_peca,
+                  p.ncm_sugerido, p.unidade_sugerida, p.tem_foto, p.qtd_fontes, i.confianca
+           FROM ids_veiculo i JOIN peca p USING (id_peca) JOIN marca m USING (id_marca)
+           WHERE ? IS NULL OR p.desc_curta LIKE '%' || ? || '%'""", (filtro, filtro)).fetchall()
+    pecas = sorted((dict(l) for l in linhas),
+                   key=lambda d: (ORDEM_CONFIANCA[d["confianca"]], -d["tem_foto"], -d["qtd_fontes"], d["id_peca"]))
+    return pecas[:limite]
