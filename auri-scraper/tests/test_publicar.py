@@ -3,7 +3,8 @@ import os
 import pytest
 
 from helper.banco import abrir
-from helper.publicar import DDL_POSTGRES, comando_rsync, diferencas, funcoes_sql, ler_env_admin, publicar
+from helper.publicar import (DDL_POSTGRES, comando_rsync, ddl_veiculos, diferencas, funcoes_sql, funcoes_veiculos, ler_env_admin,
+                             publicar)
 
 
 def test_ler_env_admin(tmp_path):
@@ -39,6 +40,23 @@ def test_ddl_tem_tabelas_funcoes_e_nao_expoe_origem_nas_funcoes():
     # I5 da revisão: o predicado trigram tem de ser sobre desc_curta pura (coluna indexada), não sobre concatenação com unaccent
     bt = next(f for f in funcoes_sql(True) if "FUNCTION busca_texto" in f)
     assert "v.desc_curta %" in bt and "|| ' ' ||" not in bt.split("WHERE", 1)[1].split("ORDER BY")[0]
+
+
+def test_ddl_de_veiculos_e_funcoes_do_contrato():
+    ddl = "\n".join(ddl_veiculos(tem_montadoras=True))
+    for t in ("veiculo_montadora", "veiculo_modelo", "veiculo_versao", "veiculo_versao_ano", "peca_veiculo", "peca_veiculo_estado"):
+        assert f"CREATE TABLE IF NOT EXISTS {t} (" in ddl
+    assert "coalesce(w.logo, vm.logo)" in ddl and "LEFT JOIN montadoras w" in ddl
+    assert "montadoras w" not in "\n".join(ddl_veiculos(tem_montadoras=False))
+    fs = "\n".join(funcoes_veiculos(True))
+    tudo = ddl + fs
+    for comando in ("INSERT INTO montadoras", "UPDATE montadoras", "DELETE FROM montadoras", "ALTER TABLE montadoras",
+                    "CREATE TABLE IF NOT EXISTS montadoras"):
+        assert comando not in tudo  # o helper nunca escreve na tabela do Wayap
+    for f in ("anos_do_modelo", "versoes_do_ano", "ids_por_veiculo", "pecas_por_veiculo"):
+        assert f"FUNCTION {f}" in fs
+    assert "veiculo_fonte" not in tudo and "origem" not in fs
+    assert "similarity" in fs and "similarity" not in "\n".join(funcoes_veiculos(False))
 
 
 class ConFalsa:

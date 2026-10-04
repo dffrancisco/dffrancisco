@@ -109,6 +109,98 @@ def funcoes_sql(com_trgm):
     ]
 
 
+def ddl_veiculos(tem_montadoras):
+    """Spec de veículos, seções 6 e 9. tem_montadoras: a tabela montadoras do Wayap existe neste banco (só lida, nunca escrita)."""
+    logo = "coalesce(w.logo, vm.logo)" if tem_montadoras else "vm.logo"
+    junta = "LEFT JOIN montadoras w ON w.id_montadora = vm.id_montadora" if tem_montadoras else ""
+    return [
+        """CREATE TABLE IF NOT EXISTS veiculo_montadora (
+             id_veiculo_montadora INTEGER PRIMARY KEY, nome TEXT NOT NULL UNIQUE, nome_exibicao TEXT NOT NULL, logo TEXT,
+             id_montadora INTEGER, qtd_pecas INTEGER NOT NULL DEFAULT 0, ativo BOOLEAN NOT NULL DEFAULT TRUE)""",
+        """CREATE TABLE IF NOT EXISTS veiculo_modelo (
+             id_modelo INTEGER PRIMARY KEY, id_veiculo_montadora INTEGER NOT NULL REFERENCES veiculo_montadora(id_veiculo_montadora),
+             nome TEXT NOT NULL, nome_exibicao TEXT NOT NULL, foto TEXT, foto_herdada BOOLEAN NOT NULL DEFAULT FALSE,
+             ano_inicio INTEGER, ano_fim INTEGER, qtd_pecas INTEGER NOT NULL DEFAULT 0, ativo BOOLEAN NOT NULL DEFAULT TRUE,
+             hash_conteudo TEXT, atualizado_em TIMESTAMP, UNIQUE (id_veiculo_montadora, nome))""",
+        """CREATE TABLE IF NOT EXISTS veiculo_versao (
+             id_versao INTEGER PRIMARY KEY, id_modelo INTEGER NOT NULL REFERENCES veiculo_modelo(id_modelo),
+             nome TEXT NOT NULL, nome_exibicao TEXT NOT NULL, motor TEXT, ativo BOOLEAN NOT NULL DEFAULT TRUE)""",
+        """CREATE INDEX IF NOT EXISTS veiculo_versao_modelo ON veiculo_versao (id_modelo)""",
+        """CREATE TABLE IF NOT EXISTS veiculo_versao_ano (
+             id_versao INTEGER NOT NULL REFERENCES veiculo_versao(id_versao), ano INTEGER NOT NULL, PRIMARY KEY (id_versao, ano))""",
+        # sem chave estrangeira: carga de milhões de linhas; a ordem da publicação (peças antes) garante a integridade
+        """CREATE TABLE IF NOT EXISTS peca_veiculo (
+             id_peca INTEGER NOT NULL, id_modelo INTEGER NOT NULL, id_versao INTEGER,
+             ano_inicio INTEGER, ano_fim INTEGER, nivel TEXT NOT NULL)""",
+        """CREATE INDEX IF NOT EXISTS peca_veiculo_peca ON peca_veiculo (id_peca)""",
+        """CREATE INDEX IF NOT EXISTS peca_veiculo_modelo ON peca_veiculo (id_modelo, ano_inicio, ano_fim)""",
+        """CREATE TABLE IF NOT EXISTS peca_veiculo_estado (id_peca INTEGER PRIMARY KEY, hash TEXT NOT NULL)""",
+        """ALTER TABLE carga ADD COLUMN IF NOT EXISTS modelos_publicados INTEGER""",
+        """ALTER TABLE carga ADD COLUMN IF NOT EXISTS ligacoes_veiculo BIGINT""",
+        f"""CREATE OR REPLACE VIEW v_veiculo_montadora AS
+             SELECT vm.id_veiculo_montadora, vm.id_montadora, vm.nome, vm.nome_exibicao,
+                    '/files/aGVscGVy/' || {logo} AS logo_url,
+                    (SELECT count(*) FROM veiculo_modelo mo WHERE mo.id_veiculo_montadora = vm.id_veiculo_montadora AND mo.ativo) AS qtd_modelos,
+                    vm.qtd_pecas
+             FROM veiculo_montadora vm {junta}
+             WHERE vm.ativo""",
+        """CREATE OR REPLACE VIEW v_veiculo_modelo AS
+             SELECT id_modelo, id_veiculo_montadora, nome, nome_exibicao, '/files/aGVscGVy/' || foto AS foto_url, foto_herdada,
+                    ano_inicio, ano_fim, qtd_pecas
+             FROM veiculo_modelo WHERE ativo""",
+    ]
+
+
+def funcoes_veiculos(com_trgm):
+    """Consultas 7 a 9 da spec de veículos. Regra da confiança igual à de helper/consulta.py (ids_por_veiculo)."""
+    if com_trgm:
+        filtro = "p_texto IS NULL OR p.desc_curta ILIKE '%' || upper(unaccent(p_texto)) || '%' OR p.desc_curta % upper(unaccent(p_texto))"
+        semelhanca = "CASE WHEN p_texto IS NULL THEN 0 ELSE similarity(p.desc_curta, upper(unaccent(p_texto))) END DESC,"
+    else:
+        filtro = "p_texto IS NULL OR p.desc_curta ILIKE '%' || p_texto || '%'"
+        semelhanca = ""
+    return [
+        """CREATE OR REPLACE FUNCTION anos_do_modelo(p_modelo INTEGER) RETURNS TABLE (ano INTEGER) AS $$
+             SELECT DISTINCT va.ano FROM veiculo_versao_ano va JOIN veiculo_versao v ON v.id_versao = va.id_versao
+             WHERE v.id_modelo = p_modelo AND v.ativo ORDER BY va.ano DESC
+           $$ LANGUAGE sql STABLE""",
+        """CREATE OR REPLACE FUNCTION versoes_do_ano(p_modelo INTEGER, p_ano INTEGER)
+             RETURNS TABLE (id_versao INTEGER, nome_exibicao TEXT, motor TEXT) AS $$
+             SELECT v.id_versao, v.nome_exibicao, v.motor FROM veiculo_versao v JOIN veiculo_versao_ano va ON va.id_versao = v.id_versao
+             WHERE v.id_modelo = p_modelo AND va.ano = p_ano AND v.ativo ORDER BY v.nome_exibicao
+           $$ LANGUAGE sql STABLE""",
+        """CREATE OR REPLACE FUNCTION ids_por_veiculo(p_modelo INTEGER, p_ano INTEGER, p_versao INTEGER DEFAULT NULL)
+             RETURNS TABLE (id_peca INTEGER, confianca TEXT) AS $$
+             WITH v AS (
+               SELECT pv.id_peca, bool_or(pv.id_versao IS NULL) AS todas, coalesce(bool_or(pv.id_versao = p_versao), FALSE) AS esta
+               FROM peca_veiculo pv JOIN peca pe ON pe.id_peca = pv.id_peca AND pe.status = 'ativa'
+               WHERE pv.id_modelo = p_modelo AND pv.nivel = 'versao' AND p_ano BETWEEN pv.ano_inicio AND pv.ano_fim
+               GROUP BY pv.id_peca),
+             m AS (
+               SELECT DISTINCT pv.id_peca FROM peca_veiculo pv JOIN peca pe ON pe.id_peca = pv.id_peca AND pe.status = 'ativa'
+               WHERE pv.id_modelo = p_modelo AND pv.nivel = 'modelo'
+                 AND (pv.ano_inicio IS NULL OR pv.ano_inicio <= p_ano) AND (pv.ano_fim IS NULL OR pv.ano_fim >= p_ano))
+             SELECT v.id_peca, CASE WHEN p_versao IS NOT NULL THEN 'versao' WHEN v.todas THEN 'todas_versoes' ELSE 'algumas_versoes' END
+             FROM v WHERE p_versao IS NULL OR v.todas OR v.esta
+             UNION ALL
+             SELECT m.id_peca, 'modelo_ano' FROM m WHERE NOT EXISTS (SELECT 1 FROM v WHERE v.id_peca = m.id_peca)
+           $$ LANGUAGE sql STABLE""",
+        f"""CREATE OR REPLACE FUNCTION pecas_por_veiculo(p_modelo INTEGER, p_ano INTEGER, p_versao INTEGER DEFAULT NULL,
+                                                        p_texto TEXT DEFAULT NULL, p_limite INTEGER DEFAULT 100)
+             RETURNS TABLE (id_peca INTEGER, id_marca INTEGER, marca TEXT, codigo TEXT, ean TEXT, desc_curta TEXT, desc_completa TEXT,
+                            tipo_peca TEXT, ncm_sugerido TEXT, unidade_sugerida TEXT, tem_foto BOOLEAN, qtd_fontes INTEGER,
+                            confianca TEXT) AS $$
+             SELECT p.id_peca, p.id_marca, p.marca, p.codigo, p.ean, p.desc_curta, p.desc_completa, p.tipo_peca, p.ncm_sugerido,
+                    p.unidade_sugerida, p.tem_foto, p.qtd_fontes, i.confianca
+             FROM ids_por_veiculo(p_modelo, p_ano, p_versao) i JOIN v_peca p ON p.id_peca = i.id_peca
+             WHERE {filtro}
+             ORDER BY CASE i.confianca WHEN 'algumas_versoes' THEN 2 WHEN 'modelo_ano' THEN 3 ELSE 1 END,
+                      {semelhanca} p.tem_foto DESC, p.qtd_fontes DESC, p.id_peca
+             LIMIT p_limite
+           $$ LANGUAGE sql STABLE""",
+    ]
+
+
 def ler_env_admin(caminho):
     texto = Path(caminho).read_text(encoding="utf-8")
     return dict(re.findall(r"^(POSTGRES_[A-Z]+)=(.*)$", texto, re.M))
@@ -139,7 +231,9 @@ def instalar_esquema(con):
             except psycopg2.Error:
                 con.rollback()
                 com_trgm = False
-        for sql in DDL_POSTGRES + funcoes_sql(com_trgm):
+        cur.execute("SELECT to_regclass('public.montadoras') IS NOT NULL")
+        tem_montadoras = bool(cur.fetchone()[0])  # tabela do Wayap: só lida pela view v_veiculo_montadora
+        for sql in DDL_POSTGRES + ddl_veiculos(tem_montadoras) + funcoes_sql(com_trgm) + funcoes_veiculos(com_trgm):
             cur.execute(sql)
         if com_trgm:
             cur.execute("CREATE INDEX IF NOT EXISTS peca_desc_trgm ON peca USING gin (desc_curta gin_trgm_ops)")
