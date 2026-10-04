@@ -36,7 +36,7 @@ site; testadas em 2026-10-03):
 | `/api/get-vehicles?brand=chevrolet` | modelos da montadora (3.495 no total; inclui caminhões, ônibus e motos) |
 | `...&model=Tracker` | anos do modelo, cada um com os ids de veículo daquele ano |
 | `...&year=2021` | versões do ano (`label`, `handle`) com **um id de veículo cada** (ex.: "4x2 Aut. 1.2 12v L3 Turbo" = 62329) |
-| `/api/get-automaker-content?handle=chevrolet/tracker` | foto do modelo (`images.karhub.com.br/veiculos/chevrolet-tracker.avif`, 600×450 com fundo transparente) e logo da montadora (200×200) |
+| `/api/get-automaker-content?handle=chevrolet/tracker` | foto do modelo (`images.karhub.com.br/veiculos/chevrolet-tracker.avif`, 600×450 com fundo transparente) e logo da montadora (200×200 com fundo transparente; 156 das 159 montadoras têm, faltam Iros, MG e Mottu) |
 | `/api/product-compatible-ids?handles=h1,h2,...` | para cada produto, os ids de veículo que ele atende; aceita até 50 por chamada (com 100, volta vazio sem erro) |
 
 O id de veículo do KarHub é um par (versão, ano): os ids de um ano são exatamente a união dos
@@ -73,7 +73,7 @@ o KarHub não cobre.
 | Ligação peça → veículo | Tabela `peca_veiculo` agrupada por versão e faixa de anos, com `id_versao` nulo quando a peça serve em todas as versões | Sem agrupar seriam ~70 milhões de linhas (cerca de 400 versões-ano por produto) |
 | Níveis de confiança | `versao` (confirmada pelo KarHub) e `modelo` (deduzida do texto de aplicação, versão não confirmada) | É o selo "serve nesta versão" ou "confira a versão" da tela |
 | Foto do modelo | WebP com transparência, qualidade 90, sem redimensionar | 34 KB contra 211 KB do PNG; todos os navegadores atuais abrem |
-| Logo da montadora | PNG, como os que já existem | Mesmo formato dos 5 logos atuais |
+| Logo da montadora | Todos os 156 que o KarHub tem, em PNG 200×200 com transparência; os 5 logos do Francisco continuam valendo no lugar dos do KarHub | Mesmo formato dos 5 logos atuais; o filtro mostra o logo ao lado do nome da montadora |
 | Foto própria | Arquivo em `helper_fotos_veiculos/proprias/` tem prioridade sobre o do KarHub | O dono pode trocar qualquer foto ou logo sem mexer em código |
 | Onde ficam os arquivos no servidor | `/home/wayap/helper/modelos/` e `/home/wayap/helper/montadoras/`, servidos por `/files/aGVscGVy/` | Mesma convenção do `montadoras.logo` (caminho relativo a `/home/wayap/helper/`) |
 
@@ -128,7 +128,7 @@ Tabelas no `helper.sqlite` e, quando indicado, no Postgres `helper`.
 Casamento com a `montadoras` do Wayap: compara os nomes em maiúsculas, sem acento e só com
 letras e números (`MERCEDES BENZ` = `MERCEDES-BENZ`), e depois consulta o arquivo editável
 `helper_montadoras.csv` (`apelido;montadora`) para os casos que diferem de verdade: `KIA` →
-`KIA MOTORS`, `JAC` → `JAC MOTORS`, `GM` → `CHEVROLET`, `VW` → `VOLKSWAGEN`, `BMW BMW` → `BMW`.
+`KIA MOTORS`, `JAC` → `JAC MOTORS`, `ASIA` → `ASIA MOTORS`, `GM` → `CHEVROLET`, `VW` → `VOLKSWAGEN`, `BMW BMW` → `BMW`.
 O mesmo casamento serve para o campo `montadora` das aplicações.
 
 ### 5.2 `modelo` (local e Postgres)
@@ -212,8 +212,8 @@ hashes.
 
 1. **Árvore:** lê `veiculos/karhub_arvore.jsonl` e grava montadora, modelo, versão, anos e
    `veiculo_fonte`. Modelo ou versão ausente da coleta vira `ativo = 0`.
-2. **Imagens:** converte a foto de cada modelo para WebP e o logo de cada montadora para PNG,
-   a partir de `veiculos/imagens/`. Antes, procura foto própria em
+2. **Imagens:** converte a foto de cada modelo para WebP e o logo de **todas** as montadoras
+   para PNG, a partir de `veiculos/imagens/`. Antes, procura foto própria em
    `helper_fotos_veiculos/proprias/modelos/<MONTADORA>-<MODELO>.(png|jpg|webp)` e
    `helper_fotos_veiculos/proprias/montadoras/<MONTADORA>.png`, que têm prioridade. Saída em
    `helper_fotos_veiculos/modelos/` e `helper_fotos_veiculos/logos/`. Modelo sem foto fica com
@@ -315,7 +315,9 @@ consultas.
   publicação grava zero linhas. Integração real com `HELPER_TESTE_PG=1`, como hoje, cobrindo
   as funções do item 8.
 - **Relatório `veiculos.md`:** montadoras (casadas com as do Wayap, novas a inserir), modelos,
-  versões, anos-versão, modelos com e sem foto, peças ligadas por nível, linhas de
+  versões, anos-versão, modelos com e sem foto, montadoras com e sem logo (incluindo as da `montadoras` do Wayap que
+  o KarHub não tem, como Acura, Infiniti e Lotus, que ficam sem logo até ganharem um próprio),
+  peças ligadas por nível, linhas de
   `peca_veiculo`, ids de veículo desconhecidos, as 50 aplicações mais comuns que não casaram.
 - **Conferência manual:** para três veículos (Tracker 2021 1.2 Turbo, Gol 2010, Palio 2005),
   `pecas-do-veiculo` com `--texto TAMBOR` e `--texto PASTILHA` comparado com a página de
@@ -333,7 +335,7 @@ consultas.
   sempre que o `catalogo_karhub.py` for rodado de novo; depois `veiculos` e `publicar`.
 - **Volumes:** 159 montadoras (cerca de 90 a inserir na `montadoras` do Wayap), 3.495
   modelos; versões e anos-versão medidos na primeira coleta. Fotos: cerca de 3.500 × 35 KB ≈
-  120 MB. `peca_veiculo`: estimativa de 5 a 15 milhões de linhas (cerca de 1 GB com índices),
+  120 MB; logos: 156 × cerca de 20 KB ≈ 3 MB. `peca_veiculo`: estimativa de 5 a 15 milhões de linhas (cerca de 1 GB com índices),
   medida pelo relatório da primeira preparação; o servidor tem cerca de 300 GB livres.
 
 ## 11. Riscos
