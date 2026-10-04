@@ -11,6 +11,7 @@ outras pastas de peças. Depois é só rodar `wayap_fotos.py planejar --fontes .
 import hashlib
 import json
 import re
+import socket
 import sys
 import time
 from collections import defaultdict
@@ -18,9 +19,13 @@ from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from urllib.parse import urlparse
 
-from scrapling.fetchers import Fetcher
+import requests
+import urllib3.util.connection
 
 from wayap_fotos import Wayap, casar, n_codigo, n_ean, n_marca
+
+# esta rede não tem rota IPv6 e alguns CDNs (altese.vteximg.com.br) resolvem primeiro para IPv6: igual ao helper
+urllib3.util.connection.allowed_gai_family = lambda: socket.AF_INET
 
 
 def slug(url):
@@ -49,10 +54,11 @@ def pastas_por_peca(catalogo, indices):
 def baixar(url):
     for espera in (5, 15, 30, None):
         try:
-            r = Fetcher.get(url, headers={"Accept": "image/jpeg,image/png;q=0.9,*/*;q=0.5"}, timeout=60)
-            if r.status == 200:
+            r = requests.get(url, headers={"Accept": "image/jpeg,image/png;q=0.9,*/*;q=0.5",
+                                           "User-Agent": "Mozilla/5.0"}, timeout=60)
+            if r.status_code == 200:
                 return r
-        except Exception:
+        except requests.RequestException:
             pass
         if espera is None:
             return None
@@ -60,18 +66,25 @@ def baixar(url):
 
 
 def gravar_peca(site, c, nome_pasta):
+    """Pasta já gravada só baixa as fotos que falharam antes (foto_N continua sendo a N-ésima do catálogo)."""
     pasta = Path(f"pecas_{site}") / nome_pasta
-    if (pasta / "produto.json").exists():
+    arq = pasta / "produto.json"
+    anteriores = json.loads(arq.read_text(encoding="utf-8"))["imagens"] if arq.exists() else []
+    baixadas = {i.get("url"): i for i in anteriores}
+    if arq.exists() and all(url in baixadas for url in c["imagens"]):
         return pasta
     pasta.mkdir(parents=True, exist_ok=True)
     imagens = []
     for i, url in enumerate(c["imagens"], 1):
+        if url in baixadas:
+            imagens.append(baixadas[url])
+            continue
         r = baixar(url)
         if not r:
             continue
         tipo = (r.headers.get("content-type") or "").split(";")[0].strip()
         ext = {"image/jpeg": ".jpg", "image/png": ".png", "image/webp": ".webp"}.get(tipo, ".jpg")
-        (pasta / f"foto_{i}{ext}").write_bytes(r.body)
+        (pasta / f"foto_{i}{ext}").write_bytes(r.content)
         imagens.append({"arquivo": f"foto_{i}{ext}", "url": url, "principal": i == 1})
     produto = {"nome": c.get("nome"), "marca": c.get("marca"), "codigo_fabricante": c.get("codigo_fabricante"),
                "ean": c.get("ean"), "carro": c.get("carro"), "imagens": imagens, "url_origem": c["url"]}

@@ -218,3 +218,25 @@ def test_download_forca_ipv4():
     import urllib3.util.connection
     import helper.fotos  # noqa: F401
     assert urllib3.util.connection.allowed_gai_family() == socket.AF_INET
+
+
+def _banner_png():
+    """Imagem "Aplicações Principais" da KarHub: faixa azul-marinho no topo e lista de carros, sem a peça."""
+    from PIL import ImageDraw
+    im = Image.new("RGB", (1000, 1000), "white")
+    d = ImageDraw.Draw(im)
+    d.rectangle([20, 20, 980, 160], fill=(16, 30, 72))
+    for y in range(200, 400, 20):
+        d.line([(40, y), (600, y)], fill=(120, 120, 140), width=2)
+    buf = BytesIO()
+    im.save(buf, format="PNG")
+    return buf.getvalue()
+
+
+def test_banner_de_aplicacao_e_recusado_e_nao_volta_para_a_fila(tmp_path):
+    assert preparar_imagem(_banner_png()) is None and preparar_imagem.motivo == "banner"
+    db = _banco_com_pendentes(tmp_path, [(1, "https://img/banner.png", None, 2, "karhub")])
+    cfg = carregar_config(TOML)
+    r = processar_pendentes(db, tmp_path / "f", cfg, baixar=lambda u, sessao=None: _banner_png())
+    assert r == {"gravadas": 0, "duplicadas": 0, "descartadas": 1, "erros": 0}
+    assert dict(db.execute("SELECT erro, tentativas FROM foto_pendente").fetchone()) == {"erro": "banner", "tentativas": 3}

@@ -80,9 +80,11 @@ python wayap_fotos.py desfazer            # apaga do Wayap o que este script env
 ```
 
 - Casamento por EAN (com marca ou número do código confirmando) ou por código + marca + palavra da
-  descrição em comum. O que não tem essa confirmação vai para `revisar.csv` e não é enviado.
-- Fotos: mínimo 250 px, sem logos/"sem foto", sem repetir as que o produto já tem; no máximo 5 por
-  produto, sem apagar nenhuma existente. PNG transparente ganha fundo branco.
+  descrição em comum. O que não tem essa confirmação vai para `revisar.csv` e não é enviado. A marca passa
+  pelos apelidos do `helper_marcas.csv` ("Original Fiat" = FIAT, "TRW/VARGA" = TRW).
+- Fotos: mínimo 250 px, sem logos/"sem foto", sem os banners "Aplicações Principais" da KarHub (lista de
+  carros, sem a peça), sem repetir as que o produto já tem; no máximo 5 por produto, sem apagar nenhuma
+  existente. PNG transparente ganha fundo branco.
 - Marcação do que subiu: coluna `status`/`nome_no_wayap` do `plano.csv` e um `wayap_<sociedade>.json`
   em cada pasta de peça cuja foto foi usada.
 
@@ -108,6 +110,20 @@ python catalogo_para_pecas.py karhub shoppecas     # casa com os produtos SEM fo
 python wayap_fotos.py planejar --so-sem-foto --saida fotos_wayap_topcar_sites \
     --fontes karhub=pecas_karhub/*/produto.json shoppecas=pecas_shoppecas/*/produto.json
 python wayap_fotos.py enviar --saida fotos_wayap_topcar_sites
+```
+
+`catalogo_para_pecas.py` baixa por IPv4 (esta rede não tem rota IPv6) e, rodado de novo, completa as fotos que
+falharam nas pastas já gravadas. Rodada com todas as fontes (a de 2026-10-03 está em
+`fotos_wayap_topcar_rodada_2026-10-03`):
+
+```bash
+python catalogo_para_pecas.py altese karhub shoppecas carblue universal azacessorios
+python wayap_fotos.py planejar --so-sem-foto --saida fotos_wayap_topcar_rodada_<data> --fontes \
+    autonext='pecas_autonext/*/produto.json' hipervarejo='pecas_hipervarejo/*/produto.json' \
+    auri='pecas_auri/*/*/produto.json' karhub='pecas_karhub/*/produto.json' shoppecas='pecas_shoppecas/*/produto.json' \
+    carblue='pecas_carblue/*/produto.json' universal='pecas_universal/*/produto.json' \
+    azacessorios='pecas_azacessorios/*/produto.json' altese='pecas_altese/*/produto.json'
+python wayap_fotos.py enviar --saida fotos_wayap_topcar_rodada_<data>
 ```
 
 Universal (18 mil produtos, ~10 min):
@@ -161,7 +177,9 @@ python helper.py publicar                      # rsync das fotos (HELPER_SSH), d
 - Marcas canônicas e apelidos: `helper_marcas.csv` (semeado com as marcas da topcar). Marcas que os sites usam e não
   estão lá saem em `helper_relatorios/<data>-marcas-desconhecidas.csv`; classifique e rode `preparar` de novo (os ids
   das peças não mudam).
-- Fotos: `helper_fotos.toml` (sites/hosts de fabricante, tipos prioritários, limite para detectar logo).
+- Fotos: `helper_fotos.toml` (sites/hosts de fabricante, tipos prioritários, limite para detectar logo). O banner
+  "Aplicações Principais" da KarHub é recusado no download (`erro = 'banner'` em `foto_pendente`); os 1.569 que já
+  estavam publicados foram marcados em 2026-10-03 com `motivo_nao_publicavel = 'banner'`.
 - Conflitos de EAN/código entre fontes: `helper_relatorios/<data>-conflitos.csv`.
 - Contrato com o Wayap (funções no Postgres `helper`): `busca_codigo(texto)`, `busca_ean(texto)`,
   `busca_texto(texto, limite)`, `busca_tipo(tipo, montadora, modelo, so_com_foto, limite)`; views `v_peca` e

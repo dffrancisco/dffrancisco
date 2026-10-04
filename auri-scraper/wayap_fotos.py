@@ -20,6 +20,7 @@ duplicadas (inclusive das que o produto já tem no Wayap). O produto fica com no
 import argparse
 import base64
 import csv
+import functools
 import glob
 import json
 import os
@@ -33,7 +34,7 @@ from io import BytesIO
 from pathlib import Path
 
 import requests
-from PIL import Image
+from PIL import Image, ImageStat
 
 FONTES = ["autonext=pecas_autonext/*/produto.json", "hipervarejo=pecas_hipervarejo/*/produto.json",
           "auri=pecas_auri/*/*/produto.json"]
@@ -101,6 +102,27 @@ def numeros_compativeis(a, b):
 
 def marcas_compativeis(a, b):
     return a == b or (min(len(a), len(b)) >= 3 and (a in b or b in a))
+
+
+@functools.cache
+def apelidos_marca():
+    """n_marca(apelido) -> n_marca(marca canônica), do helper_marcas.csv: "ORIGINAL FIAT" é FIAT, "TRW/VARGA" é TRW."""
+    arquivo = Path(__file__).with_name("helper_marcas.csv")
+    if not arquivo.exists():
+        return {}
+    apelidos = {}
+    with arquivo.open(encoding="utf-8", newline="") as f:
+        for linha in csv.DictReader(f, delimiter=";"):
+            nome = n_marca(linha["nome"])
+            for apelido in [linha["nome"]] + (linha.get("apelidos") or "").split("|"):
+                if n_marca(apelido):
+                    apelidos.setdefault(n_marca(apelido), nome)
+    return apelidos
+
+
+def marca_canonica(marca):
+    """Marca já passada por n_marca; a que não está no helper_marcas.csv fica como veio."""
+    return apelidos_marca().get(marca, marca)
 
 
 # ---------- Wayap ----------
@@ -243,10 +265,19 @@ def distancia(a, b):
     return bin(a ^ b).count("1")
 
 
+def banner_de_aplicacao(im):
+    """Imagem "Aplicações Principais" da KarHub (faixa azul-marinho no topo e lista de carros em texto, sem a peça).
+    O texto muda de uma peça para outra, então o filtro de logo (mesma imagem em várias peças) não pega."""
+    w, h = im.size
+    topo = ImageStat.Stat(im.crop((int(w * .05), int(h * .04), int(w * .75), int(h * .14)))).mean
+    baixo = ImageStat.Stat(im.crop((0, int(h * .45), w, int(h * .95)))).mean
+    return topo[2] > topo[0] + 20 and max(topo) < 110 and min(baixo) > 235
+
+
 def info_foto(caminho):
     try:
         im = abrir_rgb(caminho)
-        return caminho, {"w": im.width, "h": im.height, "hash": dhash(im)}
+        return caminho, {"w": im.width, "h": im.height, "hash": dhash(im), "banner": banner_de_aplicacao(im)}
     except Exception:
         return caminho, None
 
@@ -273,12 +304,12 @@ def casar(produtos, registros):
         if r["ean"]:
             por_ean[r["ean"]].append(i)
         if len(r["codigo"]) >= 3:
-            por_codigo[(r["marca"], r["codigo"])].append(i)
+            por_codigo[(marca_canonica(r["marca"]), r["codigo"])].append(i)
     eans_wayap = Counter(n_ean(p["cod_barra"]) for p in produtos)
 
     casados, revisar = [], []
     for p in produtos:
-        marca = n_marca(p["marca"])
+        marca = marca_canonica(n_marca(p["marca"]))
         ean = n_ean(p["cod_barra"])
         codigos = {c for c in (n_codigo(p["num_fabricante"]), n_codigo(p["num_fabricante2"])) if len(c) >= 3}
         desc = palavras(p["desc_produto"])
@@ -296,7 +327,7 @@ def casar(produtos, registros):
                 aceitos[i] = "ean+codigo"
             elif i in pelo_ean and codigo_diverge:
                 motivos[i] = "ean igual, codigo diferente"
-            elif i in pelo_ean and (marcas_compativeis(marca, r["marca"]) or codigo_confere or comum >= 1):
+            elif i in pelo_ean and (marcas_compativeis(marca, marca_canonica(r["marca"])) or codigo_confere or comum >= 1):
                 aceitos[i] = "ean"
             elif i in pelo_codigo and comum >= (2 if marca in MARCAS_GENERICAS else 1):
                 aceitos[i] = "codigo+marca"
@@ -412,7 +443,7 @@ def planejar(args):
             r = registros[i]
             for ordem, img in enumerate(r["imagens"]):
                 d = info.get(img)
-                if d and min(d["w"], d["h"]) >= MENOR_LADO and d["hash"] not in genericas:
+                if d and min(d["w"], d["h"]) >= MENOR_LADO and d["hash"] not in genericas and not d["banner"]:
                     fotos.append({"origem": img, "fonte": r["fonte"], "pasta": r["pasta"], "url_origem": r["url"],
                                   "principal": ordem == 0,
                                   "w": d["w"], "h": d["h"], "hash": d["hash"], "casamento": aceitos[i]})

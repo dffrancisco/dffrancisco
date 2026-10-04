@@ -13,7 +13,7 @@ import urllib3.util.connection
 from PIL import Image
 
 from helper.fusao import atualizar_hash
-from wayap_fotos import DISTANCIA_DUPLICADA, LADO_ENVIO, MENOR_LADO, abrir_rgb, dhash, distancia
+from wayap_fotos import DISTANCIA_DUPLICADA, LADO_ENVIO, MENOR_LADO, abrir_rgb, banner_de_aplicacao, dhash, distancia
 
 # esta rede não tem rota IPv6 e alguns CDNs (cdn.shopify.com) resolvem primeiro para IPv6: igual ao painel_wayap.py
 urllib3.util.connection.allowed_gai_family = lambda: socket.AF_INET
@@ -47,6 +47,9 @@ def preparar_imagem(dados):
         return None
     if min(im.size) < MENOR_LADO:
         preparar_imagem.motivo = "pequena"
+        return None
+    if banner_de_aplicacao(im):
+        preparar_imagem.motivo = "banner"
         return None
     if max(im.size) > LADO_ENVIO:
         im.thumbnail((LADO_ENVIO, LADO_ENVIO), Image.LANCZOS)
@@ -150,8 +153,8 @@ def _processar_uma(db, pasta, config, l, dados, r, tocadas, max_tentativas):
     img = preparar_imagem(dados) if dados else None
     if img is None:
         motivo = preparar_imagem.motivo if dados else "download falhou"
-        if motivo == "pequena":  # recusa definitiva: fica registrada para o preparar não re-enfileirar
-            db.execute("UPDATE foto_pendente SET tentativas = ?, erro = 'pequena' WHERE id_peca=? AND url=?", (max_tentativas, id_peca, url))
+        if motivo in ("pequena", "banner"):  # recusa definitiva: fica registrada para o preparar não re-enfileirar
+            db.execute("UPDATE foto_pendente SET tentativas = ?, erro = ? WHERE id_peca=? AND url=?", (max_tentativas, motivo, id_peca, url))
             r["descartadas"] += 1
         else:
             db.execute("UPDATE foto_pendente SET tentativas = tentativas + 1, erro = ? WHERE id_peca=? AND url=?", (motivo, id_peca, url))
