@@ -254,6 +254,16 @@ def test_lote_inteiro_vazio_repete_em_lotes_de_10(tmp_path):
     assert all(l["ids"] == ["3"] for l in _ler(tmp_path / "compat.jsonl"))
 
 
+def test_handles_gravados_le_em_fluxo_e_corta_linha_incompleta(tmp_path, monkeypatch):
+    arq = tmp_path / "compat.jsonl"
+    arq.write_text(json.dumps({"handle": "a", "ids": ["1"] * 400}) + "\n" + json.dumps({"handle": "b", "ids": []}) + "\n{\"handle\": \"c\", \"id",
+                   encoding="utf-8")
+    monkeypatch.setattr(cv, "ler_jsonl", lambda c: pytest.fail("compat tem centenas de MB: não pode ser carregado inteiro"))
+    assert cv.handles_gravados(arq) == {"a", "b"}
+    assert arq.read_text(encoding="utf-8").endswith('"ids": []}\n')  # a linha cortada saiu
+    assert cv.handles_gravados(tmp_path / "nao_existe.jsonl") == set()
+
+
 def test_compat_retoma_pelos_handles_gravados(tmp_path):
     (tmp_path / "compat.jsonl").write_text(json.dumps({"handle": "peca-0", "ids": ["1"], "coletado_em": "2026-10-01"}) + "\n", encoding="utf-8")
     web = Web({_rota_compat(["peca-1", "peca-2"]): _json({"peca-1": ["9"]})})

@@ -230,6 +230,33 @@ def handles_do_catalogo(caminho):
     return list(vistos)
 
 
+def _cortar_linha_incompleta(caminho):
+    """Queda no meio da gravação: corta no último '\\n' sem reescrever o arquivo (o compat tem centenas de MB)."""
+    with open(caminho, "rb+") as f:
+        fim = f.seek(0, 2)
+        pos = fim
+        while pos > 0:
+            bloco = min(65536, pos)
+            pos -= bloco
+            f.seek(pos)
+            i = f.read(bloco).rfind(b"\n")
+            if i >= 0:
+                if pos + i + 1 < fim:
+                    f.truncate(pos + i + 1)
+                return
+        f.truncate(0)
+
+
+def handles_gravados(caminho):
+    """Handles já em karhub_compat.jsonl, lidos linha a linha: cada linha tem ~400 ids e o arquivo não cabe inteiro na memória."""
+    caminho = Path(caminho)
+    if not caminho.exists():
+        return set()
+    _cortar_linha_incompleta(caminho)
+    with caminho.open(encoding="utf-8") as f:
+        return {json.loads(linha)["handle"] for linha in f if linha.strip()}
+
+
 def _compat(cliente, handles):
     resposta = cliente.json(f"{SITE}/api/product-compatible-ids?handles={','.join(quote(h) for h in handles)}")
     return resposta if isinstance(resposta, dict) else {}
@@ -238,7 +265,7 @@ def _compat(cliente, handles):
 def coletar_compat(cliente, catalogo, saida, do_inicio=False, log=print):
     saida = Path(saida)
     alvo = Path(f"{saida}.novo") if do_inicio else saida
-    feitos = {l["handle"] for l in ler_jsonl(alvo)}
+    feitos = handles_gravados(alvo)
     pendentes = [h for h in handles_do_catalogo(catalogo) if h not in feitos]
     hoje, r = date.today().isoformat(), Counter()
     log(f"compat: {len(feitos)} handles já gravados, {len(pendentes)} a consultar")
