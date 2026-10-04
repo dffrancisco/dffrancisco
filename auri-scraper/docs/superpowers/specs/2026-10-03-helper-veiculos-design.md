@@ -123,7 +123,7 @@ ausente) e grava uma linha por modelo **completo** em `veiculos/karhub_arvore.js
 {"montadora": {"label": "Chevrolet", "handle": "chevrolet", "logo_url": "https://images.karhub.com.br/assets/montadoras/chevrolet.avif"},
  "modelo": {"label": "Tracker", "handle": "Tracker", "foto_url": "https://images.karhub.com.br/veiculos/chevrolet-tracker.avif"},
  "tipo": "carro", "motivo_tipo": "fipe",
- "anos": [{"ano": 2021, "versoes": [{"label": "4x2 Aut. 1.2 12v L3 Turbo", "handle": "4x2-aut-12-12v-l3-turbo", "id_fonte": "62329"}]}],
+ "anos": [{"ano": 2021, "versoes": [{"label": "4x2 Aut. 1.2 12v L3 Turbo", "handle": "4x2-aut-12-12v-l3-turbo", "ids_fonte": ["62329"]}]}],
  "coletado_em": "2026-10-03"}
 ```
 
