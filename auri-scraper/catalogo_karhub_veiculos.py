@@ -23,7 +23,7 @@ import requests
 from curl_cffi.requests.exceptions import RequestException as ErroCurl
 
 from helper.montadoras import Montadoras
-from helper.veiculo_tipo import carregar_ajustes, classificar, indexar_fipe
+from helper.veiculo_tipo import ajuste_de, carregar_ajustes, classificar, indexar_fipe
 
 SITE = "https://www.karhub.com.br"
 FIPE = "https://parallelum.com.br/fipe/api/v1"
@@ -64,6 +64,8 @@ class Cliente:
                 erro = None
             except ERROS_REDE as e:  # conexão recusada ou timeout: houve minutos assim nos testes de 2026-10-03
                 status, corpo, tipo, erro = None, b"", "", f"conexão: {e}"
+            if status == 200 and tipo.startswith("text/html") and b"captcha" in corpo[:3000].lower():
+                status = 403  # página de desafio do Cloudflare com 200: é bloqueio, não resposta
             if status == 200:
                 if self.pausa:
                     time.sleep(self.pausa)
@@ -141,18 +143,41 @@ def _versoes(itens):
             for v in itens if v.get("compatible_ids")]
 
 
-def _feitos(arq_arvore, arq_excl, indice_fipe, ajustes, montadoras):
+def _feitos(arq_arvore, arq_excl, ajustes, montadoras):
     feitos = {(l["montadora"]["handle"], l["modelo"]["handle"]) for l in ler_jsonl(arq_arvore)}
     for l in ler_jsonl(arq_excl):
-        if l.get("tipo") == "sem_anos":
-            feitos.add((l["montadora"]["handle"], l["modelo"]["handle"]))
-            continue
-        # um ajuste novo em helper_veiculos_tipo.csv pode ter transformado o excluído em carro: aí ele é coletado
-        tipo, _ = classificar(montadoras.chaves(l["montadora"]["label"]), l["modelo"]["label"], l.get("versoes_exemplo") or [],
-                              indice_fipe, ajustes)
-        if tipo != "carro":
+        # só um ajuste do dono (helper_veiculos_tipo.csv) traz um excluído de volta; reclassificar pelas 5 versões de
+        # exemplo traria de volta pesados decididos por uma versão posterior, a cada rodada
+        if ajuste_de(ajustes, montadoras.chaves(l["montadora"]["label"]), l["modelo"]["label"]) != "carro":
             feitos.add((l["montadora"]["handle"], l["modelo"]["handle"]))
     return feitos
+
+
+def _coletar_modelo(cliente, pasta, marca, modelo, chaves, indice_fipe, ajustes, logos, hoje):
+    """-> (destino 'arvore' ou 'excluidos', registro, chave de contagem). Nada é gravado aqui: o modelo só vai para o arquivo
+    inteiro, depois de todas as chamadas darem certo."""
+    base = {"montadora": {"label": marca["label"], "handle": marca["handle"]},
+            "modelo": {"label": modelo["label"], "handle": modelo["handle"]}}
+    anos = api_veiculos(cliente, brand=marca["handle"], model=modelo["handle"])["years"]
+    if not anos:
+        return "excluidos", {**base, "tipo": "sem_anos", "motivo_tipo": "sem_anos", "versoes_exemplo": [], "coletado_em": hoje}, "sem_anos"
+    recentes = api_veiculos(cliente, brand=marca["handle"], model=modelo["handle"], year=anos[0]["value"])["versions"]
+    rotulos = [v["label"] for v in recentes]
+    tipo, motivo = classificar(chaves, modelo["label"], rotulos, indice_fipe, ajustes)
+    if tipo != "carro":
+        return ("excluidos", {**base, "tipo": tipo, "motivo_tipo": motivo, "versoes_exemplo": rotulos[:5], "coletado_em": hoje},
+                f"excluido_{tipo}")
+    lista_anos = [{"ano": int(anos[0]["value"]), "versoes": _versoes(recentes)}]
+    for ano in anos[1:]:
+        itens = api_veiculos(cliente, brand=marca["handle"], model=modelo["handle"], year=ano["value"])["versions"]
+        lista_anos.append({"ano": int(ano["value"]), "versoes": _versoes(itens)})
+    if marca["handle"] not in logos:
+        url_logo = (conteudo(cliente, marca["handle"]).get("brand") or {}).get("image_url")
+        logos[marca["handle"]] = baixar_imagem(cliente, url_logo, pasta / "imagens")
+    url_foto = (conteudo(cliente, f"{marca['handle']}/{modelo['handle']}").get("model") or {}).get("image_url")
+    return ("arvore", {"montadora": {**base["montadora"], "logo_url": logos[marca["handle"]]},
+                       "modelo": {**base["modelo"], "foto_url": baixar_imagem(cliente, url_foto, pasta / "imagens")},
+                       "tipo": tipo, "motivo_tipo": motivo, "anos": lista_anos, "coletado_em": hoje}, "carros")
 
 
 def coletar_arvore(cliente, pasta, indice_fipe, ajustes, montadoras, so_montadora=None, do_inicio=False, log=print):
@@ -160,13 +185,9 @@ def coletar_arvore(cliente, pasta, indice_fipe, ajustes, montadoras, so_montador
     arq_arvore, arq_excl = pasta / "karhub_arvore.jsonl", pasta / "karhub_excluidos.jsonl"
     alvo_arvore = Path(f"{arq_arvore}.novo") if do_inicio else arq_arvore
     alvo_excl = Path(f"{arq_excl}.novo") if do_inicio else arq_excl
-    feitos = _feitos(alvo_arvore, alvo_excl, indice_fipe, ajustes, montadoras)
+    feitos = _feitos(alvo_arvore, alvo_excl, ajustes, montadoras)
     hoje, r, logos = date.today().isoformat(), Counter(), {}
     with alvo_arvore.open("a", encoding="utf-8") as f_arv, alvo_excl.open("a", encoding="utf-8") as f_exc:
-        def gravar(arquivo, registro):
-            arquivo.write(json.dumps(registro, ensure_ascii=False) + "\n")
-            arquivo.flush()
-
         for marca in api_veiculos(cliente)["brands"]:
             if so_montadora and marca["handle"] != so_montadora:
                 continue
@@ -175,34 +196,20 @@ def coletar_arvore(cliente, pasta, indice_fipe, ajustes, montadoras, so_montador
                 if (marca["handle"], modelo["handle"]) in feitos:
                     r["ja_feitos"] += 1
                     continue
-                base = {"montadora": {"label": marca["label"], "handle": marca["handle"]},
-                        "modelo": {"label": modelo["label"], "handle": modelo["handle"]}}
-                anos = api_veiculos(cliente, brand=marca["handle"], model=modelo["handle"])["years"]
-                if not anos:
-                    gravar(f_exc, {**base, "tipo": "sem_anos", "motivo_tipo": "sem_anos", "versoes_exemplo": [], "coletado_em": hoje})
-                    r["sem_anos"] += 1
+                try:
+                    destino, registro, chave = _coletar_modelo(cliente, pasta, marca, modelo, chaves, indice_fipe, ajustes, logos, hoje)
+                except (RuntimeError, ValueError, KeyError, TypeError) as e:
+                    # erro que não passou com as novas tentativas (404/500 fixo, resposta sem o formato esperado): o modelo
+                    # fica de fora desta rodada e volta na próxima, sem travar as montadoras seguintes
+                    r["erro"] += 1
+                    log(f"ERRO em {marca['label']} {modelo['label']}: {e}; fica para a próxima rodada")
                     continue
-                recentes = api_veiculos(cliente, brand=marca["handle"], model=modelo["handle"], year=anos[0]["value"])["versions"]
-                rotulos = [v["label"] for v in recentes]
-                tipo, motivo = classificar(chaves, modelo["label"], rotulos, indice_fipe, ajustes)
-                if tipo != "carro":
-                    gravar(f_exc, {**base, "tipo": tipo, "motivo_tipo": motivo, "versoes_exemplo": rotulos[:5], "coletado_em": hoje})
-                    r[f"excluido_{tipo}"] += 1
-                    log(f"{marca['label']} {modelo['label']}: {tipo} ({motivo}), fora da árvore")
-                    continue
-                lista_anos = [{"ano": int(anos[0]["value"]), "versoes": _versoes(recentes)}]
-                for ano in anos[1:]:
-                    itens = api_veiculos(cliente, brand=marca["handle"], model=modelo["handle"], year=ano["value"])["versions"]
-                    lista_anos.append({"ano": int(ano["value"]), "versoes": _versoes(itens)})
-                if marca["handle"] not in logos:
-                    url_logo = (conteudo(cliente, marca["handle"]).get("brand") or {}).get("image_url")
-                    logos[marca["handle"]] = baixar_imagem(cliente, url_logo, pasta / "imagens")
-                url_foto = (conteudo(cliente, f"{marca['handle']}/{modelo['handle']}").get("model") or {}).get("image_url")
-                gravar(f_arv, {"montadora": {**base["montadora"], "logo_url": logos[marca["handle"]]},
-                               "modelo": {**base["modelo"], "foto_url": baixar_imagem(cliente, url_foto, pasta / "imagens")},
-                               "tipo": tipo, "motivo_tipo": motivo, "anos": lista_anos, "coletado_em": hoje})
-                r["carros"] += 1
-                log(f"{marca['label']} {modelo['label']}: carro ({motivo}), {len(lista_anos)} anos")
+                arquivo = f_arv if destino == "arvore" else f_exc
+                arquivo.write(json.dumps(registro, ensure_ascii=False) + "\n")
+                arquivo.flush()
+                r[chave] += 1
+                log(f"{marca['label']} {modelo['label']}: {registro['tipo']} ({registro['motivo_tipo']})"
+                    + (f", {len(registro['anos'])} anos" if destino == "arvore" else ", fora da árvore"))
     if do_inicio:
         alvo_arvore.replace(arq_arvore)
         alvo_excl.replace(arq_excl)
@@ -291,6 +298,9 @@ def main(argv=None):
                 r = coletar_compat(Cliente(log=log), args.catalogo, args.pasta / "karhub_compat.jsonl", do_inicio=args.do_inicio, log=log)
         except Bloqueado as e:
             log(f"PARADO por bloqueio ({e}). Rode de novo mais tarde; retoma de onde parou.")
+            return 2
+        except RuntimeError as e:  # a rede não voltou depois das novas tentativas
+            log(f"PARADO por erro de rede ({e}). Rode de novo mais tarde; retoma de onde parou.")
             return 2
         log("fim: " + ", ".join(f"{k} {v}" for k, v in sorted(dict(r).items())))
     return 0

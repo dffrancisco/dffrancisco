@@ -181,6 +181,43 @@ def test_main_arvore_sem_fipe_avisa(tmp_path):
     assert cv.main(["arvore", "--pasta", str(tmp_path)]) == 2
 
 
+def test_excluido_nao_volta_so_porque_as_versoes_de_exemplo_parecem_de_carro(tmp_path):
+    # pesado decidido por uma versão além da 5ª: as de exemplo, sozinhas, cairiam no "padrão" (carro)
+    (tmp_path / "karhub_excluidos.jsonl").write_text(json.dumps({
+        "montadora": {"label": "Honda", "handle": "honda"}, "modelo": {"label": "Biz 100", "handle": "Biz 100"},
+        "tipo": "pesado", "motivo_tipo": "versao", "versoes_exemplo": ["Lt 1.0"], "coletado_em": "2026-10-04"}) + "\n",
+        encoding="utf-8")
+    web = Web(_rotas())
+    r = _coletar(tmp_path, web)
+    assert r["ja_feitos"] == 1 and not any("Biz" in u for u in web.pedidos)
+    assert len(_ler(tmp_path / "karhub_excluidos.jsonl")) == 1  # sem linha duplicada
+
+
+def test_modelo_com_erro_permanente_nao_trava_a_coleta(tmp_path):
+    rotas = _rotas()
+    del rotas[f"{GV}?brand=chevrolet&model=Tracker&year=2020"]  # 404 em rota JSON: erro que não passa
+    r = _coletar(tmp_path, Web(rotas))
+    assert r["erro"] == 1 and r["excluido_moto"] == 1  # a Honda, que vem depois, foi coletada
+    assert (tmp_path / "karhub_arvore.jsonl").read_text(encoding="utf-8") == ""  # nada gravado pela metade
+    assert _coletar(tmp_path, Web(_rotas()))["carros"] == 1  # na rodada seguinte o Tracker é tentado de novo
+
+
+def test_200_com_captcha_conta_como_bloqueio(monkeypatch):
+    monkeypatch.setattr(cv.time, "sleep", lambda s: None)
+    c = cv.Cliente(buscar=lambda url: (200, b"<html>captcha</html>", "text/html"), esperas=(5,), pausa=0, log=lambda m: None)
+    with pytest.raises(cv.Bloqueado):
+        c.json("u")
+
+
+def test_main_sai_com_2_quando_a_rede_nao_volta(tmp_path, monkeypatch):
+    (tmp_path / "fipe.json").write_text("{}", encoding="utf-8")
+
+    def falha(*a, **k):
+        raise RuntimeError("conexão: recusada em https://www.karhub.com.br/api/get-vehicles")
+    monkeypatch.setattr(cv, "coletar_arvore", falha)
+    assert cv.main(["arvore", "--pasta", str(tmp_path)]) == 2
+
+
 def _catalogo(tmp_path, n):
     arq = tmp_path / "karhub.jsonl"
     linhas = [json.dumps({"url": f"https://www.karhub.com.br/p/peca-{i}"}) for i in range(n)]

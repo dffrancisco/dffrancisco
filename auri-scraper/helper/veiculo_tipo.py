@@ -55,11 +55,17 @@ def _cilindrada(versao):
     return max((float(f"{a}.{b}") for a, b in CILINDRADA_RE.findall(versao)), default=0.0)
 
 
+def ajuste_de(ajustes, chaves_montadora, modelo):
+    """Tipo que o dono deu ao modelo em helper_veiculos_tipo.csv, ou None."""
+    alvo = normalizar(modelo)
+    return next((ajustes[(c, alvo)] for c in chaves_montadora if (c, alvo) in ajustes), None)
+
+
 def classificar(chaves_montadora, modelo, versoes, indice_fipe, ajustes):
     alvo = normalizar(modelo)
-    for chave in chaves_montadora:
-        if (chave, alvo) in ajustes:
-            return ajustes[(chave, alvo)], "ajuste"
+    tipo = ajuste_de(ajustes, chaves_montadora, modelo)
+    if tipo:
+        return tipo, "ajuste"
     listas = set()
     for chave in chaves_montadora:
         for lista, nomes in indice_fipe.get(chave, {}).items():
