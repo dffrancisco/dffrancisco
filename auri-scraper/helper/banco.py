@@ -1,7 +1,7 @@
 """Banco local de preparação do helper (SQLite). Mesmo modelo da spec, seção 4."""
 import sqlite3
 
-VERSAO_ESQUEMA = 1
+VERSAO_ESQUEMA = 2
 
 DDL = [
     """CREATE TABLE IF NOT EXISTS meta (chave TEXT PRIMARY KEY, valor TEXT)""",
