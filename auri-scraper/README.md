@@ -101,6 +101,7 @@ sem baixar imagens:
 | Fuscão Preto | API VTEX | Não: sem código do fabricante e EANs internos da loja |
 | Universal Automotive | API VTEX da loja do fabricante (busca dividida por faixa de preço) | Sim: grupo Universal (Universal/Univel, Micro, Uniflex, Amortex, Unick, Carto), EAN em todos e código no RefId. A "M CARTO" do cadastro é outra marca |
 | AZ Acessórios | Wake, por marca (`--marca`, padrão Loma Plast) | Pouco: só 75 das 299 variações Loma Plast trazem o código LHT; o resto é código interno |
+| Altese | API VTEX, por marca (busca dividida por faixa de preço; `--marca` lê uma só) | Sim: o RefId é o código do fabricante com o zero (Arteb `0160708`), menos nas marcas de `PREFIXOS`, em que a loja põe um prefixo dela (Fitam `FIT36034D` = `36034D`). EAN em ~30%. Aplicação dos campos montadora/modelo/ano. Ignora os kits da loja e a marca "Alternativo" |
 
 ```bash
 python catalogo_para_pecas.py karhub shoppecas     # casa com os produtos SEM foto e baixa só essas fotos
@@ -130,7 +131,7 @@ python painel_wayap.py            # http://localhost:8765 (mesmas variáveis WAY
   da lista e apaga a foto no Wayap (a foto é localizada pelo conteúdo, porque apagar renumera as outras).
   Atalhos: C / E / ↑↓.
 - **Cadastrar dos sites:** busca por código, EAN ou descrição em todos os catálogos de `catalogos/*.jsonl`
-  (KarHub, CarBlue, ShopPeças, Universal, ClicPeças, Fuscão Preto, AZ Acessórios), ou só em um site pelo
+  (KarHub, CarBlue, ShopPeças, Universal, ClicPeças, Fuscão Preto, AZ Acessórios, Altese), ou só em um site pelo
   seletor. O índice SQLite fica em `catalogos/catalogos.sqlite`; na abertura do painel só é refeito o site cujo
   `.jsonl` mudou (todos juntos levam ~10 s). Um catálogo novo entra sozinho ao ser gravado nessa pasta.
   O que já existe no cadastro aparece marcado. "Cadastrar" abre o formulário com sugestões tiradas do

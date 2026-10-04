@@ -12,14 +12,18 @@ DEPO;reposicao;
 LOMA PLAST;reposicao;LOMA
 COFAP;reposicao;
 FITAM;reposicao;
-RENAULT;montadora;
-VOLKSWAGEN;montadora;VW
-CHEVROLET;montadora;GM|GMC
-FIAT;montadora;
-FORD;montadora;
-TOYOTA;montadora;
-HONDA;montadora;
+RENAULT;montadora;ORIGINAL RENAULT
+VOLKSWAGEN;montadora;VW|ORIGINAL VOLKSWAGEN
+CHEVROLET;montadora;GM|GMC|ORIGINAL CHEVROLET
+FIAT;montadora;ORIGINAL FIAT
+FORD;montadora;ORIGINAL FORD
+TOYOTA;montadora;ORIGINAL TOYOTA
+HONDA;montadora;ORIGINAL HONDA
 HYUNDAI;montadora;
+NISSAN;montadora;ORIGINAL NISSAN
+PEUGEOT;montadora;ORIGINAL PEUGEOT
+CITROEN;montadora;ORIGINAL CITROEN
+KIA;montadora;KIA MOTORS
 1A CLASSE;reposicao;
 1A LINHA;reposicao;
 3BRIO;reposicao;
@@ -212,7 +216,7 @@ FLORIO;reposicao;
 FORTLUZ;reposicao;
 FRASLE;reposicao;
 FREINER;reposicao;
-FREMAX;reposicao;
+FREMAX;reposicao;FREMAX FREIOS
 FRISART;reposicao;
 FRISAUTO;reposicao;
 FTE;reposicao;
@@ -590,7 +594,7 @@ TRAMONTINA;reposicao;
 TRAMONTINA PRO;reposicao;
 TRIGOPLAST;reposicao;
 TROQUE FACIL;reposicao;
-TRW;reposicao;
+TRW;reposicao;TRW/VARGA|TRW/LUCAS
 TUBA;reposicao;
 TUFOIL;reposicao;
 TURY;reposicao;
