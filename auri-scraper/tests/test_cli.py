@@ -115,3 +115,27 @@ def test_pecas_do_veiculo_aceita_o_jeito_do_usuario(tmp_path, capsys):
     assert main(["pecas-do-veiculo", "VW", "FUSCA", "2000", "--base", str(tmp_path)]) == 1
     assert main(["pecas-do-veiculo", "VW", "GOL", "2000", "--versao", "2.0 turbo", "--base", str(tmp_path)]) == 1
     assert "1.0 8v" in capsys.readouterr().out  # lista as versões do ano
+
+
+def test_publicar_ensaio_nao_instala_esquema_e_recusa_veiculos_desatualizado(tmp_path, monkeypatch):
+    from helper import publicar as pub
+    from helper.banco import gravar_meta
+    _montar_base(tmp_path)
+    main(["preparar", "--base", str(tmp_path)])
+    _arvore_gol(tmp_path)
+    main(["veiculos", "--base", str(tmp_path)])
+    chamadas = []
+    monkeypatch.setattr(pub, "ler_env_admin", lambda caminho: chamadas.append("env") or {})
+    monkeypatch.setattr(pub, "conectar", lambda env, nome: object())
+    monkeypatch.setattr(pub, "criar_banco", lambda *a, **k: chamadas.append("criar_banco"))
+    monkeypatch.setattr(pub, "instalar_esquema", lambda con: chamadas.append("instalar_esquema") or True)
+    monkeypatch.setattr(pub, "publicar", lambda db, con, **k: chamadas.append(("publicar", k["ensaio"])) or {"novas": 0})
+    monkeypatch.setattr(pub, "publicar_veiculos", lambda db, con, **k: chamadas.append(("veiculos", k["ensaio"])) or {"modelos": 1})
+    assert main(["publicar", "--ensaio", "--base", str(tmp_path)]) == 0
+    assert chamadas == ["env", ("publicar", True), ("veiculos", True)]  # ensaio não cria banco nem tabelas
+    db = abrir(tmp_path / "helper.sqlite")
+    gravar_meta(db, "preparado_em", "9999-12-31T00:00:00")  # um preparar depois do veiculos
+    db.commit()
+    chamadas.clear()
+    assert main(["publicar", "--ensaio", "--base", str(tmp_path)]) == 2
+    assert chamadas == []  # recusa antes de conectar

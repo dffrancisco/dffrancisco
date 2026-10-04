@@ -1,4 +1,5 @@
 """Publica o helper.sqlite no Postgres `helper` do Wayap e as fotos na pasta do servidor (rsync). Fotos antes do banco."""
+import io
 import re
 import subprocess
 from datetime import datetime
@@ -7,7 +8,8 @@ from pathlib import Path
 import psycopg2
 import psycopg2.extras
 
-from helper.banco import VERSAO_ESQUEMA
+from helper.banco import VERSAO_ESQUEMA, ler_meta
+from helper.montadoras import casar_wayap
 
 NOME_BANCO = "helper"
 
@@ -255,12 +257,13 @@ def diferencas(local, remoto):
     return r
 
 
-def comando_rsync(origem, destino_ssh, pasta_remota):
+def comando_rsync(origem, destino_ssh, pasta_remota, excluir=()):
     # --partial-dir: transferência interrompida fica fora do nome final e é completada na próxima rodada.
     # Sem --delete: nunca apaga no destino. -a já pula arquivo idêntico, então não precisa de --ignore-existing.
     # --no-owner/--no-group: no servidor os arquivos ficam do usuário que recebe (root, como os da topcar), não do uid local.
-    return ["rsync", "-a", "--no-owner", "--no-group", "--chmod=D755,F644", "--partial", "--partial-dir=.rsync-partial", "--info=stats1",
-            f"{str(origem).rstrip('/')}/", f"{destino_ssh}:{str(pasta_remota).rstrip('/')}/"]
+    return (["rsync", "-a", "--no-owner", "--no-group", "--chmod=D755,F644", "--partial", "--partial-dir=.rsync-partial", "--info=stats1"]
+            + [f"--exclude={e}" for e in excluir]
+            + [f"{str(origem).rstrip('/')}/", f"{destino_ssh}:{str(pasta_remota).rstrip('/')}/"])
 
 
 def executar_rsync_real(cmd):
@@ -334,3 +337,130 @@ def publicar(db, con, ensaio, executar_rsync, pasta_fotos, destino_ssh, pasta_re
     db.commit()
     resultado["fotos_publicadas"] = len(fotos_novas)
     return resultado
+
+
+# ---------- veículos (spec de veículos, seção 8) ----------
+
+def veiculos_preparados(db):
+    """False quando o `helper.py veiculos` nunca rodou (publica só as peças, como antes)."""
+    feito, preparado = ler_meta(db, "veiculos_em"), ler_meta(db, "preparado_em")
+    if not feito:
+        return False
+    if preparado and feito < preparado:
+        raise RuntimeError("o helper.py veiculos é mais antigo que o último preparar (uma fusão pode ter mudado ids de peça): "
+                           "rode python helper.py veiculos antes de publicar")
+    return True
+
+
+def _tsv(linhas):
+    buf = io.StringIO()
+    for l in linhas:
+        buf.write("\t".join("\\N" if v is None else str(v) for v in l) + "\n")
+    buf.seek(0)
+    return buf
+
+
+def _lotes(ids, n):
+    return (ids[i:i + n] for i in range(0, len(ids), n))
+
+
+def publicar_veiculos(db, con, ensaio, executar_rsync, pasta_fotos, destino_ssh, pasta_remota, lote_pecas=5000):
+    # 0) leituras do destino; a montadoras do Wayap só é lida, nunca escrita
+    with con.cursor() as cur:
+        cur.execute("SELECT to_regclass('public.montadoras') IS NOT NULL")
+        wayap = []
+        if cur.fetchone()[0]:
+            cur.execute("SELECT id_montadora, descricao FROM montadoras")
+            wayap = list(cur.fetchall())
+        remoto_m, remoto_mod, remoto_pv = {}, {}, {}
+        # o ensaio não instala o esquema: antes da primeira publicação as tabelas veiculo_* ainda não existem no destino
+        cur.execute("SELECT to_regclass('public.veiculo_montadora') IS NOT NULL")
+        if cur.fetchone()[0]:
+            cur.execute("SELECT id_veiculo_montadora, nome, nome_exibicao, logo, id_montadora, qtd_pecas, ativo FROM veiculo_montadora")
+            remoto_m = {l[0]: tuple(l) for l in cur.fetchall()}
+            cur.execute("SELECT id_modelo, hash_conteudo FROM veiculo_modelo")
+            remoto_mod = {i: h for i, h in cur.fetchall()}
+            cur.execute("SELECT id_peca, hash FROM peca_veiculo_estado")
+            remoto_pv = {i: h for i, h in cur.fetchall()}
+    con.rollback()  # o rsync pode demorar: a sessão não fica "idle in transaction"
+    montadoras = []
+    for m in db.execute("SELECT * FROM veiculo_montadora ORDER BY id_veiculo_montadora").fetchall():
+        id_wayap = casar_wayap(m["nome"], wayap)
+        db.execute("UPDATE veiculo_montadora SET id_montadora = ? WHERE id_veiculo_montadora = ?", (id_wayap, m["id_veiculo_montadora"]))
+        montadoras.append((m["id_veiculo_montadora"], m["nome"], m["nome_exibicao"], m["logo"], id_wayap, m["qtd_pecas"], bool(m["ativo"])))
+    db.commit()
+    montadoras = [t for t in montadoras if remoto_m.get(t[0]) != t]
+    modelos = sorted(i for i, h in db.execute("SELECT id_modelo, hash_conteudo FROM veiculo_modelo") if remoto_mod.get(i) != h)
+    local_pv = {i: h for i, h in db.execute("SELECT id_peca, hash FROM peca_veiculo_estado")}
+    d = diferencas({i: (h, "ativa") for i, h in local_pv.items()}, {i: (h, "ativa") for i, h in remoto_pv.items()})
+    gravar, apagar = d["novas"] + d["alteradas"], sorted(set(remoto_pv) - set(local_pv))
+    arquivos = [l[0] for l in db.execute("SELECT caminho FROM veiculo_arquivo WHERE publicado = 0")]
+    r = {"montadoras": len(montadoras), "modelos": len(modelos), "pecas_veiculo": len(gravar),
+         "pecas_veiculo_apagar": len(apagar), "arquivos_veiculo": len(arquivos)}
+    if ensaio:
+        return r
+    # 1) arquivos antes do banco: se o rsync falhar, nada é gravado
+    if arquivos and destino_ssh:
+        executar_rsync(comando_rsync(pasta_fotos, destino_ssh, pasta_remota, excluir=("proprias/", ".gitignore")))
+    db.executemany("UPDATE veiculo_arquivo SET publicado = 1 WHERE caminho = ?", [(a,) for a in arquivos])
+    db.commit()
+    # 2) montadoras e árvore, numa transação
+    try:
+        with con.cursor() as cur:
+            psycopg2.extras.execute_batch(cur, """INSERT INTO veiculo_montadora (id_veiculo_montadora, nome, nome_exibicao, logo, id_montadora, qtd_pecas, ativo)
+                VALUES (%s, %s, %s, %s, %s, %s, %s) ON CONFLICT (id_veiculo_montadora) DO UPDATE SET nome = EXCLUDED.nome,
+                  nome_exibicao = EXCLUDED.nome_exibicao, logo = EXCLUDED.logo, id_montadora = EXCLUDED.id_montadora,
+                  qtd_pecas = EXCLUDED.qtd_pecas, ativo = EXCLUDED.ativo""", montadoras)
+            for lote in _lotes(modelos, 500):
+                psycopg2.extras.execute_batch(cur, """INSERT INTO veiculo_modelo (id_modelo, id_veiculo_montadora, nome, nome_exibicao, foto, foto_herdada,
+                      ano_inicio, ano_fim, qtd_pecas, ativo, hash_conteudo, atualizado_em)
+                    VALUES (%(id_modelo)s, %(id_veiculo_montadora)s, %(nome)s, %(nome_exibicao)s, %(foto)s, %(foto_herdada)s::int::boolean,
+                      %(ano_inicio)s, %(ano_fim)s, %(qtd_pecas)s, %(ativo)s::int::boolean, %(hash_conteudo)s, %(atualizado_em)s::timestamp)
+                    ON CONFLICT (id_modelo) DO UPDATE SET id_veiculo_montadora = EXCLUDED.id_veiculo_montadora, nome = EXCLUDED.nome,
+                      nome_exibicao = EXCLUDED.nome_exibicao, foto = EXCLUDED.foto, foto_herdada = EXCLUDED.foto_herdada,
+                      ano_inicio = EXCLUDED.ano_inicio, ano_fim = EXCLUDED.ano_fim, qtd_pecas = EXCLUDED.qtd_pecas, ativo = EXCLUDED.ativo,
+                      hash_conteudo = EXCLUDED.hash_conteudo, atualizado_em = EXCLUDED.atualizado_em""",
+                    _linhas(db, "SELECT id_modelo, id_veiculo_montadora, nome, nome_exibicao, foto, foto_herdada, ano_inicio, ano_fim, "
+                                "qtd_pecas, ativo, hash_conteudo, atualizado_em FROM veiculo_modelo WHERE id_modelo IN ({ids})", lote))
+                psycopg2.extras.execute_batch(cur, """INSERT INTO veiculo_versao (id_versao, id_modelo, nome, nome_exibicao, motor, ativo)
+                    VALUES (%(id_versao)s, %(id_modelo)s, %(nome)s, %(nome_exibicao)s, %(motor)s, %(ativo)s::int::boolean)
+                    ON CONFLICT (id_versao) DO UPDATE SET id_modelo = EXCLUDED.id_modelo, nome = EXCLUDED.nome,
+                      nome_exibicao = EXCLUDED.nome_exibicao, motor = EXCLUDED.motor, ativo = EXCLUDED.ativo""",
+                    _linhas(db, "SELECT id_versao, id_modelo, nome, nome_exibicao, motor, ativo FROM veiculo_versao WHERE id_modelo IN ({ids})", lote))
+                cur.execute("DELETE FROM veiculo_versao_ano WHERE id_versao IN (SELECT id_versao FROM veiculo_versao WHERE id_modelo = ANY(%s))", (lote,))
+                psycopg2.extras.execute_batch(cur, "INSERT INTO veiculo_versao_ano (id_versao, ano) VALUES (%(id_versao)s, %(ano)s)",
+                    _linhas(db, "SELECT va.id_versao, va.ano FROM veiculo_versao_ano va JOIN veiculo_versao v USING (id_versao) "
+                                "WHERE v.id_modelo IN ({ids})", lote))
+        con.commit()
+    except Exception:
+        con.rollback()
+        raise
+    # 3) peca_veiculo em lotes, com commit por lote: uma queda continua de onde parou na próxima rodada
+    for lote in _lotes(apagar, lote_pecas):
+        with con.cursor() as cur:
+            cur.execute("DELETE FROM peca_veiculo WHERE id_peca = ANY(%s)", (lote,))
+            cur.execute("DELETE FROM peca_veiculo_estado WHERE id_peca = ANY(%s)", (lote,))
+        con.commit()
+    ligacoes = 0
+    for lote in _lotes(gravar, lote_pecas):
+        try:
+            with con.cursor() as cur:
+                cur.execute("DELETE FROM peca_veiculo WHERE id_peca = ANY(%s)", (lote,))
+                marc = ",".join("?" * len(lote))
+                linhas = db.execute(f"SELECT id_peca, id_modelo, id_versao, ano_inicio, ano_fim, nivel FROM peca_veiculo "
+                                    f"WHERE id_peca IN ({marc}) ORDER BY id_peca", lote).fetchall()
+                cur.copy_expert("COPY peca_veiculo (id_peca, id_modelo, id_versao, ano_inicio, ano_fim, nivel) FROM STDIN", _tsv(linhas))
+                psycopg2.extras.execute_batch(cur, "INSERT INTO peca_veiculo_estado (id_peca, hash) VALUES (%s, %s) "
+                                                   "ON CONFLICT (id_peca) DO UPDATE SET hash = EXCLUDED.hash",
+                                              [(i, local_pv[i]) for i in lote])
+            con.commit()
+            ligacoes += len(linhas)
+        except Exception:
+            con.rollback()
+            raise
+    with con.cursor() as cur:
+        cur.execute("UPDATE carga SET modelos_publicados = %s, ligacoes_veiculo = %s WHERE id_carga = (SELECT max(id_carga) FROM carga)",
+                    (len(modelos), ligacoes))
+    con.commit()
+    r["ligacoes_gravadas"] = ligacoes
+    return r

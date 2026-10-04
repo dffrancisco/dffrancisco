@@ -2,9 +2,9 @@ import os
 
 import pytest
 
-from helper.banco import abrir
+from helper.banco import abrir, gravar_meta
 from helper.publicar import (DDL_POSTGRES, comando_rsync, ddl_veiculos, diferencas, funcoes_sql, funcoes_veiculos, ler_env_admin,
-                             publicar)
+                             publicar, publicar_veiculos, veiculos_preparados)
 
 
 def test_ler_env_admin(tmp_path):
@@ -171,3 +171,174 @@ def test_transacao_fechada_antes_do_rsync_e_lista_de_fotos_congelada(tmp_path):
     assert con.eventos.index("rollback") < con.eventos.index("rsync") < con.eventos.index("commit")
     assert r["fotos_publicadas"] == 1
     assert dict(db.execute("SELECT arquivo, publicada FROM foto")) == {"a.jpg": 1, "nova.jpg": 0}
+
+
+class ConVeiculos(ConFalsa):
+    """Responde às leituras da publicação de veículos com o estado 'remoto' dado e guarda o que vai por COPY."""
+    def __init__(self, montadoras_wayap=(), remoto_montadoras=(), remoto_modelos=(), remoto_estado=(), sem_tabelas_veiculo=False):
+        super().__init__(remoto={})
+        self.respostas = {"FROM montadoras": list(montadoras_wayap), "FROM veiculo_montadora": list(remoto_montadoras),
+                          "FROM veiculo_modelo": list(remoto_modelos), "FROM peca_veiculo_estado": list(remoto_estado)}
+        self.copias, self.sem_tabelas_veiculo, self.completo = [], sem_tabelas_veiculo, []
+
+    def execute(self, sql, params=None):
+        super().execute(sql, params)
+        self.completo.append(self._ultimo)  # self.sql guarda só as 3 primeiras palavras
+
+    def fetchall(self):
+        for trecho, linhas in self.respostas.items():
+            if trecho in self._ultimo:
+                return linhas
+        return super().fetchall()
+
+    def fetchone(self):
+        # to_regclass: a montadoras do Wayap existe; as tabelas veiculo_* só não existem antes da primeira publicação
+        return (not (self.sem_tabelas_veiculo and "veiculo_montadora" in self._ultimo),)
+
+    def copy_expert(self, sql, arquivo):
+        self.sql.append("COPY " + sql.split()[1])
+        self.copias.append(arquivo.getvalue())
+
+
+def _db_veiculos(tmp_path):
+    from helper.montadoras import Montadoras
+    from helper.veiculos import carregar_arvore
+    from helper.veiculos_ligar import fechar
+    from tests.test_veiculos import _linha
+    db = _db_local(tmp_path)  # peça 1
+    carregar_arvore(db, [_linha()], Montadoras({}))
+    id_modelo = db.execute("SELECT id_modelo FROM veiculo_modelo").fetchone()[0]
+    db.execute("INSERT INTO peca_veiculo VALUES (1, ?, NULL, 2020, 2021, 'versao')", (id_modelo,))
+    db.execute("UPDATE veiculo_modelo SET foto = 'veiculos/modelos/1_abc.webp'")
+    db.execute("INSERT INTO veiculo_arquivo (caminho) VALUES ('veiculos/modelos/1_abc.webp')")
+    (tmp_path / "helper_fotos_veiculos/modelos").mkdir(parents=True)
+    (tmp_path / "helper_fotos_veiculos/modelos/1_abc.webp").write_bytes(b"x")
+    fechar(db)
+    return db
+
+
+def _pub_v(db, con, tmp_path, ensaio=False, rsync=None, destino="wayap@srv"):
+    return publicar_veiculos(db, con, ensaio=ensaio, executar_rsync=rsync or (lambda cmd: None),
+                             pasta_fotos=tmp_path / "helper_fotos_veiculos", destino_ssh=destino, pasta_remota="/home/wayap/helper/veiculos")
+
+
+def test_comando_rsync_com_exclusoes():
+    cmd = comando_rsync("/x/helper_fotos_veiculos", "wayap@srv", "/home/wayap/helper/veiculos", excluir=("proprias/", ".gitignore"))
+    assert "--exclude=proprias/" in cmd and "--exclude=.gitignore" in cmd
+    assert cmd[-2:] == ["/x/helper_fotos_veiculos/", "wayap@srv:/home/wayap/helper/veiculos/"]
+
+
+def test_publicar_veiculos_arquivos_antes_copy_e_sem_escrever_na_montadoras(tmp_path):
+    db = _db_veiculos(tmp_path)
+    con = ConVeiculos(montadoras_wayap=[(11, "CHEVROLET")])
+    comandos = []
+
+    def rsync(cmd):
+        comandos.append(cmd)
+        con.sql.append("RSYNC")
+    r = _pub_v(db, con, tmp_path, rsync=rsync)
+    assert "--exclude=proprias/" in comandos[0] and comandos[0][-1] == "wayap@srv:/home/wayap/helper/veiculos/"
+    escritas = [i for i, s in enumerate(con.sql) if s.startswith(("INSERT", "UPDATE", "DELETE", "COPY"))]
+    assert con.sql.index("RSYNC") < escritas[0]
+    assert db.execute("SELECT id_montadora FROM veiculo_montadora").fetchone()[0] == 11
+    assert any(s.startswith("INSERT INTO veiculo_modelo") for s in con.sql) and any(s.startswith("COPY peca_veiculo") for s in con.sql)
+    assert con.copias[0].startswith("1\t") and "\\N" in con.copias[0]
+    assert not any(s.startswith(("INSERT INTO montadoras", "UPDATE montadoras", "DELETE FROM montadoras")) for s in con.sql)
+    assert (r["modelos"], r["pecas_veiculo"], r["arquivos_veiculo"], r["ligacoes_gravadas"]) == (1, 1, 1, 1)
+    assert db.execute("SELECT publicado FROM veiculo_arquivo").fetchone()[0] == 1
+
+
+def test_segunda_publicacao_de_veiculos_nao_grava_nada(tmp_path):
+    db = _db_veiculos(tmp_path)
+    _pub_v(db, ConVeiculos(montadoras_wayap=[(11, "CHEVROLET")]), tmp_path)
+    m = db.execute("SELECT id_veiculo_montadora, nome, nome_exibicao, logo, id_montadora, qtd_pecas, ativo FROM veiculo_montadora").fetchone()
+    con2 = ConVeiculos(montadoras_wayap=[(11, "CHEVROLET")], remoto_montadoras=[(m[0], m[1], m[2], m[3], m[4], m[5], bool(m[6]))],
+                       remoto_modelos=[tuple(l) for l in db.execute("SELECT id_modelo, hash_conteudo FROM veiculo_modelo")],
+                       remoto_estado=[tuple(l) for l in db.execute("SELECT id_peca, hash FROM peca_veiculo_estado")])
+    rsyncs = []
+    r = _pub_v(db, con2, tmp_path, rsync=rsyncs.append)
+    assert rsyncs == [] and (r["montadoras"], r["modelos"], r["pecas_veiculo"], r["pecas_veiculo_apagar"], r["arquivos_veiculo"]) == (0, 0, 0, 0, 0)
+    assert not any(s.startswith(("INSERT", "DELETE", "COPY")) for s in con2.sql)
+
+
+def test_ensaio_de_veiculos_nao_grava(tmp_path):
+    db = _db_veiculos(tmp_path)
+    con = ConVeiculos()
+    r = _pub_v(db, con, tmp_path, ensaio=True, rsync=lambda cmd: pytest.fail("rsync no ensaio"))
+    assert r["modelos"] == 1 and r["arquivos_veiculo"] == 1 and "ligacoes_gravadas" not in r
+    assert not any(s.startswith(("INSERT", "UPDATE", "DELETE", "COPY")) for s in con.sql)
+    assert db.execute("SELECT publicado FROM veiculo_arquivo").fetchone()[0] == 0
+
+
+def test_ensaio_antes_da_primeira_publicacao_nao_precisa_das_tabelas_no_destino(tmp_path):
+    db = _db_veiculos(tmp_path)
+    con = ConVeiculos(sem_tabelas_veiculo=True)
+    r = _pub_v(db, con, tmp_path, ensaio=True)
+    assert (r["montadoras"], r["modelos"], r["pecas_veiculo"]) == (1, 1, 1)
+    assert any("FROM montadoras" in s for s in con.completo)  # a do Wayap continua sendo lida
+    assert not any("FROM veiculo_" in s or "FROM peca_veiculo" in s for s in con.completo)
+
+
+def test_peca_que_saiu_perde_as_linhas_no_destino(tmp_path):
+    db = _db_veiculos(tmp_path)
+    con = ConVeiculos(remoto_estado=[(99, "h")])
+    r = _pub_v(db, con, tmp_path)
+    assert r["pecas_veiculo_apagar"] == 1
+    assert any(s.startswith("DELETE FROM peca_veiculo") for s in con.sql) and any(s.startswith("DELETE FROM peca_veiculo_estado") for s in con.sql)
+
+
+def test_queda_no_meio_da_peca_veiculo_mantem_lotes_ja_gravados(tmp_path):
+    from helper.veiculos_ligar import fechar
+    db = _db_veiculos(tmp_path)
+    id_modelo = db.execute("SELECT id_modelo FROM veiculo_modelo").fetchone()[0]
+    db.execute("INSERT INTO peca (id_peca, id_marca, chave, codigo, desc_curta, status) VALUES (2, 1, 'ARTEB|2', '2', 'X', 'ativa')")
+    db.execute("INSERT INTO peca_veiculo VALUES (2, ?, NULL, 2020, 2020, 'versao')", (id_modelo,))
+    fechar(db)
+
+    class Quebra(ConVeiculos):
+        def copy_expert(self, sql, arquivo):
+            if self.copias:
+                raise RuntimeError("conexão caiu")
+            super().copy_expert(sql, arquivo)
+    con = Quebra()
+    with pytest.raises(RuntimeError):
+        publicar_veiculos(db, con, ensaio=False, executar_rsync=lambda c: None, pasta_fotos=tmp_path / "helper_fotos_veiculos",
+                          destino_ssh=None, pasta_remota="/x", lote_pecas=1)
+    assert len(con.copias) == 1 and con.eventos[-1] == "rollback"
+    assert con.eventos.count("commit") >= 2  # árvore + primeiro lote de peca_veiculo ficaram
+
+
+def test_veiculos_preparados(tmp_path):
+    db = abrir(tmp_path / "h.sqlite")
+    assert veiculos_preparados(db) is False
+    gravar_meta(db, "preparado_em", "2026-10-03T10:00:00")
+    gravar_meta(db, "veiculos_em", "2026-10-03T11:00:00")
+    assert veiculos_preparados(db) is True
+    gravar_meta(db, "preparado_em", "2026-10-03T12:00:00")
+    with pytest.raises(RuntimeError, match="helper.py veiculos"):
+        veiculos_preparados(db)
+
+
+@pytest.mark.skipif(not os.environ.get("HELPER_TESTE_PG"), reason="defina HELPER_TESTE_PG=1 com um Postgres de teste em .env_admin")
+def test_integracao_postgres_veiculos(tmp_path):
+    from helper.publicar import conectar, criar_banco, instalar_esquema
+    from wayap_fotos import ENV_ADMIN
+    env = ler_env_admin(ENV_ADMIN)
+    criar_banco(env, "helper_teste")
+    con = conectar(env, "helper_teste")
+    instalar_esquema(con)
+    db = _db_veiculos(tmp_path)
+    publicar(db, con, ensaio=False, executar_rsync=lambda cmd: None, pasta_fotos=tmp_path / "helper_fotos",
+             destino_ssh=None, pasta_remota=None, commit_repo="teste")
+    publicar_veiculos(db, con, ensaio=False, executar_rsync=lambda cmd: None, pasta_fotos=tmp_path / "helper_fotos_veiculos",
+                      destino_ssh=None, pasta_remota=None)
+    id_modelo = db.execute("SELECT id_modelo FROM veiculo_modelo").fetchone()[0]
+    with con.cursor() as cur:
+        cur.execute("SELECT ano FROM anos_do_modelo(%s)", (id_modelo,))
+        assert [a for (a,) in cur.fetchall()] == [2021, 2020]
+        cur.execute("SELECT id_peca, confianca FROM ids_por_veiculo(%s, 2021)", (id_modelo,))
+        assert cur.fetchall() == [(1, "todas_versoes")]
+        cur.execute("SELECT id_peca, confianca FROM pecas_por_veiculo(%s, 2021, NULL, 'farol')", (id_modelo,))
+        assert cur.fetchall() == [(1, "todas_versoes")]
+        cur.execute("SELECT foto_url FROM v_veiculo_modelo WHERE id_modelo = %s", (id_modelo,))
+        assert cur.fetchone()[0] == "/files/aGVscGVy/veiculos/modelos/1_abc.webp"

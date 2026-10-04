@@ -116,20 +116,30 @@ def cmd_cobertura(args):
 def cmd_publicar(args):
     carregar_env()
     db = banco.abrir(args.banco)
+    try:
+        com_veiculos = pub.veiculos_preparados(db)
+    except RuntimeError as e:
+        print(e, file=sys.stderr)
+        return 2
     destino_ssh, pasta_remota = os.environ.get("HELPER_SSH"), os.environ.get("HELPER_FOTOS_DIR", "/home/wayap/helper/store/foto_produto")
     if not args.ensaio and not destino_ssh:
         print("defina HELPER_SSH (ex.: wayap@servidor) no .env para publicar fotos", file=sys.stderr)
         return 2
     env = pub.ler_env_admin(ENV_ADMIN)
-    pub.criar_banco(env)
+    if not args.ensaio:  # o ensaio não grava nada, nem esquema: só lê o que já está no destino
+        pub.criar_banco(env)
     con = pub.conectar(env, pub.NOME_BANCO)
-    com_trgm = pub.instalar_esquema(con)
-    if not com_trgm:
+    if not args.ensaio and not pub.instalar_esquema(con):
         print("aviso: unaccent/pg_trgm indisponíveis; busca_texto ficou sem tolerância a erro de digitação", file=sys.stderr)
     commit = subprocess.run(["git", "rev-parse", "--short", "HEAD"], capture_output=True, text=True).stdout.strip() or None
     r = pub.publicar(db, con, ensaio=args.ensaio, executar_rsync=pub.executar_rsync_real, pasta_fotos=args.base / "helper_fotos",
                      destino_ssh=destino_ssh, pasta_remota=pasta_remota, commit_repo=commit)
     print(("ENSAIO: " if args.ensaio else "publicado: ") + ", ".join(f"{k} {v}" for k, v in r.items()))
+    if com_veiculos:
+        rv = pub.publicar_veiculos(db, con, ensaio=args.ensaio, executar_rsync=pub.executar_rsync_real,
+                                   pasta_fotos=args.base / "helper_fotos_veiculos", destino_ssh=destino_ssh,
+                                   pasta_remota=os.environ.get("HELPER_VEICULOS_DIR", "/home/wayap/helper/veiculos"))
+        print(("ENSAIO veículos: " if args.ensaio else "veículos publicados: ") + ", ".join(f"{k} {v}" for k, v in rv.items()))
     return 0
 
 
