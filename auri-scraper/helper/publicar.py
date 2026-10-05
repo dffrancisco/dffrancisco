@@ -2,6 +2,7 @@
 import io
 import re
 import subprocess
+from collections import defaultdict
 from datetime import datetime
 from pathlib import Path
 
@@ -9,6 +10,7 @@ import psycopg2
 import psycopg2.extras
 
 from helper.banco import VERSAO_ESQUEMA, ler_meta
+from helper.localizador import linhas_localizador
 from helper.montadoras import casar_wayap
 
 NOME_BANCO = "helper"
@@ -43,6 +45,9 @@ DDL_POSTGRES = [
          nome_original TEXT, marca_original TEXT, codigo_original TEXT, ean_original TEXT, carro_original TEXT,
          coletado_em DATE, PRIMARY KEY (site, url))""",
     """CREATE INDEX IF NOT EXISTS origem_peca ON origem (id_peca)""",
+    """CREATE TABLE IF NOT EXISTS peca_localizador (
+         id_peca INTEGER NOT NULL REFERENCES peca(id_peca), ano_inicio INTEGER, ano_fim INTEGER, localizador TEXT NOT NULL)""",
+    """CREATE INDEX IF NOT EXISTS peca_localizador_peca ON peca_localizador (id_peca)""",
     """CREATE TABLE IF NOT EXISTS carga (
          id_carga SERIAL PRIMARY KEY, iniciada_em TIMESTAMP, terminada_em TIMESTAMP, pecas_ativas INTEGER,
          pecas_inativadas INTEGER, fotos_publicadas INTEGER, bytes_fotos BIGINT, versao_esquema INTEGER, commit_repo TEXT)""",
@@ -245,6 +250,7 @@ def instalar_esquema(con):
             cur.execute(sql)
         if com_trgm:
             cur.execute("CREATE INDEX IF NOT EXISTS peca_desc_trgm ON peca USING gin (desc_curta gin_trgm_ops)")
+            cur.execute("CREATE INDEX IF NOT EXISTS peca_localizador_trgm ON peca_localizador USING gin (localizador gin_trgm_ops)")
     con.commit()
     return com_trgm
 
@@ -284,6 +290,31 @@ def _linhas(db, sql, ids):
     return [dict(r) for r in db.execute(sql.format(ids=marc), ids)] if ids else []
 
 
+INSERIR_LOCALIZADOR = "INSERT INTO peca_localizador (id_peca, ano_inicio, ano_fim, localizador) VALUES (%s, %s, %s, %s)"
+
+
+def _localizador_do_lote(db, ids):
+    alternativos, aplicacoes = defaultdict(list), defaultdict(list)
+    for r in _linhas(db, "SELECT id_peca, valor FROM codigo_alternativo WHERE id_peca IN ({ids}) ORDER BY id_peca, tipo, valor", ids):
+        alternativos[r["id_peca"]].append(r["valor"])
+    for r in _linhas(db, "SELECT id_peca, montadora, modelo, ano_inicio, ano_fim, motor, observacao FROM aplicacao "
+                         "WHERE id_peca IN ({ids}) ORDER BY id_peca, montadora, modelo, ano_inicio, ano_fim, motor", ids):
+        aplicacoes[r["id_peca"]].append(r)
+    linhas = []
+    for p in _linhas(db, "SELECT p.id_peca, p.codigo, p.ean, p.desc_curta, p.desc_completa, p.tipo_peca, m.nome AS marca "
+                         "FROM peca p JOIN marca m USING (id_marca) WHERE p.status = 'ativa' AND p.id_peca IN ({ids}) ORDER BY p.id_peca", ids):
+        linhas += linhas_localizador(p, alternativos[p["id_peca"]], aplicacoes[p["id_peca"]])
+    return linhas
+
+
+def _regravar_localizador(cur, db, lote):
+    """Peça inativa só perde as linhas: _localizador_do_lote não devolve nada para ela."""
+    cur.execute("DELETE FROM peca_localizador WHERE id_peca = ANY(%s)", (lote,))
+    linhas = _localizador_do_lote(db, lote)
+    psycopg2.extras.execute_batch(cur, INSERIR_LOCALIZADOR, linhas, page_size=1000)
+    return len(linhas)
+
+
 def publicar(db, con, ensaio, executar_rsync, pasta_fotos, destino_ssh, pasta_remota, commit_repo):
     inicio = datetime.now()
     local = {r["id_peca"]: (r["hash_conteudo"], r["status"]) for r in db.execute("SELECT id_peca, hash_conteudo, status FROM peca")}
@@ -309,6 +340,10 @@ def publicar(db, con, ensaio, executar_rsync, pasta_fotos, destino_ssh, pasta_re
             cur.execute("SELECT 1")
             marcas = [dict(r) for r in db.execute("SELECT id_marca, nome, tipo FROM marca")]
             psycopg2.extras.execute_batch(cur, "INSERT INTO marca (id_marca, nome, tipo) VALUES (%(id_marca)s, %(nome)s, %(tipo)s) ON CONFLICT (id_marca) DO UPDATE SET nome = EXCLUDED.nome, tipo = EXCLUDED.tipo", marcas)
+            cur.execute("SELECT EXISTS (SELECT 1 FROM peca_localizador)")
+            # tabela recém-criada: as peças que não mudaram também precisam das linhas
+            so_localizador = [] if cur.fetchone()[0] else sorted({i for i, (h, s) in local.items() if s == "ativa"} - set(ids))
+            linhas_loc = 0
             for lote in (ids[i:i + 500] for i in range(0, len(ids), 500)):
                 pecas = _linhas(db, "SELECT id_peca, id_marca, codigo, ean, desc_curta, desc_completa, tipo_peca, ncm_sugerido, unidade_sugerida, tem_foto, qtd_fontes, status, fundida_em, hash_conteudo, atualizado_em FROM peca WHERE id_peca IN ({ids})", lote)
                 psycopg2.extras.execute_batch(cur, """INSERT INTO peca (id_peca, id_marca, codigo, ean, desc_curta, desc_completa, tipo_peca, ncm_sugerido, unidade_sugerida, tem_foto, qtd_fontes, status, fundida_em, hash_conteudo, atualizado_em)
@@ -327,8 +362,12 @@ def publicar(db, con, ensaio, executar_rsync, pasta_fotos, destino_ssh, pasta_re
                                               _linhas(db, "SELECT id_peca, ordem, arquivo, largura, altura, bytes, dhash, origem_tipo, publicavel, url_fonte FROM foto WHERE publicada = 1 AND id_peca IN ({ids})", lote))
                 psycopg2.extras.execute_batch(cur, "INSERT INTO origem (id_peca, site, url, nome_original, marca_original, codigo_original, ean_original, carro_original, coletado_em) VALUES (%(id_peca)s, %(site)s, %(url)s, %(nome_original)s, %(marca_original)s, %(codigo_original)s, %(ean_original)s, %(carro_original)s, %(coletado_em)s::date) ON CONFLICT (site, url) DO UPDATE SET id_peca = EXCLUDED.id_peca",
                                               _linhas(db, "SELECT id_peca, site, url, nome_original, marca_original, codigo_original, ean_original, carro_original, coletado_em FROM origem WHERE id_peca IN ({ids})", lote))
+                linhas_loc += _regravar_localizador(cur, db, lote)
+            for lote in (so_localizador[i:i + 500] for i in range(0, len(so_localizador), 500)):
+                linhas_loc += _regravar_localizador(cur, db, lote)
             if d["inativar"]:
                 cur.execute("UPDATE peca SET status = 'inativa', atualizado_em = now() WHERE id_peca = ANY(%s)", (d["inativar"],))
+                cur.execute("DELETE FROM peca_localizador WHERE id_peca = ANY(%s)", (d["inativar"],))
             cur.execute("SELECT count(*) FROM peca WHERE status = 'ativa'")
             ativas = cur.fetchone()[0]
             cur.execute("INSERT INTO carga (iniciada_em, terminada_em, pecas_ativas, pecas_inativadas, fotos_publicadas, bytes_fotos, versao_esquema, commit_repo) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
@@ -342,6 +381,7 @@ def publicar(db, con, ensaio, executar_rsync, pasta_fotos, destino_ssh, pasta_re
                (inicio.isoformat(timespec="seconds"), datetime.now().isoformat(timespec="seconds"), len(local), len(d["inativar"]), len(fotos_novas), resultado["bytes_fotos"], VERSAO_ESQUEMA, commit_repo))
     db.commit()
     resultado["fotos_publicadas"] = len(fotos_novas)
+    resultado["linhas_localizador"] = linhas_loc
     return resultado
 
 

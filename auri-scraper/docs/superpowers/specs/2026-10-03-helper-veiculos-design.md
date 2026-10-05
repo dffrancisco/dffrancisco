@@ -10,7 +10,8 @@ virou `vei_v_modelo`, `pecas_por_veiculo` virou `vei_pecas_por_veiculo` e assim 
 Colunas não mudaram.
 
 Complementa a spec do helper (`2026-10-02-helper-design.md`). Acrescenta um coletor, tabelas e
-consultas ao contrato da seção 7 daquela spec, e sobe `versao_esquema` para 2. Nada do que já
+consultas ao contrato da seção 7 daquela spec, e sobe `versao_esquema` para 3 (o 2 foi a
+`peca_localizador`, emenda de 2026-10-04 daquela spec). Nada do que já
 existe muda de significado.
 
 ## 1. Objetivo
@@ -339,7 +340,7 @@ Depois das peças, porque `vei_peca` aponta para `peca`. Arquivos antes das linh
 5. `--ensaio` mostra as contagens por tabela e os arquivos a enviar, sem gravar nada. Rodar duas
    vezes seguidas grava zero linhas e envia zero arquivos.
 6. A linha da `carga` da rodada recebe `modelos_publicados` e `ligacoes_veiculo`.
-   `versao_esquema` = 2.
+   `versao_esquema` = 3.
 
 ## 9. Contrato com o Wayap: consultas novas
 

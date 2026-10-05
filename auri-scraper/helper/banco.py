@@ -2,7 +2,7 @@
 import sqlite3
 from datetime import datetime
 
-VERSAO_ESQUEMA = 2
+VERSAO_ESQUEMA = 3
 
 DDL = [
     """CREATE TABLE IF NOT EXISTS meta (chave TEXT PRIMARY KEY, valor TEXT)""",

@@ -292,6 +292,23 @@ publicáveis em ordem. Nunca inclui `origem`.
 URL de foto: `/files/<base64("helper")>/store/foto_produto/<id_peca>/<arquivo>`, igual à
 topcar com a sociedade trocada; miniatura em `<arquivo sem extensão>_p.jpg`.
 
+**Emenda de 2026-10-04: consulta 10, por localizador.** Para o componente "Cadastro pela base
+de peças" do Wayap (spec `erp_admin_v2/docs/superpowers/specs/2026-10-04-cadastro-peca-mercado-design.md`,
+seção "Busca"), que busca no modelo do balcão (cada palavra um ILIKE, ano como filtro na faixa
+da mesma aplicação):
+
+- Tabela `peca_localizador` (`id_peca`, `ano_inicio`, `ano_fim`, `localizador`), só no
+  Postgres: uma linha por aplicação de peça ativa e uma linha com anos nulos por peça ativa sem
+  aplicação. `localizador` em maiúsculas, sem acento, espaço simples, com `desc_curta`,
+  `desc_completa`, nome da marca, `codigo`, valores de `codigo_alternativo`, `ean`, `tipo_peca`
+  e, da aplicação, `montadora`, `modelo`, `motor`, `observacao`.
+- Índices GIN `gin_trgm_ops` em `localizador` e btree em `id_peca`.
+- Texto montado em Python por função pura; o `publicar` apaga e regrava as linhas de cada peça
+  nova, alterada ou inativada no mesmo laço das tabelas filhas, e monta tudo quando a tabela
+  está vazia.
+- `versao_esquema` sobe um número. A coluna `localizador` é de busca e nunca vai para resposta
+  de tela.
+
 O Wayap faz, por conta própria: casar `marca.nome` com o `id_marca` do cliente (criando a
 marca se não existir), casar `aplicacao.modelo` com o `id_carro` do cliente, e aplicar os
 limites do produto do cliente (`desc_produto` 100, `num_fabricante` 15, `cod_barra` 13,

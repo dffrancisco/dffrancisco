@@ -65,7 +65,7 @@ def test_tabelas_de_veiculos_e_meta(tmp_path):
     gravar_meta(db, "x", "1")
     gravar_meta(db, "x", "2")
     assert ler_meta(db, "x") == "2" and ler_meta(db, "nada") is None
-    assert VERSAO_ESQUEMA == 2 and ler_meta(db, "versao_esquema") == "2"
+    assert VERSAO_ESQUEMA == 3 and ler_meta(db, "versao_esquema") == "3"
     assert len(agora()) == 19
 
 
@@ -74,4 +74,4 @@ def test_versao_do_esquema_sobe_em_banco_antigo(tmp_path):
     gravar_meta(db, "versao_esquema", "1")
     db.commit()
     db.close()
-    assert ler_meta(abrir(tmp_path / "h.sqlite"), "versao_esquema") == "2"
+    assert ler_meta(abrir(tmp_path / "h.sqlite"), "versao_esquema") == "3"
