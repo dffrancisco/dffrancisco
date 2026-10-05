@@ -1,0 +1,205 @@
+[
+ {
+  "id": 3359,
+  "count": 42,
+  "name": "Universal",
+  "slug": "universal",
+  "parent": 0
+ },
+ {
+  "id": 3360,
+  "count": 42,
+  "name": "Universal",
+  "slug": "universal-universal",
+  "parent": 3359
+ },
+ {
+  "id": 3383,
+  "count": 4,
+  "name": "Clio 1.0 16V",
+  "slug": "clio-1-0-16v",
+  "parent": 4870
+ },
+ {
+  "id": 3923,
+  "count": 3,
+  "name": "Scénic 2.0",
+  "slug": "scenic-2-0",
+  "parent": 4870
+ },
+ {
+  "id": 3925,
+  "count": 6,
+  "name": "Scénic 2.0 16V",
+  "slug": "scenic-2-0-16v",
+  "parent": 4870
+ },
+ {
+  "id": 4030,
+  "count": 8,
+  "name": "Ranger",
+  "slug": "ranger",
+  "parent": 4854
+ },
+ {
+  "id": 4215,
+  "count": 9,
+  "name": "Blazer Maxion 2.5 Diesel",
+  "slug": "blazer-maxion-2-5-diesel",
+  "parent": 4857
+ },
+ {
+  "id": 4221,
+  "count": 10,
+  "name": "S 10 Maxion 2.5 Diesel",
+  "slug": "s-10-maxion-2-5-diesel",
+  "parent": 4857
+ },
+ {
+  "id": 4336,
+  "count": 3,
+  "name": "Mégane 2.0 16V",
+  "slug": "megane-2-0-16v",
+  "parent": 4870
+ },
+ {
+  "id": 4337,
+  "count": 2,
+  "name": "Mégane 2.0 8V",
+  "slug": "megane-2-0-8v",
+  "parent": 4870
+ },
+ {
+  "id": 4674,
+  "count": 4,
+  "name": "Sprinter 310D",
+  "slug": "sprinter-310d",
+  "parent": 4865
+ },
+ {
+  "id": 4823,
+  "count": 5,
+  "name": "F-1000",
+  "slug": "f-1000-ford",
+  "parent": 4854
+ },
+ {
+  "id": 4825,
+  "count": 5,
+  "name": "Cross Lander CL224",
+  "slug": "cross-lander-cl224",
+  "parent": 4850
+ },
+ {
+  "id": 4826,
+  "count": 5,
+  "name": "Defender 90",
+  "slug": "defender-90",
+  "parent": 4862
+ },
+ {
+  "id": 4827,
+  "count": 5,
+  "name": "Defender 110",
+  "slug": "defender-110",
+  "parent": 4862
+ },
+ {
+  "id": 4829,
+  "count": 5,
+  "name": "Ônibus Hibrido",
+  "slug": "onibus-hibrido",
+  "parent": 4852
+ },
+ {
+  "id": 4831,
+  "count": 5,
+  "name": "Rural Matra",
+  "slug": "rural-matra",
+  "parent": 4863
+ },
+ {
+  "id": 4833,
+  "count": 5,
+  "name": "Sprinter 312",
+  "slug": "sprinter-312",
+  "parent": 4865
+ },
+ {
+  "id": 4840,
+  "count": 218,
+  "name": "Automóveis/Utilitários",
+  "slug": "carro",
+  "parent": 0
+ },
+ {
+  "id": 4841,
+  "count": 145,
+  "name": "Caminhão",
+  "slug": "caminhao",
+  "parent": 0
+ },
+ {
+  "id": 4842,
+  "count": 85,
+  "name": "Ônibus",
+  "slug": "onibus",
+  "parent": 0
+ },
+ {
+  "id": 4850,
+  "count": 5,
+  "name": "Cross Lander",
+  "slug": "cross-lander-carro",
+  "parent": 4840
+ },
+ {
+  "id": 4852,
+  "count": 5,
+  "name": "Eletra",
+  "slug": "eletra-onibus",
+  "parent": 4842
+ },
+ {
+  "id": 4854,
+  "count": 74,
+  "name": "Ford",
+  "slug": "ford-carro",
+  "parent": 4840
+ },
+ {
+  "id": 4857,
+  "count": 72,
+  "name": "General Motors",
+  "slug": "general-motors-carro",
+  "parent": 4840
+ },
+ {
+  "id": 4862,
+  "count": 7,
+  "name": "Land Rover",
+  "slug": "land-rover-carro",
+  "parent": 4840
+ },
+ {
+  "id": 4863,
+  "count": 5,
+  "name": "Matra",
+  "slug": "matra-carro",
+  "parent": 4840
+ },
+ {
+  "id": 4865,
+  "count": 58,
+  "name": "Mercedes Benz",
+  "slug": "mercedes-benz-caminhao",
+  "parent": 4841
+ },
+ {
+  "id": 4870,
+  "count": 10,
+  "name": "Renault",
+  "slug": "renault-carro",
+  "parent": 4840
+ }
+]

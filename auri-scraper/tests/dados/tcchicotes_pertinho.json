@@ -1,0 +1,89 @@
+[
+ {
+  "gtin": "789848469493",
+  "name": "102.1278 - Chicote 02 Vias Fêmea Bomba de Combustível Sistema Flex",
+  "imageurl": "https://images.pertinhodemim.com/789848469493_pt-BR.png?time=1769631720863",
+  "brand": "55567911000197",
+  "hashtags": [
+   "Localizador_TCChicotes"
+  ],
+  "description": "Chicote 02 Vias Fêmea Bomba de Combustível Sistema Flex",
+  "url": "",
+  "enabled": 1,
+  "updateDate": "2026-01-28T20:22:18.119Z",
+  "sort": [
+   1000,
+   "102.1278 - chicote 02 vias femea bomba de combustivel sistema flex",
+   2
+  ]
+ },
+ {
+  "gtin": "789848471838",
+  "name": "103.1730 - Chicote 03 Vias do Sensor Rotação Mitsubishi /Kia/Hyndai/Kavasaki",
+  "imageurl": "https://images.pertinhodemim.com/789848471838_pt-BR.png?time=1764189292337",
+  "brand": "55567911000197",
+  "hashtags": [
+   "Localizador_TCChicotes"
+  ],
+  "description": "Chicote 03 Vias do Sensor Rotação Mitsubishi /Kia/Hyndai/Kavasaki",
+  "url": "",
+  "enabled": 1,
+  "updateDate": "2026-05-22T15:11:59.790Z",
+  "sort": [
+   1000,
+   "103.1730 - chicote 03 vias do sensor rotacao mitsubishi /kia/hyndai/kavasaki",
+   2
+  ]
+ },
+ {
+  "gtin": "789840000004",
+  "name": "411.035.10 - Sonda Lambda 4 Fios com 35Cm da Rosca Até O Conector Fiat Elba 1.5 Spi - 93/97 Elba 1.6 8V Spi - 95/96 Fiorino 1.5 8V Sp",
+  "imageurl": "https://images.pertinhodemim.com/789840000004_pt-BR.png?time=1769628990052",
+  "brand": "55567911000197",
+  "hashtags": [
+   "Localizador_TCChicotes"
+  ],
+  "description": "Sonda Lambda 4 Fios com 35Cm da Rosca Até O Conector Fiat Elba 1.5 Spi - 93/97 Elba 1.6 8V Spi - 95/96 Fiorino 1.5 8V Sp",
+  "url": "411.035.10",
+  "enabled": 1,
+  "updateDate": "2026-01-28T19:37:18.244Z",
+  "sort": [
+   1000,
+   "411.035.10 - sonda lambda 4 fios com 35cm da rosca ate o conector fiat elba 1.5 spi - 93/97 elba 1.6 8v spi - 95/96 fiorino 1.5 8v sp",
+   2
+  ]
+ },
+ {
+  "gtin": "789870531313",
+  "name": "C0100-52/25 - Cabo Listrado Verde/Vermelho 1,0 Mm Rolo C/ 25 Mt",
+  "imageurl": "",
+  "brand": "55567911000197",
+  "hashtags": [
+   "Localizador_TCChicotes"
+  ],
+  "description": "Cabo Listrado Verde/Vermelho 1,0 Mm Rolo C/ 25 Mt",
+  "url": "",
+  "enabled": 1,
+  "updateDate": "2026-01-06T14:02:08.516Z",
+  "sort": [
+   1000,
+   "c0100-52/25 - cabo listrado verde/vermelho 1,0 mm rolo c/ 25 mt",
+   2
+  ]
+ },
+ {
+  "gtin": "789840000771",
+  "name": "105.409-CHICOTE POWER SPARK - 2",
+  "imageurl": "",
+  "brand": "55567911000197",
+  "description": "",
+  "url": "",
+  "enabled": 1,
+  "updateDate": "2025-11-06T12:57:58.912Z",
+  "sort": [
+   1000,
+   "105.409-chicote power spark - 2",
+   2
+  ]
+ }
+]

@@ -1,0 +1,1381 @@
+{
+ "0280156439": {
+  "detalhe": {
+   "productNumber": "0280156439",
+   "name": "Válvula de injeção, gasolina",
+   "description": "",
+   "categoryId": "",
+   "images": [
+    {
+     "sequence": 0,
+     "type": "gallery",
+     "url": "https://emea.resource.bosch.com/AA/internet/enfinity/img/products/0280156439PH17WHCO0000LA.jpg"
+    },
+    {
+     "sequence": 1,
+     "type": "gallery",
+     "url": "https://emea.resource.bosch.com/AA/internet/enfinity/img/products/0280156439PH01WHCO0000LA.jpg"
+    },
+    {
+     "sequence": 2,
+     "type": "gallery",
+     "url": "https://emea.resource.bosch.com/AA/internet/enfinity/img/products/0280156439PH07WHCO0000LA.jpg"
+    },
+    {
+     "sequence": 3,
+     "type": "gallery",
+     "url": "https://emea.resource.bosch.com/AA/internet/enfinity/img/products/0280156439PH13WHCO0000LA.jpg"
+    },
+    {
+     "sequence": 4,
+     "type": "gallery",
+     "url": "https://emea.resource.bosch.com/AA/internet/enfinity/img/products/0280156439PH19WHCO0000LA.jpg"
+    }
+   ],
+   "specificationTabData": [
+    {
+     "columnData": [
+      "Número de pedido",
+      "0 280 156 439"
+     ]
+    },
+    {
+     "columnData": [
+      "Designação",
+      "Válvula de injeção, gasolina"
+     ]
+    },
+    {
+     "columnData": [
+      "Estado do artigo",
+      "Normal"
+     ]
+    },
+    {
+     "columnData": [
+      "Resistência total",
+      "12 Ohm"
+     ]
+    },
+    {
+     "columnData": [
+      "Fluxo 3 bar/min, n-heptano",
+      "129,6 g"
+     ]
+    }
+   ],
+   "replacementsTabData": [],
+   "exchangesTabData": [],
+   "correspondingArticlesTabData": [
+    {
+     "columnData": [
+      "Serviço, fabricante do veículo (OES)",
+      "0280156440"
+     ]
+    }
+   ],
+   "oeNumbers": [
+    {
+     "columnData": [
+      "FIAT",
+      "55240393"
+     ]
+    }
+   ],
+   "hasSpareParts": true,
+   "hasPartKits": false,
+   "hasArticleData": null
+  },
+  "montadoras": {
+   "countryCode": "br",
+   "languageCode": "pt",
+   "makers": [
+    {
+     "displayName": "FIAT",
+     "id": "FIA",
+     "productNumbers": [
+      {
+       "type": "SEARCH",
+       "number": "0280156439"
+      }
+     ]
+    }
+   ],
+   "oeNumbersRelevant": false,
+   "productNumber": "0280156439"
+  },
+  "veiculos": {
+   "FIA": [
+    {
+     "bodyType": "Limousine 3 ou 5 port./2 vol. | Motor de combustão interna",
+     "capacity": 1.0,
+     "keyMakerId": "FIA",
+     "keyNumber": 2357,
+     "modelRange": "178",
+     "motorType": "310A1011",
+     "powerRange": {
+      "fromKw": 54.0,
+      "toKw": 55.0
+     },
+     "productionPeriod": {
+      "from": {
+       "month": 8,
+       "year": 2010
+      },
+      "to": {
+       "month": 10,
+       "year": 2011
+      }
+     },
+     "type": "Palio 1.0 MPI 8V Flex"
+    },
+    {
+     "bodyType": "Limousine 3 ou 5 port./2 vol. | Motor de combustão interna",
+     "capacity": 1.0,
+     "keyMakerId": "FIA",
+     "keyNumber": 2442,
+     "modelRange": "178",
+     "motorType": "310A1011",
+     "powerRange": {
+      "fromKw": 54.0,
+      "toKw": 55.0
+     },
+     "productionPeriod": {
+      "from": {
+       "month": 1,
+       "year": 2010
+      },
+      "to": {
+       "month": 12,
+       "year": 2014
+      }
+     },
+     "type": "Palio Fire 1.0 MPI 8V Flex"
+    },
+    {
+     "bodyType": "Limusine três volumes | Motor de combustão interna",
+     "capacity": 1.0,
+     "keyMakerId": "FIA",
+     "keyNumber": 2542,
+     "modelRange": "178",
+     "motorType": "310A1011",
+     "powerRange": {
+      "fromKw": 54.0,
+      "toKw": 55.0
+     },
+     "productionPeriod": {
+      "from": {
+       "month": 6,
+       "year": 2012
+      },
+      "to": {
+       "month": 12,
+       "year": 2015
+      }
+     },
+     "type": "Siena 1.0 Flex"
+    },
+    {
+     "bodyType": "Limusine três volumes | Motor de combustão interna",
+     "capacity": 1.0,
+     "keyMakerId": "FIA",
+     "keyNumber": 2366,
+     "modelRange": "178",
+     "motorType": "310A1011",
+     "powerRange": {
+      "fromKw": 54.0,
+      "toKw": 55.0
+     },
+     "productionPeriod": {
+      "from": {
+       "month": 8,
+       "year": 2010
+      },
+      "to": {
+       "month": 6,
+       "year": 2012
+      }
+     },
+     "type": "Siena 1.0 MPI 8V Flex"
+    },
+    {
+     "bodyType": "Limusine três volumes | Motor de combustão interna",
+     "capacity": 1.0,
+     "keyMakerId": "FIA",
+     "keyNumber": 2443,
+     "modelRange": "178",
+     "motorType": "310A1011",
+     "powerRange": {
+      "fromKw": 54.0,
+      "toKw": 55.0
+     },
+     "productionPeriod": {
+      "from": {
+       "month": 1,
+       "year": 2010
+      },
+      "to": {
+       "month": 6,
+       "year": 2012
+      }
+     },
+     "type": "Siena Fire 1.0 MPI 8V Flex"
+    }
+   ]
+  }
+ },
+ "F000KE0P11": {
+  "detalhe": {
+   "productNumber": "F000KE0P11",
+   "name": "Vela de ignição, níquel",
+   "description": "As velas de níquel Bosch foram desenvolvidas para atingir a ",
+   "categoryId": "X22_cls_webs_category_112352",
+   "images": [
+    {
+     "sequence": 0,
+     "type": "gallery",
+     "url": "https://emea.resource.bosch.com/AA/internet/enfinity/img/products/F000KE0P11PH23WHCO0000.jpg"
+    },
+    {
+     "sequence": 1,
+     "type": "gallery",
+     "url": "https://emea.resource.bosch.com/AA/internet/enfinity/img/products/F000KE0P11PH01WHCO0000.jpg"
+    },
+    {
+     "sequence": 2,
+     "type": "gallery",
+     "url": "https://emea.resource.bosch.com/AA/internet/enfinity/img/products/F000KE0P11PH07WHCO0000.jpg"
+    },
+    {
+     "sequence": 3,
+     "type": "gallery",
+     "url": "https://emea.resource.bosch.com/AA/internet/enfinity/img/products/F000KE0P11PH13WHCO0000.jpg"
+    },
+    {
+     "sequence": 4,
+     "type": "gallery",
+     "url": "https://emea.resource.bosch.com/AA/internet/enfinity/img/products/F000KE0P11PH19WHCO0000.jpg"
+    },
+    {
+     "sequence": 11,
+     "type": "gallery",
+     "url": "https://emea.resource.bosch.com/AA/internet/enfinity/img/products/F000KE0P11PH25WHCO0000.jpg"
+    }
+   ],
+   "specificationTabData": [
+    {
+     "columnData": [
+      "Versão comercial (IAM)",
+      "F 000 KE0 P11"
+     ]
+    },
+    {
+     "columnData": [
+      "Designação",
+      "Vela de ignição, níquel"
+     ]
+    },
+    {
+     "columnData": [
+      "Estado do artigo",
+      "Normal"
+     ]
+    },
+    {
+     "columnData": [
+      "Comprimento (sem embalagem)",
+      "71,7 mm"
+     ]
+    },
+    {
+     "columnData": [
+      "Largura (sem embalagem)",
+      "23,8 mm"
+     ]
+    },
+    {
+     "columnData": [
+      "Rosca",
+      "M 14 x 1,25"
+     ]
+    },
+    {
+     "columnData": [
+      "Tipo de ligação",
+      "Pino roscado M4"
+     ]
+    },
+    {
+     "columnData": [
+      "Torque de aperto",
+      "17 Nm"
+     ]
+    },
+    {
+     "columnData": [
+      "Quantidade de eletrodos de massa",
+      "1"
+     ]
+    },
+    {
+     "columnData": [
+      "Assento estanque",
+      "plano maleável"
+     ]
+    },
+    {
+     "columnData": [
+      "Distância entre os elétrodos",
+      "0,8 mm"
+     ]
+    },
+    {
+     "columnData": [
+      "Res.à comb./res.supr.interfer.",
+      "0 kOhm"
+     ]
+    },
+    {
+     "columnData": [
+      "Posição das faíscas",
+      "3 mm"
+     ]
+    },
+    {
+     "columnData": [
+      "Comprimento da rosca",
+      "12,7 mm"
+     ]
+    },
+    {
+     "columnData": [
+      "Material elétrodo de massa",
+      "Liga de Ni"
+     ]
+    },
+    {
+     "columnData": [
+      "Material elétrodo central",
+      "Liga de Ni"
+     ]
+    },
+    {
+     "columnData": [
+      "Abertura da chave",
+      "20,8 mm"
+     ]
+    },
+    {
+     "columnData": [
+      "Designação",
+      "W 9 B+"
+     ]
+    },
+    {
+     "columnData": [
+      "Número de busca (KSN)",
+      "Sp 11"
+     ]
+    }
+   ],
+   "replacementsTabData": [],
+   "exchangesTabData": [],
+   "correspondingArticlesTabData": [],
+   "oeNumbers": [],
+   "hasSpareParts": false,
+   "hasPartKits": false,
+   "hasArticleData": true
+  }
+ },
+ "0242232801": {
+  "detalhe": {
+   "productNumber": "0242232801",
+   "name": "Jogo de velas de ignição, Super 4",
+   "description": "As velas Bosch Super 4 possuem quatro eletrodos desenvolvido",
+   "categoryId": "X22_cls_webs_category_112352",
+   "images": [
+    {
+     "sequence": 11,
+     "type": "gallery",
+     "url": "https://emea.resource.bosch.com/AA/internet/enfinity/img/products/0242242501PH25WHCO0000.jpg"
+    },
+    {
+     "sequence": 24,
+     "type": "gallery",
+     "url": "https://emea.resource.bosch.com/AA/internet/enfinity/img/products/0242232801REWHCO0000.jpg"
+    }
+   ],
+   "specificationTabData": [
+    {
+     "columnData": [
+      "Número de pedido",
+      "0 242 232 801"
+     ]
+    },
+    {
+     "columnData": [
+      "Designação",
+      "Jogo de velas de ignição, Super 4"
+     ]
+    },
+    {
+     "columnData": [
+      "Estado do artigo",
+      "Normal"
+     ]
+    },
+    {
+     "columnData": [
+      "Comprimento (sem embalagem)",
+      "74,7 mm"
+     ]
+    },
+    {
+     "columnData": [
+      "Largura (sem embalagem)",
+      "19 mm"
+     ]
+    },
+    {
+     "columnData": [
+      "Rosca",
+      "M 14 x 1,25"
+     ]
+    },
+    {
+     "columnData": [
+      "Torque de aperto (ft.lbs)",
+      "21 FT. LBS"
+     ]
+    },
+    {
+     "columnData": [
+      "Tipo de ligação",
+      "Porca DIN/SAE desaparafusável"
+     ]
+    },
+    {
+     "columnData": [
+      "Torque de aperto",
+      "28 Nm"
+     ]
+    },
+    {
+     "columnData": [
+      "Quantidade de eletrodos de massa",
+      "4"
+     ]
+    },
+    {
+     "columnData": [
+      "Assento estanque",
+      "plano maleável"
+     ]
+    },
+    {
+     "columnData": [
+      "Distância entre os elétrodos",
+      "0,9 mm"
+     ]
+    },
+    {
+     "columnData": [
+      "Res.à comb./res.supr.interfer.",
+      "6 kOhm"
+     ]
+    },
+    {
+     "columnData": [
+      "Posição das faíscas",
+      "5 mm"
+     ]
+    },
+    {
+     "columnData": [
+      "Comprimento da rosca",
+      "19 mm"
+     ]
+    },
+    {
+     "columnData": [
+      "Material elétrodo de massa",
+      "Liga de Ni"
+     ]
+    },
+    {
+     "columnData": [
+      "Material elétrodo central",
+      "Liga de Ni"
+     ]
+    },
+    {
+     "columnData": [
+      "Abertura da chave",
+      "16 mm"
+     ]
+    },
+    {
+     "columnData": [
+      "Designação",
+      "FR 78"
+     ]
+    },
+    {
+     "columnData": [
+      "Número de busca (KSN)",
+      "N59"
+     ]
+    }
+   ],
+   "replacementsTabData": [],
+   "exchangesTabData": [],
+   "correspondingArticlesTabData": [],
+   "oeNumbers": [
+    {
+     "columnData": [
+      "BMW",
+      "12 12 0 037 607"
+     ]
+    },
+    {
+     "columnData": [
+      "CITROEN",
+      "5960 J9"
+     ]
+    }
+   ],
+   "hasSpareParts": false,
+   "hasPartKits": false,
+   "hasArticleData": true
+  }
+ },
+ "0986B01016": {
+  "detalhe": {
+   "productNumber": "0986B01016",
+   "name": "Filtro de óleo",
+   "description": "Os filtros de óleo Bosch protegem o motor. Eles separam de f",
+   "categoryId": "X22_cls_webs_category_112365",
+   "images": [
+    {
+     "sequence": 1,
+     "type": "gallery",
+     "url": "https://emea.resource.bosch.com/AA/internet/enfinity/img/products/0986B01016PH01WHCO0000LA.jpg"
+    },
+    {
+     "sequence": 2,
+     "type": "gallery",
+     "url": "https://emea.resource.bosch.com/AA/internet/enfinity/img/products/0986B01016PH07WHCO0000LA.jpg"
+    },
+    {
+     "sequence": 2,
+     "type": "gallery",
+     "url": "https://emea.resource.bosch.com/AA/internet/enfinity/img/products/0986B01016PH07WHCO0000LA.jpg"
+    },
+    {
+     "sequence": 3,
+     "type": "gallery",
+     "url": "https://emea.resource.bosch.com/AA/internet/enfinity/img/products/0986B01016PH13WHCO0000LA.jpg"
+    },
+    {
+     "sequence": 3,
+     "type": "gallery",
+     "url": "https://emea.resource.bosch.com/AA/internet/enfinity/img/products/0986B01016PH13WHCO0000LA.jpg"
+    },
+    {
+     "sequence": 4,
+     "type": "gallery",
+     "url": "https://emea.resource.bosch.com/AA/internet/enfinity/img/products/0986B01016PH19WHCO0000LA.jpg"
+    },
+    {
+     "sequence": 4,
+     "type": "gallery",
+     "url": "https://emea.resource.bosch.com/AA/internet/enfinity/img/products/0986B01016PH19WHCO0000LA.jpg"
+    }
+   ],
+   "specificationTabData": [
+    {
+     "columnData": [
+      "Versão comercial (IAM)",
+      "0 986 B01 016"
+     ]
+    },
+    {
+     "columnData": [
+      "Designação",
+      "Filtro de óleo"
+     ]
+    },
+    {
+     "columnData": [
+      "Estado do artigo",
+      "Normal"
+     ]
+    },
+    {
+     "columnData": [
+      "Altura (sem embalagem)",
+      "93 mm"
+     ]
+    },
+    {
+     "columnData": [
+      "Diâmetro (sem embalagem)",
+      "136 mm"
+     ]
+    },
+    {
+     "columnData": [
+      "Conjunto de filtro",
+      "Não"
+     ]
+    },
+    {
+     "columnData": [
+      "Quantidade de conjuntos de filtro",
+      "1"
+     ]
+    },
+    {
+     "columnData": [
+      "Pressão abertura bloq. retorno",
+      "0,12 bar"
+     ]
+    },
+    {
+     "columnData": [
+      "Pressão abert. válv.derivação",
+      "1,55 bar"
+     ]
+    },
+    {
+     "columnData": [
+      "Bloqueio de retorno",
+      "sim"
+     ]
+    },
+    {
+     "columnData": [
+      "Válvulas de derivação",
+      "sim"
+     ]
+    },
+    {
+     "columnData": [
+      "Versão do filtro",
+      "Filtro de rosca"
+     ]
+    },
+    {
+     "columnData": [
+      "Abreviação comercial (HKB)",
+      "OB 1016"
+     ]
+    }
+   ],
+   "replacementsTabData": [],
+   "exchangesTabData": [],
+   "correspondingArticlesTabData": [],
+   "oeNumbers": [
+    {
+     "columnData": [
+      "AGRALE",
+      "6008001204004"
+     ]
+    },
+    {
+     "columnData": [
+      "CHEVROLET",
+      "MS 054 102"
+     ]
+    }
+   ],
+   "hasSpareParts": false,
+   "hasPartKits": false,
+   "hasArticleData": true
+  },
+  "montadoras": {
+   "countryCode": "br",
+   "languageCode": "pt",
+   "makers": [
+    {
+     "displayName": "AGRALE",
+     "id": "AGL",
+     "productNumbers": [
+      {
+       "type": "SEARCH",
+       "number": "0986B01016"
+      }
+     ]
+    },
+    {
+     "displayName": "CHEVROLET",
+     "id": "CHE",
+     "productNumbers": [
+      {
+       "type": "SEARCH",
+       "number": "0986B01016"
+      }
+     ]
+    },
+    {
+     "displayName": "MARCOPOLO",
+     "id": "MAP",
+     "productNumbers": [
+      {
+       "type": "SEARCH",
+       "number": "0986B01016"
+      }
+     ]
+    },
+    {
+     "displayName": "NISSAN",
+     "id": "NIS",
+     "productNumbers": [
+      {
+       "type": "SEARCH",
+       "number": "0986B01016"
+      }
+     ]
+    },
+    {
+     "displayName": "TROLLER",
+     "id": "TRL",
+     "productNumbers": [
+      {
+       "type": "SEARCH",
+       "number": "0986B01016"
+      }
+     ]
+    },
+    {
+     "displayName": "VW (VOLKSWAGEN)",
+     "id": "VWW",
+     "productNumbers": [
+      {
+       "type": "SEARCH",
+       "number": "0986B01016"
+      }
+     ]
+    }
+   ],
+   "oeNumbersRelevant": false,
+   "productNumber": "0986B01016"
+  },
+  "veiculos": {
+   "AGL": [
+    {
+     "bodyType": "Caminhões | Motor de combustão interna",
+     "capacity": 2.8,
+     "keyMakerId": "AGL",
+     "keyNumber": 52,
+     "modelRange": null,
+     "motorType": "Sprint 4.07 TCA",
+     "powerRange": {
+      "fromKw": 96.0,
+      "toKw": 0.0
+     },
+     "productionPeriod": {
+      "from": {
+       "month": 4,
+       "year": 2000
+      },
+      "to": {
+       "month": 9,
+       "year": 2005
+      }
+     },
+     "type": "6000"
+    },
+    {
+     "bodyType": "Ônibus | Motor de combustão interna",
+     "capacity": 2.8,
+     "keyMakerId": "AGL",
+     "keyNumber": 97,
+     "modelRange": null,
+     "motorType": "4.07 TCA Sprint",
+     "powerRange": {
+      "fromKw": 92.0,
+      "toKw": 0.0
+     },
+     "productionPeriod": {
+      "from": {
+       "month": 1,
+       "year": 2002
+      },
+      "to": {
+       "month": 12,
+       "year": 2005
+      }
+     },
+     "type": "A5 2.8 D"
+    },
+    {
+     "bodyType": "Ônibus | Motor de combustão interna",
+     "capacity": 2.8,
+     "keyMakerId": "AGL",
+     "keyNumber": 98,
+     "modelRange": null,
+     "motorType": "4.07 TCA Sprint",
+     "powerRange": {
+      "fromKw": 96.0,
+      "toKw": 0.0
+     },
+     "productionPeriod": {
+      "from": {
+       "month": 10,
+       "year": 1998
+      },
+      "to": {
+       "month": 12,
+       "year": 2004
+      }
+     },
+     "type": "A6 2.8 D"
+    },
+    {
+     "bodyType": "Ônibus | Motor de combustão interna",
+     "capacity": 4.3,
+     "keyMakerId": "AGL",
+     "keyNumber": 99,
+     "modelRange": null,
+     "motorType": "4.10 TCA",
+     "powerRange": {
+      "fromKw": 107.0,
+      "toKw": 0.0
+     },
+     "productionPeriod": {
+      "from": {
+       "month": 10,
+       "year": 1998
+      },
+      "to": {
+       "month": 12,
+       "year": 2004
+      }
+     },
+     "type": "A8 4.3 D"
+    },
+    {
+     "bodyType": "Furgão | Motor de combustão interna",
+     "capacity": 2.8,
+     "keyMakerId": "AGL",
+     "keyNumber": 72,
+     "modelRange": null,
+     "motorType": "Sprint 4.07 TCA",
+     "powerRange": {
+      "fromKw": 96.0,
+      "toKw": 0.0
+     },
+     "productionPeriod": {
+      "from": {
+       "month": 1,
+       "year": 2002
+      },
+      "to": {
+       "month": 12,
+       "year": 2005
+      }
+     },
+     "type": "Furgovan 6000"
+    },
+    {
+     "bodyType": "Furgão | Motor de combustão interna",
+     "capacity": 2.8,
+     "keyMakerId": "AGL",
+     "keyNumber": 78,
+     "modelRange": null,
+     "motorType": "4.07 TCE",
+     "powerRange": {
+      "fromKw": 103.0,
+      "toKw": 0.0
+     },
+     "productionPeriod": {
+      "from": {
+       "month": 10,
+       "year": 2005
+      },
+      "to": {
+       "month": 12,
+       "year": 2011
+      }
+     },
+     "type": "Furgovan 6000 E-tronic"
+    },
+    {
+     "bodyType": "Todo-o-terreno | Motor de combustão interna",
+     "capacity": 2.8,
+     "keyMakerId": "AGL",
+     "keyNumber": 65,
+     "modelRange": null,
+     "motorType": "4.07 TCA",
+     "powerRange": {
+      "fromKw": 97.0,
+      "toKw": 0.0
+     },
+     "productionPeriod": {
+      "from": {
+       "month": 1,
+       "year": 2005
+      },
+      "to": {
+       "month": 12,
+       "year": 2011
+      }
+     },
+     "type": "Marrua 2.8 D"
+    },
+    {
+     "bodyType": "Ônibus | Motor de combustão interna",
+     "capacity": 2.8,
+     "keyMakerId": "AGL",
+     "keyNumber": 100,
+     "modelRange": null,
+     "motorType": "4.07 TCE",
+     "powerRange": {
+      "fromKw": 103.0,
+      "toKw": 0.0
+     },
+     "productionPeriod": {
+      "from": {
+       "month": 1,
+       "year": 2006
+      },
+      "to": {
+       "month": 12,
+       "year": 2011
+      }
+     },
+     "type": "V5 2.8 D"
+    },
+    {
+     "bodyType": "Ônibus | Motor de combustão interna",
+     "capacity": 3.0,
+     "keyMakerId": "AGL",
+     "keyNumber": 101,
+     "modelRange": null,
+     "motorType": "4.08 TCE",
+     "powerRange": {
+      "fromKw": 103.0,
+      "toKw": 0.0
+     },
+     "productionPeriod": {
+      "from": {
+       "month": 1,
+       "year": 2006
+      },
+      "to": {
+       "month": 12,
+       "year": 2011
+      }
+     },
+     "type": "V6 3.0 D"
+    }
+   ]
+  }
+ },
+ "0280130039": {
+  "detalhe": {
+   "productNumber": "0280130039",
+   "name": "Sensor de temperatura do ar (admissão)",
+   "description": "Para uma operação do motor livre de problemas. Os sensores d",
+   "categoryId": "X22_cls_webs_category_112335",
+   "images": [
+    {
+     "sequence": 0,
+     "type": "gallery",
+     "url": "https://emea.resource.bosch.com/AA/internet/enfinity/img/products/0280130039PH04WHCO0000.jpg"
+    },
+    {
+     "sequence": 0,
+     "type": "gallery",
+     "url": "https://emea.resource.bosch.com/AA/internet/enfinity/img/products/0280130039PHANWHCO0000.jpg"
+    },
+    {
+     "sequence": 1,
+     "type": "gallery",
+     "url": "https://emea.resource.bosch.com/AA/internet/enfinity/img/products/0280130039PH01WHCO0000.jpg"
+    },
+    {
+     "sequence": 2,
+     "type": "gallery",
+     "url": "https://emea.resource.bosch.com/AA/internet/enfinity/img/products/0280130039PH07WHCO0000.jpg"
+    },
+    {
+     "sequence": 2,
+     "type": "gallery",
+     "url": "https://emea.resource.bosch.com/AA/internet/enfinity/img/products/0280130039PH07WHCO0000.jpg"
+    },
+    {
+     "sequence": 3,
+     "type": "gallery",
+     "url": "https://emea.resource.bosch.com/AA/internet/enfinity/img/products/0280130039PH13WHCO0000.jpg"
+    },
+    {
+     "sequence": 3,
+     "type": "gallery",
+     "url": "https://emea.resource.bosch.com/AA/internet/enfinity/img/products/0280130039PH13WHCO0000.jpg"
+    },
+    {
+     "sequence": 4,
+     "type": "gallery",
+     "url": "https://emea.resource.bosch.com/AA/internet/enfinity/img/products/0280130039PH19WHCO0000.jpg"
+    },
+    {
+     "sequence": 4,
+     "type": "gallery",
+     "url": "https://emea.resource.bosch.com/AA/internet/enfinity/img/products/0280130039PH19WHCO0000.jpg"
+    },
+    {
+     "sequence": 11,
+     "type": "gallery",
+     "url": "https://emea.resource.bosch.com/AA/internet/enfinity/img/products/0280130039PHA0WHCO0000.jpg"
+    },
+    {
+     "sequence": 0,
+     "type": "dimensionalDrawing",
+     "url": "https://emea.resource.bosch.com/AA/internet/enfinity/img/products/0280130039DRCDWHCO00MM.jpg"
+    },
+    {
+     "sequence": 1,
+     "type": "circuitDiagram",
+     "url": "https://emea.resource.bosch.com/AA/internet/enfinity/img/products/0280130026CDFRWHCO0000.jpg"
+    }
+   ],
+   "specificationTabData": [
+    {
+     "columnData": [
+      "Número de pedido",
+      "0 280 130 039"
+     ]
+    },
+    {
+     "columnData": [
+      "Designação",
+      "Sensor de temperatura do ar (admissão)"
+     ]
+    },
+    {
+     "columnData": [
+      "Estado do artigo",
+      "Normal"
+     ]
+    },
+    {
+     "columnData": [
+      "Comprimento (sem embalagem)",
+      "48,5 mm"
+     ]
+    },
+    {
+     "columnData": [
+      "Largura (sem embalagem)",
+      "19 mm"
+     ]
+    },
+    {
+     "columnData": [
+      "Altura (sem embalagem)",
+      "21,3 mm"
+     ]
+    },
+    {
+     "columnData": [
+      "Valor de referência para aceleração vibratória permitida",
+      "300 m/s2"
+     ]
+    },
+    {
+     "columnData": [
+      "Tensão nominal",
+      "5 V"
+     ]
+    },
+    {
+     "columnData": [
+      "Verificado quanto à corrosão conforme",
+      "DIN 50018"
+     ]
+    },
+    {
+     "columnData": [
+      "Corrente medida - máx.",
+      "1 mA"
+     ]
+    },
+    {
+     "columnData": [
+      "Autoaquecimento",
+      "2 K"
+     ]
+    },
+    {
+     "columnData": [
+      "Resistência nominal com 20 °C",
+      "2,5 kOhm"
+     ]
+    },
+    {
+     "columnData": [
+      "Resistência nominal com desvio de 20 °C",
+      "5 %"
+     ]
+    },
+    {
+     "columnData": [
+      "Constante de tempo da temperatura t63",
+      "38 s"
+     ]
+    },
+    {
+     "columnData": [
+      "Designação",
+      "TF-L"
+     ]
+    }
+   ],
+   "replacementsTabData": [],
+   "exchangesTabData": [],
+   "correspondingArticlesTabData": [],
+   "oeNumbers": [
+    {
+     "columnData": [
+      "ALFA ROMEO",
+      "46433052"
+     ]
+    },
+    {
+     "columnData": [
+      "ANDORIA",
+      "27712111"
+     ]
+    }
+   ],
+   "hasSpareParts": false,
+   "hasPartKits": false,
+   "hasArticleData": true
+  },
+  "montadoras": {
+   "countryCode": "br",
+   "languageCode": "pt",
+   "makers": [
+    {
+     "displayName": "ALFA ROMEO",
+     "id": "ALF",
+     "productNumbers": [
+      {
+       "type": "",
+       "number": "0280130039"
+      }
+     ]
+    },
+    {
+     "displayName": "GAZ",
+     "id": "GAZ",
+     "productNumbers": [
+      {
+       "type": "",
+       "number": "0280130039"
+      }
+     ]
+    },
+    {
+     "displayName": "MMZ (MINSK MOTOREN WERK)",
+     "id": "MMZ",
+     "productNumbers": [
+      {
+       "type": "",
+       "number": "0280130039"
+      }
+     ]
+    },
+    {
+     "displayName": "OPEL",
+     "id": "OPE",
+     "productNumbers": [
+      {
+       "type": "",
+       "number": "0280130039"
+      }
+     ]
+    },
+    {
+     "displayName": "VW (VOLKSWAGEN)",
+     "id": "VWW",
+     "productNumbers": [
+      {
+       "type": "",
+       "number": "0280130039"
+      }
+     ]
+    }
+   ],
+   "oeNumbersRelevant": false,
+   "productNumber": "0280130039"
+  },
+  "veiculos": {
+   "VWW": [
+    {
+     "bodyType": "Ônibus | Motor de combustão interna",
+     "capacity": 2.8,
+     "keyMakerId": "VWW",
+     "keyNumber": 1341,
+     "modelRange": "70,7D",
+     "motorType": "AES",
+     "powerRange": {
+      "fromKw": 103.0,
+      "toKw": 0.0
+     },
+     "productionPeriod": {
+      "from": {
+       "month": 1,
+       "year": 1996
+      },
+      "to": {
+       "month": 5,
+       "year": 2000
+      }
+     },
+     "type": "Caravelle T4 2.8"
+    },
+    {
+     "bodyType": "Coupé | Motor de combustão interna",
+     "capacity": 2.8,
+     "keyMakerId": "VWW",
+     "keyNumber": 1082,
+     "modelRange": "50",
+     "motorType": "AAA",
+     "powerRange": {
+      "fromKw": 128.0,
+      "toKw": 0.0
+     },
+     "productionPeriod": {
+      "from": {
+       "month": 9,
+       "year": 1991
+      },
+      "to": {
+       "month": 8,
+       "year": 1993
+      }
+     },
+     "type": "Corrado 2.8"
+    },
+    {
+     "bodyType": "Limousine 3 ou 5 port./2 vol. | Motor de combustão interna",
+     "capacity": 1.6,
+     "keyMakerId": "VWW",
+     "keyNumber": 1224,
+     "modelRange": "1H1",
+     "motorType": "AEK",
+     "powerRange": {
+      "fromKw": 74.0,
+      "toKw": 0.0
+     },
+     "productionPeriod": {
+      "from": {
+       "month": 10,
+       "year": 1994
+      },
+      "to": {
+       "month": 12,
+       "year": 1995
+      }
+     },
+     "type": "Golf III 1.6"
+    },
+    {
+     "bodyType": "Limousine 3 ou 5 port./2 vol. | Motor de combustão interna",
+     "capacity": 1.6,
+     "keyMakerId": "VWW",
+     "keyNumber": 1306,
+     "modelRange": "1H1",
+     "motorType": "AFT",
+     "powerRange": {
+      "fromKw": 74.0,
+      "toKw": 0.0
+     },
+     "productionPeriod": {
+      "from": {
+       "month": 12,
+       "year": 1995
+      },
+      "to": {
+       "month": 12,
+       "year": 1997
+      }
+     },
+     "type": "Golf III 1.6"
+    },
+    {
+     "bodyType": "Limousine 3 ou 5 port./2 vol. | Motor de combustão interna",
+     "capacity": 1.6,
+     "keyMakerId": "VWW",
+     "keyNumber": 1507,
+     "modelRange": "1H1",
+     "motorType": "AKS",
+     "powerRange": {
+      "fromKw": 74.0,
+      "toKw": 0.0
+     },
+     "productionPeriod": {
+      "from": {
+       "month": 5,
+       "year": 1997
+      },
+      "to": {
+       "month": 12,
+       "year": 1997
+      }
+     },
+     "type": "Golf III 1.6"
+    },
+    {
+     "bodyType": "Furgão | Caminhão de plataforma | Furgão | Motor de combustão interna",
+     "capacity": 1.6,
+     "keyMakerId": "VWW",
+     "keyNumber": 1456,
+     "modelRange": "7X",
+     "motorType": "UGA",
+     "powerRange": {
+      "fromKw": 43.0,
+      "toKw": 0.0
+     },
+     "productionPeriod": {
+      "from": {
+       "month": 11,
+       "year": 1997
+      },
+      "to": {
+       "month": 12,
+       "year": 2005
+      }
+     },
+     "type": "Kombi 1.6 Mi"
+    },
+    {
+     "bodyType": "Furgão | Caminhão de plataforma | Furgão | Motor de combustão interna",
+     "capacity": 1.6,
+     "keyMakerId": "VWW",
+     "keyNumber": 1457,
+     "modelRange": "7X",
+     "motorType": "UKA",
+     "powerRange": {
+      "fromKw": 49.0,
+      "toKw": 0.0
+     },
+     "productionPeriod": {
+      "from": {
+       "month": 2,
+       "year": 1998
+      },
+      "to": {
+       "month": 12,
+       "year": 2005
+      }
+     },
+     "type": "Kombi 1.6 Mi"
+    }
+   ]
+  }
+ }
+}

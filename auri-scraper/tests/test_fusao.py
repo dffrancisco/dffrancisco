@@ -208,3 +208,64 @@ def test_fusao_move_as_fotos_da_peca_inativada_para_a_sobrevivente(tmp_path):
     fotos = db.execute("SELECT id_peca, ordem, arquivo, publicada FROM foto ORDER BY ordem").fetchall()
     assert [tuple(f) for f in fotos] == [(1, 1, "aaaa.jpg", 1), (1, 2, "bbbb.jpg", 0)]
     assert (tmp_path / "fotos/1/bbbb.jpg").exists() and (tmp_path / "fotos/1/bbbb_p.jpg").exists()
+
+
+def test_variantes_na_mesma_url_viram_pecas_separadas():
+    """CarBlue publica lado direito e esquerdo na mesma URL, cada um com código, EAN e fotos próprios."""
+    url = "https://www.carblue.com.br/produto/suporte-roldana-gol-305076"
+    pecas, _ = _fundir([
+        _a("carblue", url, "Suporte Roldana Gol Direito", "VP VIRTUAL PLASTIC", "3193", ean="7898436093511", imagens=["https://c/d.jpg"]),
+        _a("carblue", url, "Suporte Roldana Gol Direito", "VP VIRTUAL PLASTIC", "3194", ean="7898436093528", imagens=["https://c/e.jpg"])])
+    assert sorted((p["codigo"], p["ean"]) for p in pecas) == [("3193", "7898436093511"), ("3194", "7898436093528")]
+    assert sorted(o["url"] for p in pecas for o in p["origens"]) == [url + "#3193", url + "#3194"]
+    assert sorted(f["url"] for p in pecas for f in p["fotos"]) == ["https://c/d.jpg", "https://c/e.jpg"]
+
+
+def test_mesma_url_e_mesmo_codigo_com_ean_diferente_e_uma_variante_so():
+    """ShopPeças repete o anúncio com o EAN chileno: é a mesma peça, conta uma vez e a URL fica como está."""
+    url = "https://s/produto/cabo-capo-198839"
+    pecas, _ = _fundir([_a("shoppecas", url, "Cabo Capo", "Universal", "42133", ean="7895272421331"),
+                        _a("shoppecas", url, "Cabo Capo", "Universal", "42133", ean="7805141887731")])
+    assert len(pecas) == 1 and [o["url"] for o in pecas[0]["origens"]] == [url]
+
+
+def test_variante_nova_na_url_nao_muda_o_id_da_peca_que_ja_existia(tmp_path):
+    db = abrir(tmp_path / "h.sqlite")
+    url = "https://c/produto/305076"
+    a = _a("carblue", url, "Suporte Direito", "VP VIRTUAL PLASTIC", "3193", ean="7898436093511")
+    b = _a("carblue", url, "Suporte Direito", "VP VIRTUAL PLASTIC", "3194", ean="7898436093528")
+    gravar(db, _fundir([a])[0])
+    r = gravar(db, _fundir([a, b])[0])
+    assert r["novas"] == 1 and r["inativadas_por_fusao"] == 0
+    assert [tuple(l) for l in db.execute("SELECT id_peca, codigo, status FROM peca ORDER BY 1")] == [(1, "3193", "ativa"), (2, "3194", "ativa")]
+    assert gravar(db, _fundir([a, b])[0])["iguais"] == 2
+
+
+def test_variantes_com_ean_cruzado_ficam_cada_uma_com_o_seu_ean():
+    """CarBlue repete o lado esquerdo com o EAN do direito: fica, para cada código, o EAN que não é de outra variante."""
+    url = "https://c/produto/arraste-golf-475803"
+    pecas, _ = _fundir([_a("carblue", url, "Arraste Golf", "ALPENFIX", "1005E", ean="7899577800068"),
+                        _a("carblue", url, "Arraste Golf", "ALPENFIX", "1005E", ean="7899577800075"),
+                        _a("carblue", url, "Arraste Golf", "ALPENFIX", "1005D", ean="7899577800068")])
+    assert sorted((p["codigo"], p["ean"]) for p in pecas) == [("1005D", "7899577800068"), ("1005E", "7899577800075")]
+
+
+def test_variantes_fundidas_pelo_ean_mantem_o_id_da_peca_antiga_da_url(tmp_path):
+    db = abrir(tmp_path / "h.sqlite")
+    url = "https://c/produto/maquina-vidro-fox-197006"
+    gravar(db, _fundir([_a("carblue", url, "Maquina Vidro", "ASAP", "1309", ean="0618231490424")])[0])
+    r = gravar(db, _fundir([_a("carblue", url, "Maquina Vidro", "ASAP", "1309", ean="0618231490424"),
+                            _a("carblue", url, "Maquina Vidro", "ASAP", "1308", ean="0618231490424")])[0])
+    assert r["novas"] == 0 and r["inativadas_por_sumico"] == 0
+    assert [tuple(l) for l in db.execute("SELECT id_peca, status FROM peca")] == [(1, "ativa")]
+
+
+def test_variante_nova_que_vem_antes_na_ordem_nao_toma_o_id_da_antiga(tmp_path):
+    db = abrir(tmp_path / "h.sqlite")
+    url = "https://c/produto/305076"
+    b = _a("carblue", url, "Suporte", "VP VIRTUAL PLASTIC", "3194", ean="7898436093528")
+    a = _a("carblue", url, "Suporte", "VP VIRTUAL PLASTIC", "3193", ean="7898436093511")
+    gravar(db, _fundir([b])[0])
+    r = gravar(db, _fundir([a, b])[0])
+    assert r["novas"] == 1 and r["inativadas_por_fusao"] == 0 and r["inativadas_por_sumico"] == 0
+    assert [tuple(l) for l in db.execute("SELECT id_peca, codigo FROM peca ORDER BY 1")] == [(1, "3194"), (2, "3193")]

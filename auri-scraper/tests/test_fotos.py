@@ -240,3 +240,11 @@ def test_banner_de_aplicacao_e_recusado_e_nao_volta_para_a_fila(tmp_path):
     r = processar_pendentes(db, tmp_path / "f", cfg, baixar=lambda u, sessao=None: _banner_png())
     assert r == {"gravadas": 0, "duplicadas": 0, "descartadas": 1, "erros": 0}
     assert dict(db.execute("SELECT erro, tentativas FROM foto_pendente").fetchone()) == {"erro": "banner", "tentativas": 3}
+
+
+def test_ids_baixa_apenas_as_pecas_da_lista(tmp_path):
+    db = _banco_com_pendentes(tmp_path, [(1, "https://img/lanterna.png", None, 2, "karhub"),
+                                         (2, "https://img/parafuso.png", None, 5, "clicpecas")])
+    conteudo = {"https://img/lanterna.png": _png(600, 400), "https://img/parafuso.png": _png(600, 400, cor=(0, 0, 0))}
+    r = processar_pendentes(db, tmp_path / "f", carregar_config(TOML), ids={2}, baixar=lambda u, sessao=None: conteudo[u])
+    assert r["gravadas"] == 1 and [l[0] for l in db.execute("SELECT id_peca FROM foto")] == [2]

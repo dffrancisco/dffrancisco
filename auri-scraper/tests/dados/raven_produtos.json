@@ -1,0 +1,89 @@
+[
+ {
+  "id": 16345,
+  "slug": "109652-06-2",
+  "link": "https://www.ravenferramentas.com.br/produtos/ferramenta/109652-06-2/",
+  "title": {
+   "rendered": "109652-06"
+  },
+  "veiculo": []
+ },
+ {
+  "id": 16289,
+  "slug": "109652-06",
+  "link": "https://www.ravenferramentas.com.br/produtos/ferramenta/109652-06/",
+  "title": {
+   "rendered": "109652-06"
+  },
+  "veiculo": []
+ },
+ {
+  "id": 12037,
+  "slug": "811008",
+  "link": "https://www.ravenferramentas.com.br/produtos/ferramenta/811008/",
+  "title": {
+   "rendered": "811008"
+  },
+  "veiculo": [
+   4840,
+   4215,
+   4841,
+   4850,
+   4825,
+   4827,
+   4826,
+   4852,
+   4823,
+   4854,
+   4857,
+   4862,
+   4863,
+   4865,
+   4842,
+   4829,
+   4030,
+   4831,
+   4221,
+   4674,
+   4833
+  ]
+ },
+ {
+  "id": 11268,
+  "slug": "151501",
+  "link": "https://www.ravenferramentas.com.br/produtos/ferramenta/151501/",
+  "title": {
+   "rendered": "151501"
+  },
+  "veiculo": [
+   4840,
+   3383,
+   4336,
+   4337,
+   4870,
+   3923,
+   3925
+  ]
+ },
+ {
+  "id": 11068,
+  "slug": "141022",
+  "link": "https://www.ravenferramentas.com.br/produtos/ferramenta/141022/",
+  "title": {
+   "rendered": "141022"
+  },
+  "veiculo": []
+ },
+ {
+  "id": 9643,
+  "slug": "100100",
+  "link": "https://www.ravenferramentas.com.br/produtos/ferramenta/100100/",
+  "title": {
+   "rendered": "100100"
+  },
+  "veiculo": [
+   3359,
+   3360
+  ]
+ }
+]

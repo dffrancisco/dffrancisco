@@ -2,7 +2,7 @@
 
 [fabricante]
 # sites que são a loja do próprio fabricante: foto é de catálogo de fabricante
-sites = ["universal"]
+sites = ["universal", "takao", "iguacu", "ds", "vp", "tcchicotes", "ymax", "maxauto", "raven", "bosch"]
 # hosts de imagem de fabricante (mesmo quando o anúncio é de loja)
 hosts = ["universalautomotive.vteximg.com.br"]
 

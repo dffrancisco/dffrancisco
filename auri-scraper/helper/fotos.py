@@ -94,7 +94,7 @@ def e_prioritaria(tipo, config):
     return bool(set(t.split()) & set(p.get("palavras", []))) or any(comeca(x) for x in p.get("comeca_com", []))
 
 
-def _pendentes(db, config, limite, marca, tipo, prioridade, so_prioridade=False):
+def _pendentes(db, config, limite, marca, tipo, prioridade, so_prioridade=False, ids=None):
     sql = """SELECT fp.id_peca, fp.url, fp.arquivo_local, fp.prioridade, fp.site, p.tipo_peca
              FROM foto_pendente fp JOIN peca p USING (id_peca) JOIN marca m USING (id_marca)
              WHERE p.status = 'ativa' AND fp.tentativas < ?"""
@@ -106,6 +106,8 @@ def _pendentes(db, config, limite, marca, tipo, prioridade, so_prioridade=False)
         sql += " AND p.tipo_peca LIKE ?"
         params.append(tipo.upper() + "%")
     linhas = db.execute(sql, params).fetchall()
+    if ids is not None:  # peças de uma lista de cliente (helper.py lista -> ids.txt)
+        linhas = [l for l in linhas if l["id_peca"] in ids]
     if so_prioridade:
         linhas = [l for l in linhas if e_prioritaria(l["tipo_peca"], config)]
 
@@ -117,7 +119,7 @@ def _pendentes(db, config, limite, marca, tipo, prioridade, so_prioridade=False)
 
 
 def processar_pendentes(db, pasta, config, limite=None, marca=None, tipo=None, prioridade=False, so_prioridade=False,
-                        baixar=baixar):
+                        ids=None, baixar=baixar):
     pasta = Path(pasta)
     r = {"gravadas": 0, "duplicadas": 0, "descartadas": 0, "erros": 0}
     tocadas = set()
@@ -132,7 +134,7 @@ def processar_pendentes(db, pasta, config, limite=None, marca=None, tipo=None, p
             local.sessao = requests.Session()
         return baixar(l["url"], sessao=local.sessao)
 
-    linhas = _pendentes(db, config, limite, marca, tipo, prioridade, so_prioridade)
+    linhas = _pendentes(db, config, limite, marca, tipo, prioridade, so_prioridade, ids)
     with ThreadPoolExecutor(paralelo) as executor:
         for inicio in range(0, len(linhas), LOTE_DOWNLOAD):
             lote = linhas[inicio:inicio + LOTE_DOWNLOAD]

@@ -44,3 +44,12 @@ def test_salvar_desconhecidas(tmp_path):
 
 def test_csv_de_marcas_usa_quebra_de_linha_lf():
     assert b"\r" not in CSV.read_bytes()
+
+
+def test_apelidos_das_marcas_da_so_injecao():
+    """Grafias da planilha do cliente que não casavam com as dos sites (sondagem de 2026-10-04)."""
+    m = Marcas.carregar(CSV)
+    assert m.canonica("KAYABA") == ("KYB", "reposicao")
+    assert m.canonica("TC") == ("TC CHICOTES", "reposicao")
+    assert m.canonica("TC Chicotes") == ("TC CHICOTES", "reposicao")
+    assert m.canonica("RAINHA DA SETE") == ("RAINHA DAS SETE", "reposicao")

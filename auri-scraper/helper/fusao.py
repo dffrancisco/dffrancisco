@@ -39,15 +39,32 @@ class _UniaoBusca:
         self.pai[self.achar(a)] = self.achar(b)
 
 
+def _variante(a):
+    codigo = normalizar_codigo(a.get("codigo"))
+    return codigo or ("EAN:" + (normalizar_ean(a.get("ean")) or ""))
+
+
 def _sem_repetidos(anuncios):
     """A mesma URL pode vir do .jsonl e do produto.json do mesmo site (pecas_karhub nasce do karhub.jsonl):
-    fica o anúncio de maior prioridade (menor número), que é o mais rico."""
-    por_url = {}
+    fica o anúncio de maior prioridade (menor número), que é o mais rico. Variantes com códigos diferentes
+    na mesma URL (CarBlue: lado direito e esquerdo) são peças diferentes: cada uma fica, com a URL
+    'url#código' na origem, que é única por (site, url). A CarBlue às vezes repete uma variante com o EAN
+    de outra: cada variante fica com o EAN que menos aparece nas outras."""
+    por_url = defaultdict(lambda: defaultdict(list))
     for a in anuncios:
-        chave = (a["site"], a["url"])
-        if chave not in por_url or a["prioridade"] < por_url[chave]["prioridade"]:
-            por_url[chave] = a
-    return list(por_url.values())
+        por_url[(a["site"], a["url"])][_variante(a)].append(a)
+    resultado = []
+    for variantes in por_url.values():
+        if len(variantes) == 1:
+            resultado.append(min(next(iter(variantes.values())), key=lambda a: a["prioridade"]))
+            continue
+        em_variantes = Counter(e for lista in variantes.values() for e in {normalizar_ean(a.get("ean")) for a in lista} if e)
+        for v, lista in variantes.items():
+            a = min(lista, key=lambda a: a["prioridade"])
+            eans = [normalizar_ean(x.get("ean")) for x in lista if normalizar_ean(x.get("ean"))]
+            ean = min(eans, key=lambda e: em_variantes[e]) if eans else a.get("ean")
+            resultado.append(dict(a, url=f"{a['url']}#{v}", ean=ean))
+    return resultado
 
 
 def _preparar(anuncios, marcas):
@@ -178,7 +195,7 @@ def atualizar_hash(db, id_peca):
     return True
 
 
-def _ids_existentes(db, peca):
+def _ids_existentes(db, peca, pela_url_base=False):
     ids = set()
     linha = db.execute("SELECT id_peca FROM peca WHERE chave = ?", (peca["chave"],)).fetchone()
     if linha:
@@ -187,6 +204,12 @@ def _ids_existentes(db, peca):
         linha = db.execute("SELECT id_peca FROM origem WHERE site=? AND url=?", (o["site"], o["url"])).fetchone()
         if linha:
             ids.add(linha[0])
+    if not ids and pela_url_base:  # variante 'url#código' de uma URL que antes tinha uma peça só
+        for o in peca["origens"]:
+            if "#" in o["url"]:
+                linha = db.execute("SELECT id_peca FROM origem WHERE site=? AND url=?", (o["site"], o["url"].rsplit("#", 1)[0])).fetchone()
+                if linha:
+                    ids.add(linha[0])
     vivos = set()
     for i in ids:  # segue a cadeia de fundida_em até a peça viva
         atual = i
@@ -232,10 +255,13 @@ def gravar(db, pecas_fundidas, pasta_fotos=None):
     db.execute("CREATE TEMP TABLE IF NOT EXISTS vistos_nesta_rodada (id_peca INTEGER PRIMARY KEY)")
     db.execute("DELETE FROM vistos_nesta_rodada")
     proximo = (db.execute("SELECT coalesce(max(id_peca), 0) FROM peca").fetchone()[0]) + 1
-    for p in pecas_fundidas:
+    # peças achadas pela chave ou pela origem pegam seus ids antes que uma variante nova, achada só pela
+    # URL sem '#código', tome o id de outra
+    achadas = {id(p) for p in pecas_fundidas if _ids_existentes(db, p)}
+    for p in sorted(pecas_fundidas, key=lambda p: id(p) not in achadas):
         # id já usado nesta rodada pertence a outra peça (duas peças antes fundidas voltaram a se separar):
         # não pode ser sobrescrito; a que sobrou ganha id novo, nunca reaproveitado
-        ids = _ids_existentes(db, p) - vistos
+        ids = _ids_existentes(db, p, pela_url_base=True) - vistos
         if ids:
             id_peca = min(ids)
             for outro in ids - {id_peca}:

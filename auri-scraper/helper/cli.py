@@ -1,4 +1,4 @@
-"""CLI do helper. Uso: python helper.py {preparar|fotos|relatorio|cobertura|publicar} [opções]."""
+"""CLI do helper. Uso: python helper.py {preparar|fotos|relatorio|cobertura|lista|publicar} [opções]."""
 import argparse
 import csv
 import os
@@ -8,7 +8,7 @@ import time
 from collections import defaultdict
 from pathlib import Path
 
-from helper import banco, consulta, fontes, fusao, relatorio, topcar
+from helper import banco, consulta, fontes, fusao, lista, relatorio, topcar
 from helper import fotos as fotos_mod
 from helper import publicar as pub
 from helper.marcas import Marcas
@@ -82,8 +82,9 @@ def cmd_relatorio(args):
 def cmd_fotos(args):
     db = banco.abrir(args.banco)
     config = fotos_mod.carregar_config(args.config_fotos)
+    ids = {int(l) for l in args.lista.read_text(encoding="utf-8").split()} if args.lista else None
     r = fotos_mod.processar_pendentes(db, args.base / "helper_fotos", config, limite=args.limite, marca=args.marca,
-                                      tipo=args.tipo, prioridade=args.prioridade, so_prioridade=args.so_prioridade)
+                                      tipo=args.tipo, prioridade=args.prioridade, so_prioridade=args.so_prioridade, ids=ids)
     print("fotos:", ", ".join(f"{k} {v}" for k, v in r.items()))
     print("pendentes restantes:", db.execute("SELECT count(*) FROM foto_pendente WHERE tentativas < 3").fetchone()[0])
     return 0
@@ -106,6 +107,44 @@ def cmd_cobertura(args):
     caminho = relatorio.salvar(texto, args.relatorios, "cobertura.md")
     print(texto)
     print("gravado em", caminho)
+    return 0
+
+
+def cmd_lista(args):
+    db = banco.abrir(args.banco)
+    casador = lista.Casador(db, Marcas.carregar(args.marcas))
+    pasta = args.base / "helper_listas" / (args.nome or args.planilha.stem.lower())
+    pasta.mkdir(parents=True, exist_ok=True)
+    contagem, ids_ativos = defaultdict(int), set()
+    with (pasta / "itens.csv").open("w", encoding="utf-8", newline="") as f_itens, \
+            (pasta / "pendentes.csv").open("w", encoding="utf-8", newline="") as f_pend:
+        itens, pendentes = csv.writer(f_itens, delimiter=";"), csv.writer(f_pend, delimiter=";")
+        itens.writerow(["cod", "via", "ids", "foto", "marca_divergente", "ativo", "ean", "catalogo", "marca", "nome", "grupo"])
+        pendentes.writerow(["cod", "ean", "catalogo", "marca", "nome", "grupo"])
+        for item in lista.ler_planilha(args.planilha):
+            r = casador.casar(item)
+            foto = lista.situacao_foto(db, r["ids"])
+            via = r["via"] or "nao_achou"
+            itens.writerow([item.cod, via, ",".join(map(str, r["ids"])), foto, "S" if r["marca_divergente"] else "",
+                            "S" if item.ativo else "N", item.ean or "", item.catalogo, item.marca, item.nome, item.grupo])
+            if not item.ativo:
+                contagem[("inativo", "")] += 1
+                continue
+            contagem[(via, foto)] += 1
+            ids_ativos.update(r["ids"])
+            if not r["ids"]:
+                pendentes.writerow([item.cod, item.ean or "", item.catalogo, item.marca, item.nome, item.grupo])
+    (pasta / "ids.txt").write_text("".join(f"{i}\n" for i in sorted(ids_ativos)), encoding="utf-8")
+    ativos = sum(n for (via, _), n in contagem.items() if via != "inativo")
+    linhas = [f"# Lista {pasta.name}: {args.planilha.name}", "", f"{ativos} itens ativos ({contagem[('inativo', '')]} inativos fora)", "",
+              "| casou por | foto | itens | % dos ativos |", "|---|---|---|---|"]
+    for (via, foto), n in sorted(contagem.items(), key=lambda kv: -kv[1]):
+        if via != "inativo":
+            linhas.append(f"| {via} | {foto or '-'} | {n} | {100 * n / max(ativos, 1):.1f}% |")
+    texto = "\n".join(linhas) + f"\n\nPeças do helper casadas: {len(ids_ativos)} (em ids.txt)\n"
+    (pasta / "resumo.md").write_text(texto, encoding="utf-8")
+    print(texto)
+    print("gravado em", pasta)
     return 0
 
 
@@ -143,11 +182,17 @@ def main(argv=None):
     sp.add_argument("--tipo", default=None, help="começo do tipo de peça, ex.: LANTERNA")
     sp.add_argument("--prioridade", action="store_true", help="peças 'com cara' (helper_fotos.toml) primeiro")
     sp.add_argument("--so-prioridade", action="store_true", help="só as peças 'com cara' (onda prioritária)")
+    sp.add_argument("--lista", type=Path, default=None, help="ids.txt de helper.py lista: só as peças da lista do cliente")
     sp.add_argument("--config-fotos", type=Path, default=Path(__file__).resolve().parents[1] / "helper_fotos.toml")
     sp.set_defaults(fn=cmd_fotos)
     sp = sub.add_parser("cobertura")
     _args_comuns(sp)
     sp.set_defaults(fn=cmd_cobertura)
+    sp = sub.add_parser("lista", help="casa a planilha de peças de um cliente com o helper")
+    _args_comuns(sp)
+    sp.add_argument("planilha", type=Path)
+    sp.add_argument("--nome", default=None, help="pasta em helper_listas/ (padrão: nome do arquivo)")
+    sp.set_defaults(fn=cmd_lista)
     sp = sub.add_parser("publicar")
     _args_comuns(sp)
     sp.add_argument("--ensaio", action="store_true")

@@ -1,0 +1,127 @@
+[
+ {
+  "Id": "2856e9ab-23c0-49ed-a119-f690a7d330e5",
+  "Modelo": "P VW 14",
+  "Descricao": "Pistão (JG)",
+  "Aplicacao": "VOLKSWAGEN FLEX 1.4L 8V L4 SOHC MI KOMBI APÓS 06",
+  "Informacoes": "76,5 x 1,2 x 1,5 x 2,5 - usa com AS VW 16F",
+  "Marca": "VOLKSWAGEN",
+  "Familia": "Pistão",
+  "SubFamilia": "Pistão",
+  "Imagem": [
+   "https://takao.blob.core.windows.net/images-mult-prod/750/P%20VW%2014/0.jpg"
+  ],
+  "Variacoes": [
+   {
+    "Key": "STD",
+    "Value": 0
+   },
+   {
+    "Key": "0,50",
+    "Value": 0
+   },
+   {
+    "Key": "1,00",
+    "Value": 0
+   }
+  ]
+ },
+ {
+  "Id": "3780c76a-8027-4e0e-bd5e-c266196b24ba",
+  "Modelo": "RT RE 18",
+  "Descricao": "Retentor Traseiro",
+  "Aplicacao": "GASOLINA RENAULT/VOLVO 1.4/1.6/1.8/2.0L AUDI/GM/PEUGEOT",
+  "Informacoes": "85 x 105 x 8",
+  "Marca": "VOLVO",
+  "Familia": "Retentor",
+  "SubFamilia": "Retentor Traseiro",
+  "Imagem": [
+   "https://takao.blob.core.windows.net/images-mult-prod/750/RT%20RE%2018/0",
+   "https://takao.blob.core.windows.net/images-mult-prod/750/RT%20RE%2018/0.jpg"
+  ],
+  "Variacoes": [
+   {
+    "Key": "-",
+    "Value": 0
+   }
+  ]
+ },
+ {
+  "Id": "9c3065f1-42e7-45be-a2e3-3a932381965b",
+  "Modelo": "B D 18",
+  "Descricao": "Biela (cada)",
+  "Aplicacao": "NISSAN FLEX/GASOLINA 1.8L 16V MR18DE LIVINA, TIIDA",
+  "Informacoes": "20 x 47 x 185 mm",
+  "Marca": "NISSAN",
+  "Familia": "Biela",
+  "SubFamilia": "Biela",
+  "Imagem": [
+   "https://takao.blob.core.windows.net/images-mult-prod/750/B%20D%2018/0",
+   "https://takao.blob.core.windows.net/images-mult-prod/750/B%20D%2018/0.jpg",
+   "https://takao.blob.core.windows.net/images-mult-prod/750/B%20D%2018/1.jpg",
+   "https://takao.blob.core.windows.net/images-mult-prod/750/B%20D%2018/2.jpg"
+  ],
+  "Variacoes": [
+   {
+    "Key": "STD",
+    "Value": 0
+   },
+   {
+    "Key": "-",
+    "Value": 0
+   }
+  ]
+ },
+ {
+  "Id": "88b00e52-f2d1-4775-b290-af87971be755",
+  "Modelo": "AS GM 31",
+  "Descricao": "Anel (JG)",
+  "Aplicacao": "GASOLINA 3.1L 12V V6 OHV LUMINA, RODEO GM/ISUZU",
+  "Informacoes": "89,0 x 1,5 x 1,5 x 4,0",
+  "Marca": "ISUZU",
+  "Familia": "Anel",
+  "SubFamilia": "Anel",
+  "Imagem": [
+   "https://takao.blob.core.windows.net/images-mult-prod/familia/imagem-coringa.jpg"
+  ],
+  "Variacoes": [
+   {
+    "Key": "STD",
+    "Value": 0
+   },
+   {
+    "Key": "0,50",
+    "Value": 0
+   },
+   {
+    "Key": "0,75",
+    "Value": 0
+   }
+  ]
+ },
+ {
+  "Id": "3cd5b1e6-f625-4a5d-b07f-e277179516e1",
+  "Modelo": "AS LA 16",
+  "Descricao": "Anel (JG)",
+  "Aplicacao": "GASOLINA 1.6L 8V SOHC BA3 NIVA  91 ATÉ 95 LADA",
+  "Informacoes": "79,0 x 1,5 x 2,0 x 4,0",
+  "Marca": "LADA",
+  "Familia": "Anel",
+  "SubFamilia": "Anel",
+  "Imagem": [
+   "https://takao.blob.core.windows.net/images-mult-prod/750/AS%20LA%2016/0",
+   "https://takao.blob.core.windows.net/images-mult-prod/750/AS%20LA%2016/0.jpg",
+   "https://takao.blob.core.windows.net/images-mult-prod/750/AS%20LA%2016/2.jpg"
+  ],
+  "Variacoes": [
+   {
+    "Key": "0,40",
+    "Value": 0
+   },
+   {
+    "Key": "0,60",
+    "Value": 0
+   }
+  ]
+ }
+]
