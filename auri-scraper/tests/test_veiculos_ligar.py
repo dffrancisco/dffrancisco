@@ -88,7 +88,8 @@ def test_juntar_faixas():
 def test_ligar_completo_nivel_modelo_e_fechamento(tmp_path):
     db = abrir(tmp_path / "h.sqlite")
     m = Montadoras({"VW": "VOLKSWAGEN"})
-    carregar_arvore(db, [_linha(), _linha(montadora="Volkswagen", mh="volkswagen", modelo="Gol"),
+    anos_gol = [{"ano": a, "versoes": [{"label": "1.0", "handle": "g", "ids_fonte": [f"gol-{a}"]}]} for a in range(2000, 2022)]
+    carregar_arvore(db, [_linha(), _linha(montadora="Volkswagen", mh="volkswagen", modelo="Gol", anos=anos_gol),
                          _linha(montadora="Ford", mh="ford", modelo="Ka"), _linha(montadora="Kia", mh="kia", modelo="Ka")], m)
     db.execute("INSERT INTO marca (id_marca, nome, tipo) VALUES (1, 'X', 'reposicao')")
     for i in range(1, 7):
@@ -160,3 +161,23 @@ def test_karhub_contestado_pelo_texto_dos_outros_sites_vira_nivel_modelo(tmp_pat
     assert linhas_de(8) == sorted([(tracker, None, 2020, 2021, "versao"), (gol, None, 2020, 2021, "versao")])
     assert linhas_de(9) == sorted([(gol, None, 2020, 2021, "versao"), (tracker, None, 2020, 2021, "modelo")])
     assert r["pares_contestados"] == 2  # peça 7 (Gol) e peça 9 (Tracker)
+
+
+def test_faixa_que_comeca_bem_antes_do_modelo_existir_nao_vale_como_ano(tmp_path):
+    """'Volkswagen Gol 1969-2022' (coringa de loja) ou '1960-2019' (caminhões da HiperVarejo): o modelo da árvore começa
+    em 2020 e a faixa, mais de 5 anos antes. O ano não é confiável: a linha fica sem ano. Até 5 anos antes vale
+    (a árvore da KarHub nem sempre tem os primeiros anos do modelo)."""
+    db = abrir(tmp_path / "h.sqlite")
+    m = Montadoras({})
+    carregar_arvore(db, [_linha(montadora="Volkswagen", mh="volkswagen", modelo="Gol")], m)  # Gol 2020-2021 na árvore
+    db.execute("INSERT INTO marca (id_marca, nome, tipo) VALUES (1, 'X', 'reposicao')")
+    for i in (1, 2):
+        db.execute("INSERT INTO peca (id_peca, id_marca, chave, codigo, desc_curta, status) VALUES (?, 1, ?, ?, 'PECA', 'ativa')",
+                   (i, f"X|{i}", str(i)))
+    db.executemany("INSERT INTO aplicacao (id_peca, montadora, modelo, ano_inicio, ano_fim) VALUES (?, ?, ?, ?, ?)", [
+        (1, "VOLKSWAGEN", "GOL", 1969, 2022), (2, "VOLKSWAGEN", "GOL", 2015, 2021)])
+    db.commit()
+    r, _ = ligar(db, tmp_path / "nao_existe.jsonl", m)
+    assert [tuple(l) for l in db.execute("SELECT id_peca, ano_inicio, ano_fim FROM vei_peca ORDER BY id_peca")] == [
+        (1, None, None), (2, 2015, 2021)]
+    assert r["faixas_antes_do_modelo"] == 1

@@ -10,6 +10,7 @@ from helper.banco import INDICES_PECA_VEICULO, agora, gravar_meta
 from helper.veiculo_tipo import normalizar
 
 LOTE = 20000
+FOLGA_ANTES_DO_MODELO = 5  # a árvore da KarHub nem sempre tem os primeiros anos; além disso a faixa é coringa ('1969-2022')
 
 
 def faixas(selecionados, universo):
@@ -64,6 +65,7 @@ class Arvore:
                    WHERE v.ativo = 1 ORDER BY va.id_versao, va.ano"""):
             self.versoes_por_ano[id_modelo][ano].add(id_versao)
             self.anos_por_versao[id_versao].append(ano)
+        self.primeiro_ano = {m: min(anos) for m, anos in self.versoes_por_ano.items() if anos}
         self.modelos = defaultdict(dict)  # nome canônico da montadora -> {nome normalizado do modelo: id_modelo}
         self.modelos_do_nome = defaultdict(set)  # nome normalizado -> {id_modelo} (em qualquer montadora)
         self.montadora_do_modelo = {}
@@ -203,6 +205,9 @@ def ligar_modelo(db, arvore, montadoras):
             citadas[id_peca].add(arvore.montadora_do_modelo[id_modelo])
         if ini is not None and fim is not None and ini > fim:
             ini, fim = fim, ini
+        if ini is not None and ini < arvore.primeiro_ano.get(id_modelo, ini) - FOLGA_ANTES_DO_MODELO:
+            ini = fim = None  # começa antes de o modelo existir: o ano não é confiável
+            r["faixas_antes_do_modelo"] += 1
         pares[(id_peca, id_modelo)].append((ini, fim))
     r.update(contestar(db, arvore, citadas))
     db.execute("CREATE TEMP TABLE IF NOT EXISTS candidato_modelo (id_peca INTEGER, id_modelo INTEGER, ano_inicio INTEGER, ano_fim INTEGER)")

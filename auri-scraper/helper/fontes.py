@@ -37,13 +37,16 @@ def _anuncio_base(site, fonte):
 
 
 FAIXA_FINAL = re.compile(r"\s((?:19|20)\d{2}(?:-(?:19|20)\d{2})?)$")
+CORINGA_ALTESE = re.compile(r"\s1969-2022$")  # 'todos os anos' da loja, até em produto de um modelo só
 
 
 def carro_altese(texto):
     """altese.jsonl coletado antes de 2026-10-06 repete o 'Ano do Veículo' do produto em cada modelo
     ('Volkswagen Fox 1969-2022; Volkswagen Gol G7 1969-2022'): com mais de um modelo e a mesma faixa em todos,
-    a faixa não é de nenhum deles e sai."""
-    partes = [p.strip() for p in (texto or "").split(";") if p.strip()]
+    a faixa não é de nenhum deles e sai. O coringa 1969-2022 da loja sempre sai."""
+    partes = [CORINGA_ALTESE.sub("", p.strip()) for p in (texto or "").split(";") if p.strip()]
+    if texto and not any(FAIXA_FINAL.search(p) for p in partes):
+        return "; ".join(partes)
     finais = [FAIXA_FINAL.search(p) for p in partes]
     if len(partes) < 2 or not all(finais) or len({m[1] for m in finais}) != 1:
         return texto

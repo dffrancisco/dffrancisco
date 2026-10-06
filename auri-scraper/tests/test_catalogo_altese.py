@@ -176,3 +176,9 @@ def test_ano_do_produto_so_vai_para_o_modelo_quando_ha_um_modelo_so():
     um = {"Todas as Montadoras": ["Chevrolet"], "Chevrolet": ["Omega"], "Ano do Veículo :": ["1992", "1995", "1998"]}
     assert veiculos(varios) == "Volkswagen Fox; Volkswagen Gol G7"
     assert veiculos(um) == "Chevrolet Omega 1992-1998"
+
+
+def test_coringa_1969_2022_da_loja_nao_vira_ano():
+    from catalogo_altese import veiculos
+    p = {"Todas as Montadoras": ["Volkswagen"], "Volkswagen": ["Polo"], "Ano do Veículo :": [str(a) for a in range(1969, 2023)]}
+    assert veiculos(p) == "Volkswagen Polo"

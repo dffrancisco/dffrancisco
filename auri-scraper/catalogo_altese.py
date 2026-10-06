@@ -107,6 +107,8 @@ def veiculos(produto):
                for modelo in produto.get(montadora) or []]
     anos = sorted(int(a) for a in produto.get("Ano do Veículo :") or [] if a.isdigit())
     faixa = "-".join(dict.fromkeys(str(a) for a in (anos[0], anos[-1]))) if anos and len(set(modelos)) == 1 else ""
+    if faixa == "1969-2022":  # 'todos os anos' da loja
+        faixa = ""
     partes = [" ".join(filter(None, (montadora, modelo, faixa))) for montadora, modelo in modelos]
     return "; ".join(dict.fromkeys(partes)) or None
 

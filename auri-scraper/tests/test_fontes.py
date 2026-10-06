@@ -76,3 +76,10 @@ def test_carro_da_altese_sem_a_faixa_do_produto_repetida_em_cada_modelo():
     assert carro_altese("Fiat Uno 2004-2013; Fiat Fiorino 2005-2013") == "Fiat Uno 2004-2013; Fiat Fiorino 2005-2013"
     assert carro_altese("Fiat Uno 2010; Fiat Palio 2010") == "Fiat Uno; Fiat Palio"
     assert carro_altese(None) is None and carro_altese("Fiat Uno; Fiat Palio") == "Fiat Uno; Fiat Palio"
+
+
+def test_carro_da_altese_sem_o_coringa_1969_2022():
+    """A Altese marca 'todos os anos' como 1969-2022, até em produto de um modelo só ('Volkswagen Polo 1969-2022')."""
+    from helper.fontes import carro_altese
+    assert carro_altese("Volkswagen Polo 1969-2022") == "Volkswagen Polo"
+    assert carro_altese("Volkswagen Polo 2003-2014") == "Volkswagen Polo 2003-2014"
