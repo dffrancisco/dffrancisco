@@ -907,6 +907,24 @@ button:disabled { opacity: .5; cursor: wait; }
 .selo.conf-versao, .selo.conf-todas_versoes { background: var(--ok-bg); color: var(--ok); }
 .selo.conf-algumas_versoes, .selo.conf-modelo_ano, .selo.confira { background: var(--warn-bg); color: var(--warn); }
 .selo.tipo { background: var(--line); color: var(--muted); }
+.vlista { list-style: none; margin: 0 0 8px; padding: 0; max-height: 260px; overflow-y: auto; border: 1px solid var(--line);
+          border-radius: 8px; }
+.vlista li { padding: 5px 10px; border-bottom: 1px solid var(--line); font-size: 14px; }
+.arvore { border: 1px solid var(--line); border-radius: 8px; margin-bottom: 8px; max-height: 320px; overflow-y: auto; }
+.arvore .no { display: flex; gap: 8px; align-items: center; width: 100%; text-align: left; font-weight: 400; padding: 6px 10px;
+              border: 0; border-bottom: 1px solid var(--line); border-radius: 0; background: transparent; color: var(--text); }
+.arvore button.no { cursor: pointer; } .arvore button.no:hover { background: var(--accent-bg); }
+.arvore .no.voltar { font-weight: 600; }
+.arvore .seta { margin-left: auto; color: var(--muted); }
+.arvore input { margin: 6px 10px; width: calc(100% - 20px); }
+.arvore .aviso-no { padding: 6px 10px; color: var(--warn); font-size: 14px; }
+.seu-veiculo { padding: 8px 12px; border-radius: 8px; margin-bottom: 8px; font-weight: 600; background: var(--warn-bg);
+               color: var(--warn); }
+.seu-veiculo.serve { background: var(--ok-bg); color: var(--ok); }
+.seu-veiculo.nao { background: var(--bad-bg); color: var(--bad); }
+.alterna { display: inline-flex; margin-left: 8px; vertical-align: middle; }
+.alterna button { padding: 3px 10px; font-size: 13px; border-radius: 0; }
+.alterna button.ativa { background: var(--accent-bg); color: var(--accent); border-color: var(--accent); }
 @media (max-width: 700px) {
   .linha { grid-template-columns: 1fr; } .linha img, .foto { width: 100%; height: 260px; }
   .botoes { flex-direction: row; } .botoes button { flex: 1; }
@@ -1135,8 +1153,12 @@ CADASTRO = r"""
       <label>Custo<input value="0,00" disabled></label>
       <label>Venda<input value="0,00" disabled></label>
     </div>
-    <p style="margin:6px 0 6px;font-weight:600">Veículos compatíveis (<span id="siteVeiculos"></span>) →
-      carros de venda com complemento <span class="origem" id="resumoVeiculos"></span></p>
+    <p style="margin:6px 0 6px;font-weight:600">Veículos compatíveis (<span id="siteVeiculos"></span>)
+      <span class="alterna" id="alternaVista" hidden><button type="button" class="secundario" data-vista="lista">Lista</button><button
+        type="button" class="secundario" data-vista="arvore">Árvore</button></span></p>
+    <div id="seuVeiculo" class="seu-veiculo" hidden></div>
+    <div id="vistaVeiculos"></div>
+    <p style="margin:10px 0 6px;font-weight:600">Carros de venda com complemento <span class="origem" id="resumoVeiculos"></span></p>
     <div id="veiculosForm"></div>
     <div class="grade" style="margin-top:8px">
       <label class="largo">Complemento do produto (lista completa de veículos compatíveis)
@@ -1420,13 +1442,81 @@ function opcoes(lista, id, nome, valor) {
   return lista.map(o => `<option value="${esc(o[id])}"${String(o[id]) === String(valor) ? " selected" : ""}>${esc(o[nome])}</option>`).join("");
 }
 
+let dadosVeiculos = null, arvoreNav = {m: null, mo: null, a: null, filtro: ""}, vistaVeiculos = "lista";
+try { vistaVeiculos = localStorage.getItem("vistaVeiculos") || "lista"; } catch (e) {}
+
+const seloAno = a => a.todas ? ' <span class="selo conf-todas_versoes">todas as versões</span>'
+                   : a.confira && !a.versoes.length ? ' <span class="selo confira">confira a versão</span>' : "";
+
+function htmlLista(lista) {
+  return `<ul class="vlista">${lista.map(l => `<li>${esc(l.texto)}`
+    + (l.selo ? ` <span class="selo ${l.selo === "confira a versão" ? "confira" : "conf-todas_versoes"}">${esc(l.selo)}</span>` : "")
+    + (l.tipo !== "carro" ? ` <span class="selo tipo">${esc(l.tipo)}</span>` : "") + "</li>").join("")}</ul>`;
+}
+
+function htmlArvore(arvore) {  // montadora -> modelos -> anos -> versões, um nível por vez, como na KarHub
+  const n = arvoreNav;
+  const no = (acao, conteudo) => `<button type="button" class="no" data-acao="${acao}">${conteudo}<span class="seta">→</span></button>`;
+  const voltar = conteudo => `<button type="button" class="no voltar" data-acao="voltar">← ${conteudo}</button>`;
+  if (n.m == null)
+    return `<div class="arvore">${arvore.map((m, i) => no(`m:${i}`,
+      `${imgOuVazio(m.logo_url)}<span>${esc(m.nome)}</span><span class="origem">${m.modelos.length} modelo(s)</span>`)).join("")}</div>`;
+  const m = arvore[n.m];
+  if (n.mo == null) {
+    const t = normalizar(n.filtro);
+    return `<div class="arvore">${voltar(`${imgOuVazio(m.logo_url)}<span>${esc(m.nome)}</span>`)}
+      <input type="text" id="filtroModelos" placeholder="Pesquisar modelos" value="${esc(n.filtro)}" autocomplete="off">
+      ${m.modelos.map((mo, i) => [mo, i]).filter(([mo]) => !t || normalizar(mo.nome).includes(t)).map(([mo, i]) => no(`mo:${i}`,
+        `${imgOuVazio(mo.foto_url || m.logo_url)}<span>${esc(mo.nome)}</span>`
+        + (mo.tipo !== "carro" ? `<span class="selo tipo">${esc(mo.tipo)}</span>` : "")
+        + `<span class="origem">${esc(mo.faixa)}</span>`)).join("")}</div>`;
+  }
+  const mo = m.modelos[n.mo];
+  if (n.a == null)
+    return `<div class="arvore">${voltar(`${imgOuVazio(mo.foto_url || m.logo_url)}<span>${esc(m.nome)} ${esc(mo.nome)}</span>`)}
+      ${mo.anos.map((a, i) => no(`a:${i}`, `<span>${a.ano}</span>${seloAno(a)}`)).join("")
+        || '<div class="aviso-no">Confira a versão: a base não informa os anos.</div>'}</div>`;
+  const a = mo.anos[n.a];
+  return `<div class="arvore">${voltar(`${imgOuVazio(mo.foto_url || m.logo_url)}<span>${esc(m.nome)} ${esc(mo.nome)} ${a.ano}</span>${seloAno(a)}`)}
+    ${a.confira && !a.versoes.length ? '<div class="aviso-no">Confira a versão: a base não diz quais versões.</div>' : ""}
+    ${a.versoes.map(v => `<div class="no">${esc(v)}</div>`).join("")}</div>`;
+}
+
+function desenharVeiculos() {
+  const d = dadosVeiculos, alvo = document.getElementById("vistaVeiculos"), daBase = d.veiculos_fonte === "base";
+  document.getElementById("alternaVista").hidden = !daBase;
+  document.querySelectorAll("#alternaVista button").forEach(b => b.classList.toggle("ativa", b.dataset.vista === vistaVeiculos));
+  alvo.innerHTML = !daBase ? "" : vistaVeiculos === "arvore" ? htmlArvore(d.veiculos_arvore) : htmlLista(d.veiculos_lista);
+}
+
+const vistaEl = document.getElementById("vistaVeiculos");
+vistaEl.addEventListener("click", e => {
+  const b = e.target.closest("[data-acao]"); if (!b) return;
+  const [tipo, i] = b.dataset.acao.split(":"), n = arvoreNav;
+  if (tipo === "voltar") { if (n.a != null) n.a = null; else if (n.mo != null) n.mo = null; else { n.m = null; n.filtro = ""; } }
+  else if (tipo === "m") n.m = +i; else if (tipo === "mo") n.mo = +i; else if (tipo === "a") n.a = +i;
+  desenharVeiculos();
+});
+vistaEl.addEventListener("input", e => {
+  if (e.target.id !== "filtroModelos") return;
+  arvoreNav.filtro = e.target.value; const pos = e.target.selectionStart;
+  desenharVeiculos();
+  const campo = document.getElementById("filtroModelos"); campo.focus(); campo.setSelectionRange(pos, pos);
+});
+vistaEl.addEventListener("keydown", e => { if (e.key === "Enter") e.preventDefault(); });  // não cadastrar pelo Enter do filtro
+document.getElementById("alternaVista").addEventListener("click", e => {
+  const b = e.target.closest("button[data-vista]"); if (!b) return;
+  vistaVeiculos = b.dataset.vista;
+  try { localStorage.setItem("vistaVeiculos", vistaVeiculos); } catch (err) {}
+  desenharVeiculos();
+});
+
 async function abrir(id) {
   itemAtual = resultados.find(r => r.id === id);
   const d = await (await fetch("/api/catalogo/sugestao/" + id + (paramsVeiculo() ? "?" + paramsVeiculo().slice(1) : ""))).json();
   const f = document.getElementById("formCadastro"), c = d.campos;
   document.getElementById("tituloForm").textContent = itemAtual.nome;
   document.getElementById("origemForm").innerHTML = `${esc(itemAtual.site_nome)} · ${esc(itemAtual.marca)} ${esc(itemAtual.codigo)} · <a href="${esc(itemAtual.url)}" target="_blank" rel="noopener">ver no site</a>`;
-  document.getElementById("siteVeiculos").textContent = itemAtual.site_nome;
   for (const campo of ["desc_produto", "desc_produto_completa", "num_fabricante", "cod_barra", "ncm", "marca_nova"])
     f.elements[campo].value = c[campo] ?? "";
   f.elements.id_marca.innerHTML = '<option value="nova">— criar marca nova —</option>' + opcoes(d.marcas, "id_marca", "descricao", c.id_marca);
@@ -1440,15 +1530,27 @@ async function abrir(id) {
   const av = document.getElementById("avisos");
   av.hidden = !c.avisos.length; av.innerHTML = c.avisos.map(a => "⚠ " + esc(a)).join("<br>");
   f.elements.complemento_produto.value = c.complemento_produto || "";
+  dadosVeiculos = d;
+  arvoreNav = {m: d.veiculos_arvore.length === 1 ? 0 : null, mo: null, a: null, filtro: ""};
+  const daBase = d.veiculos_fonte === "base", unidade = daBase ? "linha(s) da base" : "versões";
+  document.getElementById("siteVeiculos").textContent = daBase ? "base de peças" : itemAtual.site_nome;
+  const seu = document.getElementById("seuVeiculo");
+  seu.hidden = !d.seu_veiculo;
+  if (d.seu_veiculo) {
+    const conf = d.seu_veiculo.confianca;
+    seu.className = "seu-veiculo" + (conf === "versao" || conf === "todas_versoes" ? " serve" : conf ? "" : " nao");
+    seu.textContent = `Seu veículo: ${d.seu_veiculo.veiculo} — ${d.seu_veiculo.veredito}`;
+  }
+  desenharVeiculos();
   document.getElementById("resumoVeiculos").textContent = c.veiculos.length
-    ? `(${c.veiculos.length} modelo(s), ${c.veiculos.reduce((t, v) => t + v.versoes, 0)} versões)` : "";
+    ? `(${c.veiculos.length} modelo(s), ${c.veiculos.reduce((t, v) => t + v.versoes, 0)} ${unidade})` : "";
   document.getElementById("veiculosForm").innerHTML = c.veiculos.map(v => `
     <div class="veiculo">
       <input type="checkbox" class="vIncluir"${v.id_carro ? " checked" : ""} title="Incluir este carro no produto">
       <select class="vCarro"><option value="">— escolher carro —</option>${opcoes(d.carros, "id_carro", "descricao", v.id_carro)}</select>
       <input type="text" class="vCompl" maxlength="1000" value="${esc(v.complemento)}" title="Complemento do carro">
-      <span class="origem">${esc(v.modelo_origem)} · ${v.versoes} versões</span>
-    </div>`).join("") || `<span class="origem">${esc(itemAtual.site_nome)} não informa veículos compatíveis para esta peça.</span>`;
+      <span class="origem">${esc(v.modelo_origem)} · ${v.versoes} ${unidade}</span>
+    </div>`).join("") || `<span class="origem">${esc(daBase ? "A base" : itemAtual.site_nome)} não informa veículos compatíveis para esta peça.</span>`;
   document.getElementById("fotosForm").innerHTML = d.imagens.map((u, k) =>
     `<label><input type="checkbox" value="${esc(u)}"${k < 5 ? " checked" : ""}><img src="${esc(miniatura(u))}" alt="Foto ${k + 1}"></label>`).join("")
     || '<span class="origem">Este item não tem fotos.</span>';
