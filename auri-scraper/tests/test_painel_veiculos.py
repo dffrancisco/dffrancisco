@@ -1,8 +1,11 @@
+import json
 import sqlite3
+from contextlib import contextmanager
 
 import pytest
 
 import painel_veiculos
+import painel_wayap
 from helper.banco import abrir
 
 
@@ -104,3 +107,131 @@ def test_veiculo_escolhido(tmp_path):
         assert painel_veiculos.veiculo_escolhido(db, 10, 2018) == {"modelo": "ONIX", "texto": "Chevrolet Onix 2018"}
         assert painel_veiculos.veiculo_escolhido(db, 40, 1990) is None  # modelo inativo
         assert painel_veiculos.veiculo_escolhido(db, 999, 2018) is None
+
+
+def _catalogo(pasta):
+    pasta.mkdir(parents=True, exist_ok=True)
+    itens = {
+        "karhub": [
+            {"url": "https://k/p1", "nome": "Pastilha Freio Onix", "marca": "Fremax", "codigo_fabricante": "PD1",
+             "imagens": ["https://img/p1.jpg"], "carro": "Chevrolet Onix 2013-2019"},
+            {"url": "https://k/p4", "nome": "Disco Freio Onix", "marca": "Fremax", "codigo_fabricante": "DF4",
+             "ean": "7891234567895", "imagens": []},
+            {"url": "https://k/p5", "nome": "Pastilha Freio Gol", "marca": "Fremax", "codigo_fabricante": "PD5",
+             "imagens": ["https://img/p5.jpg"]}],
+        "universal": [{"url": "https://u/p1", "nome": "Pastilha Freio Dianteira", "marca": "Fremax",
+                       "codigo_fabricante": "PD1", "imagens": []}],
+        "carblue": [{"url": "https://c/sem", "nome": "Lanterna Onix", "marca": "Fitam", "codigo_fabricante": "L9",
+                     "imagens": [], "carro": "ONIX 2015 2016"}]}
+    for site, linhas in itens.items():
+        (pasta / f"{site}.jsonl").write_text("".join(json.dumps(l) + "\n" for l in linhas), encoding="utf-8")
+
+
+@pytest.fixture
+def painel(tmp_path, monkeypatch):
+    monkeypatch.setattr(painel_veiculos, "HELPER_DB", _helper(tmp_path))
+    monkeypatch.setattr(painel_wayap, "CATALOGOS", tmp_path / "catalogos")
+    monkeypatch.setattr(painel_wayap, "DB_CATALOGOS", tmp_path / "catalogos" / "catalogos.sqlite")
+    _catalogo(tmp_path / "catalogos")
+    painel_wayap.indexar_catalogos()
+    monkeypatch.setattr(painel_wayap, "estado", {
+        "marcas": [{"id_marca": 7, "descricao": "FREMAX"}],
+        "carros": [{"id_carro": 1, "descricao": "ONIX"}, {"id_carro": 2, "descricao": "CELTA"},
+                   {"id_carro": 3, "descricao": "UNIVERSAL"}],
+        "stats": {}, "fornecedores": [], "por_num": {}, "por_ean": {}, "por_codigo": {}})
+    return painel_wayap.app.test_client()
+
+
+def _urls(itens):
+    return [(i["site"], i["url"]) for i in itens]
+
+
+SERVE = {("karhub", "https://k/p1"): "todas_versoes", ("universal", "https://u/p1"): "todas_versoes",
+         ("karhub", "https://k/p5"): "modelo_ano"}
+
+
+def test_serve_no_veiculo(tmp_path):
+    with painel_veiculos.helper(_helper(tmp_path)) as db:
+        assert painel_veiculos.serve_no_veiculo(db, 10, 2014) == {("karhub", "https://k/p1"): "todas_versoes",
+                                                                  ("universal", "https://u/p1"): "todas_versoes"}
+        assert painel_veiculos.serve_no_veiculo(db, 10, 2018, 100) == {("karhub", "https://k/p1"): "versao",
+                                                                       ("universal", "https://u/p1"): "versao"}
+        assert painel_veiculos.serve_no_veiculo(db, 11, 2006) == {("carblue", "https://c/p2"): "modelo_ano"}
+        assert painel_veiculos.serve_no_veiculo(db, 10, 2018, 101) == {}
+
+
+def test_busca_por_veiculo_sem_texto_ordem_site_e_pagina(painel):
+    itens, tem_mais = painel_wayap.buscar_catalogos("", serve=SERVE)
+    assert _urls(itens) == [("karhub", "https://k/p1"), ("universal", "https://u/p1"), ("karhub", "https://k/p5")]
+    assert [i["confianca"] for i in itens] == ["todas_versoes", "todas_versoes", "modelo_ano"]
+    assert not tem_mais
+    assert _urls(painel_wayap.buscar_catalogos("", site="universal", serve=SERVE)[0]) == [("universal", "https://u/p1")]
+    pagina, tem_mais = painel_wayap.buscar_catalogos("", limite=1, offset=1, serve=SERVE)
+    assert _urls(pagina) == [("universal", "https://u/p1")] and tem_mais
+    assert painel_wayap.buscar_catalogos("", serve={}) == ([], False)
+
+
+def test_busca_por_veiculo_com_texto_codigo_e_ean(painel):
+    itens, _ = painel_wayap.buscar_catalogos("pastilha", serve=SERVE)
+    assert set(_urls(itens)[:2]) == {("karhub", "https://k/p1"), ("universal", "https://u/p1")}
+    assert _urls(itens)[2:] == [("karhub", "https://k/p5")]
+    assert set(_urls(painel_wayap.buscar_catalogos("PD1", serve=SERVE)[0])) == {("karhub", "https://k/p1"),
+                                                                               ("universal", "https://u/p1")}
+    assert painel_wayap.buscar_catalogos("disco", serve=SERVE)[0] == []
+    assert painel_wayap.buscar_catalogos("7891234567895", serve=SERVE)[0] == []  # EAN exato de peça que não serve
+    assert _urls(painel_wayap.buscar_catalogos("7891234567895")[0]) == [("karhub", "https://k/p4")]  # sem veículo
+    assert "confianca" not in painel_wayap.buscar_catalogos("pastilha")[0][0]
+
+
+def test_busca_por_veiculo_com_muitas_pecas(painel):
+    serve = {("karhub", f"https://k/x{i}"): "modelo_ano" for i in range(60000)} | SERVE
+    itens, tem_mais = painel_wayap.buscar_catalogos("", serve=serve)
+    assert _urls(itens)[0] == ("karhub", "https://k/p1") and len(itens) == 3 and not tem_mais
+
+
+def test_rotas_do_seletor(painel):
+    assert [m["nome"] for m in painel.get("/api/veiculos/montadoras").get_json()] == ["Fiat", "Chevrolet", "Honda"]
+    assert [m["id"] for m in painel.get("/api/veiculos/modelos?montadora=1").get_json()] == [11, 10]
+    assert painel.get("/api/veiculos/anos?modelo=10").get_json()[0] == 2019
+    assert painel.get("/api/veiculos/versoes?modelo=10&ano=2018").get_json() == [{"id": 100, "nome": "LT 1.4 8V FLEX"}]
+
+
+def test_api_busca_com_veiculo(painel):
+    d = painel.get("/api/catalogo/busca?q=&modelo=10&ano=2014").get_json()
+    assert {(i["site"], i["url"]): i["confianca"] for i in d["itens"]} == {("karhub", "https://k/p1"): "todas_versoes",
+                                                                          ("universal", "https://u/p1"): "todas_versoes"}
+    assert painel.get("/api/catalogo/busca?q=pastilha&modelo=10&ano=2018&versao=101").get_json()["itens"] == []
+    assert painel.get("/api/catalogo/busca?q=pastilha").get_json()["itens"][0]["confianca"] is None
+
+
+def test_base_ausente_ou_ocupada(painel, monkeypatch, tmp_path):
+    monkeypatch.setattr(painel_veiculos, "HELPER_DB", tmp_path / "nao_existe.sqlite")
+    r = painel.get("/api/veiculos/montadoras")
+    assert r.status_code == 404 and r.get_json() == {"erro": "Base de veículos não encontrada"}
+    assert painel.get("/api/catalogo/busca?q=pastilha&modelo=10&ano=2014").status_code == 404
+    assert painel.get("/api/catalogo/busca?q=pastilha").status_code == 200  # sem veículo não depende do helper
+
+    @contextmanager
+    def ocupado(caminho=None):
+        raise painel_veiculos.Ocupado("Base de veículos ocupada, tente de novo")
+        yield
+
+    monkeypatch.setattr(painel_veiculos, "helper", ocupado)
+    r = painel.get("/api/catalogo/busca?q=pastilha&modelo=10&ano=2014")
+    assert r.status_code == 503 and r.get_json() == {"erro": "Base de veículos ocupada, tente de novo"}
+
+
+def test_imagem_de_veiculo_so_das_pastas_do_helper(painel, monkeypatch, tmp_path):
+    fotos = tmp_path / "fotos"
+    (fotos / "modelos").mkdir(parents=True)
+    (fotos / "outra").mkdir()
+    (fotos / "modelos" / "10_bbb.webp").write_bytes(b"RIFF-WEBP")
+    (fotos / "outra" / "x.png").write_bytes(b"x")
+    (tmp_path / "segredo.txt").write_text("não", encoding="utf-8")
+    monkeypatch.setattr(painel_veiculos, "FOTOS_VEICULOS", fotos)
+    r = painel.get("/veiculos/img/modelos/10_bbb.webp")
+    assert r.status_code == 200 and r.data == b"RIFF-WEBP"
+    r.close()
+    assert painel.get("/veiculos/img/modelos/../../segredo.txt").status_code == 404
+    assert painel.get("/veiculos/img/outra/x.png").status_code == 404
+    assert painel.get("/veiculos/img/modelos/nao_tem.webp").status_code == 404

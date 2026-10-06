@@ -1,6 +1,7 @@
 """Veículos do helper (helper.sqlite, só leitura) para a aba Cadastrar do painel: listas do seletor, anúncios que
 servem num veículo e veículos compatíveis de uma peça (lista, árvore, carros de venda e complemento).
 Spec: docs/superpowers/specs/2026-10-06-painel-veiculos-design.md."""
+import json
 import sqlite3
 from contextlib import contextmanager
 from pathlib import Path
@@ -90,3 +91,13 @@ def veiculo_escolhido(db, id_modelo, ano, id_versao=None):
                         (id_versao, id_modelo)).fetchone() if id_versao else None
     texto = " ".join(filter(None, [r["montadora"], r["modelo_exibicao"], str(ano), versao and versao[0]]))
     return {"modelo": r["modelo"], "texto": texto}
+
+
+def serve_no_veiculo(db, id_modelo, ano, id_versao=None):
+    """{(site, url): confiança} dos anúncios cujas peças servem no veículo, pelas regras de ids_por_veiculo do helper."""
+    ids = ids_por_veiculo(db, id_modelo, ano, id_versao)
+    if not ids:
+        return {}
+    linhas = db.execute("SELECT o.id_peca, o.site, o.url FROM json_each(?) j JOIN origem o ON o.id_peca = j.value",
+                        (json.dumps(list(ids)),))
+    return {(site, url): ids[id_peca] for id_peca, site, url in linhas}

@@ -29,12 +29,13 @@ from urllib.parse import urlsplit
 import psycopg2
 import requests
 import urllib3.util.connection
-from flask import Flask, Response, abort, jsonify, redirect, request, send_file
+from flask import Flask, Response, abort, jsonify, redirect, request, send_file, send_from_directory
 
 from scrapling.fetchers import Fetcher
 
 from aplicacao_texto import MONTADORAS_TITULO, juntar_anos, ocorrencias_do_texto
 
+import painel_veiculos
 from wayap_fotos import (DISTANCIA_DUPLICADA, ENV_ADMIN, LADO_ENVIO, MAX_FOTOS, MENOR_LADO, Wayap, abrir_rgb, dhash,
                          distancia, gravar_plano, marcas_compativeis, n_codigo, n_ean, n_marca, sem_acento)
 
@@ -96,6 +97,7 @@ def indexar_catalogos():
                                                             content_rowid='id', tokenize='unicode61 remove_diacritics 2');
         CREATE INDEX IF NOT EXISTS item_ean ON item (ean);
         CREATE INDEX IF NOT EXISTS item_site ON item (site);
+        CREATE INDEX IF NOT EXISTS item_site_url ON item (site, url);
         CREATE TABLE IF NOT EXISTS fonte (site PRIMARY KEY, mtime, itens, hosts);
     """)
     feitos = dict(db.execute("SELECT site, mtime FROM fonte"))
@@ -141,22 +143,35 @@ def item_do_catalogo(id_item):
     return dict(item)
 
 
-def buscar_catalogos(q, site="", limite=40, offset=0):
-    """Uma página de resultados: EAN e código exatos vêm na primeira; a busca textual é paginada."""
+def buscar_catalogos(q, site="", limite=40, offset=0, serve=None):
+    """Uma página de resultados: EAN e código exatos vêm na primeira; a busca textual é paginada. Com `serve`
+    ({(site, url): confiança}, da busca por veículo) só entram os anúncios que servem, os mais confiáveis primeiro."""
     q = q.strip()
     filtro, args = ("AND item.site = ?", [site]) if site else ("", [])
     achados, textuais = [], []
     with db_catalogos() as db:
+        colunas, junta, ordem = "item.*", "", "rank"
+        if serve is not None:
+            db.execute("CREATE TEMP TABLE serve (site TEXT, url TEXT, confianca TEXT, ordem INTEGER, PRIMARY KEY (site, url))")
+            db.executemany("INSERT INTO serve VALUES (?, ?, ?, ?)",
+                           [(s, u, c, painel_veiculos.ORDEM_CONFIANCA[c]) for (s, u), c in serve.items()])
+            colunas, ordem = "item.*, serve.confianca", "serve.ordem, rank"
+            junta = "JOIN serve ON serve.site = item.site AND serve.url = item.url"
         if offset == 0 and n_ean(q):
-            achados += db.execute(f"SELECT * FROM item WHERE ean = ? {filtro}", [n_ean(q)] + args).fetchall()
+            achados += db.execute(f"SELECT {colunas} FROM item {junta} WHERE ean = ? {filtro}", [n_ean(q)] + args).fetchall()
         if offset == 0 and " " not in q and len(n_codigo(q)) >= 3:
-            achados += db.execute(f"SELECT * FROM item WHERE codigos LIKE ? {filtro} LIMIT 200",
+            achados += db.execute(f"SELECT {colunas} FROM item {junta} WHERE codigos LIKE ? {filtro} LIMIT 200",
                                   [f"%|{n_codigo(q)}|%"] + args).fetchall()
         termos = re.findall(r"\w+", sem_acento(q))
         if termos:
             consulta = " ".join(f'"{t}"*' for t in termos)
-            textuais = db.execute(f"SELECT item.* FROM busca JOIN item ON item.id = busca.rowid WHERE busca MATCH ? "
-                                  f"{filtro} ORDER BY rank LIMIT ? OFFSET ?", [consulta] + args + [limite, offset]).fetchall()
+            textuais = db.execute(f"SELECT {colunas} FROM busca JOIN item ON item.id = busca.rowid {junta} "
+                                  f"WHERE busca MATCH ? {filtro} ORDER BY {ordem} LIMIT ? OFFSET ?",
+                                  [consulta] + args + [limite, offset]).fetchall()
+        elif serve is not None:  # só o veículo: todas as peças dele, as com foto antes
+            textuais = db.execute(f"SELECT {colunas} FROM serve JOIN item ON item.site = serve.site AND item.url = serve.url "
+                                  f"WHERE 1 {filtro} ORDER BY serve.ordem, item.imagens = '[]', item.id LIMIT ? OFFSET ?",
+                                  args + [limite, offset]).fetchall()
     vistos, lista = set(), []
     for r in achados + textuais:
         if r["id"] not in vistos:
@@ -619,20 +634,77 @@ def api_sites():
     return jsonify([{"site": s["site"], "nome": nome_site(s["site"]), "itens": s["itens"]} for s in sites_indexados()])
 
 
+def veiculo_da_requisicao(args):
+    """(modelo, ano, versão ou None) dos parâmetros, ou None sem veículo completo (modelo e ano)."""
+    try:
+        modelo, ano = int(args.get("modelo", "")), int(args.get("ano", ""))
+    except ValueError:
+        return None
+    versao = args.get("versao", "")
+    return modelo, ano, int(versao) if versao.isdigit() else None
+
+
+@app.errorhandler(painel_veiculos.Indisponivel)
+def base_de_veiculos_ausente(e):
+    return jsonify({"erro": "Base de veículos não encontrada"}), 404
+
+
+@app.errorhandler(painel_veiculos.Ocupado)
+def base_de_veiculos_ocupada(e):
+    return jsonify({"erro": str(e)}), 503
+
+
 @app.get("/api/catalogo/busca")
 def api_busca():
+    serve, veiculo = None, veiculo_da_requisicao(request.args)
+    if veiculo:
+        with painel_veiculos.helper() as h:
+            serve = painel_veiculos.serve_no_veiculo(h, *veiculo)
     lista = []
     achados, tem_mais = buscar_catalogos(request.args.get("q", ""), request.args.get("site", ""),
-                                         offset=int(request.args.get("offset", 0)))
+                                         offset=int(request.args.get("offset", 0)), serve=serve)
     for r in achados:
         existente = ja_cadastrado(r)
         imagens = json.loads(r["imagens"])
         lista.append({"id": r["id"], "site": r["site"], "site_nome": nome_site(r["site"]), "nome": r["nome"],
                       "marca": r["marca"], "codigo": r["codigo"], "ean": r["ean"], "carro": r["carro"], "url": r["url"],
-                      "imagens": imagens,
+                      "imagens": imagens, "confianca": r.get("confianca"),
                       "existente": {"cod_produto": existente["cod_produto"], "desc_produto": existente["desc_produto"]}
                       if existente else None})
     return jsonify({"itens": lista, "tem_mais": tem_mais})
+
+
+@app.get("/api/veiculos/montadoras")
+def api_montadoras():
+    with painel_veiculos.helper() as db:
+        return jsonify(painel_veiculos.montadoras(db))
+
+
+@app.get("/api/veiculos/modelos")
+def api_modelos():
+    with painel_veiculos.helper() as db:
+        return jsonify(painel_veiculos.modelos(db, request.args.get("montadora", type=int)))
+
+
+@app.get("/api/veiculos/anos")
+def api_anos():
+    with painel_veiculos.helper() as db:
+        return jsonify(painel_veiculos.anos(db, request.args.get("modelo", type=int)))
+
+
+@app.get("/api/veiculos/versoes")
+def api_versoes():
+    with painel_veiculos.helper() as db:
+        return jsonify(painel_veiculos.versoes(db, request.args.get("modelo", type=int),
+                                               request.args.get("ano", type=int)))
+
+
+@app.get("/veiculos/img/<path:caminho>")
+def imagem_veiculo(caminho):
+    """Logo de montadora e foto de modelo do helper; send_from_directory recusa caminho que sai da pasta."""
+    if caminho.split("/")[0] not in painel_veiculos.PASTAS_IMAGEM:
+        abort(404)
+    return send_from_directory(painel_veiculos.FOTOS_VEICULOS.resolve(), caminho, max_age=86400)
 
 
 @app.get("/api/catalogo/sugestao/<int:id_item>")
