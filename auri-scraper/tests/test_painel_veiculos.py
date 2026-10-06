@@ -235,3 +235,79 @@ def test_imagem_de_veiculo_so_das_pastas_do_helper(painel, monkeypatch, tmp_path
     assert painel.get("/veiculos/img/modelos/../../segredo.txt").status_code == 404
     assert painel.get("/veiculos/img/outra/x.png").status_code == 404
     assert painel.get("/veiculos/img/modelos/nao_tem.webp").status_code == 404
+
+
+def test_peca_do_item(tmp_path):
+    with painel_veiculos.helper(_helper(tmp_path)) as db:
+        assert painel_veiculos.peca_do_item(db, "universal", "https://u/p1") == 1
+        assert painel_veiculos.peca_do_item(db, "karhub", "https://k/p3") is None  # peça inativa
+        assert painel_veiculos.peca_do_item(db, "carblue", "https://c/sem") is None
+
+
+def test_linhas_lista_e_complemento(tmp_path):
+    with painel_veiculos.helper(_helper(tmp_path)) as db:
+        linhas = painel_veiculos.veiculos_da_peca(db, 1)
+        assert [(l["modelo"], l["versao"], l["ano_inicio"], l["ano_fim"], l["nivel"], l["motores"]) for l in linhas] == [
+            ("ONIX", None, 2013, 2016, "versao", ["1.0", "1.4"]),   # todas as versões: motores das versões ativas
+            ("ONIX", "LT 1.4 8V FLEX", 2017, 2019, "versao", ["1.4"]),
+            ("UNO", None, 2010, None, "modelo", [])]
+        assert painel_veiculos.lista(linhas) == [
+            {"texto": "CHEVROLET ONIX 2013-2016", "selo": "todas as versões", "tipo": "carro"},
+            {"texto": "CHEVROLET ONIX 2017-2019 LT 1.4 8V FLEX", "selo": None, "tipo": "carro"},
+            {"texto": "FIAT UNO 2010-", "selo": "confira a versão", "tipo": "carro"}]
+        assert painel_veiculos.linhas_complemento(linhas) == (
+            "CHEVROLET ONIX 2013-2016\nCHEVROLET ONIX 2017-2019 LT 1.4 8V FLEX\nFIAT UNO 2010-")
+        assert painel_veiculos.lista(painel_veiculos.veiculos_da_peca(db, 2)) == [
+            {"texto": "CHEVROLET CELTA", "selo": "confira a versão", "tipo": "carro"}]
+        assert painel_veiculos.veiculos_da_peca(db, 4) == []
+
+
+def test_faixa():
+    assert painel_veiculos.faixa(2013, 2019) == "2013-2019"
+    assert painel_veiculos.faixa(2019, 2019) == "2019"
+    assert painel_veiculos.faixa(2010, None) == "2010-"
+    assert painel_veiculos.faixa(None, 1992) == "-1992"
+    assert painel_veiculos.faixa(None, None) == ""
+
+
+def test_ocorrencias_para_os_carros_de_venda(tmp_path):
+    with painel_veiculos.helper(_helper(tmp_path)) as db:
+        assert painel_veiculos.ocorrencias(painel_veiculos.veiculos_da_peca(db, 1)) == [
+            ["CHEVROLET ONIX", "ONIX", (2013, 2016), ["1.0", "1.4"]],
+            ["CHEVROLET ONIX", "ONIX", (2017, 2019), ["1.4"]],
+            ["FIAT UNO", "UNO", (2010, None), []]]
+        assert painel_veiculos.ocorrencias(painel_veiculos.veiculos_da_peca(db, 2)) == [
+            ["CHEVROLET CELTA", "CELTA", None, []]]
+
+
+def test_arvore(tmp_path):
+    with painel_veiculos.helper(_helper(tmp_path)) as db:
+        arvore = painel_veiculos.arvore(db, painel_veiculos.veiculos_da_peca(db, 1))
+        assert [(m["nome"], m["logo_url"]) for m in arvore] == [("Chevrolet", "/veiculos/img/montadoras/1_aaa.png"),
+                                                                 ("Fiat", None)]
+        onix = arvore[0]["modelos"][0]
+        assert (onix["nome"], onix["tipo"], onix["foto_url"], onix["faixa"]) == (
+            "Onix", "carro", "/veiculos/img/modelos/10_bbb.webp", "2013-2019")
+        assert [a["ano"] for a in onix["anos"]] == list(range(2019, 2012, -1))
+        assert onix["anos"][0] == {"ano": 2019, "versoes": ["LT 1.4 8V FLEX"], "todas": False, "confira": False}
+        assert onix["anos"][-1] == {"ano": 2013, "versoes": ["LS 1.0 8V FLEX", "LT 1.4 8V FLEX"], "todas": True,
+                                    "confira": False}  # a LTZ é inativa
+        uno = arvore[1]["modelos"][0]
+        assert uno["faixa"] == "2010-2012"  # texto 'a partir de 2010': só os anos que o Uno tem
+        assert uno["anos"] == [{"ano": a, "versoes": [], "todas": False, "confira": True} for a in (2012, 2011, 2010)]
+        celta = painel_veiculos.arvore(db, painel_veiculos.veiculos_da_peca(db, 2))[0]["modelos"][0]
+        assert [a["ano"] for a in celta["anos"]] == list(range(2010, 2004, -1))  # sem ano: todos os anos do modelo
+
+
+def test_seu_veiculo(tmp_path):
+    with painel_veiculos.helper(_helper(tmp_path)) as db:
+        sv = painel_veiculos.seu_veiculo
+        assert sv(db, 1, 10, 2014) == {"veiculo": "Chevrolet Onix 2014", "confianca": "todas_versoes", "veredito": "Serve"}
+        assert sv(db, 1, 10, 2018)["veredito"] == "Serve em algumas versões: escolha a versão"
+        assert sv(db, 1, 10, 2018, 100) == {"veiculo": "Chevrolet Onix 2018 LT 1.4 8V FLEX", "confianca": "versao",
+                                            "veredito": "Serve"}
+        assert sv(db, 1, 10, 2018, 101)["veredito"] == "Não serve nesta versão"
+        assert sv(db, 1, 20, 2015)["veredito"] == "Confira a versão"
+        assert sv(db, 2, 10, 2014) == {"veiculo": "Chevrolet Onix 2014", "confianca": None,
+                                       "veredito": "Não consta para este veículo"}
+        assert sv(db, 1, 999, 2014) is None
