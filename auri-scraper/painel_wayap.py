@@ -349,6 +349,30 @@ def veiculos_sugeridos(item):
     return agrupar_veiculos(ocorrencias), linhas
 
 
+def veiculos_do_item(item, veiculo=None):
+    """Veículos do anúncio: da base de peças (helper) quando ele chega a uma peça com veículos; senão os do site, como
+    antes. `veiculo` é o (modelo, ano, versão) escolhido na busca, para o carro principal e o 'Seu veículo'."""
+    vei = {"fonte": "site", "lista": [], "arvore": [], "seu_veiculo": None, "modelo_escolhido": None}
+    try:
+        with painel_veiculos.helper() as h:
+            if veiculo:
+                escolhido = painel_veiculos.veiculo_escolhido(h, *veiculo)
+                vei["modelo_escolhido"] = escolhido["modelo"] if escolhido else None
+            id_peca = painel_veiculos.peca_do_item(h, item["site"], item["url"])
+            linhas = painel_veiculos.veiculos_da_peca(h, id_peca) if id_peca else []
+            if linhas:
+                vei.update(fonte="base", veiculos=agrupar_veiculos(painel_veiculos.ocorrencias(linhas)),
+                           lista=painel_veiculos.lista(linhas), arvore=painel_veiculos.arvore(h, linhas),
+                           complemento=painel_veiculos.linhas_complemento(linhas),
+                           seu_veiculo=painel_veiculos.seu_veiculo(h, id_peca, *veiculo) if veiculo else None)
+                return vei
+    except (painel_veiculos.Indisponivel, painel_veiculos.Ocupado):
+        pass
+    veiculos, linhas = veiculos_sugeridos(item)
+    vei.update(veiculos=veiculos, complemento="\n".join(linhas))
+    return vei
+
+
 def carro_do_titulo(nome):
     """'Bieleta Dianteira Para Chevrolet Captiva E Tracker - Monroe ...' -> carro 'CAPTIVA'."""
     texto = sem_acento(nome.split(" - ")[0]).upper()
@@ -379,7 +403,9 @@ def gravar_complemento_produto(cod_produto, texto):
     return None
 
 
-def sugestao(item):
+def sugestao(item, vei):
+    """Campos do formulário. `vei` é o resultado de veiculos_do_item (carros de venda, complemento e o modelo
+    escolhido na busca)."""
     site = nome_site(item["site"])
     nome = item["nome"] or ""
     base = nome.split(" - ")[0]  # "Jogo Cabo De Vela - Gauss - Gc5045": tira marca e código do fim
@@ -389,11 +415,15 @@ def sugestao(item):
     marca = achar_marca(item["marca"])
     id_marca = marca["id_marca"] if marca else None
     duas, uma = palavras_chave(desc)
-    veiculos, linhas = veiculos_sugeridos(item)
+    veiculos = vei["veiculos"]
     ids = [v["id_carro"] for v in veiculos if v["id_carro"]]
     titulo = carro_do_titulo(item["nome"] or "")
-    # carro principal: o citado no título; senão o primeiro dos veículos compatíveis; senão o da aplicação
-    if titulo and (titulo["id_carro"] in ids or not ids):
+    escolhido = carro_do_modelo(vei["modelo_escolhido"]) if vei["modelo_escolhido"] else None
+    # carro principal: o do veículo escolhido na busca; senão o citado no título; senão o primeiro dos veículos
+    # compatíveis; senão o da aplicação
+    if escolhido:
+        carro = escolhido
+    elif titulo and (titulo["id_carro"] in ids or not ids):
         carro = titulo
     elif ids:
         carro = next(c for c in estado["carros"] if c["id_carro"] == ids[0])
@@ -413,10 +443,12 @@ def sugestao(item):
         avisos.append(f"{site} não informa a marca desta peça: escolha a marca.")
     elif not marca:
         avisos.append(f"A marca '{item['marca']}' não existe no cadastro: será criada.")
-    if not linhas:
+    if not vei["complemento"]:
         avisos.append(f"{site} não informa veículos compatíveis para esta peça: confira o carro principal.")
     elif any(v["id_carro"] is None for v in veiculos):
-        avisos.append(f"Alguns modelos citados em {site} não existem no cadastro de carros: escolha o carro ou desmarque.")
+        avisos.append("Alguns modelos da base não existem no cadastro de carros: escolha o carro ou desmarque."
+                      if vei["fonte"] == "base" else
+                      f"Alguns modelos citados em {site} não existem no cadastro de carros: escolha o carro ou desmarque.")
     return {
         "desc_produto": desc,
         "desc_produto_completa": nome[:400],
@@ -431,7 +463,7 @@ def sugestao(item):
         "unidade": UNIDADE_PELA_PALAVRA.get(desc.split(" ")[0] if desc else "") or moda(("unidade", id_marca)) or "PC",
         "avisos": avisos,
         "veiculos": veiculos,
-        "complemento_produto": "\n".join(linhas),
+        "complemento_produto": vei["complemento"],
     }
 
 
@@ -710,8 +742,11 @@ def imagem_veiculo(caminho):
 @app.get("/api/catalogo/sugestao/<int:id_item>")
 def api_sugestao(id_item):
     item = item_do_catalogo(id_item)
-    return jsonify({"campos": sugestao(item), "marcas": estado["marcas"], "carros": estado["carros"],
-                    "fornecedores": estado["fornecedores"], "imagens": json.loads(item["imagens"])})
+    vei = veiculos_do_item(item, veiculo_da_requisicao(request.args))
+    return jsonify({"campos": sugestao(item, vei), "marcas": estado["marcas"], "carros": estado["carros"],
+                    "fornecedores": estado["fornecedores"], "imagens": json.loads(item["imagens"]),
+                    "veiculos_fonte": vei["fonte"], "veiculos_lista": vei["lista"], "veiculos_arvore": vei["arvore"],
+                    "seu_veiculo": vei["seu_veiculo"]})
 
 
 @app.post("/api/catalogo/cadastrar")

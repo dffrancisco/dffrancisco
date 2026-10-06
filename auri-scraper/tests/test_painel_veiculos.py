@@ -311,3 +311,64 @@ def test_seu_veiculo(tmp_path):
         assert sv(db, 2, 10, 2014) == {"veiculo": "Chevrolet Onix 2014", "confianca": None,
                                        "veredito": "Não consta para este veículo"}
         assert sv(db, 1, 999, 2014) is None
+
+
+def _id_item(site, url):
+    with painel_wayap.db_catalogos() as db:
+        return db.execute("SELECT id FROM item WHERE site = ? AND url = ?", (site, url)).fetchone()[0]
+
+
+def _sem_karhub_ao_vivo(monkeypatch):
+    monkeypatch.setattr(painel_wayap, "html_produto_karhub", lambda url: "")
+
+
+def test_sugestao_com_veiculos_da_base(painel, monkeypatch):
+    _sem_karhub_ao_vivo(monkeypatch)
+    d = painel.get(f"/api/catalogo/sugestao/{_id_item('karhub', 'https://k/p1')}?modelo=10&ano=2014").get_json()
+    assert d["veiculos_fonte"] == "base"
+    assert [l["texto"] for l in d["veiculos_lista"]] == ["CHEVROLET ONIX 2013-2016",
+                                                         "CHEVROLET ONIX 2017-2019 LT 1.4 8V FLEX", "FIAT UNO 2010-"]
+    assert d["veiculos_arvore"][0]["modelos"][0]["anos"][0]["ano"] == 2019
+    assert d["seu_veiculo"] == {"veiculo": "Chevrolet Onix 2014", "confianca": "todas_versoes", "veredito": "Serve"}
+    c = d["campos"]
+    assert c["id_carro"] == 1
+    assert c["complemento_produto"] == "CHEVROLET ONIX 2013-2016\nCHEVROLET ONIX 2017-2019 LT 1.4 8V FLEX\nFIAT UNO 2010-"
+    assert c["veiculos"] == [
+        {"id_carro": 1, "carro": "ONIX", "modelo_origem": "CHEVROLET ONIX", "complemento": "1.0 / 1.4 13/19", "versoes": 2},
+        {"id_carro": None, "carro": "", "modelo_origem": "FIAT UNO", "complemento": "10/ UNO", "versoes": 1}]
+    assert "Alguns modelos da base não existem no cadastro de carros: escolha o carro ou desmarque." in c["avisos"]
+
+
+def test_veiculo_escolhido_manda_no_carro_principal(painel, monkeypatch):
+    _sem_karhub_ao_vivo(monkeypatch)
+    d = painel.get(f"/api/catalogo/sugestao/{_id_item('karhub', 'https://k/p1')}?modelo=11&ano=2006").get_json()
+    assert d["campos"]["id_carro"] == 2  # o Celta escolhido na busca, mesmo a peça não constando para ele
+    assert d["seu_veiculo"]["veredito"] == "Não consta para este veículo"
+    d = painel.get(f"/api/catalogo/sugestao/{_id_item('karhub', 'https://k/p1')}?modelo=20&ano=2011").get_json()
+    assert d["campos"]["id_carro"] == 1  # o Uno não existe na sociedade: regras de hoje (primeiro compatível)
+    assert d["seu_veiculo"]["veredito"] == "Confira a versão"
+
+
+def test_sugestao_sem_peca_ou_sem_veiculos_usa_o_site(painel, monkeypatch):
+    _sem_karhub_ao_vivo(monkeypatch)
+    d = painel.get(f"/api/catalogo/sugestao/{_id_item('carblue', 'https://c/sem')}?modelo=10&ano=2015").get_json()
+    assert (d["veiculos_fonte"], d["veiculos_lista"], d["seu_veiculo"]) == ("site", [], None)
+    assert [v["id_carro"] for v in d["campos"]["veiculos"]] == [1]
+    assert d["campos"]["complemento_produto"] == "ONIX 2015 2016"
+    d = painel.get(f"/api/catalogo/sugestao/{_id_item('karhub', 'https://k/p4')}").get_json()
+    assert d["veiculos_fonte"] == "site" and d["campos"]["veiculos"] == []
+    assert "KarHub não informa veículos compatíveis para esta peça: confira o carro principal." in d["campos"]["avisos"]
+
+
+def test_sugestao_com_base_ocupada_usa_o_site(painel, monkeypatch):
+    _sem_karhub_ao_vivo(monkeypatch)
+
+    @contextmanager
+    def ocupado(caminho=None):
+        raise painel_veiculos.Ocupado("Base de veículos ocupada, tente de novo")
+        yield
+
+    monkeypatch.setattr(painel_veiculos, "helper", ocupado)
+    r = painel.get(f"/api/catalogo/sugestao/{_id_item('karhub', 'https://k/p1')}?modelo=10&ano=2014")
+    assert r.status_code == 200 and r.get_json()["veiculos_fonte"] == "site"
+    assert [v["id_carro"] for v in r.get_json()["campos"]["veiculos"]] == [1]  # pelo texto 'Chevrolet Onix 2013-2019'
