@@ -66,11 +66,13 @@ class Arvore:
             self.anos_por_versao[id_versao].append(ano)
         self.modelos = defaultdict(dict)  # nome canônico da montadora -> {nome normalizado do modelo: id_modelo}
         self.modelos_do_nome = defaultdict(set)  # nome normalizado -> {id_modelo} (em qualquer montadora)
+        self.montadora_do_modelo = {}
         for id_modelo, nome, montadora in db.execute(
                 """SELECT mo.id_modelo, mo.nome, vm.nome FROM vei_modelo mo
                    JOIN vei_montadora vm USING (id_veiculo_montadora) WHERE mo.ativo = 1"""):
             self.modelos[montadora][normalizar(nome)] = id_modelo
             self.modelos_do_nome[normalizar(nome)].add(id_modelo)
+            self.montadora_do_modelo[id_modelo] = montadora
 
     def linhas_versao(self, ids_fonte, contagem):
         por_modelo = defaultdict(lambda: defaultdict(set))
@@ -159,10 +161,12 @@ def ligar_versao(db, arvore, caminho_compat):
 
 
 def juntar_faixas(faixas_):
-    """[(ini, fim)], None = sem limite. Sem ano nenhum absorve tudo; sobrepostas ou adjacentes se juntam."""
-    if any(i is None and f is None for i, f in faixas_):
+    """[(ini, fim)], None = sem limite; sobrepostas ou adjacentes se juntam. Sem ano nenhum só fica quando não há faixa
+    datada: 'Gol G3' sem ano não engole 'GOL 2000-2005' (e não vale para um ano escolhido, ver consulta.ids_por_veiculo)."""
+    datadas = [(i, f) for i, f in faixas_ if i is not None or f is not None]
+    if not datadas:
         return [(None, None)]
-    itens = sorted((i if i is not None else 0, f if f is not None else 9999) for i, f in faixas_)
+    itens = sorted((i if i is not None else 0, f if f is not None else 9999) for i, f in datadas)
     saida = []
     for i, f in itens:
         if saida and i <= saida[-1][1] + 1:
@@ -172,28 +176,44 @@ def juntar_faixas(faixas_):
     return [(None if i == 0 else i, None if f == 9999 else f) for i, f in saida]
 
 
+def contestar(db, arvore, citadas):
+    """A KarHub cita montadora que o texto dos outros sites (quando eles listam veículos) não cita: as linhas 'versao'
+    daquele modelo viram 'modelo' ('confira a versão'). Ex.: lanterna de placa GM que a KarHub dá também para o Argo."""
+    pares = defaultdict(list)
+    for id_peca, id_modelo, ini, fim in db.execute("SELECT id_peca, id_modelo, ano_inicio, ano_fim FROM vei_peca "
+                                                   "WHERE nivel = 'versao'"):
+        outras = citadas.get(id_peca)
+        if outras and arvore.montadora_do_modelo.get(id_modelo) not in outras:
+            pares[(id_peca, id_modelo)].append((ini, fim))
+    db.executemany("DELETE FROM vei_peca WHERE id_peca = ? AND id_modelo = ? AND nivel = 'versao'", list(pares))
+    _inserir(db, [(p, m, None, i, f, "modelo") for (p, m), fx in pares.items() for i, f in juntar_faixas(fx)])
+    return {"pares_contestados": len(pares), "pecas_contestadas": len({p for p, _ in pares})}
+
+
 def ligar_modelo(db, arvore, montadoras):
-    r, sem_modelo, pares = Counter(), Counter(), defaultdict(list)
-    for id_peca, montadora, modelo, ini, fim in db.execute(
-            "SELECT a.id_peca, a.montadora, a.modelo, a.ano_inicio, a.ano_fim FROM aplicacao a "
+    r, sem_modelo, pares, citadas = Counter(), Counter(), defaultdict(list), defaultdict(set)
+    for id_peca, montadora, modelo, ini, fim, de_karhub in db.execute(
+            "SELECT a.id_peca, a.montadora, a.modelo, a.ano_inicio, a.ano_fim, a.de_karhub FROM aplicacao a "
             "JOIN peca p USING (id_peca) WHERE p.status = 'ativa'"):
         id_modelo = arvore.modelo_da_aplicacao(montadoras.canonica(montadora), modelo)
         if id_modelo is None:
             sem_modelo[f"{montadora or ''} {modelo}".strip()] += 1
             continue
+        if not de_karhub:
+            citadas[id_peca].add(arvore.montadora_do_modelo[id_modelo])
         if ini is not None and fim is not None and ini > fim:
             ini, fim = fim, ini
         pares[(id_peca, id_modelo)].append((ini, fim))
+    r.update(contestar(db, arvore, citadas))
     db.execute("CREATE TEMP TABLE IF NOT EXISTS candidato_modelo (id_peca INTEGER, id_modelo INTEGER, ano_inicio INTEGER, ano_fim INTEGER)")
     db.execute("DELETE FROM candidato_modelo")
     db.executemany("INSERT INTO candidato_modelo VALUES (?, ?, ?, ?)",
                    ((p, m, i, f) for (p, m), fx in pares.items() for i, f in juntar_faixas(fx)))
-    # par (peça, modelo) já confirmado pelo KarHub não ganha linha de texto
+    # par (peça, modelo) já ligado pelo KarHub (confirmado ou contestado) não ganha linha de texto
     r["linhas_nivel_modelo"] = db.execute(
         """INSERT INTO vei_peca (id_peca, id_modelo, id_versao, ano_inicio, ano_fim, nivel)
            SELECT c.id_peca, c.id_modelo, NULL, c.ano_inicio, c.ano_fim, 'modelo' FROM candidato_modelo c
-           WHERE NOT EXISTS (SELECT 1 FROM vei_peca pv
-                             WHERE pv.id_peca = c.id_peca AND pv.id_modelo = c.id_modelo AND pv.nivel = 'versao')""").rowcount
+           WHERE NOT EXISTS (SELECT 1 FROM vei_peca pv WHERE pv.id_peca = c.id_peca AND pv.id_modelo = c.id_modelo)""").rowcount
     db.commit()
     r["pecas_nivel_modelo"] = db.execute("SELECT count(DISTINCT id_peca) FROM vei_peca WHERE nivel = 'modelo'").fetchone()[0]
     r["aplicacoes_sem_modelo"] = sum(sem_modelo.values())

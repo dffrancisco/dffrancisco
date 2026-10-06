@@ -79,7 +79,8 @@ def test_tipo_entra_no_hash_do_modelo(tmp_path):
 
 def test_juntar_faixas():
     assert juntar_faixas([(1996, 1998), (1999, 2001), (2005, 2006)]) == [(1996, 2001), (2005, 2006)]
-    assert juntar_faixas([(1996, 1998), (None, None)]) == [(None, None)]
+    assert juntar_faixas([(1996, 1998), (None, None)]) == [(1996, 1998)]  # sem ano não engole a faixa datada
+    assert juntar_faixas([(None, None), (None, None)]) == [(None, None)]
     assert juntar_faixas([(2005, None), (2000, 2004)]) == [(2000, None)]
     assert juntar_faixas([(None, 1999), (1998, 2003)]) == [(None, 2003)]
 
@@ -127,3 +128,35 @@ def test_ligar_completo_nivel_modelo_e_fechamento(tmp_path):
     assert dict(db.execute("SELECT id_peca, hash FROM vei_peca_estado")) == hashes_pecas
     assert dict(db.execute("SELECT id_modelo, hash_conteudo FROM vei_modelo")) == hashes_modelos
     assert r2["modelos_alterados"] == 0
+
+
+def test_karhub_contestado_pelo_texto_dos_outros_sites_vira_nivel_modelo(tmp_path):
+    """A KarHub diz que a peça serve em Chevrolet e Volkswagen; os outros sites, listando veículos, só citam Chevrolet:
+    o que é só da KarHub (Gol) cai para 'confira a versão'. Texto que veio do próprio KarHub não conta como conferência."""
+    db = abrir(tmp_path / "h.sqlite")
+    m = Montadoras({"VW": "VOLKSWAGEN"})
+    carregar_arvore(db, [_linha(), _linha(montadora="Volkswagen", mh="volkswagen", modelo="Gol")], m)
+    db.execute("INSERT INTO marca (id_marca, nome, tipo) VALUES (1, 'X', 'reposicao')")
+    for i in (7, 8, 9):
+        db.execute("INSERT INTO peca (id_peca, id_marca, chave, codigo, desc_curta, status) VALUES (?, 1, ?, ?, 'PECA', 'ativa')",
+                   (i, f"X|{i}", str(i)))
+        db.execute("INSERT INTO origem (id_peca, site, url) VALUES (?, 'karhub', ?)", (i, f"https://www.karhub.com.br/p/p{i}"))
+    db.executemany("INSERT INTO aplicacao (id_peca, montadora, modelo, ano_inicio, ano_fim, de_karhub) VALUES (?, ?, ?, ?, ?, ?)", [
+        (7, "CHEVROLET", "TRACKER", 2021, 2021, 0),   # outro site cita só Chevrolet
+        (8, "VOLKSWAGEN", "GOL", 2020, 2021, 1),      # só o texto do próprio KarHub: não confere nada
+        (9, None, "GOL", 2020, 2020, 0)])             # outro site cita o Gol: confirma
+    db.commit()
+    compat = tmp_path / "compat.jsonl"
+    todos = ["62329", "62330", "5", "volkswagen-Gol-62329", "volkswagen-Gol-62330", "volkswagen-Gol-5"]
+    compat.write_text("".join(json.dumps({"handle": f"p{i}", "ids": todos}) + "\n" for i in (7, 8, 9)), encoding="utf-8")
+    r, _ = ligar(db, compat, m)
+    gol = db.execute("SELECT id_modelo FROM vei_modelo WHERE nome = 'GOL'").fetchone()[0]
+    tracker = db.execute("SELECT id_modelo FROM vei_modelo WHERE nome = 'TRACKER'").fetchone()[0]
+
+    def linhas_de(p):
+        return sorted(tuple(l) for l in db.execute("SELECT id_modelo, id_versao, ano_inicio, ano_fim, nivel FROM vei_peca "
+                                                   "WHERE id_peca = ?", (p,)))
+    assert linhas_de(7) == sorted([(tracker, None, 2020, 2021, "versao"), (gol, None, 2020, 2021, "modelo")])
+    assert linhas_de(8) == sorted([(tracker, None, 2020, 2021, "versao"), (gol, None, 2020, 2021, "versao")])
+    assert linhas_de(9) == sorted([(gol, None, 2020, 2021, "versao"), (tracker, None, 2020, 2021, "modelo")])
+    assert r["pares_contestados"] == 2  # peça 7 (Gol) e peça 9 (Tracker)
