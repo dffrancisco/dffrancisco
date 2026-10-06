@@ -156,7 +156,7 @@ def test_serve_no_veiculo(tmp_path):
                                                                   ("universal", "https://u/p1"): "todas_versoes"}
         assert painel_veiculos.serve_no_veiculo(db, 10, 2018, 100) == {("karhub", "https://k/p1"): "versao",
                                                                        ("universal", "https://u/p1"): "versao"}
-        assert painel_veiculos.serve_no_veiculo(db, 11, 2006) == {("carblue", "https://c/p2"): "modelo_ano"}
+        assert painel_veiculos.serve_no_veiculo(db, 11, 2006) == {}  # 'Celta' sem ano não vale para 2006
         assert painel_veiculos.serve_no_veiculo(db, 10, 2018, 101) == {}
 
 
@@ -310,6 +310,8 @@ def test_seu_veiculo(tmp_path):
         assert sv(db, 1, 20, 2015)["veredito"] == "Confira a versão"
         assert sv(db, 2, 10, 2014) == {"veiculo": "Chevrolet Onix 2014", "confianca": None,
                                        "veredito": "Não consta para este veículo"}
+        assert sv(db, 2, 11, 2006) == {"veiculo": "Chevrolet Celta 2006", "confianca": None,
+                                       "veredito": "Confira o ano: o anúncio cita o modelo, sem o ano"}
         assert sv(db, 1, 999, 2014) is None
 
 

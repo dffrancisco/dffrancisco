@@ -1545,7 +1545,8 @@ async function abrir(id) {
   seu.hidden = !d.seu_veiculo;
   if (d.seu_veiculo) {
     const conf = d.seu_veiculo.confianca;
-    seu.className = "seu-veiculo" + (conf === "versao" || conf === "todas_versoes" ? " serve" : conf ? "" : " nao");
+    seu.className = "seu-veiculo" + (conf === "versao" || conf === "todas_versoes" ? " serve"
+                                     : d.seu_veiculo.veredito.startsWith("Não") ? " nao" : "");
     seu.textContent = `Seu veículo: ${d.seu_veiculo.veiculo} — ${d.seu_veiculo.veredito}`;
   }
   desenharVeiculos();

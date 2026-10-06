@@ -63,6 +63,8 @@ def test_ddl_de_veiculos_e_funcoes_do_contrato():
         assert f"FUNCTION {f}" in fs
     assert "vei_fonte" not in tudo and "origem" not in fs
     assert "similarity" in fs and "similarity" not in "\n".join(funcoes_veiculos(False))
+    ids = next(f for f in funcoes_veiculos(True) if "FUNCTION vei_ids_por_veiculo" in f)
+    assert "(pv.ano_inicio IS NOT NULL OR pv.ano_fim IS NOT NULL)" in ids  # texto sem ano não vale para o ano (como no SQLite)
 
 
 class ConFalsa:

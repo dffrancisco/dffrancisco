@@ -192,6 +192,8 @@ def funcoes_veiculos(com_trgm):
              m AS (
                SELECT DISTINCT pv.id_peca FROM vei_peca pv JOIN peca pe ON pe.id_peca = pv.id_peca AND pe.status = 'ativa'
                WHERE pv.id_modelo = p_modelo AND pv.nivel = 'modelo'
+                 -- texto sem ano nenhum não vale para um ano escolhido (mesma regra de helper/consulta.py)
+                 AND (pv.ano_inicio IS NOT NULL OR pv.ano_fim IS NOT NULL)
                  AND (pv.ano_inicio IS NULL OR pv.ano_inicio <= p_ano) AND (pv.ano_fim IS NULL OR pv.ano_fim >= p_ano))
              SELECT v.id_peca, CASE WHEN p_versao IS NOT NULL THEN 'versao' WHEN v.todas THEN 'todas_versoes' ELSE 'algumas_versoes' END
              FROM v WHERE p_versao IS NULL OR v.todas OR v.esta

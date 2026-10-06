@@ -85,15 +85,15 @@ def _db_veiculo(tmp_path):
 
 
 def test_confianca_sem_versao(tmp_path):
-    assert ids_por_veiculo(_db_veiculo(tmp_path), 10, 2021) == {1: "todas_versoes", 2: "algumas_versoes", 3: "modelo_ano",
-                                                                 5: "algumas_versoes"}
+    # a 3 só tem texto sem ano ('Gol G3'): não vale para um ano escolhido
+    assert ids_por_veiculo(_db_veiculo(tmp_path), 10, 2021) == {1: "todas_versoes", 2: "algumas_versoes", 5: "algumas_versoes"}
 
 
 def test_confianca_com_versao_tira_quem_o_karhub_diz_que_nao_serve(tmp_path):
     db = _db_veiculo(tmp_path)
-    assert ids_por_veiculo(db, 10, 2021, 100) == {1: "versao", 2: "versao", 3: "modelo_ano"}
-    assert ids_por_veiculo(db, 10, 2021, 200) == {1: "versao", 3: "modelo_ano", 5: "versao"}
-    assert ids_por_veiculo(db, 10, 2016) == {3: "modelo_ano", 4: "modelo_ano"}
+    assert ids_por_veiculo(db, 10, 2021, 100) == {1: "versao", 2: "versao"}
+    assert ids_por_veiculo(db, 10, 2021, 200) == {1: "versao", 5: "versao"}
+    assert ids_por_veiculo(db, 10, 2016) == {4: "modelo_ano"}
     assert ids_por_veiculo(db, 99, 2021) == {}
 
 
@@ -109,6 +109,6 @@ def test_pecas_por_veiculo_texto_ordem_e_limite(tmp_path):
     r = pecas_por_veiculo(db, 10, 2021, texto="tambor")
     assert [p["id_peca"] for p in r] == [1, 5, 2]  # todas_versoes; depois algumas_versoes com foto antes
     assert r[0]["marca"] == "FREMAX" and r[0]["confianca"] == "todas_versoes" and "origem" not in r[0]
-    assert [p["id_peca"] for p in pecas_por_veiculo(db, 10, 2021, texto="pastilha")] == [3]
+    assert pecas_por_veiculo(db, 10, 2021, texto="pastilha") == []  # a única pastilha só tem texto sem ano
     assert len(pecas_por_veiculo(db, 10, 2021, limite=1)) == 1
     assert pecas_por_veiculo(db, 99, 2021) == []

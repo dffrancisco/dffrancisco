@@ -100,6 +100,8 @@ def ids_por_veiculo(db, id_modelo, ano, id_versao=None):
     for (id_peca,) in db.execute(
             """SELECT DISTINCT pv.id_peca FROM vei_peca pv JOIN peca p USING (id_peca)
                WHERE pv.id_modelo = ? AND pv.nivel = 'modelo' AND p.status = 'ativa'
+                 -- texto sem ano nenhum ('Gol G3') não vale para um ano escolhido; faixa aberta escrita ('após 08') vale
+                 AND (pv.ano_inicio IS NOT NULL OR pv.ano_fim IS NOT NULL)
                  AND (pv.ano_inicio IS NULL OR pv.ano_inicio <= ?) AND (pv.ano_fim IS NULL OR pv.ano_fim >= ?)""",
             (id_modelo, ano, ano)):
         if id_peca not in versao:

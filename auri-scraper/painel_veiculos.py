@@ -225,6 +225,9 @@ def seu_veiculo(db, id_peca, id_modelo, ano, id_versao=None):
         veredito = VEREDITOS[confianca]
     elif id_versao is not None and id_peca in ids_por_veiculo(db, id_modelo, ano):
         veredito = "Não serve nesta versão"
+    elif db.execute("SELECT 1 FROM vei_peca WHERE id_peca = ? AND id_modelo = ? AND nivel = 'modelo' "
+                    "AND ano_inicio IS NULL AND ano_fim IS NULL", (id_peca, id_modelo)).fetchone():
+        veredito = "Confira o ano: o anúncio cita o modelo, sem o ano"
     else:
         veredito = "Não consta para este veículo"
     return {"veiculo": escolhido["texto"], "confianca": confianca, "veredito": veredito}
