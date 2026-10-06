@@ -101,11 +101,13 @@ def codigo(marca, ref):
 
 def veiculos(produto):
     """'Todas as Montadoras': ['Chevrolet'], 'Chevrolet': ['Omega'], 'Ano do Veículo :': ['1992', ..., '1998']
-    -> 'Chevrolet Omega 1992-1998'."""
+    -> 'Chevrolet Omega 1992-1998'. O ano é do produto inteiro: com mais de um modelo ele não diz o ano de cada um
+    (uma peça de Fox e Gol G5 a G7 traz 1969 a 2022) e fica de fora."""
+    modelos = [(montadora, modelo) for montadora in produto.get("Todas as Montadoras") or []
+               for modelo in produto.get(montadora) or []]
     anos = sorted(int(a) for a in produto.get("Ano do Veículo :") or [] if a.isdigit())
-    faixa = "-".join(dict.fromkeys(str(a) for a in (anos[0], anos[-1]))) if anos else ""
-    partes = [" ".join(filter(None, (montadora, modelo, faixa)))
-              for montadora in produto.get("Todas as Montadoras") or [] for modelo in produto.get(montadora) or []]
+    faixa = "-".join(dict.fromkeys(str(a) for a in (anos[0], anos[-1]))) if anos and len(set(modelos)) == 1 else ""
+    partes = [" ".join(filter(None, (montadora, modelo, faixa))) for montadora, modelo in modelos]
     return "; ".join(dict.fromkeys(partes)) or None
 
 

@@ -36,10 +36,25 @@ def _anuncio_base(site, fonte):
             "coletado_em": _data(fonte.mtime), "prioridade": prioridade(site, fonte.tipo == "produto_json")}
 
 
+FAIXA_FINAL = re.compile(r"\s((?:19|20)\d{2}(?:-(?:19|20)\d{2})?)$")
+
+
+def carro_altese(texto):
+    """altese.jsonl coletado antes de 2026-10-06 repete o 'Ano do Veículo' do produto em cada modelo
+    ('Volkswagen Fox 1969-2022; Volkswagen Gol G7 1969-2022'): com mais de um modelo e a mesma faixa em todos,
+    a faixa não é de nenhum deles e sai."""
+    partes = [p.strip() for p in (texto or "").split(";") if p.strip()]
+    finais = [FAIXA_FINAL.search(p) for p in partes]
+    if len(partes) < 2 or not all(finais) or len({m[1] for m in finais}) != 1:
+        return texto
+    return "; ".join(p[:m.start()] for p, m in zip(partes, finais))
+
+
 def _de_jsonl(r, fonte):
     a = _anuncio_base(r.get("site") or fonte.site, fonte)
+    carro = carro_altese(r.get("carro")) if a["site"] == "altese" else r.get("carro")
     a.update(url=r.get("url"), nome=r.get("nome"), marca=r.get("marca"), codigo=r.get("codigo_fabricante"),
-             ean=r.get("ean"), carro=r.get("carro"))
+             ean=r.get("ean"), carro=carro)
     if r.get("codigo_original"):
         a["equivalentes"] = [c.strip() for c in re.split(r"[/;,]", str(r["codigo_original"])) if c.strip()]
     a["imagens"] = [{"url": u, "arquivo_local": None, "principal": i == 0} for i, u in enumerate(r.get("imagens") or [])]

@@ -67,3 +67,12 @@ def test_produto_json_invalido_vira_erro(tmp_path):
     fonte = next(f for f in fontes_disponiveis(tmp_path))
     erros = []
     assert list(ler_fonte(fonte, erros)) == [] and erros and "produto.json" in erros[0]
+
+
+def test_carro_da_altese_sem_a_faixa_do_produto_repetida_em_cada_modelo():
+    from helper.fontes import carro_altese
+    assert carro_altese("Volkswagen Fox 1969-2022; Volkswagen Gol G7 1969-2022") == "Volkswagen Fox; Volkswagen Gol G7"
+    assert carro_altese("Chevrolet Omega 1992-1998") == "Chevrolet Omega 1992-1998"  # um modelo só: a faixa é dele
+    assert carro_altese("Fiat Uno 2004-2013; Fiat Fiorino 2005-2013") == "Fiat Uno 2004-2013; Fiat Fiorino 2005-2013"
+    assert carro_altese("Fiat Uno 2010; Fiat Palio 2010") == "Fiat Uno; Fiat Palio"
+    assert carro_altese(None) is None and carro_altese("Fiat Uno; Fiat Palio") == "Fiat Uno; Fiat Palio"

@@ -166,3 +166,13 @@ def test_ean_repetido_em_codigos_diferentes_da_loja_e_descartado():
             {"marca": "Cofap", "codigo_fabricante": "GP30365", "ean": "7891579992017"},  # mesmo SKU em dois anúncios
             {"marca": "Nakata", "codigo_fabricante": "HG41062", "ean": None}]
     assert [r["ean"] for r in catalogo_altese.sem_ean_repetido(regs)] == [None, None, "7891579992017", "7891579992017", None]
+
+
+def test_ano_do_produto_so_vai_para_o_modelo_quando_ha_um_modelo_so():
+    """O 'Ano do Veículo' da Altese é do produto inteiro (1969 a 2022 numa peça de Fox e Gol G5 a G7): repetido em cada
+    modelo, virava 'Gol G7 1969-2022'. Com um modelo só, a faixa é dele."""
+    from catalogo_altese import veiculos
+    varios = {"Todas as Montadoras": ["Volkswagen"], "Volkswagen": ["Fox", "Gol G7"], "Ano do Veículo :": ["1969", "2022"]}
+    um = {"Todas as Montadoras": ["Chevrolet"], "Chevrolet": ["Omega"], "Ano do Veículo :": ["1992", "1995", "1998"]}
+    assert veiculos(varios) == "Volkswagen Fox; Volkswagen Gol G7"
+    assert veiculos(um) == "Chevrolet Omega 1992-1998"
