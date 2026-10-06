@@ -372,3 +372,31 @@ def test_sugestao_com_base_ocupada_usa_o_site(painel, monkeypatch):
     r = painel.get(f"/api/catalogo/sugestao/{_id_item('karhub', 'https://k/p1')}?modelo=10&ano=2014")
     assert r.status_code == 200 and r.get_json()["veiculos_fonte"] == "site"
     assert [v["id_carro"] for v in r.get_json()["campos"]["veiculos"]] == [1]  # pelo texto 'Chevrolet Onix 2013-2019'
+
+
+def test_helper_ilegivel_ou_sem_permissao_vira_indisponivel(tmp_path):
+    lixo, sem_leitura = tmp_path / "lixo.sqlite", _helper(tmp_path)
+    lixo.write_bytes(b"isto nao e um banco sqlite " * 100)  # cópia pela metade, arquivo corrompido
+    with pytest.raises(painel_veiculos.Indisponivel):
+        with painel_veiculos.helper(lixo):
+            pass
+    sem_leitura.chmod(0)
+    try:
+        with pytest.raises(painel_veiculos.Indisponivel):
+            with painel_veiculos.helper(sem_leitura):
+                pass
+    finally:
+        sem_leitura.chmod(0o644)
+
+
+def test_helper_ilegivel_nao_derruba_o_painel(painel, monkeypatch, tmp_path):
+    _sem_karhub_ao_vivo(monkeypatch)
+    lixo = tmp_path / "lixo.sqlite"
+    lixo.write_bytes(b"isto nao e um banco sqlite " * 100)
+    monkeypatch.setattr(painel_veiculos, "HELPER_DB", lixo)
+    r = painel.get(f"/api/catalogo/sugestao/{_id_item('carblue', 'https://c/sem')}?modelo=10&ano=2015")
+    assert r.status_code == 200 and r.get_json()["veiculos_fonte"] == "site"
+    r = painel.get(f"/api/catalogo/sugestao/{_id_item('karhub', 'https://k/p1')}")
+    assert r.status_code == 200 and r.get_json()["veiculos_fonte"] == "site"
+    assert painel.get("/api/veiculos/montadoras").status_code == 404
+    assert painel.get("/api/catalogo/busca?q=pastilha&modelo=10&ano=2014").status_code == 404

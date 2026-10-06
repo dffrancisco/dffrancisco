@@ -1188,7 +1188,7 @@ const SELOS = {versao: "Serve nesta versão", todas_versoes: "Serve em todas as 
 const imgOuVazio = url => url ? `<img src="${esc(url)}" alt="" loading="lazy" onerror="this.style.visibility='hidden'">`
                                : '<span class="vazio-img"></span>';  // imagem que falha vira quadro vazio
 const faixaAnos = (i, f) => i == null && f == null ? "" : i === f ? String(i) : `${i ?? ""}-${f ?? ""}`;
-let filtroVeiculo = "";
+let filtroVeiculo = "", geracao = 0;  // geração da busca: resposta de uma busca já trocada é descartada
 
 async function pedirJson(url) {
   const r = await fetch(url), d = await r.json();
@@ -1374,7 +1374,7 @@ document.getElementById("formBusca").onsubmit = async e => {
   if (!q && !veiculoCompleto()) {
     main.innerHTML = '<div class="vazio">Busque uma peça nos catálogos dos sites ou escolha um veículo.</div>'; return;
   }
-  consulta = q; siteBusca = seletorSite.value; offset = 0; resultados = []; filtroVeiculo = paramsVeiculo();
+  consulta = q; siteBusca = seletorSite.value; offset = 0; resultados = []; filtroVeiculo = paramsVeiculo(); geracao++;
   main.innerHTML = '<div class="vazio">Buscando…</div>';
   await buscarMais();
 };
@@ -1382,8 +1382,13 @@ document.getElementById("formBusca").onsubmit = async e => {
 async function buscarMais() {
   const botao = document.getElementById("maisProdutos");
   if (botao) { botao.disabled = true; botao.textContent = "Carregando…"; }
-  const resp = await fetch(`/api/catalogo/busca?q=${encodeURIComponent(consulta)}&site=${encodeURIComponent(siteBusca)}&offset=${offset}${filtroVeiculo}`);
-  const d = await resp.json();
+  const minha = geracao;
+  let resp, d;
+  try {
+    resp = await fetch(`/api/catalogo/busca?q=${encodeURIComponent(consulta)}&site=${encodeURIComponent(siteBusca)}&offset=${offset}${filtroVeiculo}`);
+    d = await resp.json();
+  } catch (e) { resp = {ok: false}; d = {erro: "Erro na busca: " + e.message}; }
+  if (minha !== geracao) return;  // outra busca começou enquanto esta esperava
   if (!resp.ok) {
     avisar(d.erro || "Erro na busca");
     if (filtroVeiculo && consulta && !resultados.length) { filtroVeiculo = ""; return buscarMais(); }  // base ocupada: sem veículo
@@ -1475,7 +1480,7 @@ function htmlArvore(arvore) {  // montadora -> modelos -> anos -> versões, um n
   if (n.a == null)
     return `<div class="arvore">${voltar(`${imgOuVazio(mo.foto_url || m.logo_url)}<span>${esc(m.nome)} ${esc(mo.nome)}</span>`)}
       ${mo.anos.map((a, i) => no(`a:${i}`, `<span>${a.ano}</span>${seloAno(a)}`)).join("")
-        || '<div class="aviso-no">Confira a versão: a base não informa os anos.</div>'}</div>`;
+        || '<div class="aviso-no">Confira a versão: os anos da base para este modelo não estão na árvore de versões (veja a Lista).</div>'}</div>`;
   const a = mo.anos[n.a];
   return `<div class="arvore">${voltar(`${imgOuVazio(mo.foto_url || m.logo_url)}<span>${esc(m.nome)} ${esc(mo.nome)} ${a.ano}</span>${seloAno(a)}`)}
     ${a.confira && !a.versoes.length ? '<div class="aviso-no">Confira a versão: a base não diz quais versões.</div>' : ""}
@@ -1513,7 +1518,9 @@ document.getElementById("alternaVista").addEventListener("click", e => {
 
 async function abrir(id) {
   itemAtual = resultados.find(r => r.id === id);
-  const d = await (await fetch("/api/catalogo/sugestao/" + id + (paramsVeiculo() ? "?" + paramsVeiculo().slice(1) : ""))).json();
+  let d;
+  try { d = await pedirJson("/api/catalogo/sugestao/" + id + (paramsVeiculo() ? "?" + paramsVeiculo().slice(1) : "")); }
+  catch (e) { avisar("Não consegui abrir o item: " + e.message); return; }
   const f = document.getElementById("formCadastro"), c = d.campos;
   document.getElementById("tituloForm").textContent = itemAtual.nome;
   document.getElementById("origemForm").innerHTML = `${esc(itemAtual.site_nome)} · ${esc(itemAtual.marca)} ${esc(itemAtual.codigo)} · <a href="${esc(itemAtual.url)}" target="_blank" rel="noopener">ver no site</a>`;

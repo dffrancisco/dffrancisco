@@ -3,6 +3,7 @@ servem num veículo e veículos compatíveis de uma peça (lista, árvore, carro
 Spec: docs/superpowers/specs/2026-10-06-painel-veiculos-design.md."""
 import json
 import sqlite3
+import traceback
 from collections import defaultdict
 from contextlib import contextmanager
 from pathlib import Path
@@ -27,9 +28,10 @@ def helper(caminho=None):
     caminho = Path(caminho or HELPER_DB)
     if not caminho.exists():
         raise Indisponivel(f"{caminho} não encontrado")
-    db = sqlite3.connect(f"{caminho.resolve().as_uri()}?mode=ro", uri=True, timeout=5)
-    db.row_factory = sqlite3.Row
+    db = None
     try:
+        db = sqlite3.connect(f"{caminho.resolve().as_uri()}?mode=ro", uri=True, timeout=5)
+        db.row_factory = sqlite3.Row
         try:
             tem_modelos = db.execute("SELECT 1 FROM vei_modelo WHERE ativo = 1 LIMIT 1").fetchone()
         except sqlite3.OperationalError as e:
@@ -39,12 +41,14 @@ def helper(caminho=None):
         if not tem_modelos:
             raise Indisponivel(f"{caminho} sem veículos")
         yield db
-    except sqlite3.OperationalError as e:
+    except sqlite3.DatabaseError as e:
         if "locked" in str(e) or "busy" in str(e):
             raise Ocupado("Base de veículos ocupada, tente de novo") from e
-        raise
+        traceback.print_exc()  # arquivo corrompido, sem permissão ou consulta errada: o painel segue sem a base
+        raise Indisponivel(f"{caminho} ilegível: {e}") from e
     finally:
-        db.close()
+        if db is not None:
+            db.close()
 
 
 def url_imagem(caminho):
