@@ -446,3 +446,22 @@ grupo, semelhança com o texto (quando há), `tem_foto` e `qtd_fontes`, como nas
 4. **`carro_cliente` escolhido pela árvore** em vez de texto livre, para a venda ou a OS já
    abrirem o filtro no carro do cliente.
 5. **Cadastro de produto** mostrando os veículos da peça do helper.
+
+## Emenda 2026-10-06: precisão da ligação por texto e compatibilidade da KarHub contestada
+
+Motivo: no painel, buscando Gol 2018 + "farol", 361 de 397 resultados vinham só do texto dos anúncios e a maioria
+não servia (faróis de Gol G2 a G5); no Argo 2023 apareciam lanternas de placa de carros GM porque a compatibilidade
+da KarHub dessa peça inclui 1.051 versões Fiat que nenhum outro site cita.
+
+- **Aplicações (texto):** "25 Anos", "30 Anos" (edição) não são ano. Aplicação sem ano nenhum só se une a outra sem ano:
+  não engole a faixa datada do mesmo modelo ("Gol G3" + "GOL 2000-2005" ficam as duas). Fonte estruturada (produto.json)
+  com um só ano e sem "após" escrito vale só para aquele ano ("ECOSPORT 2003" não é "de 2003 em diante").
+- **`aplicacao.de_karhub`** (só local): 1 quando só anúncios do KarHub citam a aplicação.
+- **5.4, junção:** linha sem ano só existe quando o par (peça, modelo) não tem faixa datada.
+- **5.5 (nova), KarHub contestada:** se os anúncios de outros sites da peça citam veículos (aplicações com
+  `de_karhub = 0` que casam com a árvore) e nenhum deles é de uma montadora que a KarHub cita, as linhas `versao` dessa
+  montadora viram linhas `modelo` com as mesmas faixas ("confira a versão"). O relatório conta `pares_contestados`.
+- **9, confiança:** linha `modelo` sem ano nenhum não vale para um ano escolhido (fica fora de `ids_por_veiculo` e
+  `pecas_por_veiculo`, no SQLite e no Postgres). Faixa aberta escrita no anúncio ("após 08") continua valendo.
+- Descartado depois de medir: cortar faixas com mais de 15 anos. As faixas largas que davam erro eram o "25 Anos";
+  as demais são, na maioria, peças mecânicas que servem mesmo por muitos anos ("Gol 1981-2018").

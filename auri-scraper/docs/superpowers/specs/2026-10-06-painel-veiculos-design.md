@@ -231,6 +231,7 @@ FLEX" e o veredito, pelas regras da confiança aplicadas só a esta peça:
 | `modelo_ano` | Confira a versão |
 | versão escolhida e a peça só serve em outras | Não serve nesta versão |
 | nada | Não consta para este veículo |
+| só texto sem ano para o modelo (emenda 2026-10-06) | Confira o ano: o anúncio cita o modelo, sem o ano |
 
 ### 6.4 Carros de venda
 
@@ -309,3 +310,10 @@ O `/api/catalogo/cadastrar` não muda: recebe os carros de venda e o complemento
   árvore e a lista de uma peça da KarHub batem com "Veículos Compatíveis" da página dela; um item da
   Universal fundido com uma peça da KarHub mostra os mesmos veículos; cadastrar um produto de teste
   só se o dono pedir.
+
+## Emenda 2026-10-06
+
+Depois do primeiro uso (Gol 2018 + farol, Argo 2023), a precisão da busca por veículo mudou no helper (emenda da mesma
+data na spec de veículos): texto sem ano não vale para o ano escolhido, edição "25 Anos" não é ano, fonte estruturada
+com um ano só vale para ele e a compatibilidade da KarHub contestada pelos outros sites vira "Confira a versão".
+O painel herda tudo pelo `ids_por_veiculo`; o "Seu veículo" ganhou o veredito "Confira o ano" (amarelo).
