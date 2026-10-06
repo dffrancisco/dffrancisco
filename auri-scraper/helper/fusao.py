@@ -290,10 +290,11 @@ def gravar(db, pecas_fundidas, pasta_fotos=None):
         _apagar_filhos(db, id_peca)
         db.executemany("INSERT INTO codigo_alternativo (id_peca, tipo, valor, qtd_fontes) VALUES (?,?,?,?)",
                        [(id_peca, t, v, n) for t, v, n in p["alternativos"]])
-        db.executemany("""INSERT OR IGNORE INTO aplicacao (id_peca, montadora, modelo, ano_inicio, ano_fim, motor, observacao, texto_original, modelo_reconhecido)
-                          VALUES (?,?,?,?,?,?,?,?,?)""",
+        db.executemany("""INSERT OR IGNORE INTO aplicacao (id_peca, montadora, modelo, ano_inicio, ano_fim, motor, observacao, texto_original,
+                                                    modelo_reconhecido, de_karhub)
+                          VALUES (?,?,?,?,?,?,?,?,?,?)""",
                        [(id_peca, l["montadora"], l["modelo"], l["ano_inicio"], l["ano_fim"], l["motor"], l["observacao"],
-                         l["texto_original"], int(l["modelo_reconhecido"])) for l in p["aplicacoes"]])
+                         l["texto_original"], int(l["modelo_reconhecido"]), int(l.get("de_karhub", False))) for l in p["aplicacoes"]])
         db.executemany("INSERT OR REPLACE INTO origem (id_peca, site, url, nome_original, marca_original, codigo_original, ean_original, carro_original, coletado_em) VALUES (?,?,?,?,?,?,?,?,?)",
                        [(id_peca, o["site"], o["url"], o["nome_original"], o["marca_original"], o["codigo_original"], o["ean_original"], o["carro_original"], o["coletado_em"]) for o in p["origens"]])
         ja_tem = {r0[0] for r0 in db.execute("SELECT url_fonte FROM foto WHERE id_peca=?", (id_peca,))}

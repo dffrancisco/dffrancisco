@@ -47,6 +47,7 @@ DDL = [
          id_peca INTEGER NOT NULL REFERENCES peca(id_peca),
          montadora TEXT, modelo TEXT NOT NULL, ano_inicio INTEGER, ano_fim INTEGER, motor TEXT,
          observacao TEXT, texto_original TEXT, modelo_reconhecido INTEGER NOT NULL DEFAULT 1,
+         de_karhub INTEGER NOT NULL DEFAULT 0,  -- 1: só anúncios do KarHub citam (não serve para conferir o KarHub)
          UNIQUE (id_peca, montadora, modelo, ano_inicio, ano_fim, motor))""",
     """CREATE TABLE IF NOT EXISTS foto (
          id_peca INTEGER NOT NULL REFERENCES peca(id_peca),
@@ -130,6 +131,8 @@ def abrir(caminho):
     colunas = {r[1] for r in db.execute("PRAGMA table_info(foto)")}
     if "publicada" not in colunas:  # bancos criados antes da coluna
         db.execute("ALTER TABLE foto ADD COLUMN publicada INTEGER NOT NULL DEFAULT 0")
+    if "de_karhub" not in {r[1] for r in db.execute("PRAGMA table_info(aplicacao)")}:
+        db.execute("ALTER TABLE aplicacao ADD COLUMN de_karhub INTEGER NOT NULL DEFAULT 0")
     db.commit()
     return db
 

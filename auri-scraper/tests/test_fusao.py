@@ -269,3 +269,10 @@ def test_variante_nova_que_vem_antes_na_ordem_nao_toma_o_id_da_antiga(tmp_path):
     r = gravar(db, _fundir([a, b])[0])
     assert r["novas"] == 1 and r["inativadas_por_fusao"] == 0 and r["inativadas_por_sumico"] == 0
     assert [tuple(l) for l in db.execute("SELECT id_peca, codigo FROM peca ORDER BY 1")] == [(1, "3194"), (2, "3193")]
+
+
+def test_gravar_marca_aplicacao_que_veio_so_da_karhub(tmp_path):
+    db = abrir(tmp_path / "h.sqlite")
+    gravar(db, _fundir([_a("karhub", "https://k/1", "X", "GAUSS", "1", carro="Volkswagen Gol 1999-2001; Fiat Uno 2005-2006"),
+                        _a("carblue", "https://c/1", "X", "GAUSS", "1", carro="GOL 2000 2001")])[0])
+    assert dict(db.execute("SELECT modelo, de_karhub FROM aplicacao")) == {"GOL": 0, "UNO": 1}

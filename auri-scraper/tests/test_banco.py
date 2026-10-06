@@ -75,3 +75,16 @@ def test_versao_do_esquema_sobe_em_banco_antigo(tmp_path):
     db.commit()
     db.close()
     assert ler_meta(abrir(tmp_path / "h.sqlite"), "versao_esquema") == "3"
+
+
+def test_aplicacao_ganha_de_karhub_em_banco_antigo(tmp_path):
+    import sqlite3
+    antigo = sqlite3.connect(tmp_path / "h.sqlite")
+    antigo.execute("""CREATE TABLE aplicacao (id_peca INTEGER NOT NULL, montadora TEXT, modelo TEXT NOT NULL, ano_inicio INTEGER,
+                      ano_fim INTEGER, motor TEXT, observacao TEXT, texto_original TEXT, modelo_reconhecido INTEGER NOT NULL DEFAULT 1,
+                      UNIQUE (id_peca, montadora, modelo, ano_inicio, ano_fim, motor))""")
+    antigo.execute("INSERT INTO aplicacao (id_peca, modelo) VALUES (1, 'GOL')")
+    antigo.commit()
+    antigo.close()
+    db = abrir(tmp_path / "h.sqlite")
+    assert db.execute("SELECT de_karhub FROM aplicacao").fetchone()[0] == 0

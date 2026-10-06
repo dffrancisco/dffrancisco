@@ -20,21 +20,25 @@ def _motor(texto):
     return m[0] if m else None
 
 
-def _linha(montadora, modelo, ano_inicio, ano_fim, motor, observacao, texto_original, vocab):
+def _linha(montadora, modelo, ano_inicio, ano_fim, motor, observacao, texto_original, vocab, de_karhub):
     canonico, reconhecido = casar_modelo(modelo, vocab)
     return {"montadora": sem_acento(montadora).upper() if montadora else None, "modelo": canonico,
             "ano_inicio": ano_inicio, "ano_fim": ano_fim, "motor": motor, "observacao": observacao,
-            "texto_original": texto_original, "modelo_reconhecido": reconhecido}
+            "texto_original": texto_original, "modelo_reconhecido": reconhecido, "de_karhub": de_karhub}
 
 
 def aplicacoes_do_anuncio(anuncio, vocab):
     observacao = "; ".join(anuncio.get("observacoes") or []) or None
+    de_karhub = anuncio.get("site") == "karhub"  # a compatibilidade do KarHub é conferida contra o texto dos outros sites
     linhas = []
     for ap in anuncio.get("aplicacoes") or []:  # estruturadas (produto.json) têm prioridade
         texto = " ".join(str(x) for x in (ap.get("montadora"), ap.get("veiculo"), ap.get("motor")) if x)
-        anos = f"{ap.get('ano_inicio') or ''}-{ap.get('ano_fim') or ''}".strip("-")
-        linhas.append(_linha(ap.get("montadora"), ap.get("veiculo") or "", ap.get("ano_inicio"), ap.get("ano_fim"),
-                             _motor(ap.get("motor")), observacao, (texto + " " + anos).strip(), vocab))
+        inicio, fim = ap.get("ano_inicio"), ap.get("ano_fim")
+        if (inicio is None) != (fim is None) and "APOS" not in sem_acento(ap.get("veiculo") or "").upper():
+            inicio = fim = inicio if inicio is not None else fim  # 'ECOSPORT 2003' sem 'após': só o ano citado
+        anos = f"{inicio or ''}-{fim or ''}".strip("-")
+        linhas.append(_linha(ap.get("montadora"), ap.get("veiculo") or "", inicio, fim,
+                             _motor(ap.get("motor")), observacao, (texto + " " + anos).strip(), vocab, de_karhub))
     if not linhas and anuncio.get("carro"):
         # um trecho por ';'. 'Fiat: Palio 01 a 12' traz a montadora antes dos dois-pontos, que ocorrencias_do_texto descarta
         for trecho in (t.strip() for t in anuncio["carro"].split(";") if t.strip()):
@@ -45,19 +49,20 @@ def aplicacoes_do_anuncio(anuncio, vocab):
                 montadora = rotulo[:len(rotulo) - len(modelo)].strip() or prefixo
                 inicio, fim = intervalo or (None, None)
                 for motor in motores or [None]:
-                    linhas.append(_linha(montadora, modelo, inicio, fim, motor, observacao, trecho, vocab))
+                    linhas.append(_linha(montadora, modelo, inicio, fim, motor, observacao, trecho, vocab, de_karhub))
     return juntar_aplicacoes(linhas)
 
 
 def juntar_aplicacoes(linhas):
     """Mesmo modelo/motor: une faixas de anos sobrepostas ou adjacentes (1996-1998 + 1999-2001).
-    A montadora não entra na chave porque muitas fontes a omitem ('GOL 96 97 98'); fica a primeira informada."""
+    A montadora não entra na chave porque muitas fontes a omitem ('GOL 96 97 98'); fica a primeira informada.
+    Sem ano só se une a sem ano: não engole a faixa datada ('Gol G3' + 'GOL 2000-2005')."""
     grupos = {}
     for l in linhas:
         grupos.setdefault((l["modelo"], l["motor"]), []).append(l)
     saida = []
     for faixas in grupos.values():
-        faixas.sort(key=lambda l: (l["ano_inicio"] is not None, l["ano_inicio"] or 0))
+        faixas.sort(key=lambda l: (not _sem_ano(l), l["ano_inicio"] is not None, l["ano_inicio"] or 0))
         atual = None
         for l in faixas:
             if atual and _adjacentes(atual, l):
@@ -65,15 +70,20 @@ def juntar_aplicacoes(linhas):
                 atual["ano_fim"] = None if None in (atual["ano_fim"], l["ano_fim"]) else max(atual["ano_fim"], l["ano_fim"])
                 atual["montadora"] = atual["montadora"] or l["montadora"]
                 atual["modelo_reconhecido"] = atual["modelo_reconhecido"] or l["modelo_reconhecido"]
+                atual["de_karhub"] = atual.get("de_karhub", False) and l.get("de_karhub", False)
                 continue
             atual = dict(l)
             saida.append(atual)
     return saida
 
 
+def _sem_ano(l):
+    return l["ano_inicio"] is None and l["ano_fim"] is None
+
+
 def _adjacentes(a, b):
-    if a["ano_inicio"] is None and a["ano_fim"] is None or b["ano_inicio"] is None and b["ano_fim"] is None:
-        return True  # sem ano: é a mesma aplicação genérica
+    if _sem_ano(a) or _sem_ano(b):
+        return _sem_ano(a) and _sem_ano(b)  # sem ano com sem ano é a mesma aplicação genérica
     fim_a, inicio_b = a["ano_fim"], b["ano_inicio"]
     if fim_a is None or inicio_b is None:
         return True  # faixa aberta cobre a outra
