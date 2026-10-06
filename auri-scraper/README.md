@@ -152,9 +152,14 @@ python painel_wayap.py            # http://localhost:8765 (mesmas variáveis WAY
   `.jsonl` mudou (todos juntos levam ~10 s). Um catálogo novo entra sozinho ao ser gravado nessa pasta.
   O que já existe no cadastro aparece marcado. "Cadastrar" abre o formulário com sugestões tiradas do
   próprio cadastro (marca, carro, fornecedor e unidade mais usados pela marca, NCM pelo tipo de peça); custo e
-  venda entram zerados. Os veículos compatíveis vêm da página da KarHub; nos outros sites, da aplicação escrita
-  no catálogo ("GOL G2 96 97 98", "Fiat: Palio 01 a 12", "Gol, Parati - 1998 1999"...). ClicPeças, Fuscão
-  Preto e quase toda a AZ Acessórios não trazem código do fabricante: o Nº fabricante tem de ser preenchido à
+  venda entram zerados. **Busca por veículo:** o quadro "Confira se serve no seu veículo" (montadora → modelo → ano →
+  versão opcional, com logos e fotos do helper) filtra a busca pelas peças que servem, com selo de confiança ("Serve
+  nesta versão", "Confira a versão"...); o veículo fica guardado no navegador. **Veículos compatíveis:** vêm do
+  `helper.sqlite` (lista e árvore, como na KarHub) quando o anúncio chega a uma peça do helper com veículos, e deles
+  saem os carros de venda e o complemento do produto; sem isso, vêm da página da KarHub ou da aplicação escrita no
+  catálogo ("GOL G2 96 97 98", "Fiat: Palio 01 a 12"...). O painel só lê o `helper.sqlite`: rode `helper.py veiculos`
+  com o painel fechado. Spec: `docs/superpowers/specs/2026-10-06-painel-veiculos-design.md`.
+  ClicPeças, Fuscão Preto e quase toda a AZ Acessórios não trazem código do fabricante: o Nº fabricante tem de ser preenchido à
   mão. As fotos escolhidas sobem junto e vão para a curadoria (lote `fotos_wayap_<sociedade>_cadastro`; os
   cadastros antigos da KarHub continuam no lote `fotos_wayap_<sociedade>_karhub`).
 
