@@ -889,6 +889,24 @@ button:disabled { opacity: .5; cursor: wait; }
 .veiculo select, .veiculo input[type=text] { font: inherit; padding: 5px 8px; border: 1px solid var(--line); border-radius: 6px;
                                              background: var(--bg); color: var(--text); min-width: 0; }
 .veiculo .origem { margin: 0; white-space: nowrap; }
+.quadro-veiculo { flex-basis: 100%; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; font-size: 14px; }
+.quadro-veiculo[hidden], .veiculo-escolhido[hidden], .alterna[hidden] { display: none; }
+.seletor { position: relative; flex: 1; min-width: 140px; }
+.seletor input { width: 100%; font: inherit; padding: 6px 8px; border: 1px solid var(--line); border-radius: 6px;
+                 background: var(--bg); color: var(--text); }
+.opcoes { position: absolute; z-index: 10; left: 0; right: 0; top: 100%; margin: 2px 0 0; padding: 4px 0; list-style: none;
+          max-height: 320px; overflow-y: auto; background: var(--card); border: 1px solid var(--line); border-radius: 8px;
+          box-shadow: 0 6px 20px rgba(0,0,0,.15); }
+.opcoes li { display: flex; gap: 8px; align-items: center; padding: 5px 10px; cursor: pointer; }
+.opcoes li.ativa, .opcoes li[data-i]:hover { background: var(--accent-bg); }
+.opcoes .origem { margin: 0 0 0 auto; }
+.opcoes img, .arvore img, .vazio-img { width: 40px; height: 30px; object-fit: contain; flex: none; }
+.veiculo-escolhido { display: flex; gap: 8px; align-items: center; font-weight: 600; }
+.veiculo-escolhido img { width: 64px; height: 48px; object-fit: contain; }
+.veiculo-escolhido button { padding: 5px 10px; }
+.selo.conf-versao, .selo.conf-todas_versoes { background: var(--ok-bg); color: var(--ok); }
+.selo.conf-algumas_versoes, .selo.conf-modelo_ano, .selo.confira { background: var(--warn-bg); color: var(--warn); }
+.selo.tipo { background: var(--line); color: var(--muted); }
 @media (max-width: 700px) {
   .linha { grid-template-columns: 1fr; } .linha img, .foto { width: 100%; height: 260px; }
   .botoes { flex-direction: row; } .botoes button { flex: 1; }
@@ -1086,6 +1104,17 @@ CADASTRO = r"""
     <input id="q" placeholder="Código do fabricante, EAN ou descrição (ex.: GC5045, bieleta captiva)" style="flex:1; min-width:180px" autofocus>
     <button class="primario" type="submit">Buscar</button>
   </form>
+  <div id="quadroVeiculo" class="quadro-veiculo" hidden>
+    <strong>Confira se serve no seu veículo</strong>
+    <div class="seletor" id="selMontadora"></div>
+    <div class="seletor" id="selModelo"></div>
+    <div class="seletor" id="selAno"></div>
+    <div class="seletor" id="selVersao"></div>
+    <div id="veiculoEscolhido" class="veiculo-escolhido" hidden>
+      <img alt=""><span></span>
+      <button type="button" class="secundario" id="limparVeiculo">Limpar</button>
+    </div>
+  </div>
 </header>
 <main id="resultados"><div class="vazio">Busque uma peça nos catálogos dos sites para cadastrar no Wayap.</div></main>
 <div class="modal" id="modal">
@@ -1131,6 +1160,173 @@ const POR_PAGINA = 40;
 let resultados = [], itemAtual = null, consulta = "", siteBusca = "", offset = 0;
 const main = document.getElementById("resultados");
 const seletorSite = document.getElementById("site");
+const normalizar = s => String(s ?? "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase();
+const SELOS = {versao: "Serve nesta versão", todas_versoes: "Serve em todas as versões",
+               algumas_versoes: "Serve em algumas versões", modelo_ano: "Confira a versão"};
+const imgOuVazio = url => url ? `<img src="${esc(url)}" alt="" loading="lazy" onerror="this.style.visibility='hidden'">`
+                               : '<span class="vazio-img"></span>';  // imagem que falha vira quadro vazio
+const faixaAnos = (i, f) => i == null && f == null ? "" : i === f ? String(i) : `${i ?? ""}-${f ?? ""}`;
+let filtroVeiculo = "";
+
+async function pedirJson(url) {
+  const r = await fetch(url), d = await r.json();
+  if (!r.ok) throw new Error(d.erro || "Erro " + r.status);
+  return d;
+}
+
+class Seletor {  // lista com imagem e filtro por digitação; opções: {id, texto, html}
+  constructor(id, placeholder, aoEscolher) {
+    this.el = document.getElementById(id); this.aoEscolher = aoEscolher;
+    this.opcoes = []; this.visiveis = []; this.ativa = 0; this.valor = null;
+    this.el.innerHTML = `<input type="text" placeholder="${esc(placeholder)}" disabled autocomplete="off"><ul class="opcoes" hidden></ul>`;
+    this.input = this.el.querySelector("input"); this.lista = this.el.querySelector("ul");
+    this.input.addEventListener("focus", () => { this.input.select(); this.filtrar(""); });
+    this.input.addEventListener("input", () => this.filtrar(this.input.value));
+    this.input.addEventListener("blur", () => setTimeout(() => this.fechar(), 150));
+    this.input.addEventListener("keydown", e => this.tecla(e));
+    this.lista.addEventListener("mousedown", e => {
+      const li = e.target.closest("li[data-i]");
+      if (li) { e.preventDefault(); this.escolher(this.visiveis[+li.dataset.i]); }
+    });
+  }
+  definir(opcoes, valor = null) {
+    this.opcoes = opcoes; this.valor = valor; this.input.value = valor ? valor.texto : ""; this.input.disabled = !opcoes.length;
+  }
+  limpar() { this.definir([]); this.lista.hidden = true; }
+  filtrar(texto) {
+    const t = normalizar(texto.trim());
+    this.visiveis = this.opcoes.filter(o => !t || normalizar(o.texto).includes(t));
+    this.ativa = 0;
+    this.lista.innerHTML = this.visiveis.map((o, i) => `<li data-i="${i}">${o.html}</li>`).join("")
+      || '<li class="origem">Nada encontrado</li>';
+    this.lista.hidden = false; this.marcar();
+  }
+  marcar() {
+    this.lista.querySelectorAll("li[data-i]").forEach((li, i) => li.classList.toggle("ativa", i === this.ativa));
+    this.lista.querySelector("li.ativa")?.scrollIntoView({block: "nearest"});
+  }
+  tecla(e) {
+    if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+      e.preventDefault();
+      if (this.lista.hidden) { this.filtrar(this.input.value); return; }
+      this.ativa = Math.max(0, Math.min(this.visiveis.length - 1, this.ativa + (e.key === "ArrowDown" ? 1 : -1)));
+      this.marcar();
+    } else if (e.key === "Enter") {
+      e.preventDefault();
+      if (!this.lista.hidden && this.visiveis[this.ativa]) this.escolher(this.visiveis[this.ativa]);
+    } else if (e.key === "Escape") {
+      this.lista.hidden = true; this.input.value = this.valor ? this.valor.texto : "";
+    }
+  }
+  escolher(o) {
+    this.valor = o; this.input.value = o.texto; this.lista.hidden = true;
+    Promise.resolve(this.aoEscolher(o)).catch(e => avisar(e.message));
+  }
+  fechar() {
+    this.lista.hidden = true;
+    if (document.activeElement !== this.input) this.input.value = this.valor ? this.valor.texto : "";
+  }
+}
+
+async function opcoesMontadoras() {
+  return (await pedirJson("/api/veiculos/montadoras")).map(m => ({id: m.id, texto: m.nome, logo_url: m.logo_url,
+    html: `${imgOuVazio(m.logo_url)}<span>${esc(m.nome)}</span>`}));
+}
+async function opcoesModelos(id, logo) {  // modelo sem foto mostra o logo da montadora
+  return (await pedirJson("/api/veiculos/modelos?montadora=" + id)).map(m => ({id: m.id, texto: m.nome, foto_url: m.foto_url,
+    html: `${imgOuVazio(m.foto_url || logo)}<span>${esc(m.nome)}</span>`
+          + (m.tipo !== "carro" ? `<span class="selo tipo">${esc(m.tipo)}</span>` : "")
+          + `<span class="origem">${esc(faixaAnos(m.ano_inicio, m.ano_fim))}</span>`}));
+}
+async function opcoesAnos(id) {
+  return (await pedirJson("/api/veiculos/anos?modelo=" + id)).map(a => ({id: a, texto: String(a), html: esc(a)}));
+}
+async function opcoesVersoes(idModelo, ano) {
+  const versoes = await pedirJson(`/api/veiculos/versoes?modelo=${idModelo}&ano=${ano}`);
+  return [{id: null, texto: "Todas as versões", html: "<em>Todas as versões</em>"},
+          ...versoes.map(v => ({id: v.id, texto: v.nome, html: esc(v.nome)}))];
+}
+
+let veiculo = {montadora: null, modelo: null, ano: null, versao: null};
+const selMontadora = new Seletor("selMontadora", "Montadora", async o => {
+  veiculo = {montadora: o, modelo: null, ano: null, versao: null};
+  selAno.limpar(); selVersao.limpar();
+  selModelo.definir(await opcoesModelos(o.id, o.logo_url)); veiculoMudou(false); selModelo.input.focus();
+});
+const selModelo = new Seletor("selModelo", "Modelo", async o => {
+  Object.assign(veiculo, {modelo: o, ano: null, versao: null});
+  selVersao.limpar(); selAno.definir(await opcoesAnos(o.id)); veiculoMudou(false); selAno.input.focus();
+});
+const selAno = new Seletor("selAno", "Ano", async o => {
+  Object.assign(veiculo, {ano: o, versao: null});
+  selVersao.definir(await opcoesVersoes(veiculo.modelo.id, o.id)); veiculoMudou(true);
+});
+const selVersao = new Seletor("selVersao", "Versão (opcional)", o => {
+  veiculo.versao = o.id ? o : null; veiculoMudou(true);
+});
+
+const veiculoCompleto = () => Boolean(veiculo.modelo && veiculo.ano);
+function paramsVeiculo() {
+  if (!veiculoCompleto()) return "";
+  return `&modelo=${veiculo.modelo.id}&ano=${veiculo.ano.id}` + (veiculo.versao ? `&versao=${veiculo.versao.id}` : "");
+}
+
+function veiculoMudou(buscar) {
+  try { localStorage.setItem("veiculo", JSON.stringify(veiculo)); } catch (e) {}
+  const caixa = document.getElementById("veiculoEscolhido");
+  caixa.hidden = !veiculoCompleto();
+  if (veiculoCompleto()) {
+    const img = caixa.querySelector("img"), url = veiculo.modelo.foto_url || veiculo.montadora.logo_url;
+    img.onerror = () => { img.hidden = true; };
+    img.hidden = !url; if (url) img.src = url;
+    caixa.querySelector("span").textContent = `${veiculo.montadora.texto} ${veiculo.modelo.texto} ${veiculo.ano.texto}`
+      + (veiculo.versao ? " · " + veiculo.versao.texto : "");
+  }
+  if (buscar) document.getElementById("formBusca").requestSubmit();
+}
+
+document.getElementById("limparVeiculo").onclick = () => {
+  veiculo = {montadora: null, modelo: null, ano: null, versao: null};
+  selMontadora.definir(selMontadora.opcoes); selModelo.limpar(); selAno.limpar(); selVersao.limpar();
+  veiculoMudou(true);
+};
+
+async function iniciarVeiculo() {
+  let montadoras;
+  try { montadoras = await opcoesMontadoras(); } catch (e) { return; }  // sem base de veículos: o quadro fica escondido
+  document.getElementById("quadroVeiculo").hidden = false;
+  selMontadora.definir(montadoras);
+  let salvo = null;
+  try { salvo = JSON.parse(localStorage.getItem("veiculo") || "null"); } catch (e) {}
+  if (!salvo || !salvo.montadora) return;
+  try {  // o veículo guardado só volta se ainda existe na base; senão é limpo
+    const montadora = montadoras.find(o => o.id === salvo.montadora.id);
+    if (!montadora) throw new Error("montadora sumiu");
+    selMontadora.definir(montadoras, montadora); veiculo = {montadora, modelo: null, ano: null, versao: null};
+    const modelos = await opcoesModelos(montadora.id, montadora.logo_url);
+    selModelo.definir(modelos);
+    if (salvo.modelo) {
+      const modelo = modelos.find(o => o.id === salvo.modelo.id);
+      if (!modelo) throw new Error("modelo sumiu");
+      selModelo.definir(modelos, modelo); veiculo.modelo = modelo;
+      const anos = await opcoesAnos(modelo.id);
+      selAno.definir(anos);
+      if (salvo.ano) {
+        const ano = anos.find(o => o.id === salvo.ano.id);
+        if (!ano) throw new Error("ano sumiu");
+        selAno.definir(anos, ano); veiculo.ano = ano;
+        const versoes = await opcoesVersoes(modelo.id, ano.id);
+        const versao = salvo.versao ? versoes.find(o => o.id === salvo.versao.id) : null;
+        if (salvo.versao && !versao) throw new Error("versão sumiu");
+        selVersao.definir(versoes, versao || null); veiculo.versao = versao || null;
+      }
+    }
+  } catch (e) {
+    veiculo = {montadora: null, modelo: null, ano: null, versao: null};
+    selMontadora.definir(montadoras); selModelo.limpar(); selAno.limpar(); selVersao.limpar();
+  }
+  veiculoMudou(false);
+}
 
 function avisar(texto, ok) {
   const a = document.getElementById("aviso"); a.style.background = ok ? "var(--ok)" : "var(--bad)"; a.textContent = texto;
@@ -1147,13 +1343,16 @@ async function carregarSites() {
 }
 seletorSite.onchange = () => {
   try { localStorage.setItem("site", seletorSite.value); } catch (e) {}
-  if (document.getElementById("q").value.trim()) document.getElementById("formBusca").requestSubmit();
+  if (document.getElementById("q").value.trim() || veiculoCompleto()) document.getElementById("formBusca").requestSubmit();
 };
 
 document.getElementById("formBusca").onsubmit = async e => {
   e.preventDefault();
-  const q = document.getElementById("q").value.trim(); if (!q) return;
-  consulta = q; siteBusca = seletorSite.value; offset = 0; resultados = [];
+  const q = document.getElementById("q").value.trim();
+  if (!q && !veiculoCompleto()) {
+    main.innerHTML = '<div class="vazio">Busque uma peça nos catálogos dos sites ou escolha um veículo.</div>'; return;
+  }
+  consulta = q; siteBusca = seletorSite.value; offset = 0; resultados = []; filtroVeiculo = paramsVeiculo();
   main.innerHTML = '<div class="vazio">Buscando…</div>';
   await buscarMais();
 };
@@ -1161,14 +1360,22 @@ document.getElementById("formBusca").onsubmit = async e => {
 async function buscarMais() {
   const botao = document.getElementById("maisProdutos");
   if (botao) { botao.disabled = true; botao.textContent = "Carregando…"; }
-  const d = await (await fetch(`/api/catalogo/busca?q=${encodeURIComponent(consulta)}&site=${encodeURIComponent(siteBusca)}&offset=${offset}`)).json();
+  const resp = await fetch(`/api/catalogo/busca?q=${encodeURIComponent(consulta)}&site=${encodeURIComponent(siteBusca)}&offset=${offset}${filtroVeiculo}`);
+  const d = await resp.json();
+  if (!resp.ok) {
+    avisar(d.erro || "Erro na busca");
+    if (filtroVeiculo && consulta && !resultados.length) { filtroVeiculo = ""; return buscarMais(); }  // base ocupada: sem veículo
+    if (botao) { botao.disabled = false; botao.textContent = "Mais produtos"; }
+    if (!resultados.length) main.innerHTML = `<div class="vazio">${esc(d.erro || "Erro na busca")}</div>`;
+    return;
+  }
   offset += POR_PAGINA;
   const ids = new Set(resultados.map(r => r.id));
   const novos = d.itens.filter(r => !ids.has(r.id));
   resultados.push(...novos);
   if (!resultados.length) {
     const onde = siteBusca ? "no catálogo " + (seletorSite.selectedOptions[0]?.text.replace(/ \(.*/, "") || siteBusca) : "nos catálogos";
-    main.innerHTML = `<div class="vazio">Nada encontrado ${esc(onde)}.</div>`; return;
+    main.innerHTML = `<div class="vazio">Nada encontrado ${esc(onde)}${filtroVeiculo ? " para este veículo" : ""}.</div>`; return;
   }
   if (!document.getElementById("rodape"))
     main.innerHTML = '<div id="rodape" style="text-align:center;margin:18px 0 40px"></div>';
@@ -1184,7 +1391,8 @@ function linhaHtml(r) {
     <div class="linha" data-id="${r.id}">
       ${r.imagens.length ? `<img class="foto" loading="lazy" src="${esc(miniatura(r.imagens[0]))}" data-grande="${esc(miniatura(r.imagens[0], 1000))}" alt="${esc(r.nome)}">` : '<div class="foto"></div>'}
       <div>
-        <div class="desc"><span class="selo site">${esc(r.site_nome)}</span> ${esc(r.nome)}</div>
+        <div class="desc"><span class="selo site">${esc(r.site_nome)}</span>
+          ${r.confianca ? `<span class="selo conf-${r.confianca}">${SELOS[r.confianca]}</span>` : ""} ${esc(r.nome)}</div>
         <div class="campos">
           <div><span>Marca:</span> ${esc(r.marca) || "—"}</div>
           <div><span>Código:</span> ${esc(r.codigo) || "—"}</div>
@@ -1214,7 +1422,7 @@ function opcoes(lista, id, nome, valor) {
 
 async function abrir(id) {
   itemAtual = resultados.find(r => r.id === id);
-  const d = await (await fetch("/api/catalogo/sugestao/" + id)).json();
+  const d = await (await fetch("/api/catalogo/sugestao/" + id + (paramsVeiculo() ? "?" + paramsVeiculo().slice(1) : ""))).json();
   const f = document.getElementById("formCadastro"), c = d.campos;
   document.getElementById("tituloForm").textContent = itemAtual.nome;
   document.getElementById("origemForm").innerHTML = `${esc(itemAtual.site_nome)} · ${esc(itemAtual.marca)} ${esc(itemAtual.codigo)} · <a href="${esc(itemAtual.url)}" target="_blank" rel="noopener">ver no site</a>`;
@@ -1280,6 +1488,7 @@ document.getElementById("formCadastro").onsubmit = async e => {
 document.getElementById("zoom").onclick = e => e.currentTarget.style.display = "none";
 document.addEventListener("keydown", e => { if (e.key === "Escape") { fechar(); document.getElementById("zoom").style.display = "none"; } });
 carregarSites();
+iniciarVeiculo();
 </script>
 </body>
 </html>
