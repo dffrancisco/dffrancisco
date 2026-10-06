@@ -146,37 +146,45 @@ def _urls(itens):
     return [(i["site"], i["url"]) for i in itens]
 
 
-SERVE = {("karhub", "https://k/p1"): "todas_versoes", ("universal", "https://u/p1"): "todas_versoes",
-         ("karhub", "https://k/p5"): "modelo_ano"}
+SERVE = {("karhub", "https://k/p1"): ("todas_versoes", 1), ("universal", "https://u/p1"): ("todas_versoes", 1),
+         ("karhub", "https://k/p5"): ("modelo_ano", 5)}  # (confiança, peça): k/p1 e u/p1 são a mesma peça
 
 
 def test_serve_no_veiculo(tmp_path):
     with painel_veiculos.helper(_helper(tmp_path)) as db:
-        assert painel_veiculos.serve_no_veiculo(db, 10, 2014) == {("karhub", "https://k/p1"): "todas_versoes",
-                                                                  ("universal", "https://u/p1"): "todas_versoes"}
-        assert painel_veiculos.serve_no_veiculo(db, 10, 2018, 100) == {("karhub", "https://k/p1"): "versao",
-                                                                       ("universal", "https://u/p1"): "versao"}
+        assert painel_veiculos.serve_no_veiculo(db, 10, 2014) == {("karhub", "https://k/p1"): ("todas_versoes", 1),
+                                                                  ("universal", "https://u/p1"): ("todas_versoes", 1)}
+        assert painel_veiculos.serve_no_veiculo(db, 10, 2018, 100) == {("karhub", "https://k/p1"): ("versao", 1),
+                                                                       ("universal", "https://u/p1"): ("versao", 1)}
         assert painel_veiculos.serve_no_veiculo(db, 11, 2006) == {}  # 'Celta' sem ano não vale para 2006
         assert painel_veiculos.serve_no_veiculo(db, 10, 2018, 101) == {}
 
 
 def test_busca_por_veiculo_sem_texto_ordem_site_e_pagina(painel):
-    itens, tem_mais = painel_wayap.buscar_catalogos("", serve=SERVE)
-    assert _urls(itens) == [("karhub", "https://k/p1"), ("universal", "https://u/p1"), ("karhub", "https://k/p5")]
-    assert [i["confianca"] for i in itens] == ["todas_versoes", "todas_versoes", "modelo_ano"]
+    itens, tem_mais = painel_wayap.buscar_catalogos("", serve=SERVE, modelo="ONIX")
+    assert _urls(itens) == [("karhub", "https://k/p1"), ("karhub", "https://k/p5")]  # um anúncio por peça
+    assert [i["confianca"] for i in itens] == ["todas_versoes", "modelo_ano"]
     assert not tem_mais
     assert _urls(painel_wayap.buscar_catalogos("", site="universal", serve=SERVE)[0]) == [("universal", "https://u/p1")]
-    pagina, tem_mais = painel_wayap.buscar_catalogos("", limite=1, offset=1, serve=SERVE)
-    assert _urls(pagina) == [("universal", "https://u/p1")] and tem_mais
+    pagina, _ = painel_wayap.buscar_catalogos("", limite=1, offset=1, serve=SERVE, modelo="ONIX")
+    assert _urls(pagina) == [("karhub", "https://k/p5")]
     assert painel_wayap.buscar_catalogos("", serve={}) == ([], False)
 
 
+def test_busca_por_veiculo_fica_com_o_anuncio_que_cita_o_modelo(painel):
+    """A CarBlue anuncia o mesmo produto uma vez por carro ('Lanterna ... Agile', '... Astra'): na busca por veículo vem
+    um anúncio por peça, o que cita o modelo escolhido no nome (aqui, por teste, 'DIANTEIRA' cita o da Universal),
+    mesmo sem foto e com id maior."""
+    assert _urls(painel_wayap.buscar_catalogos("", serve=SERVE, modelo="DIANTEIRA")[0])[0] == ("universal", "https://u/p1")
+    assert _urls(painel_wayap.buscar_catalogos("pastilha", serve=SERVE, modelo="DIANTEIRA")[0])[0] == ("universal", "https://u/p1")
+    assert _urls(painel_wayap.buscar_catalogos("PD1", serve=SERVE, modelo="DIANTEIRA")[0]) == [("universal", "https://u/p1")]
+    assert _urls(painel_wayap.buscar_catalogos("", serve=SERVE, modelo="DIANT")[0])[0] == ("karhub", "https://k/p1")  # palavra inteira
+
+
 def test_busca_por_veiculo_com_texto_codigo_e_ean(painel):
-    itens, _ = painel_wayap.buscar_catalogos("pastilha", serve=SERVE)
-    assert set(_urls(itens)[:2]) == {("karhub", "https://k/p1"), ("universal", "https://u/p1")}
-    assert _urls(itens)[2:] == [("karhub", "https://k/p5")]
-    assert set(_urls(painel_wayap.buscar_catalogos("PD1", serve=SERVE)[0])) == {("karhub", "https://k/p1"),
-                                                                               ("universal", "https://u/p1")}
+    itens, _ = painel_wayap.buscar_catalogos("pastilha", serve=SERVE, modelo="ONIX")
+    assert _urls(itens) == [("karhub", "https://k/p1"), ("karhub", "https://k/p5")]
+    assert _urls(painel_wayap.buscar_catalogos("PD1", serve=SERVE, modelo="ONIX")[0]) == [("karhub", "https://k/p1")]
     assert painel_wayap.buscar_catalogos("disco", serve=SERVE)[0] == []
     assert painel_wayap.buscar_catalogos("7891234567895", serve=SERVE)[0] == []  # EAN exato de peça que não serve
     assert _urls(painel_wayap.buscar_catalogos("7891234567895")[0]) == [("karhub", "https://k/p4")]  # sem veículo
@@ -184,9 +192,9 @@ def test_busca_por_veiculo_com_texto_codigo_e_ean(painel):
 
 
 def test_busca_por_veiculo_com_muitas_pecas(painel):
-    serve = {("karhub", f"https://k/x{i}"): "modelo_ano" for i in range(60000)} | SERVE
-    itens, tem_mais = painel_wayap.buscar_catalogos("", serve=serve)
-    assert _urls(itens)[0] == ("karhub", "https://k/p1") and len(itens) == 3 and not tem_mais
+    serve = {("karhub", f"https://k/x{i}"): ("modelo_ano", 1000 + i) for i in range(60000)} | SERVE
+    itens, tem_mais = painel_wayap.buscar_catalogos("", serve=serve, modelo="ONIX")
+    assert _urls(itens) == [("karhub", "https://k/p1"), ("karhub", "https://k/p5")] and not tem_mais
 
 
 def test_rotas_do_seletor(painel):
@@ -198,8 +206,7 @@ def test_rotas_do_seletor(painel):
 
 def test_api_busca_com_veiculo(painel):
     d = painel.get("/api/catalogo/busca?q=&modelo=10&ano=2014").get_json()
-    assert {(i["site"], i["url"]): i["confianca"] for i in d["itens"]} == {("karhub", "https://k/p1"): "todas_versoes",
-                                                                          ("universal", "https://u/p1"): "todas_versoes"}
+    assert {(i["site"], i["url"]): i["confianca"] for i in d["itens"]} == {("karhub", "https://k/p1"): "todas_versoes"}
     assert painel.get("/api/catalogo/busca?q=pastilha&modelo=10&ano=2018&versao=101").get_json()["itens"] == []
     assert painel.get("/api/catalogo/busca?q=pastilha").get_json()["itens"][0]["confianca"] is None
 

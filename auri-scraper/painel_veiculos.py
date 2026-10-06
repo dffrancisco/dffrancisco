@@ -99,13 +99,13 @@ def veiculo_escolhido(db, id_modelo, ano, id_versao=None):
 
 
 def serve_no_veiculo(db, id_modelo, ano, id_versao=None):
-    """{(site, url): confiança} dos anúncios cujas peças servem no veículo, pelas regras de ids_por_veiculo do helper."""
+    """{(site, url): (confiança, id_peca)} dos anúncios cujas peças servem no veículo (regras de ids_por_veiculo)."""
     ids = ids_por_veiculo(db, id_modelo, ano, id_versao)
     if not ids:
         return {}
     linhas = db.execute("SELECT o.id_peca, o.site, o.url FROM json_each(?) j JOIN origem o ON o.id_peca = j.value",
                         (json.dumps(list(ids)),))
-    return {(site, url): ids[id_peca] for id_peca, site, url in linhas}
+    return {(site, url): (ids[id_peca], id_peca) for id_peca, site, url in linhas}
 
 
 SELO_TODAS, SELO_CONFIRA = "todas as versões", "confira a versão"

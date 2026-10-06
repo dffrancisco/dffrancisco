@@ -143,40 +143,63 @@ def item_do_catalogo(id_item):
     return dict(item)
 
 
-def buscar_catalogos(q, site="", limite=40, offset=0, serve=None):
+def cita_modelo(nome, modelo):
+    """O nome do anúncio cita o modelo como palavra ('Pastilha Freio Argo 17/24' cita ARGO; 'Golf' não cita GOL)."""
+    return bool(modelo) and re.search(rf"\b{re.escape(modelo)}\b", sem_acento(nome or "").upper()) is not None
+
+
+def buscar_catalogos(q, site="", limite=40, offset=0, serve=None, modelo=None):
     """Uma página de resultados: EAN e código exatos vêm na primeira; a busca textual é paginada. Com `serve`
-    ({(site, url): confiança}, da busca por veículo) só entram os anúncios que servem, os mais confiáveis primeiro."""
+    ({(site, url): (confiança, id_peca)}, da busca por veículo) só entram os anúncios que servem, os mais confiáveis
+    primeiro e um por peça: o que cita o `modelo` escolhido no nome, depois o com foto (a CarBlue anuncia o mesmo produto
+    uma vez por carro: 'Lanterna ... Agile', 'Lanterna ... Astra')."""
     q = q.strip()
     filtro, args = ("AND item.site = ?", [site]) if site else ("", [])
     achados, textuais = [], []
     with db_catalogos() as db:
-        colunas, junta, ordem = "item.*", "", "rank"
-        if serve is not None:
-            db.execute("CREATE TEMP TABLE serve (site TEXT, url TEXT, confianca TEXT, ordem INTEGER, PRIMARY KEY (site, url))")
-            db.executemany("INSERT INTO serve VALUES (?, ?, ?, ?)",
-                           [(s, u, c, painel_veiculos.ORDEM_CONFIANCA[c]) for (s, u), c in serve.items()])
-            colunas, ordem = "item.*, serve.confianca", "serve.ordem, rank"
+        if serve is None:
+            colunas, junta = "item.*", ""
+        else:
+            db.create_function("cita", 1, lambda nome: cita_modelo(nome, modelo), deterministic=True)
+            db.execute("CREATE TEMP TABLE serve (site TEXT, url TEXT, confianca TEXT, ordem INTEGER, id_peca INTEGER, "
+                       "PRIMARY KEY (site, url))")
+            db.executemany("INSERT INTO serve VALUES (?, ?, ?, ?, ?)",
+                           [(s, u, c, painel_veiculos.ORDEM_CONFIANCA[c], p) for (s, u), (c, p) in serve.items()])
+            colunas = "item.*, serve.confianca, serve.id_peca"
             junta = "JOIN serve ON serve.site = item.site AND serve.url = item.url"
+            um_por_peca = ("ROW_NUMBER() OVER (PARTITION BY serve.id_peca ORDER BY cita(item.nome) DESC, item.imagens = '[]', "
+                           "item.id) AS _um, serve.ordem AS _ordem")
         if offset == 0 and n_ean(q):
             achados += db.execute(f"SELECT {colunas} FROM item {junta} WHERE ean = ? {filtro}", [n_ean(q)] + args).fetchall()
         if offset == 0 and " " not in q and len(n_codigo(q)) >= 3:
             achados += db.execute(f"SELECT {colunas} FROM item {junta} WHERE codigos LIKE ? {filtro} LIMIT 200",
                                   [f"%|{n_codigo(q)}|%"] + args).fetchall()
         termos = re.findall(r"\w+", sem_acento(q))
-        if termos:
-            consulta = " ".join(f'"{t}"*' for t in termos)
-            textuais = db.execute(f"SELECT {colunas} FROM busca JOIN item ON item.id = busca.rowid {junta} "
-                                  f"WHERE busca MATCH ? {filtro} ORDER BY {ordem} LIMIT ? OFFSET ?",
+        consulta = " ".join(f'"{t}"*' for t in termos)
+        if termos and serve is None:
+            textuais = db.execute(f"SELECT {colunas} FROM busca JOIN item ON item.id = busca.rowid "
+                                  f"WHERE busca MATCH ? {filtro} ORDER BY rank LIMIT ? OFFSET ?",
+                                  [consulta] + args + [limite, offset]).fetchall()
+        elif termos:
+            textuais = db.execute(f"SELECT * FROM (SELECT {colunas}, {um_por_peca}, rank AS _rank FROM busca "
+                                  f"JOIN item ON item.id = busca.rowid {junta} WHERE busca MATCH ? {filtro}) "
+                                  f"WHERE _um = 1 ORDER BY _ordem, _rank LIMIT ? OFFSET ?",
                                   [consulta] + args + [limite, offset]).fetchall()
         elif serve is not None:  # só o veículo: todas as peças dele, as com foto antes
-            textuais = db.execute(f"SELECT {colunas} FROM serve JOIN item ON item.site = serve.site AND item.url = serve.url "
-                                  f"WHERE 1 {filtro} ORDER BY serve.ordem, item.imagens = '[]', item.id LIMIT ? OFFSET ?",
+            textuais = db.execute(f"SELECT * FROM (SELECT {colunas}, {um_por_peca} FROM serve "
+                                  f"JOIN item ON item.site = serve.site AND item.url = serve.url WHERE 1 {filtro}) "
+                                  f"WHERE _um = 1 ORDER BY _ordem, imagens = '[]', id LIMIT ? OFFSET ?",
                                   args + [limite, offset]).fetchall()
-    vistos, lista = set(), []
+    if serve is not None:  # exatos: também um por peça, o que cita o modelo primeiro
+        achados.sort(key=lambda r: not cita_modelo(r["nome"], modelo))
+    vistos, pecas, lista = set(), set(), []
     for r in achados + textuais:
-        if r["id"] not in vistos:
-            vistos.add(r["id"])
-            lista.append(dict(r))
+        peca = r["id_peca"] if serve is not None else None
+        if r["id"] in vistos or (peca is not None and peca in pecas):
+            continue
+        vistos.add(r["id"])
+        pecas.add(peca)
+        lista.append({k: r[k] for k in r.keys() if not k.startswith("_")})
     return lista, len(textuais) == limite
 
 
@@ -688,13 +711,15 @@ def base_de_veiculos_ocupada(e):
 
 @app.get("/api/catalogo/busca")
 def api_busca():
-    serve, veiculo = None, veiculo_da_requisicao(request.args)
+    serve, modelo, veiculo = None, None, veiculo_da_requisicao(request.args)
     if veiculo:
         with painel_veiculos.helper() as h:
             serve = painel_veiculos.serve_no_veiculo(h, *veiculo)
+            escolhido = painel_veiculos.veiculo_escolhido(h, *veiculo)
+            modelo = escolhido["modelo"] if escolhido else None
     lista = []
     achados, tem_mais = buscar_catalogos(request.args.get("q", ""), request.args.get("site", ""),
-                                         offset=int(request.args.get("offset", 0)), serve=serve)
+                                         offset=int(request.args.get("offset", 0)), serve=serve, modelo=modelo)
     for r in achados:
         existente = ja_cadastrado(r)
         imagens = json.loads(r["imagens"])
