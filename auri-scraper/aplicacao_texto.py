@@ -33,6 +33,7 @@ def ocorrencias_do_texto(texto):
     'Ford Escort 1981-2003 1.8 16V' (KarHub, Universal), 'GOL G2 96 97 98; GOL G3 2000 2001' (CarBlue),
     'Fiat: Palio 01 a 12, Siena Após 08' e 'GM, Blazer todos' (ShopPeças), 'Gol, Parati - 1998 1999' (ClicPeças)."""
     texto = sem_acento(re.sub(r"\([^)]*\)", " ", texto or "")).upper()  # '(PALHETA TRASEIRA)', '(GMC)'
+    texto = re.sub(r"\b(\d{1,3})\s+ANOS\b", r"\1ANOS", texto)  # edição 'GOL 25 ANOS', 'UNO MILLE 30 ANOS': não é ano
     ocorrencias, sem_ano, anterior_so_anos = [], [], False
     for trecho in texto.split(";"):
         for parte in re.split(r",|\s+-\s+", trecho.split(":", 1)[-1]):  # 'FIAT: PALIO ...' / 'GOL, PARATI - 1998'

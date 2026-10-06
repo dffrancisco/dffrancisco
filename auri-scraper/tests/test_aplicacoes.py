@@ -65,3 +65,10 @@ def test_juntar_aplicacoes_une_faixas_adjacentes_e_sobrepostas():
 
 def test_sem_aplicacao():
     assert aplicacoes_do_anuncio(_anuncio(), VOCAB) == []
+
+
+def test_edicao_comemorativa_nao_e_ano():
+    """'Gol G5 25 Anos 2012': '25' é o nome da edição, não 2025 (esticava a faixa do G5 até 2025)."""
+    linhas = aplicacoes_do_anuncio(_anuncio(carro="VOLKSWAGEN Gol G5 25 Anos 2012 1.0 Flex; Fiat Uno Mille 30 anos 2006-2007"),
+                                   VOCAB)
+    assert {(l["modelo"], l["ano_inicio"], l["ano_fim"]) for l in linhas} == {("GOL", 2012, 2012), ("UNO MILLE 30ANOS", 2006, 2007)}
