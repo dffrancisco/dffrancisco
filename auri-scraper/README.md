@@ -188,3 +188,27 @@ python helper.py publicar                      # rsync das fotos (HELPER_SSH), d
   ficam estáveis entre rodadas.
 - Rotina: re-raspar catálogo → `preparar` → `fotos --prioridade --limite N` → `publicar --ensaio` → `publicar`.
 - Testes: `pip install -r requirements-dev.txt && pytest`.
+
+### Veículos (montadora → modelo → ano → versão)
+
+Spec: `docs/superpowers/specs/2026-10-03-helper-veiculos-design.md`. Todas as montadoras e todos os modelos (carros,
+utilitários, motos, caminhões e ônibus), com `tipo` carro, moto ou pesado em cada modelo (FIPE + nome das versões; ajustes
+em `helper_veiculos_tipo.csv`).
+
+```bash
+python catalogo_karhub_veiculos.py fipe        # listas da FIPE (veiculos/fipe.json), uma vez
+python catalogo_karhub_veiculos.py arvore      # 6 a 9 h, retomável; --montadora chevrolet para testar; --do-inicio todo mês
+python catalogo_karhub_veiculos.py compat      # 1 a 2 h; --do-inicio quando o catalogo_karhub.py rodar de novo
+python helper.py veiculos                      # árvore, imagens, vei_peca, relatório e planilha de tipos
+python helper.py pecas-do-veiculo CHEVROLET TRACKER 2021 --texto TAMBOR   # conferência contra o site
+python helper.py publicar --ensaio             # agora inclui veículos; o ensaio não grava nada, nem esquema
+```
+
+- Apelidos de montadora: `helper_montadoras.csv` (grafia da `montadoras` do Wayap).
+- Fotos e logos próprios: `helper_fotos_veiculos/proprias/modelos/<MONTADORA>-<MODELO>.png` e
+  `helper_fotos_veiculos/proprias/montadoras/<MONTADORA>.png` têm prioridade sobre os do KarHub.
+- Publicação: `/home/wayap/helper/veiculos/` (rsync) e tabelas, views e funções `vei_*` no Postgres `helper`. O helper
+  só lê a `montadoras` do Wayap (para `id_montadora`); nunca escreve nela.
+- Contrato: views `vei_v_montadora` (com `tipos`), `vei_v_modelo` (com `tipo`); funções `vei_anos_do_modelo`, `vei_versoes_do_ano`,
+  `vei_pecas_por_veiculo`, `vei_ids_por_veiculo`.
+- Rotina: `preparar` → `veiculos` → `fotos` → `publicar` (o `publicar` recusa `veiculos` mais antigo que o `preparar`).

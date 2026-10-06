@@ -1,5 +1,5 @@
 from helper.banco import abrir
-from helper.consulta import cobertura, normalizar_busca, peca_completa, por_codigo, por_ean
+from helper.consulta import cobertura, ids_por_veiculo, normalizar_busca, peca_completa, pecas_por_veiculo, por_codigo, por_ean
 
 
 def _db(tmp_path):
@@ -54,3 +54,61 @@ def test_cobertura(tmp_path):
                 {"marca": "COFRAN", "num_fabricante": "160818X", "num_fabricante2": None, "cod_barra": None}]
     assert cobertura(db, produtos) == {"ARTEB": {"total": 3, "por_ean": 1, "por_codigo": 1, "nao_encontrados": 1},
                                        "COFRAN": {"total": 1, "por_ean": 0, "por_codigo": 1, "nao_encontrados": 0}}
+
+
+def _db_veiculo(tmp_path):
+    db = abrir(tmp_path / "v.sqlite")
+    db.execute("INSERT INTO marca (id_marca, nome, tipo) VALUES (1, 'FREMAX', 'reposicao')")
+    for id_peca, desc, foto, fontes in [(1, "TAMBOR FREIO", 1, 5), (2, "TAMBOR FREIO", 0, 9), (3, "PASTILHA FREIO", 0, 1),
+                                        (4, "TAMBOR FREIO", 0, 2), (5, "TAMBOR FREIO", 1, 1), (6, "TAMBOR FREIO", 1, 3),
+                                        (7, "TAMBOR FREIO", 1, 1)]:
+        db.execute("INSERT INTO peca (id_peca, id_marca, chave, codigo, desc_curta, tem_foto, qtd_fontes, status) "
+                   "VALUES (?, 1, ?, ?, ?, ?, ?, 'ativa')", (id_peca, f"F|{id_peca}", str(id_peca), desc, foto, fontes))
+    db.execute("UPDATE peca SET status = 'inativa' WHERE id_peca = 6")
+    db.execute("INSERT INTO vei_montadora (id_veiculo_montadora, nome, nome_exibicao) VALUES (1, 'X', 'X')")
+    db.execute("INSERT INTO vei_modelo (id_modelo, id_veiculo_montadora, nome, nome_exibicao) VALUES (10, 1, 'M', 'M')")
+    for v in (100, 200, 300):
+        db.execute("INSERT INTO vei_versao (id_versao, id_modelo, nome, nome_exibicao) VALUES (?, 10, ?, ?)", (v, str(v), str(v)))
+    # 100 e 200 existem em 2010-2022; a 300 tem lacuna: só 2020 e 2022
+    db.executemany("INSERT INTO vei_versao_ano VALUES (?, ?)",
+                   [(v, a) for v in (100, 200) for a in range(2010, 2023)] + [(300, 2020), (300, 2022)])
+    db.executemany("INSERT INTO vei_peca VALUES (?, ?, ?, ?, ?, ?)", [
+        (1, 10, None, 2020, 2022, "versao"),   # todas as versões
+        (2, 10, 100, 2021, 2021, "versao"),    # só a versão 100
+        (3, 10, None, None, None, "modelo"),   # texto, qualquer ano
+        (4, 10, None, 2015, 2019, "modelo"),   # texto, outros anos
+        (5, 10, 200, 2021, 2021, "versao"), (5, 10, None, 2010, 2012, "versao"),
+        (6, 10, None, 2020, 2022, "versao"),   # peça inativa
+        (7, 10, 300, 2020, 2022, "versao")])   # versão 300 nos anos em que ela existe (2021 não)
+    db.commit()
+    return db
+
+
+def test_confianca_sem_versao(tmp_path):
+    assert ids_por_veiculo(_db_veiculo(tmp_path), 10, 2021) == {1: "todas_versoes", 2: "algumas_versoes", 3: "modelo_ano",
+                                                                 5: "algumas_versoes"}
+
+
+def test_confianca_com_versao_tira_quem_o_karhub_diz_que_nao_serve(tmp_path):
+    db = _db_veiculo(tmp_path)
+    assert ids_por_veiculo(db, 10, 2021, 100) == {1: "versao", 2: "versao", 3: "modelo_ano"}
+    assert ids_por_veiculo(db, 10, 2021, 200) == {1: "versao", 3: "modelo_ano", 5: "versao"}
+    assert ids_por_veiculo(db, 10, 2016) == {3: "modelo_ano", 4: "modelo_ano"}
+    assert ids_por_veiculo(db, 99, 2021) == {}
+
+
+def test_versao_com_lacuna_nao_aparece_no_ano_em_que_nao_existe(tmp_path):
+    db = _db_veiculo(tmp_path)
+    assert 7 not in ids_por_veiculo(db, 10, 2021)  # a 300 não existe em 2021, embora 2021 esteja entre 2020 e 2022
+    assert ids_por_veiculo(db, 10, 2020)[7] == "algumas_versoes"
+    assert ids_por_veiculo(db, 10, 2022, 300)[7] == "versao"
+
+
+def test_pecas_por_veiculo_texto_ordem_e_limite(tmp_path):
+    db = _db_veiculo(tmp_path)
+    r = pecas_por_veiculo(db, 10, 2021, texto="tambor")
+    assert [p["id_peca"] for p in r] == [1, 5, 2]  # todas_versoes; depois algumas_versoes com foto antes
+    assert r[0]["marca"] == "FREMAX" and r[0]["confianca"] == "todas_versoes" and "origem" not in r[0]
+    assert [p["id_peca"] for p in pecas_por_veiculo(db, 10, 2021, texto="pastilha")] == [3]
+    assert len(pecas_por_veiculo(db, 10, 2021, limite=1)) == 1
+    assert pecas_por_veiculo(db, 99, 2021) == []

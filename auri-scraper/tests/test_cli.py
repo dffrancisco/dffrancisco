@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 
-from helper.banco import abrir
+from helper.banco import abrir, ler_meta
 from helper.cli import main
 
 
@@ -54,3 +54,102 @@ def test_relatorio_sozinho_depois_de_preparar(tmp_path):
     main(["preparar", "--base", str(tmp_path)])
     assert main(["relatorio", "--base", str(tmp_path)]) == 0
     assert len(list((tmp_path / "helper_relatorios").glob("*-relatorio.md"))) == 1
+
+
+def test_preparar_grava_a_hora_em_meta(tmp_path):
+    _montar_base(tmp_path)
+    main(["preparar", "--base", str(tmp_path)])
+    assert ler_meta(abrir(tmp_path / "helper.sqlite"), "preparado_em")
+
+
+def _arvore_gol(tmp_path):
+    arvore = {"montadora": {"label": "Volkswagen", "handle": "volkswagen", "logo_url": None},
+              "modelo": {"label": "Gol", "handle": "Gol", "foto_url": None}, "tipo": "carro", "motivo_tipo": "fipe",
+              "anos": [{"ano": a, "versoes": [{"label": "1.0 8v", "handle": "x", "ids_fonte": [str(a)]}]} for a in (1999, 2000, 2001)],
+              "coletado_em": "2026-10-03"}
+    _escrever(tmp_path / "veiculos/karhub_arvore.jsonl", json.dumps(arvore) + "\n")
+    _escrever(tmp_path / "veiculos/karhub_excluidos.jsonl", json.dumps({
+        "montadora": {"label": "Honda", "handle": "honda"}, "modelo": {"label": "Biz", "handle": "Biz"},
+        "tipo": "moto", "motivo_tipo": "versao", "versoes_exemplo": ["Ks 100cc"], "coletado_em": "2026-10-03"}) + "\n")
+    # o anúncio da KarHub em _montar_base tem url https://k/p/1: handle "1"
+    _escrever(tmp_path / "veiculos/karhub_compat.jsonl", json.dumps({"handle": "1", "ids": ["1999", "2000"]}) + "\n")
+
+
+def test_veiculos_ponta_a_ponta(tmp_path, capsys):
+    _montar_base(tmp_path)
+    main(["preparar", "--base", str(tmp_path)])
+    _arvore_gol(tmp_path)
+    assert main(["veiculos", "--base", str(tmp_path)]) == 0
+    db = abrir(tmp_path / "helper.sqlite")
+    gc = db.execute("SELECT id_peca FROM peca WHERE codigo = 'GC5045'").fetchone()[0]
+    assert [tuple(l) for l in db.execute("SELECT id_versao, ano_inicio, ano_fim, nivel FROM vei_peca WHERE id_peca = ?", (gc,))] == \
+        [(None, 1999, 2000, "versao")]
+    farol = db.execute("SELECT id_peca FROM peca WHERE codigo = '0160818'").fetchone()[0]
+    assert [tuple(l) for l in db.execute("SELECT ano_inicio, ano_fim, nivel FROM vei_peca WHERE id_peca = ?", (farol,))] == \
+        [(1995, 1999, "modelo")]
+    rel = list((tmp_path / "helper_relatorios").glob("*-veiculos.md"))[0].read_text(encoding="utf-8")
+    assert "Modelos ativos: 1" in rel and "| moto | versao | 1 |" in rel
+    tipos = list((tmp_path / "helper_relatorios").glob("*-veiculos-tipos.csv"))[0].read_text(encoding="utf-8")
+    assert "Honda;Biz;moto;versao;Ks 100cc" in tipos and "Volkswagen;Gol;carro;fipe;1.0 8v" in tipos
+
+
+def test_planilha_de_tipos_aplica_ajuste_e_nao_repete_modelo(tmp_path):
+    from helper.montadoras import Montadoras
+    from helper.veiculos_relatorio import salvar_tipos_csv
+    _arvore_gol(tmp_path)
+    excl = tmp_path / "veiculos/karhub_excluidos.jsonl"
+    excl.write_text(excl.read_text(encoding="utf-8") * 2, encoding="utf-8")  # a mesma linha duas vezes
+    tipos = salvar_tipos_csv(tmp_path / "veiculos", tmp_path / "t.csv", ajustes={("VOLKSWAGEN", "GOL"): "pesado"},
+                             montadoras=Montadoras({}))
+    texto = (tmp_path / "t.csv").read_text(encoding="utf-8")
+    assert texto.count("Honda;Biz;") == 1
+    assert "Volkswagen;Gol;pesado;ajuste;1.0 8v" in texto
+    assert tipos[("pesado", "ajuste")] == 1 and tipos[("moto", "versao")] == 1
+
+
+def test_veiculos_sem_arvore_avisa(tmp_path):
+    _montar_base(tmp_path)
+    assert main(["veiculos", "--base", str(tmp_path)]) == 2
+
+
+def test_pecas_do_veiculo_aceita_o_jeito_do_usuario(tmp_path, capsys):
+    _montar_base(tmp_path)
+    main(["preparar", "--base", str(tmp_path)])
+    _arvore_gol(tmp_path)
+    main(["veiculos", "--base", str(tmp_path)])
+    capsys.readouterr()
+    assert main(["pecas-do-veiculo", "volkswagen", "gol", "2000", "--base", str(tmp_path)]) == 0
+    saida = capsys.readouterr().out
+    assert "todas_versoes" in saida and "GC5045" in saida
+    assert main(["pecas-do-veiculo", "vw", "Gol", "1997", "--base", str(tmp_path)]) == 0  # 1997: só o texto da Arteb
+    assert "modelo_ano" in capsys.readouterr().out
+    assert main(["pecas-do-veiculo", "VW", "GOL", "2000", "--versao", "1.0 8V", "--texto", "cabo", "--base", str(tmp_path)]) == 0
+    saida = capsys.readouterr().out
+    assert "versao" in saida and "GC5045" in saida and "0160818" not in saida
+    assert main(["pecas-do-veiculo", "VW", "FUSCA", "2000", "--base", str(tmp_path)]) == 1
+    assert main(["pecas-do-veiculo", "VW", "GOL", "2000", "--versao", "2.0 turbo", "--base", str(tmp_path)]) == 1
+    assert "1.0 8v" in capsys.readouterr().out  # lista as versões do ano
+
+
+def test_publicar_ensaio_nao_instala_esquema_e_recusa_veiculos_desatualizado(tmp_path, monkeypatch):
+    from helper import publicar as pub
+    from helper.banco import gravar_meta
+    _montar_base(tmp_path)
+    main(["preparar", "--base", str(tmp_path)])
+    _arvore_gol(tmp_path)
+    main(["veiculos", "--base", str(tmp_path)])
+    chamadas = []
+    monkeypatch.setattr(pub, "ler_env_admin", lambda caminho: chamadas.append("env") or {})
+    monkeypatch.setattr(pub, "conectar", lambda env, nome: object())
+    monkeypatch.setattr(pub, "criar_banco", lambda *a, **k: chamadas.append("criar_banco"))
+    monkeypatch.setattr(pub, "instalar_esquema", lambda con: chamadas.append("instalar_esquema") or True)
+    monkeypatch.setattr(pub, "publicar", lambda db, con, **k: chamadas.append(("publicar", k["ensaio"])) or {"novas": 0})
+    monkeypatch.setattr(pub, "publicar_veiculos", lambda db, con, **k: chamadas.append(("veiculos", k["ensaio"])) or {"modelos": 1})
+    assert main(["publicar", "--ensaio", "--base", str(tmp_path)]) == 0
+    assert chamadas == ["env", ("publicar", True), ("veiculos", True)]  # ensaio não cria banco nem tabelas
+    db = abrir(tmp_path / "helper.sqlite")
+    gravar_meta(db, "preparado_em", "9999-12-31T00:00:00")  # um preparar depois do veiculos
+    db.commit()
+    chamadas.clear()
+    assert main(["publicar", "--ensaio", "--base", str(tmp_path)]) == 2
+    assert chamadas == []  # recusa antes de conectar

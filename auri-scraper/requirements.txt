@@ -1,6 +1,6 @@
 scrapling[fetchers]>=0.4
 requests>=2.31
-pillow>=10
+pillow>=11.3
 psycopg2-binary>=2.9
 flask>=3
 openpyxl>=3.1
