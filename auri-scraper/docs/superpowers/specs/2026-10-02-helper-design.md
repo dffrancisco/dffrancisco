@@ -240,6 +240,10 @@ usados.
 
 ### 5.4 Fotos
 
+> Adendo 15/10/2026: `fotos-topcar` (`helper/topcar_fotos.py`) traz as fotos dos produtos de um tenant do Wayap (topcar)
+> para as peças sem foto, casando pelo EAN único; entram como `loja`, `url_fonte = wayap://<sociedade>/<cod>/<arquivo>`,
+> e seguem o `publicar` normal.
+
 Reaproveita as funções de `wayap_fotos.py`:
 
 - Download com cache e repetição; IPv4 forçado como no painel.

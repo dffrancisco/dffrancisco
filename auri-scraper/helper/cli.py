@@ -1,4 +1,4 @@
-"""CLI do helper. Uso: python helper.py {preparar|fotos|relatorio|cobertura|lista|veiculos|pecas-do-veiculo|publicar} [opções]."""
+"""CLI do helper. Uso: python helper.py {preparar|fotos|fotos-topcar|relatorio|cobertura|lista|veiculos|pecas-do-veiculo|publicar} [opções]."""
 import argparse
 import csv
 import os
@@ -11,6 +11,7 @@ from pathlib import Path
 from helper import (banco, consulta, fontes, fusao, lista, relatorio, topcar, veiculos, veiculos_fotos, veiculos_ligar,
                     veiculos_relatorio)
 from helper import fotos as fotos_mod
+from helper import topcar_fotos
 from helper import publicar as pub
 from helper.marcas import Marcas
 from helper.montadoras import ARQUIVO_PADRAO as MONTADORAS_PADRAO, Montadoras, nome_canonico
@@ -93,6 +94,30 @@ def cmd_fotos(args):
                                       tipo=args.tipo, prioridade=args.prioridade, so_prioridade=args.so_prioridade, ids=ids)
     print("fotos:", ", ".join(f"{k} {v}" for k, v in r.items()))
     print("pendentes restantes:", db.execute("SELECT count(*) FROM foto_pendente WHERE tentativas < 3").fetchone()[0])
+    return 0
+
+
+def cmd_fotos_topcar(args):
+    """Fotos da topcar (ou outro tenant) para as peças sem foto, pelo EAN; depois `publicar` sobe."""
+    db = banco.abrir(args.banco)
+    pasta_origem = args.pasta_origem or topcar_fotos.PASTA_ORIGEM_PADRAO.format(sociedade=args.sociedade)
+    if not Path(pasta_origem).is_dir():
+        print(f"pasta de fotos do tenant não existe: {pasta_origem}", file=sys.stderr)
+        return 2
+    con = pub.conectar(pub.ler_env_admin(ENV_ADMIN), args.sociedade)
+    try:
+        con.set_session(readonly=True)
+        produtos, fotos = topcar_fotos.carregar_tenant(con)
+    finally:
+        con.close()
+    plano, motivos = topcar_fotos.planejar(db, produtos, fotos)
+    print(f"{args.sociedade}: {len(plano)} peças sem foto casam pelo EAN ({sum(len(p['arquivos']) for p in plano)} fotos); "
+          + ", ".join(f"{k} {v}" for k, v in sorted(motivos.items())))
+    if args.ensaio:
+        return 0
+    r = topcar_fotos.importar(db, args.base / "helper_fotos", args.sociedade, produtos, fotos, pasta_origem, limite=args.limite,
+                              max_pecas_logo=fotos_mod.carregar_config(args.config_fotos).get("logo", {}).get("max_pecas", 20))
+    print("importado: " + ", ".join(f"{k} {v}" for k, v in r.items()) + " — rode `publicar` para subir")
     return 0
 
 
@@ -251,6 +276,14 @@ def main(argv=None):
     sp.add_argument("--lista", type=Path, default=None, help="ids.txt de helper.py lista: só as peças da lista do cliente")
     sp.add_argument("--config-fotos", type=Path, default=Path(__file__).resolve().parents[1] / "helper_fotos.toml")
     sp.set_defaults(fn=cmd_fotos)
+    sp = sub.add_parser("fotos-topcar", help="fotos de um tenant do Wayap (topcar) para as peças sem foto, pelo EAN")
+    _args_comuns(sp)
+    sp.add_argument("--sociedade", default="topcar")
+    sp.add_argument("--pasta-origem", type=Path, default=None, help="padrão: /home/wayap/<sociedade>/store/foto_produto")
+    sp.add_argument("--limite", type=int, default=None, help="máximo de peças nesta rodada")
+    sp.add_argument("--ensaio", action="store_true", help="só conta; não grava nada")
+    sp.add_argument("--config-fotos", type=Path, default=Path(__file__).resolve().parents[1] / "helper_fotos.toml")
+    sp.set_defaults(fn=cmd_fotos_topcar)
     sp = sub.add_parser("cobertura")
     _args_comuns(sp)
     sp.set_defaults(fn=cmd_cobertura)

@@ -175,6 +175,7 @@ python helper.py preparar                      # lê tudo, funde, grava helper.s
 python helper.py fotos --limite 5000           # baixa/cura fotos pendentes (locais primeiro); --prioridade, --marca, --tipo
 python helper.py relatorio                     # situação do banco local
 python helper.py cobertura                     # quanto dos produtos da topcar o helper encontra (EAN/código)
+python helper.py fotos-topcar --ensaio         # fotos dos produtos da topcar (pasta /home/wayap/topcar) para as peças sem foto, pelo EAN
 python helper.py publicar --ensaio             # o que mudaria no Postgres e nas fotos
 python helper.py publicar                      # rsync das fotos (HELPER_SSH), depois o banco, por diferença
 ```
@@ -192,6 +193,11 @@ python helper.py publicar                      # rsync das fotos (HELPER_SSH), d
 - `preparar` relê todas as fontes a cada rodada (cerca de 80 s para 420 mil anúncios); a fusão é global e os ids
   ficam estáveis entre rodadas.
 - Rotina: re-raspar catálogo → `preparar` → `fotos --prioridade --limite N` → `publicar --ensaio` → `publicar`.
+- `fotos-topcar`: lê produto/produto_foto do tenant (Postgres do `.env_admin`, `--sociedade topcar`) e os arquivos da pasta
+  `/home/wayap/<sociedade>/store/foto_produto` (`--pasta-origem`); peça ativa sem foto publicável cujo EAN (8–14 dígitos,
+  único nos dois lados) casa com um produto recebe as fotos dele como `origem_tipo = 'loja'`,
+  `url_fonte = 'wayap://<sociedade>/<cod>/<arquivo>'`, com a mesma curadoria do `fotos` (≥ 250 px, dHash, logo) e
+  `publicada = 0`; o `publicar` sobe. Idempotente pela `url_fonte`. Em 15/10/2026: 3.650 peças, 4.653 fotos.
 - Testes: `pip install -r requirements-dev.txt && pytest`.
 
 ### Veículos (montadora → modelo → ano → versão)
